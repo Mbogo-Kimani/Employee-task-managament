@@ -7,8 +7,8 @@ use App\Http\Controllers\Frontend\ClientController;
 use App\Http\Controllers\Frontend\homeController as FrontendHomeController;
 use App\Http\Controllers\LeaveController;
 use Illuminate\Support\Facades\Route;
-use App\Http\controllers\HomeController;
-use App\Http\controllers\manageEmployeeController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\manageEmployeeController;
 use App\Http\Controllers\NetworkingController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\SalaryController;
@@ -238,3 +238,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/notice/noticeEdit/{id}', [FrontendHomeController::class, 'noticeEdit'])->name('noticeEdit');
     Route::put('/notice/noticeUpdate/{id}', [FrontendHomeController::class, 'noticeUpdate'])->name('noticeUpdate');
 });
+
+Route::get('/testPage', [UserController::class, 'testPage']);
