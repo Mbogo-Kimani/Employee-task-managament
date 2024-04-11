@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{asset('rev-slider/css/layers.css')}}">
     <link rel="stylesheet" href="{{asset('rev-slider/css/navigation.css')}}">
     <link rel="stylesheet" href="{{asset('rev-slider/css/settings.css')}}">
+    <link rel="stylesheet" href="{{asset('assests/app.css')}}">
 
         <!-- Favicon -->
     <!-- For Android Chrome -->
