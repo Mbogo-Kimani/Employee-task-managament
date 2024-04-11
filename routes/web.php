@@ -29,7 +29,25 @@ use App\Http\controllers\viewEmployeeController;
 */
 
 // Website or Frontend
-Route::get('/', [FrontendHomeController::class, 'home'])->name('home');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/products', function () {
+    return view('products');
+});
+Route::get('/blogs', function () {
+    return view('blog');
+});
+Route::get('/about-us', function () {
+    return view('aboutus');
+});
+Route::get('/index', function () {
+    return view('welcome');
+});
+Route::get('/contact', function () {
+    return view('contact');
+});
 
 // service section
 Route::get('/services', [FrontendHomeController::class, 'service'])->name('services');
@@ -239,4 +257,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/notice/noticeUpdate/{id}', [FrontendHomeController::class, 'noticeUpdate'])->name('noticeUpdate');
 });
 
-Route::get('/testPage', [UserController::class, 'testPage']);
+Route::get('/admin/home', [UserController::class, 'testPage']);

@@ -219,6 +219,6 @@ class UserController extends Controller
     }
 
     public function testPage() {
-        return Inertia::render('TestPage');
+        return Inertia::render('Admin/Home');
     }
 }
