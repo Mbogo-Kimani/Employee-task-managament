@@ -10,6 +10,7 @@ use App\Models\Leave;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -47,7 +48,8 @@ class HomeController extends Controller
         $totalTasks = Task::count() - $totalCompletedTasks;
 
         // Now you can use $totalTasks in your view or wherever needed
-        return view('admin.pages.dashboard', compact('employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+        // return view('Dashboard', compact('employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+        return Inertia::render('Dashboard', compact('employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
     }
 
 
