@@ -54,7 +54,7 @@
 <!-- jQuery -->
 <script src="{{url('admin/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
-<script src="{{url('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- <script src="{{url('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script> -->
 <!-- overlayScrollbars -->
 <script src="{{url('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
