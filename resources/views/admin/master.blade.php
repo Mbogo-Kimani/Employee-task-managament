@@ -23,6 +23,7 @@
         id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/bubbly/1-3-2/css/custom.0a822280.css">
+    <link rel="stylesheet" href="{{asset('assests/app.css')}}">
 
     <style>
         /* stye for dashboard icon */

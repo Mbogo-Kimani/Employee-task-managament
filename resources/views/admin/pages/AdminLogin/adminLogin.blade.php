@@ -11,6 +11,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="https://www.kodeeo.com/backend/assets/css/style.css">
     <link rel="stylesheet" href="https://www.kodeeo.com/backend/assets/css/components.css">
+    <link rel="stylesheet" href="{{asset('assests/app.css')}}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login Panel</title>
     {{-- style for animation --}}

@@ -26,6 +26,7 @@
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" type="text/css" href="css/fontello.css">
     <link href="https://easetemplate.com/free-website-templates/hrms/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assests/app.css')}}">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
