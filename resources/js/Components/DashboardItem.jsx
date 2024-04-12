@@ -6,7 +6,9 @@ function DashboardItem({ numberToDisplay, textToDisplay, pictureSrc, href }) {
     <div className='border shadow-lg bg-white rounded-md flex flex-col mx-4 my-4 h-[220px]'>
       <div className='h-[80%] w-full flex justify-between items-center py-6 px-8 text-sm'>
         <div>
-          <h4 className="text-red-500 mx-2">{ numberToDisplay || '' }</h4>
+          <h4 className="text-red-500 mx-2">
+            { parseFloat(numberToDisplay) !== NaN ? numberToDisplay : '' }
+          </h4>
           <p className="tracking-wider mb-0 mx-2">{ textToDisplay }</p>
         </div>
         <div className="flex-shrink-0 my-3">
