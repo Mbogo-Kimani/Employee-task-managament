@@ -19,7 +19,7 @@ class UserstableSeeder extends Seeder
 
         User::create([
             'name' => 'Hyben Langat',
-            'role' => 'Admin',
+            'role' => \App\Enums\DepartmentEnum::ADMIN,
             'email' => 'hybenlangat@gmail.com',
             'password' => bcrypt('kip2582'),
             'image' => $imagePath,

@@ -49,7 +49,7 @@ class HomeController extends Controller
 
         // Now you can use $totalTasks in your view or wherever needed
         // return view('Dashboard', compact('employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
-        return Inertia::render('Dashboard', compact('employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+        return Inertia::render('Dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
     }
 
 
