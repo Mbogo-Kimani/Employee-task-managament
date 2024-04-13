@@ -2,6 +2,9 @@
 <html>
   <head>
     <!-- Template Style-->
+    <!-- // TODO: Remove CSRF token reading from here and read it in a more secure way -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="{{asset('stylesheet/font-awesome.css')}}">
     <link rel="stylesheet" href="{{asset('stylesheet/owl.theme.default.min.css')}}">
     <link rel="stylesheet" href="{{asset('stylesheet/owl.carousel.min.css')}}">
