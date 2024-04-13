@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import DashboardItem from '../Components/DashboardItem'
 import SideNav from '../Layouts/SideNav';
-import adminNavItems from '../../data/adminNavItems';
-import inventoryPageItems from '../../data/inventoryPageItems';
-import storeManagerPageItems from '../../data/storeManager';
+import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
 
 // { user, employees, departments, pendingLeaves, users, totalTasks }
 function Home(props) {
   const [day, setDay] = useState('');
   const [dateUK, setDateUK] = useState('');
+  const [pageItems, setPageItems] = useState(defaultPageData);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -21,8 +20,14 @@ function Home(props) {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    setPageItems(
+      pageAndNavItemsDeterminer(props.user?.role, props.user?.clearance_level)
+    );
+  }, [])
+
   return (
-    <SideNav>
+    <SideNav navItems={pageItems.navItems}>
       <div>
         <div className="page-header ">
           <span id="dayOfWeek" className="page-heading" style={{fontSize: '30px'}}>{ day }</span>
@@ -40,12 +45,12 @@ function Home(props) {
         <section className="mb-3 lg:mb-5">
           <div className="flex flex-wrap mt-6">
             {
-              (Array.isArray(adminNavItems) ? adminNavItems : []).map((item, idx) => {
+              (Array.isArray(pageItems.pageItems) ? pageItems.pageItems : []).map((item, idx) => {
                 return (
                   <DashboardItem
                     key={idx}
                     numberToDisplay={props[item.numberToDisplay]}
-                    textToDisplay={item.textToDisplay}
+                    textToDisplay={item.name}
                     pictureSrc={item.pictureSrc}
                     href={item.href}
                   />
