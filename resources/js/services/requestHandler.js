@@ -4,7 +4,7 @@ class RequestHandler {
     this.jsonHeaders = {
       'Content-Type': 'application/json',
       accept: 'application/json',
-      'X-CSRF-TOKEN': token,
+      'X-CSRF-TOKEN': this.token,
     };
   }
 
@@ -72,11 +72,11 @@ class RequestHandler {
       if (body) {
         resp = await fetch(url, {
           method: method,
-          headers: jsonHeaders,
+          headers: this.jsonHeaders,
           body: (
-                  methodToSend === 'POST' ||
-                  methodToSend === 'PUT' ||
-                  methodToSend === 'PATCH'
+                  method === 'POST' ||
+                  method === 'PUT' ||
+                  method === 'PATCH'
                 ) && body
                 ? JSON.stringify(body)
                 : null,
@@ -84,7 +84,7 @@ class RequestHandler {
       } else {
         resp = await fetch(url, {
           method: method,
-          headers: jsonHeaders,
+          headers: this.jsonHeaders,
         });
       }
 
