@@ -10,5 +10,4 @@ class DepartmentEnum {
   const INVENTORY = 5;
   const CUSTOMER_SERVICE = 6;
   const PROJECT_MANAGEMENT = 7;
-  const STORE_MANAGER = 8;
 }
