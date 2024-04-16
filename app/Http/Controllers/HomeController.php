@@ -7,6 +7,7 @@ use App\Enums\TaskStatusEnum;
 use App\Models\Contact;
 
 use App\Models\Task;
+use App\Models\User;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -14,7 +15,7 @@ class HomeController extends Controller
 
   public function home()
   {
-    // $employees = User::count();
+    $users = User::count();
     // $departments = Department::count();
 
     $pendingLeaves = 0; // Default value for pending leaves
@@ -48,7 +49,7 @@ class HomeController extends Controller
 
     // Now you can use $totalTasks in your view or wherever needed
     // return view('admin.dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
-    return Inertia::render('Dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+    return Inertia::render('Dashboard', compact('user', 'users', 'totalTasks'));
   }
 
 	public function tasksPage () {
