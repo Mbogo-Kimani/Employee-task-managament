@@ -9,6 +9,12 @@ export const inventoryNavtems = [
 
 export const inventoryPageItems = [
   {
+    name: 'Tasks',
+    // numberToDisplay: 'tasks',
+    numberToDisplay: 'totalTasks',
+    href: '/tasks',
+  },
+  {
     name: 'New Product',
   },
   {
@@ -32,6 +38,12 @@ export const storeManagerNavItems = [
 ];
 
 export const storeManagerPageItems = [
+  {
+    name: 'Tasks',
+    // numberToDisplay: 'tasks',
+    numberToDisplay: 'totalTasks',
+    href: '/tasks',
+  },
   {
     name: 'New Product',
   },

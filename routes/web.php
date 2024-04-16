@@ -14,8 +14,8 @@ use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskReportController;
 use App\Http\controllers\viewEmployeeController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -71,9 +71,8 @@ Route::post('/contact/store', [FrontendHomeController::class, 'contactStore'])->
 
 
 
-
-Route::get('/login', [UserController::class, 'login'])->name('admin.login');
-Route::post('/login-form', [UserController::class, 'loginPost'])->name('admin.login.post');
+Route::post('/login', [UserController::class, 'login'])->name('admin.login.post');
+Route::get('/login', [UserController::class, 'loginPage'])->name('admin.login');
 Route::group(['middleware' => 'auth'], function () {
 
     // Admin Routes (Accessible only by admin users)
@@ -246,7 +245,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::get('/notice', [FrontendHomeController::class, 'showNotice'])->name('show.notice');
         // ... Additional Employee-specific routes
     });
-    Route::get('/logout', [UserController::class, 'logout'])->name('admin.logout');
+    Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
     Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
     Route::get('/notice', [FrontendHomeController::class, 'showNotice'])->name('show.notice');
     Route::get('/notice/create', [FrontendHomeController::class, 'notice'])->name('notice.create');
@@ -255,6 +254,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/notice/noticeDelete/{id}', [FrontendHomeController::class, 'noticeDelete'])->name('noticeDelete');
     Route::get('/notice/noticeEdit/{id}', [FrontendHomeController::class, 'noticeEdit'])->name('noticeEdit');
     Route::put('/notice/noticeUpdate/{id}', [FrontendHomeController::class, 'noticeUpdate'])->name('noticeUpdate');
+
+    Route::get('/tasks', [HomeController::class, 'tasksPage']);
+    Route::get('/api/tasks', [TaskController::class, 'index']);
+    Route::get('/api/pending_tasks', [TaskController::class, 'getPending']);
+
+    Route::post('/api/task_reports', [TaskReportController::class, 'store']);
 });
 
 Route::get('/admin/home', [UserController::class, 'testPage']);

@@ -3,7 +3,6 @@ import DashboardItem from '../Components/DashboardItem'
 import SideNav from '../Layouts/SideNav';
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
 
-// { user, employees, departments, pendingLeaves, users, totalTasks }
 function Home(props) {
   const [day, setDay] = useState('');
   const [dateUK, setDateUK] = useState('');
