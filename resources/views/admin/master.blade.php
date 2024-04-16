@@ -152,7 +152,7 @@
 
     <div class="d-flex align-items-stretch">
         <!-- sidebar -->
-        @include('admin.partials.sidebar')
+        @include('admin.pages.Inventory.Iventsidebar')
 
 
 

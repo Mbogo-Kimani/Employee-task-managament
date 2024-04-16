@@ -15,6 +15,23 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TaskController;
 use App\Http\controllers\viewEmployeeController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\Product\ProductController;
+
+use App\Http\Controllers\Product\ProductExportController;
+use App\Http\Controllers\Product\ProductImportController;
+
+use App\Http\Controllers\Order\DueOrderController;
+use App\Http\Controllers\Order\OrderCompleteController;
+use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Order\OrderPendingController;
+
+use App\Http\Controllers\CategoryController;
+
+
+use App\Http\Controllers\SupplierController;
+
+use App\Http\Controllers\Purchase\PurchaseController;
 
 
 /*
@@ -67,7 +84,7 @@ Route::get('/aboutUs', [FrontendHomeController::class, 'aboutUs'])->name('aboutU
 // Contact Us Section
 Route::get('/contacts', [FrontendHomeController::class, 'contact'])->name('contacts');
 Route::get('/contacts/delete/{id}', [FrontendHomeController::class, 'deleteContact'])->name('deleteContact');
-Route::post('/contact/store', [FrontendHomeController::class, 'contactStore'])->name('contactStore');
+Route::post('/contact/viewEmployee', [FrontendHomeController::class, 'contactviewEmployee'])->name('contactviewEmployee');
 
 
 
@@ -81,7 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Employee Management
         Route::get('/Employee/addEmployee', [manageEmployeeController::class, 'addEmployee'])->name('manageEmployee.addEmployee');
-        Route::post('/manageEmployee/addEmployee/store', [manageEmployeeController::class, 'store'])->name('manageEmployee.addEmployee.store');
+        Route::post('/manageEmployee/addEmployee/viewEmployee', [manageEmployeeController::class, 'store'])->name('manageEmployee.addEmployee.store');
         Route::get('/Employee/viewEmployee', [viewEmployeeController::class, 'viewEmployee'])->name('manageEmployee.ViewEmployee');
         Route::get('/Employee/delete/{id}', [viewEmployeeController::class, 'delete'])->name('Employee.delete');
         Route::get('Employee/edit/{id}', [viewEmployeeController::class, 'edit'])->name('Employee.edit');
@@ -107,7 +124,7 @@ Route::group(['middleware' => 'auth'], function () {
         // designation
         Route::get('/Organization/designation', [DesignationController::class, 'designation'])->name('organization.designation');
         Route::post('/Organization/designation/store', [DesignationController::class, 'designationStore'])->name('organization.designation.store');
-        Route::get('/Organization/designationList', [DesignationController::class, 'designationList'])->name('organization.designationList');
+        Route::get('/Department/designationList', [DesignationController::class, 'designationList'])->name('organization.designationList');
         Route::get('/designation/delete/{id}', [DesignationController::class, 'delete'])->name('designation.delete');
         Route::get('/designation/edit/{id}', [DesignationController::class, 'edit'])->name('designation.edit');
         Route::put('/Designation/update/{id}', [DesignationController::class, 'update'])->name('Designation.update');
@@ -250,11 +267,58 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
     Route::get('/notice', [FrontendHomeController::class, 'showNotice'])->name('show.notice');
     Route::get('/notice/create', [FrontendHomeController::class, 'notice'])->name('notice.create');
-    Route::post('/notice/store', [FrontendHomeController::class, 'noticeStore'])->name('notice.store');
+    Route::post('/notice/viewEmployee', [FrontendHomeController::class, 'noticeviewEmployee'])->name('notice.viewEmployee');
     Route::get('/notice/noticeList', [FrontendHomeController::class, 'noticeList'])->name('noticeList');
     Route::get('/notice/noticeDelete/{id}', [FrontendHomeController::class, 'noticeDelete'])->name('noticeDelete');
     Route::get('/notice/noticeEdit/{id}', [FrontendHomeController::class, 'noticeEdit'])->name('noticeEdit');
     Route::put('/notice/noticeUpdate/{id}', [FrontendHomeController::class, 'noticeUpdate'])->name('noticeUpdate');
 });
 
-Route::get('/admin/home', [UserController::class, 'testPage']);
+Route::get('/testPage', [UserController::class, 'testPage']);
+// Route Products
+Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
+    Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
+    Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
+    Route::resource('/products', ProductController::class);
+
+// Route Orders
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+//Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
+//Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+
+Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+
+ // DUES
+ Route::get('due/orders/', [DueOrderController::class, 'index'])->name('due.index');
+ Route::get('due/order/view/{order}', [DueOrderController::class, 'show'])->name('due.show');
+ Route::get('due/order/edit/{order}', [DueOrderController::class, 'edit'])->name('due.edit');
+ Route::put('due/order/update/{order}', [DueOrderController::class, 'update'])->name('due.update');
+
+ // Route Purchases
+ Route::get('/purchases/approved', [PurchaseController::class, 'approvedPurchases'])->name('purchases.approvedPurchases');
+ Route::get('/purchases/report', [PurchaseController::class, 'purchaseReport'])->name('purchases.purchaseReport');
+ Route::get('/purchases/report/export', [PurchaseController::class, 'getPurchaseReport'])->name('purchases.getPurchaseReport');
+ Route::post('/purchases/report/export', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.exportPurchaseReport');
+
+ Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+ Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+ Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
+
+ //Route::get('/purchases/show/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
+ Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
+
+ //Route::get('/purchases/edit/{purchase}', [PurchaseController::class, 'edit'])->name('purchases.edit');
+ Route::get('/purchases/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+ Route::post('/purchases/update/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+ Route::delete('/purchases/delete/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.delete');
+
+ Route::resource('/customers', CustomerController::class);
+    Route::resource('/suppliers', SupplierController::class);
+    Route::resource('/categories', CategoryController::class);
+    Route::resource('/units', UnitController::class);
+
+    //test for iventory dashboard
+    Route::get('/Inventdashboard', function () {
+        return view('admin.pages.inventory.Inventdashboard');
+    });

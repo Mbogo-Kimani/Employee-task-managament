@@ -17,7 +17,7 @@ class HomeController extends Controller
 
     public function home()
     {
-        $employees = Employee::count();
+        $employees = User::count();
         $departments = Department::count();
 
         $pendingLeaves = 0; // Default value for pending leaves
