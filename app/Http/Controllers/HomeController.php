@@ -2,60 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DepartmentEnum;
+use App\Enums\TaskStatusEnum;
 use App\Models\Contact;
-use App\Models\Department;
-use App\Models\Employee;
-use App\Models\Leave;
 
 use App\Models\Task;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
 
-    public function home()
-    {
-        $employees = Employee::count();
-        $departments = Department::count();
+  public function home()
+  {
+    // $employees = User::count();
+    // $departments = Department::count();
 
-        $pendingLeaves = 0; // Default value for pending leaves
+    $pendingLeaves = 0; // Default value for pending leaves
 
-        $user = auth()->user();
+		$tasks = 0;
+		$totalTasks = 0;
+    $user = auth()->user();
 
-        if ($user && $user->role === 'Admin') {
-            // For admin, count all pending leave requests
-            $totalLeaves = Leave::count();
-            $approvedLeaves = Leave::where('status', 'approved')->count();
-            $rejectedLeaves = Leave::where('status', 'rejected')->count();
-            $pendingLeaves = $totalLeaves - ($approvedLeaves + $rejectedLeaves);
-            // $payrolls = Payroll::count();
-        } else {
-            // For authenticated users who are not admins, count their own pending leave requests
-            $userId = $user ? $user->id : null;
-            $totalLeaves = Leave::where('employee_id', $userId)->count();
-            $approvedLeaves = Leave::where('employee_id', $userId)->where('status', 'approved')->count();
-            $rejectedLeaves = Leave::where('employee_id', $userId)->where('status', 'rejected')->count();
-            $pendingLeaves = $totalLeaves - ($approvedLeaves + $rejectedLeaves);
-        }
-
-        $users = User::count();
-        $completedOnTimeTasks = Task::where('status', 'completed on time')->count();
-        $completedInLateTasks = Task::where('status', 'completed in late')->count();
-        $totalCompletedTasks = $completedOnTimeTasks + $completedInLateTasks;
-
-        $totalTasks = Task::count() - $totalCompletedTasks;
-
-        // Now you can use $totalTasks in your view or wherever needed
-        // return view('Dashboard', compact('employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
-        return Inertia::render('Dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+    if (!$user) {
+			return redirect('/login');
     }
+
+    if ($user && $user->role === DepartmentEnum::ADMIN) {
+
+		} else {
+      $tasks = Task::where('user_id', $user->id)
+                  ->where('status', TaskStatusEnum::PENDING)
+                  ->paginate(10);
+
+			$totalTasks = $tasks->count();
+
+			return Inertia::render('Dashboard', compact('user', 'tasks', 'totalTasks'));
+    }
+
+    // $users = User::count();
+    // $completedOnTimeTasks = Task::where('status', 'completed on time')->count();
+    // $completedInLateTasks = Task::where('status', 'completed in late')->count();
+    // $totalCompletedTasks = $completedOnTimeTasks + $completedInLateTasks;
+
+    // $totalTasks = Task::count() - $totalCompletedTasks;
+
+    // Now you can use $totalTasks in your view or wherever needed
+    // return view('admin.dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+    return Inertia::render('Dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+  }
+
+	public function tasksPage () {
+		$user = auth()->user();
+		return Inertia::render('Tasks', compact('user'));
+	}
 
 
 
     public function showHeader()
     {
+
         // Fetch the logged-in user
         $user = auth()->user();
 

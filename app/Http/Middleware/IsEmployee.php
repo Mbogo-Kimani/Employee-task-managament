@@ -18,7 +18,7 @@ class IsEmployee
     public function handle(Request $request, Closure $next): Response
 
     {
-        if (auth()->user() && auth()->user()->role === 'employee') {
+        if (auth()->user()) {
             return $next($request);
         }
         notify()->error('you are not Employee');

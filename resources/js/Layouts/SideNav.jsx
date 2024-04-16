@@ -8,7 +8,7 @@ function SideNav({ navItems, children }) {
   }
 
   return (
-    <div className='flex flex-col bg-gray-100 min-h-screen'>
+    <div className='flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen'>
       <nav className='bg-[var(--purple)] h-[50px] w-full text-gray-100 flex items-center fixed z-10'>
         <a className='ml-4 mr-auto' href="/dashboard">Dashboard</a>
         <form action="">
@@ -22,7 +22,7 @@ function SideNav({ navItems, children }) {
         {/* Elephant Technologies */}
       </nav>
       <div className='flex pt-[50px]'>
-        <nav className='bg-white min-h-screen w-[200px]'>
+        <nav className='bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[200px]'>
           <ul>
             {
               (Array.isArray(navItems) ? navItems : []).map(item => {

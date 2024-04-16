@@ -5,7 +5,7 @@
     <!-- // TODO: Remove CSRF token reading from here and read it in a more secure way -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="{{asset('stylesheet/font-awesome.css')}}">
+    <!-- <link rel="stylesheet" href="{{asset('stylesheet/font-awesome.css')}}">
     <link rel="stylesheet" href="{{asset('stylesheet/owl.theme.default.min.css')}}">
     <link rel="stylesheet" href="{{asset('stylesheet/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('stylesheet/animate.css')}}">
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{asset('rev-slider/css/layers.css')}}">
     <link rel="stylesheet" href="{{asset('rev-slider/css/navigation.css')}}">
     <link rel="stylesheet" href="{{asset('rev-slider/css/settings.css')}}">
-    <link rel="stylesheet" href="{{asset('assests/app.css')}}">
+    <link rel="stylesheet" href="{{asset('assests/app.css')}}"> -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title inertia>{{ config('app.name', 'ET~NET Ltd') }}</title>
@@ -29,7 +29,7 @@
     @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
     @inertiaHead
   </head>
-  <body>
+  <body class="light">
     @inertia
   </body>
 </html>
