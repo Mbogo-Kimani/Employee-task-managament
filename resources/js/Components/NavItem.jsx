@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import Icon from './Icon';
 
-function NavItem({ src, name, hasOptions, options = [], collapsed }) {
+function NavItem({ src, name, hasOptions, options = [], collapsed, onClick }) {
   const [showOptions, setShowOptions] = useState(false);
 
+  const handleItemClick = () => {
+    if (collapsed) {
+      onClick(); // Execute the onClick function passed from the parent component
+    } else {
+      setShowOptions(!showOptions); // Toggle the display of options if not collapsed
+    }
+  };
+
   return (
-    <li className={!showOptions ? 'hover:bg-blue-100' : ''}>
-      <div className='flex items-center pl-3 pr-4 py-2 cursor-pointer' onClick={() => setShowOptions(!showOptions)}>
+    <li className={!showOptions && collapsed ? 'hover:bg-blue-100' : ''}>
+      <div className='flex items-center pl-3 pr-4 py-2 cursor-pointer' onClick={handleItemClick}>
         {collapsed ? (
-          src && <Icon src={src} className="opacity-70 mr-3 h-[15px] w-[15px] z-0"/>
+          src && <Icon src={src} className="opacity-70 mr-3 h-[20px] w-[20px] z-0"/>
         ) : (
           <>
-            {src && <Icon src={src} className="opacity-70 mr-3 h-[15px] w-[15px] z-0"/>}
+            {src && <Icon src={src} className="opacity-70 mr-3 h-[20px] w-[20px] z-0"/>}
             <span className='mx-2'>{ name }</span>
             {hasOptions && (
               <span className={`${showOptions ? 'rotate-[-90deg]' : ''} ml-auto`}>

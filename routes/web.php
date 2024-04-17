@@ -68,7 +68,7 @@ Route::get('/aboutUs', [FrontendHomeController::class, 'aboutUs'])->name('aboutU
 // Contact Us Section
 Route::get('/contacts', [FrontendHomeController::class, 'contact'])->name('contacts');
 Route::get('/contacts/delete/{id}', [FrontendHomeController::class, 'deleteContact'])->name('deleteContact');
-Route::post('/contact/store', [FrontendHomeController::class, 'contactStore'])->name('contactStore');
+Route::post('/contact/viewEmployee', [FrontendHomeController::class, 'contactviewEmployee'])->name('contactviewEmployee');
 
 
 
@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Employee Management
         Route::get('/Employee/addEmployee', [manageEmployeeController::class, 'addEmployee'])->name('manageEmployee.addEmployee');
-        Route::post('/manageEmployee/addEmployee/store', [manageEmployeeController::class, 'store'])->name('manageEmployee.addEmployee.store');
+        Route::post('/manageEmployee/addEmployee/viewEmployee', [manageEmployeeController::class, 'store'])->name('manageEmployee.addEmployee.store');
         Route::get('/Employee/viewEmployee', [viewEmployeeController::class, 'viewEmployee'])->name('manageEmployee.ViewEmployee');
         Route::get('/Employee/delete/{id}', [viewEmployeeController::class, 'delete'])->name('Employee.delete');
         Route::get('Employee/edit/{id}', [viewEmployeeController::class, 'edit'])->name('Employee.edit');
@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         // designation
         Route::get('/Organization/designation', [DesignationController::class, 'designation'])->name('organization.designation');
         Route::post('/Organization/designation/store', [DesignationController::class, 'designationStore'])->name('organization.designation.store');
-        Route::get('/Organization/designationList', [DesignationController::class, 'designationList'])->name('organization.designationList');
+        Route::get('/Department/designationList', [DesignationController::class, 'designationList'])->name('organization.designationList');
         Route::get('/designation/delete/{id}', [DesignationController::class, 'delete'])->name('designation.delete');
         Route::get('/designation/edit/{id}', [DesignationController::class, 'edit'])->name('designation.edit');
         Route::put('/Designation/update/{id}', [DesignationController::class, 'update'])->name('Designation.update');
@@ -250,7 +250,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
     Route::get('/notice', [FrontendHomeController::class, 'showNotice'])->name('show.notice');
     Route::get('/notice/create', [FrontendHomeController::class, 'notice'])->name('notice.create');
-    Route::post('/notice/store', [FrontendHomeController::class, 'noticeStore'])->name('notice.store');
+    Route::post('/notice/viewEmployee', [FrontendHomeController::class, 'noticeviewEmployee'])->name('notice.viewEmployee');
     Route::get('/notice/noticeList', [FrontendHomeController::class, 'noticeList'])->name('noticeList');
     Route::get('/notice/noticeDelete/{id}', [FrontendHomeController::class, 'noticeDelete'])->name('noticeDelete');
     Route::get('/notice/noticeEdit/{id}', [FrontendHomeController::class, 'noticeEdit'])->name('noticeEdit');
@@ -274,4 +274,3 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
 });
 
-Route::get('/admin/home', [UserController::class, 'testPage']);
