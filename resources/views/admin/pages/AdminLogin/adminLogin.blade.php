@@ -8,14 +8,14 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
+<body class="bg-gradient-to-r from-grey-100 to-purple-600 min-h-screen flex items-center justify-center">
     <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full space-y-6">
         <div class="flex justify-center">
-            <img src="{{ asset('assests/image/logo.jpeg') }}" alt="logo" width="100" class="rounded-full">
+            <img src="{{ asset('images/Elephant.png') }}" alt="logo" width="" class="">
         </div>
-        <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-            Login
-        </h2>
+        <h3 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+             Login
+        </h3>
         <form action="{{ route('admin.login.post') }}" method="post" class="space-y-4">
             @csrf
             <div>

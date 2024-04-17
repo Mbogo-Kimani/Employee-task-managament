@@ -23,7 +23,12 @@ function SideNav({ navItems, children }) {
   return (
     <div className={`flex flex-col bg-gray-100 min-h-screen ${collapsed ? 'collapsed' : ''}`}>
       <nav className='bg-[var(--purple)] h-[50px] w-full text-gray-100 flex items-center fixed z-10'>
-        <a className='ml-4' href="/dashboard">Dashboard</a> {/* Move Dashboard link before collapse button */}
+        <a className='ml-4' href="/dashboard">  <img src="/images/Elephant.png" alt="Dashboard Image" style={{
+                                    width: '100px', // Adjust the width as needed
+                                    height: 'auto', // Maintain aspect ratio
+                                    display: 'block', // Ensure proper alignment
+                                    margin: '0 auto' // Center horizontally
+                                }} /></a> {/* Move Dashboard link before collapse button */}
         <Icon className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer' onClick={toggleCollapse} src='/icons/burger.svg' />
         <div className="flex-grow" /> {/* Pushes the logout button to the far right */}
         <form action="">
