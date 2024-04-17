@@ -9,7 +9,6 @@ export const pageData = {
 };
 
 function pageAndNavItemsDeterminer (role, clearance) {
-  // debugger
   if (role === department.INVENTORY) {
     if (clearance === clearanceLevel.DEPARTMENT_LEADER) {
       pageData.navItems = storeManagerNavItems;

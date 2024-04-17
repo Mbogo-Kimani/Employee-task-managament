@@ -6,6 +6,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@headlessui/react": "^1.7.18",
         "@inertiajs/react": "^1.0.15",
         "@vitejs/plugin-react": "^4.2.1",
         "autoprefixer": "^10.4.19",
@@ -19,7 +20,6 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^1.0.15",
         "evo-calendar": "^1.1.3"
     }
 }

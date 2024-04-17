@@ -15,18 +15,18 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function login()
+    public function loginPage()
     {
         return view('admin.pages.AdminLogin.adminLogin');
     }
 
-    public function loginPost(Request $request)
+    public function login(Request $request)
     {
         $val = Validator::make(
             $request->all(),
             [
                 'email' => 'required|email',
-                'password' => 'required|min:6|max:8',
+                'password' => 'required|min:6',
             ]
         );
 
@@ -50,8 +50,8 @@ class UserController extends Controller
     {
 
         auth()->logout();
-        notify()->success('Successfully Logged Out');
-        return redirect()->route('admin.login');
+        // notify()->success('Successfully Logged Out');
+        return redirect('/login');
     }
 
 
