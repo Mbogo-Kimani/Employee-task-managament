@@ -39,7 +39,7 @@ function SideNav({ navItems, children }) {
             }
           </ul>
         </nav>
-        <div className='pt-8 px-8'>
+        <div className='pt-8 px-8 w-full'>
           { children }
         </div>
       </div>
