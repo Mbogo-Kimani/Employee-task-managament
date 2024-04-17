@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatusEnum;
 use App\Models\Employee;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -10,6 +11,31 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
+
+
+	public function store(Request $request) {
+		// $request->validate([
+
+		// ]);
+	}
+
+	public function index(Request $request) {
+		$currentUser = auth()->user();
+		$tasks = Task::where('user_id', $currentUser->id)
+					->paginate(10);
+		
+		return response()->json($tasks);
+	}
+
+	public function getPending(Request $request) {
+		$currentUser = auth()->user();
+		$tasksPending = Task::where('user_id', $currentUser->id)
+							->where('status', TaskStatusEnum::PENDING)
+							->count();
+
+		return response()->json($tasksPending);
+	}
+
     public function createTask()
     {
         $employees = Employee::all();

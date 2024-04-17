@@ -31,11 +31,11 @@ class UserstableSeeder extends Seeder
 
 		\App\Models\User::create([
 				'name' => 'Hyben Langat',
-				'role' => \App\Enums\DepartmentEnum::ADMIN,
-				'email' => 'hybenlangat@gmail.com',
+				'role' => \App\Enums\DepartmentEnum::INVENTORY,
+				'email' => 'hyben@mail.com',
 				'password' => bcrypt('kip2582'),
 				'image' => $imagePath,
-				'department_id'=> 1
+				'department_id'=> 5
 		]);
 
 		for ($i=0; $i < count($departments); $i++) { 

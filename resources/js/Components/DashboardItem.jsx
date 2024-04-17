@@ -3,8 +3,8 @@ import Icon from './Icon'
 
 function DashboardItem({ numberToDisplay, textToDisplay, pictureSrc, href }) {
   return (
-    <div className='border shadow-lg bg-white rounded-md flex flex-col mx-4 my-4 h-[120px] w-[180px]'>
-      <div className='h-[80%] w-full flex justify-between items-center py-6 px-3 text-sm'>
+    <div className='border shadow-lg bg-white rounded-md flex flex-col mx-4 my-4 w-[180px]'>
+      <div className='w-full flex justify-between items-center py-6 px-3 text-sm h-[100px]'>
         <div className='flex flex-col'>
           <h4 className="text-red-500 mx-2">
             { parseFloat(numberToDisplay) !== NaN ? numberToDisplay : '' }
@@ -27,10 +27,10 @@ function DashboardItem({ numberToDisplay, textToDisplay, pictureSrc, href }) {
         </div>
       </div>
           
-      <div className='bg-gray-300 h-[20%] shadow-lg'>
+      <div className='bg-gray-300 py-2'>
         <a className="" href={ href }>
           <div className="flex justify-between items-center px-4 py-1 text-sm">
-            <p className="mb-0">View Details</p>
+            <p className="mb-0 hover:text-[var(--purple)]">View Details</p>
             <Icon className='h-[7px] w-[7px]' src='/icons/caret-up.svg'/>
           </div>
         </a>
