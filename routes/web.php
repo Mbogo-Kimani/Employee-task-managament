@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\Frontend\ClientController;
 use App\Http\Controllers\Frontend\homeController as FrontendHomeController;
@@ -260,6 +261,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/pending_tasks', [TaskController::class, 'getPending']);
 
     Route::post('/api/task_reports', [TaskReportController::class, 'store']);
+
+    Route::get('/admin/employees', [UserController::class, 'adminEmployeesPage']);
+    Route::get('/api/employees', [UserController::class, 'index']);
+    Route::get('/api/departments', [DepartmentController::class, 'index']);
+    Route::get('/api/clearance_levels', [UserController::class, 'clearanceLevels']);
+
+    Route::post('/api/user', [UserController::class, 'store']);
+
+    Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
+
+    Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
 });
 
 Route::get('/admin/home', [UserController::class, 'testPage']);

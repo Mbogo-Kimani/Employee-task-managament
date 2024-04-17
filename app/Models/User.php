@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\TaskStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,6 +28,11 @@ class User extends Authenticatable
 		return $this->hasMany(Task::class);
 	}
 
+  public function unfinishedTasks()
+  {
+    return $this->tasks()->where('status', TaskStatusEnum::PENDING)->get();
+  }
+
 	protected $fillable = [
 		'name',
 		'email',
@@ -33,6 +40,7 @@ class User extends Authenticatable
 		'image',
 		'department_id',
 		'clearance_level',
+    'password',
 	];
 
   protected $hidden = [

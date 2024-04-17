@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Enums\ClearanceLevelEnum;
+use App\Enums\DepartmentEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Designation;
@@ -10,7 +12,9 @@ use App\Models\SalaryStructure;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -83,48 +87,6 @@ class UserController extends Controller
         $designations = Designation::all();
         $salaries = SalaryStructure::all();
         return view('admin.pages.Users.userProfile', compact('user', 'employee', 'departments', 'designations', 'salaries'));
-    }
-
-
-    public function store(Request $request)
-    {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required',
-            'role' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
-
-        if ($validate->fails()) {
-            notify()->error('Invalid Credentials.');
-            return redirect()->back();
-        }
-
-        $fileName = null;
-        if ($request->hasFile('user_image')) {
-            $file = $request->file('user_image');
-            $fileName = date('Ymdhis') . '.' . $file->getClientOriginalExtension();
-
-            $file->storeAs('/uploads', $fileName);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'role' => $request->role,
-            'image' => $fileName,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        // Find associated employee using the email and assign user_id to employee
-        $employee = Employee::where('email', $request->email)->first();
-        if ($employee) {
-            $employee->user_id = $user->id;
-            $employee->save();
-        }
-
-        notify()->success('User created successfully.');
-        return redirect()->route('users.list');
     }
 
     // single  profile
@@ -218,7 +180,60 @@ class UserController extends Controller
         return view('admin.pages.Users.searchUserList', compact('users'));
     }
 
-    public function testPage() {
-        return Inertia::render('Admin/Home');
-    }
+  public function adminEmployeesPage() {
+    $user = auth()->user();
+
+		if ($user && $user->role == DepartmentEnum::ADMIN) {
+			return Inertia::render('Admin/Employees', compact('user'));
+		}
+    
+		return redirect('/dashboard')->with(['error' => 'Page does not exist']);
+  }
+
+	public function index() {
+		$users = User::paginate(20);
+		return response()->json($users);
+	}
+
+	public function clearanceLevels() {
+		return response()->json([
+			[
+				'name' => 'Department Leader',
+				'enum_key' => 'DEPARTMENT_LEADER',
+				'enum_id' => ClearanceLevelEnum::DEPARTMENT_LEADER,
+			],
+			[
+				'name' => 'Normal Employee',
+				'enum_key' => 'REGULAR_EMPLOYEE',
+				'enum_id' => ClearanceLevelEnum::REGULAR_EMPLOYEE,
+			],
+		]);
+	}
+
+	public function store(Request $request)
+  {
+		$request->validate([
+			'clearance_level' => 'required',
+			'email' => 'required|string|email|max:255|unique:'.User::class,
+			'name' => 'required|string|max:255',
+			'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'role' => 'required',
+		]);
+
+		$user = User::create([
+			'clearance_level' => $request->clearance_level,
+			'email' => $request->email,
+			'name' => $request->name,
+			'password' => Hash::make($request->password),
+			'role' => $request->role,
+			'department_id' => $request->role,
+		]);
+      
+		return response()->json($user);
+  }
+
+	public function navigateToAdminUserTasks() {
+		$user = auth()->user();
+		return Inertia::render('Admin/Employees/User/Tasks', compact('user'));
+	}
 }

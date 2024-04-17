@@ -6,4 +6,11 @@ export default {
   INVENTORY: 5,
   CUSTOMER_SERVICE: 6,
   PROJECT_MANAGEMENT: 7,
+  1: 'Admin',
+  2: 'Marketing',
+  3: 'Networking',
+  4: 'Accounting and Finance',
+  5: 'Inventory',
+  6: 'Customer Service',
+  7: 'Project Management',
 };
