@@ -61,41 +61,41 @@ export const adminNavItems = [
 
 export const adminPageItems = [
   {
-    numberToDisplay: 'employees',
+    numberToDisplay: 'users',
     name: 'Total Employees',
     pictureSrc: 'assests/image/teamwork.png',
-    href: '/Employee/viewEmployee',
+    href: '/admin/employees',
   },
-  {
-    numberToDisplay: 'totalTasks',
-    name: 'Assigned Task',
-    pictureSrc: 'assests/image/task.png',
-    href: '/Task/TaskList',
-  },
-  {
-    numberToDisplay: 'departments',
-    name: 'Departments',
-    pictureSrc: 'assests/image/department.png',
-    href: '/Networking/department',
-  },
-  {
-    numberToDisplay: 'pendingLeaves',
-    name: 'Leave Request',
-    pictureSrc: 'assests/image/leave.png',
-    href: '/Leave/LeaveStatus',
-  },
-  {
-    numberToDisplay: 'users',
-    name: 'Assigned Task',
-    pictureSrc: 'assests/image/users.png',
-    href: '/users',
-  },
-  {
-    numberToDisplay: null,
-    name: 'Payrolls History',
-    pictureSrc: 'assests/image/money.png',
-    href: '/users',
-  },
+  // {
+  //   numberToDisplay: 'totalTasks',
+  //   name: 'Assigned Task',
+  //   pictureSrc: 'assests/image/task.png',
+  //   href: '/Task/TaskList',
+  // },
+  // {
+  //   numberToDisplay: 'departments',
+  //   name: 'Departments',
+  //   pictureSrc: 'assests/image/department.png',
+  //   href: '/Networking/department',
+  // },
+  // {
+  //   numberToDisplay: 'pendingLeaves',
+  //   name: 'Leave Request',
+  //   pictureSrc: 'assests/image/leave.png',
+  //   href: '/Leave/LeaveStatus',
+  // },
+  // {
+  //   numberToDisplay: 'users',
+  //   name: 'Assigned Task',
+  //   pictureSrc: 'assests/image/users.png',
+  //   href: '/users',
+  // },
+  // {
+  //   numberToDisplay: null,
+  //   name: 'Payrolls History',
+  //   pictureSrc: 'assests/image/money.png',
+  //   href: '/users',
+  // },
 ];
 
 export default adminNavItems;

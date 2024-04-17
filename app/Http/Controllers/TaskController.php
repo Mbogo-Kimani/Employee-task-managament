@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Enums\TaskStatusEnum;
 use App\Models\Employee;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-
-
 	public function store(Request $request) {
 		// $request->validate([
 
@@ -35,6 +34,19 @@ class TaskController extends Controller
 
 		return response()->json($tasksPending);
 	}
+
+	public function tasksByUser(Request $request) {
+		$user = User::find($request->user_id);
+
+		if (!$user) {
+			abort(404, 'User does not exist');
+		}
+
+		$tasks = $user->tasks()->paginate(20);
+
+		return response()->json($tasks);
+	}
+
 
     public function createTask()
     {

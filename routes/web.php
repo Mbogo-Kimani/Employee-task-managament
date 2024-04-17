@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\Frontend\ClientController;
 use App\Http\Controllers\Frontend\homeController as FrontendHomeController;
@@ -16,23 +17,6 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\controllers\viewEmployeeController;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\Product\ProductController;
-
-use App\Http\Controllers\Product\ProductExportController;
-use App\Http\Controllers\Product\ProductImportController;
-
-use App\Http\Controllers\Order\DueOrderController;
-use App\Http\Controllers\Order\OrderCompleteController;
-use App\Http\Controllers\Order\OrderController;
-use App\Http\Controllers\Order\OrderPendingController;
-
-use App\Http\Controllers\CategoryController;
-
-
-use App\Http\Controllers\SupplierController;
-
-use App\Http\Controllers\Purchase\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -277,6 +261,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/pending_tasks', [TaskController::class, 'getPending']);
 
     Route::post('/api/task_reports', [TaskReportController::class, 'store']);
+
+    Route::get('/admin/employees', [UserController::class, 'adminEmployeesPage']);
+    Route::get('/api/employees', [UserController::class, 'index']);
+    Route::get('/api/departments', [DepartmentController::class, 'index']);
+    Route::get('/api/clearance_levels', [UserController::class, 'clearanceLevels']);
+
+    Route::post('/api/user', [UserController::class, 'store']);
+
+    Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
+
+    Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
 });
 
 Route::get('/testPage', [UserController::class, 'testPage']);

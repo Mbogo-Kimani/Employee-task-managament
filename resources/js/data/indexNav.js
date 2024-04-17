@@ -8,6 +8,10 @@ export const pageData = {
   pageItems: [],
 };
 
+export let pageItems = [];
+
+export let navItems = [];
+
 function pageAndNavItemsDeterminer (role, clearance) {
   if (role === department.INVENTORY) {
     if (clearance === clearanceLevel.DEPARTMENT_LEADER) {
@@ -25,4 +29,33 @@ function pageAndNavItemsDeterminer (role, clearance) {
   return pageData;
 }
 
+function pageItemsDeterminer(role, clearance) {
+  if (role === department.INVENTORY) {
+    if (clearance === clearanceLevel.DEPARTMENT_LEADER) {
+      pageItems = storeManagerPageItems;
+    } else {
+      pageItems = inventoryPageItems;
+    }
+  } else if (role === department.ADMIN) {
+    pageItems = adminPageItems;
+  }
+
+  return pageItems;
+}
+
+function navItemsDeterminer(role, clearance) {
+  if (role === department.INVENTORY) {
+    if (clearance === clearanceLevel.DEPARTMENT_LEADER) {
+      navItems = storeManagerNavItems;
+    } else {
+      navItems = inventoryNavtems;
+    }
+  } else if (role === department.ADMIN) {
+    navItems = adminNavItems;
+  }
+
+  return navItems;
+}
+
+export { pageItemsDeterminer, navItemsDeterminer };
 export default pageAndNavItemsDeterminer;
