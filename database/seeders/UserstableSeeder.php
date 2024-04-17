@@ -35,6 +35,7 @@ class UserstableSeeder extends Seeder
 				'email' => 'hybenlangat@gmail.com',
 				'password' => bcrypt('kip2582'),
 				'image' => $imagePath,
+				'department_id'=> 1
 		]);
 
 		for ($i=0; $i < count($departments); $i++) { 
