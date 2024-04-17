@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: linear-gradient(45deg, #f3e7e9 0%, #c7d3d4 100%);
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
-    <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full space-y-6">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <div class="bg-gray-200 rounded-lg shadow-lg p-8 max-w-md w-full space-y-6">
         <div class="flex justify-center">
             <img src="{{ asset('assests/image/logo.jpeg') }}" alt="logo" width="100" class="rounded-full">
         </div>

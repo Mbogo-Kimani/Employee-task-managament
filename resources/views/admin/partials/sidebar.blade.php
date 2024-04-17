@@ -3,7 +3,7 @@
     {{-- Dashboard --}}
     <ul class="list-unstyled mb-5">
         <li class="sidebar-list-item "><a class="sidebar-link text-muted active" href="{{ route('dashboard') }}">
-                <span class="sidebar-link-title fs-5">Dashboard</span></a>
+                <span class="sidebar-link-title fs-5">Dashboards</span></a>
         </li>
 
 
@@ -32,7 +32,7 @@
                             class="fa-regular fa-circle-right fa-sm me-1 text-info"></i>Marketing</a>
                 </li>
                 <li class="sidebar-list-item fs-6"><a class="sidebar-link text-muted ms-3"
-                        href="{{ route('products.index') }}"><i
+                        href="{{ route('organization.designationList') }}"><i
                             class="fa-regular fa-circle-right fa-sm me-1 text-info"></i>Inventory</a>
                 </li>
                 <li class="sidebar-list-item fs-6"><a class="sidebar-link text-muted ms-3"
