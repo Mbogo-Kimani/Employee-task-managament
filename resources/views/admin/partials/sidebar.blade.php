@@ -35,14 +35,6 @@
                         href="{{ route('organization.designationList') }}"><i
                             class="fa-regular fa-circle-right fa-sm me-1 text-info"></i>Inventory</a>
                 </li>
-                <li class="sidebar-list-item fs-6"><a class="sidebar-link text-muted ms-3"
-                        href="{{ route('organization.designationList') }}"><i
-                            class="fa-regular fa-circle-right fa-sm me-1 text-info"></i>Finance</a>
-                </li>
-                <li class="sidebar-list-item fs-6"><a class="sidebar-link text-muted ms-3"
-                        href="{{ route('organization.designationList') }}"><i
-                            class="fa-regular fa-circle-right fa-sm me-1 text-info"></i>Customer Service</a>
-                </li>
             </ul>
         </li>
 
