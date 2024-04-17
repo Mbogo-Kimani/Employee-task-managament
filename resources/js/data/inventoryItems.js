@@ -22,7 +22,7 @@ export const inventoryPageItems = [
   {
     name: 'New Product',
     pictureSrc: 'assests/image/inspiration.png',
-    href: '/'
+    href: '/tasks'
   },
   {
     name: 'Register Faulty Product',
