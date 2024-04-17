@@ -21,7 +21,7 @@ function SideNav({ navItems, children }) {
   };
 
   return (
-    <div className={`flex flex-col bg-gray-100 min-h-screen ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen ${collapsed ? 'collapsed' : ''}`}>
       <nav className='bg-[var(--purple)] h-[50px] w-full text-gray-100 flex items-center fixed z-10'>
         <a className='ml-4' href="/dashboard">  <img src="/images/Elephant.png" alt="Dashboard Image" style={{
                                     width: '100px', // Adjust the width as needed
@@ -41,7 +41,7 @@ function SideNav({ navItems, children }) {
         </form>
       </nav>
       <div className='flex pt-[50px]'>
-        <nav className={`bg-white min-h-screen w-[${collapsed ? '50' : '100'}vw] transition-all duration-300 ease-in-out`}>
+      <nav className={`bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[w-[${collapsed ? '50' : '200'}px] transition-all duration-300 ease-in-out`}>
           <ul>
             {(Array.isArray(navItems) ? navItems : []).map(item => (
               <NavItem
