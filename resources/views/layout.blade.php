@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Bootstrap-->
-    <!-- <link rel="stylesheet" href="{{asset('/stylesheet/bootstrap.css')}}"> -->
+    <link rel="stylesheet" href="{{asset('/stylesheet/bootstrap.css')}}">
 
     <!-- Template Style-->
     <link rel="stylesheet" href="{{asset('stylesheet/font-awesome.css')}}">
@@ -117,7 +117,7 @@
                                     <a href="{{url('about-us')}}">About Us</a>
                                 </li>
                                 <li>
-                                    <a href="{{url('login')}}">Sign In</a>
+                                    <a href="{{url('/auth/login')}}">Sign In</a>
                                 </li>
                             </ul>
                         </nav>

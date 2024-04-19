@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Department extends Model
@@ -16,11 +17,6 @@ class Department extends Model
 		'enum_key',
 	];
 
-  public function designations()
-  {
-    return $this->hasMany(Designation::class);
-  }
-
   public function tasks(): HasMany
   {
     return $this->hasMany(Task::class);
@@ -30,4 +26,9 @@ class Department extends Model
   {
 		return $this->hasMany(User::class);
 	}
+
+  public function taskTypes(): BelongsTo
+  {
+    return $this->belongsTo(TaskType::class);
+  }
 }

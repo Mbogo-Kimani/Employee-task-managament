@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model
@@ -20,16 +21,12 @@ class Task extends Model
 		'user_id',
 		'department_id',
 		'task_finished_at',
+    'task_type_id',
   ];
 
   public function user()
   {
     return $this->belongsTo(User::class);
-  }
-
-  public function designation()
-  {
-    return $this->belongsTo(Designation::class);
   }
     
   public function department()
@@ -40,5 +37,10 @@ class Task extends Model
   public function taskReports(): HasMany
   {
     return $this->hasMany(TaskReport::class);
+  }
+
+  public function taskType(): BelongsTo
+  {
+    return $this->belongsTo(TaskType::class);
   }
 }

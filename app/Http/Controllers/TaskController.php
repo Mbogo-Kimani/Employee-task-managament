@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClearanceLevelEnum;
+use App\Enums\DepartmentEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\Employee;
 use App\Models\Task;
@@ -13,9 +15,22 @@ use Illuminate\Support\Facades\Validator;
 class TaskController extends Controller
 {
 	public function store(Request $request) {
-		// $request->validate([
+		$request->validate([
+			'name' => 'required|string|max:255',
+			'department' => 'required',
+			'taskType' => 'required',
+		]);
 
-		// ]);
+		$newTask = Task::create([
+			'name' => $request->name,
+			'department_id' => $request->department,
+			'task_type_id' => $request->taskType,
+			'to_date' => $request->toDate,
+			'from_date' => $request->fromDate,
+			'description' => $request->description,
+		]);
+
+		return response()->json(['message' => 'Task saved successfully']);
 	}
 
 	public function index(Request $request) {
@@ -24,6 +39,15 @@ class TaskController extends Controller
 					->paginate(10);
 		
 		return response()->json($tasks);
+	}
+
+	public function allTasks() {
+		$user = auth()->user();
+
+		if ($user->role == DepartmentEnum::ADMIN) {
+			$tasks = Task::with(['department', 'user', 'taskType'])->paginate(20);
+			return response()->json($tasks);
+		}
 	}
 
 	public function getPending(Request $request) {
@@ -46,6 +70,40 @@ class TaskController extends Controller
 
 		return response()->json($tasks);
 	}
+
+	public function getUnassignedTasks() {
+		$user = auth()->user();
+
+		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			$tasks = Task::where('department_id', $user->department_id)
+										->whereNull('user_id')
+										->with('taskType')
+										->paginate(20);
+
+			return response()->json($tasks);
+		}
+	}
+
+	public function update(Request $request) {
+		$request->validate([
+			'user' => 'required',
+			'task' => 'required',
+		]);
+
+		$user = auth()->user();
+
+		if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			$task = Task::find($request->task);
+
+			if ($task) {
+				$task->user_id = $request->user;
+				$task->save();
+
+				return response()->json(['message' => 'Task assigning successful']);
+			}
+		}
+	}
+
 
 
     public function createTask()

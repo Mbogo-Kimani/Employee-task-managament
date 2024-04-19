@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClearanceLevelEnum;
 use App\Enums\DepartmentEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\Contact;
@@ -28,16 +29,27 @@ class HomeController extends Controller
 			return redirect('/login');
     }
 
-    if ($user && $user->role === DepartmentEnum::ADMIN) {
+    if ($user && $user->role == DepartmentEnum::ADMIN) {
 
-		} else {
-      $tasks = Task::where('user_id', $user->id)
+		} else if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
+      $allTasks = Task::where('user_id', $user->id)
+                    ->where('status', TaskStatusEnum::PENDING);
+                    // ->paginate(20);
+
+      $tasksNotAssigned = Task::where('department_id', $user->department_id)
+                              ->whereNull('user_id')
+                              ->count();
+
+      $totalTasks = $allTasks->count();
+			return Inertia::render('Dashboard', compact('user', 'totalTasks', 'tasksNotAssigned'));
+    }
+    
+    else {
+      $totalTasks = Task::where('user_id', $user->id)
                   ->where('status', TaskStatusEnum::PENDING)
-                  ->paginate(10);
+                  ->count();
 
-			$totalTasks = $tasks->count();
-
-			return Inertia::render('Dashboard', compact('user', 'tasks', 'totalTasks'));
+			return Inertia::render('Dashboard', compact('user', 'totalTasks'));
     }
 
     // $users = User::count();
