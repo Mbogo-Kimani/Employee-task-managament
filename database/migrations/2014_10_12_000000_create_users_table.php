@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('employee_id')->nullable();
             $table->string('email')->unique();
-            $table->string('role');
+            $table->integer('role');
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->foreignId('department_id');
+            $table->integer('clearance_level')->default(\App\Enums\ClearanceLevelEnum::REGULAR_EMPLOYEE);
             $table->timestamps();
         });
     }
