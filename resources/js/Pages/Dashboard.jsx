@@ -34,10 +34,6 @@ function Home(props) {
           <span id='ct7' className="page-heading text-[25px]" style={{fontSize: '25px'}}>{ dateUK }</span>
           <p className="text-lg animated-text"> <span>Hello, </span>
             <span className="font-bold ">{ props.user?.name }</span>
-            {/* <span> Welcome </span>
-            <span>to </span>
-            <span>Elephant Technology</span>
-            <span> Limited</span> */}
           </p>
           <hr/>
         </div>

@@ -66,37 +66,37 @@ export const adminPageItems = [
   {
     numberToDisplay: '',
     name: 'New Task',
-    pictureSrc: 'assests/image/task.png',
+    pictureSrc: 'assets/image/task.png',
     href: '/admin/new_task',
   },
   {
     numberToDisplay: 'users',
     name: 'Total Employees',
-    pictureSrc: 'assests/image/teamwork.png',
+    pictureSrc: 'assets/image/teamwork.png',
     href: '/admin/employees',
   },
   // {
   //   numberToDisplay: 'departments',
   //   name: 'Departments',
-  //   pictureSrc: 'assests/image/department.png',
+  //   pictureSrc: 'assets/image/department.png',
   //   href: '#',
   // },
   // {
   //   numberToDisplay: 'pendingLeaves',
   //   name: 'Leave Request',
-  //   pictureSrc: 'assests/image/leave.png',
+  //   pictureSrc: 'assets/image/leave.png',
   //   href: '/Leave/LeaveStatus',
   // },
   // {
   //   numberToDisplay: 'users',
   //   name: 'Assigned Task',
-  //   pictureSrc: 'assests/image/users.png',
+  //   pictureSrc: 'assets/image/users.png',
   //   href: '/users',
   // },
   // {
   //   numberToDisplay: null,
   //   name: 'Payrolls History',
-  //   pictureSrc: 'assests/image/money.png',
+  //   pictureSrc: 'assets/image/money.png',
   //   href: '/users',
   // },
 ];

@@ -79,12 +79,4 @@ class HomeController extends Controller
 
         return view('admin.partials.header', compact('user'));
     }
-
-
-    // contact message
-    public function message()
-    {
-        $messages = Contact::all();
-        return view('admin.pages.contactMessage.contactMessage', compact('messages'));
-    }
 }

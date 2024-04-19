@@ -16,25 +16,25 @@ export const inventoryPageItems = [
     name: 'My Tasks',
     // numberToDisplay: 'tasks',
     numberToDisplay: 'totalTasks',
-    pictureSrc: 'assests/image/task1.png',
+    pictureSrc: 'assets/image/task1.png',
     href: '/tasks',
   },
   // {
   //   name: 'New Product',
-  //   pictureSrc: 'assests/image/inspiration.png',
+  //   pictureSrc: 'assets/image/inspiration.png',
   //   href: '/tasks'
   // },
   // {
   //   name: 'Register Faulty Product',
-  //   pictureSrc: 'assests/image/disruption.png',
+  //   pictureSrc: 'assets/image/disruption.png',
   // },
   // {
   //   name: 'Product in for Maitenance',
-  //   pictureSrc: 'assests/image/zoom.png',
+  //   pictureSrc: 'assets/image/zoom.png',
   // },
   // {
   //   name: 'Product in for Replacement',
-  //   pictureSrc: 'assests/image/workflow.png',
+  //   pictureSrc: 'assets/image/workflow.png',
   // },
 ];
 
@@ -56,7 +56,7 @@ export const storeManagerPageItems = [
     name: 'My Tasks',
     // numberToDisplay: 'tasks',
     numberToDisplay: 'totalTasks',
-    pictureSrc: 'assests/image/users.png',
+    pictureSrc: 'assets/image/users.png',
     href: '/tasks',
   },
   {

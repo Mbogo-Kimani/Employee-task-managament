@@ -106,14 +106,6 @@ class TaskController extends Controller
 
 
 
-    public function createTask()
-    {
-        $employees = Employee::all();
-
-        $tasks  =  Task::all();
-        return view('admin.pages.Task.createTask', compact('tasks', 'employees'));
-    }
-
     // My Task
     public function myTask()
     {

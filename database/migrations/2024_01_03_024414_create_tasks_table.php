@@ -15,13 +15,15 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id');
-            $table->string('task_name');
-            $table->date('from_date');
-            $table->date('to_date');
-            $table->integer('total_days')->nullable();
-            $table->text('task_description')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('name');
+            $table->date('from_date')->nullable();
+            $table->date('to_date')->nullable();
+            $table->integer('status')->default(\App\Enums\TaskStatusEnum::PENDING);
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('department_id');
+            $table->date('task_finished_at')->nullable();
+            $table->foreignId('task_type_id')->nullable();
             $table->timestamps();
         });
     }
