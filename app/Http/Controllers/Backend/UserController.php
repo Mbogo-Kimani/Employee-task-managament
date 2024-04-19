@@ -24,38 +24,12 @@ class UserController extends Controller
         return view('admin.pages.AdminLogin.adminLogin');
     }
 
-    public function login(Request $request)
-    {
-        $val = Validator::make(
-            $request->all(),
-            [
-                'email' => 'required|email',
-                'password' => 'required|min:6',
-            ]
-        );
-
-        if ($val->fails()) {
-            //message
-            return redirect()->back()->withErrors($val);
-        }
-
-        $credentials = $request->except('_token');
-
-        $login = auth()->attempt($credentials);
-        if ($login) {
-            notify()->success('Successfully Logged in');
-            return redirect()->route('dashboard');
-        }
-
-        return redirect()->back()->withErrors('invalid user email or password');
-    }
-
     public function logout()
     {
 
         auth()->logout();
         // notify()->success('Successfully Logged Out');
-        return redirect('/login');
+        return redirect('/auth/login');
     }
 
 
@@ -236,4 +210,67 @@ class UserController extends Controller
 		$user = auth()->user();
 		return Inertia::render('Admin/Employees/User/Tasks', compact('user'));
 	}
+
+	public function allTasksPage() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+		return Inertia::render('Admin/Tasks', compact('user'));
+	}
+
+	public function newTaskPage() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('Admin/NewTask', compact('user'));
+	}
+
+	public function unassignedTasksPage() {
+		$user = auth()->user();
+
+		if ($user && $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('UnassignedTasks', compact('user'));
+	}
+
+	public function getUsersByDepartment() {
+		$user = auth()->user();
+
+		if ($user && $user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			$users = User::where('department_id', $user->department_id)
+										->select('name', 'id')
+										->get();
+
+			return response()->json($users);
+		}
+	}
+
+	public function authLoginPage () {
+		return Inertia::render('Auth/Login');
+	}
+
+	public function login(Request $request)
+  {
+		$request->validate([
+			'email' => 'required|email',
+			'password' => 'required|string|min:6',
+		]);
+        
+		$credentials = $request->except('_token');
+
+    $login = auth()->attempt($credentials);
+    if ($login) {
+      return response()->json(['message' => 'Login Successful']);
+    }
+
+		abort(401, 'Invalid user email or password');
+    // return redirect()->back()->withErrors();
+  }
 }

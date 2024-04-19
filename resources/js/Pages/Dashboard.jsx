@@ -28,16 +28,16 @@ function Home(props) {
   return (
     <SideNav navItems={pageItems.navItems}>
       <div>
-        <div className="page-header ">
+        <div className="page-header text-gray-900 dark:text-gray-100">
           <span id="dayOfWeek" className="page-heading" style={{fontSize: '30px'}}>{ day }</span>
           <br/>
           <span id='ct7' className="page-heading text-[25px]" style={{fontSize: '25px'}}>{ dateUK }</span>
           <p className="text-lg animated-text"> <span>Hello, </span>
             <span className="font-bold ">{ props.user?.name }</span>
-            <span> Welcome </span>
+            {/* <span> Welcome </span>
             <span>to </span>
-            <span>Elephant </span>
-            <span>Technologies </span>
+            <span>Elephant Technology</span>
+            <span> Limited</span> */}
           </p>
           <hr/>
         </div>

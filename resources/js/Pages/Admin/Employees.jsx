@@ -7,6 +7,7 @@ import clearanceLevel from '../../data/enums/clearanceLevel';
 import Modal from '../../Components/Common/Modal';
 import Icon from '../../Components/Icon';
 import { router } from '@inertiajs/react';
+import { displayErrors } from '../../data/utils';
 
 function Employees({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -107,14 +108,6 @@ function Employees({ user }) {
     requestHandler.post('/api/user', newUser, setResponse, setErrors);
   }
 
-  function displayErrors (key) {
-    if (errors[key] && Array.isArray(errors[key])) {
-      return errors[key][0];
-    } else if (errors.errors && errors.errors[key] && Array.isArray(errors.errors[key])) {
-      return errors.errors[key][0];
-    }
-  }
-
   function navigateToIndividualTasks(id) {
     router.visit(`/admin/employees/${id}/tasks`)
   }
@@ -173,7 +166,7 @@ function Employees({ user }) {
                     {
                       (errors.name || errors.errors?.name) && 
                       <p className="text-red-500 my-1 py-1">
-                        { displayErrors('name') }
+                        { displayErrors(errors, 'name') }
                       </p>
                     }  
                   </div>
@@ -197,7 +190,7 @@ function Employees({ user }) {
                     {
                       (errors.email || errors.errors?.email) && 
                       <p className="text-red-500 my-1 py-1">
-                        { displayErrors('email') }
+                        { displayErrors(errors, 'email') }
                       </p>
                     }  
                   </div>
@@ -229,7 +222,7 @@ function Employees({ user }) {
                     {
                       (errors.name || errors.errors?.name) && 
                       <p className="text-red-500 my-2 py-1">
-                        { displayErrors('name') }
+                        { displayErrors(errors, 'name') }
                       </p>
                     }  
                   </div>
@@ -260,7 +253,7 @@ function Employees({ user }) {
                     {
                       (errors.clearance_level || errors.errors?.clearance_level) && 
                       <p className="text-red-500 my-1 py-1">
-                        { displayErrors('clearance_level') }
+                        { displayErrors(errors, 'clearance_level') }
                       </p>
                     }  
                   </div>
@@ -289,7 +282,7 @@ function Employees({ user }) {
                     {
                       (errors.password || errors.errors?.password) && 
                       <p className="text-red-500 my-1 py-1">
-                        { displayErrors('password') }
+                        { displayErrors(errors, 'password') }
                       </p>
                     }  
                   </div>
@@ -313,7 +306,7 @@ function Employees({ user }) {
                     {
                       (errors.password_confirmation || errors.errors?.password_confirmation) && 
                       <p className="text-red-500 my-1 py-1">
-                        { displayErrors('password_confirmation') }
+                        { displayErrors(errors, 'password_confirmation') }
                       </p>
                     }  
                   </div>

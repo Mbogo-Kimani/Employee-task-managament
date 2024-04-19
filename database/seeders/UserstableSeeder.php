@@ -22,7 +22,7 @@ class UserstableSeeder extends Seeder
 		$keys = [
 			'ADMIN' => \App\Enums\DepartmentEnum::ADMIN,
 			'MARKETING' => \App\Enums\DepartmentEnum::MARKETING,
-			'NETWORKING' => \App\Enums\DepartmentEnum::NETWORKING,
+			'TECHNICIANS' => \App\Enums\DepartmentEnum::TECHNICIANS,
 			'ACCOUNTING_AND_FINANCE' => \App\Enums\DepartmentEnum::ACCOUNTING_AND_FINANCE,
 			'INVENTORY' => \App\Enums\DepartmentEnum::INVENTORY,
 			'CUSTOMER_SERVICE' => \App\Enums\DepartmentEnum::CUSTOMER_SERVICE,

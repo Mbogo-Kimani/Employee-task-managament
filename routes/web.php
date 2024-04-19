@@ -10,12 +10,12 @@ use App\Http\Controllers\LeaveController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\manageEmployeeController;
-use App\Http\Controllers\NetworkingController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskReportController;
+use App\Http\Controllers\TaskTypeController;
 use App\Http\controllers\viewEmployeeController;
 
 /*
@@ -73,7 +73,8 @@ Route::post('/contact/viewEmployee', [FrontendHomeController::class, 'contactvie
 
 
 Route::post('/login', [UserController::class, 'login'])->name('admin.login.post');
-Route::get('/login', [UserController::class, 'loginPage'])->name('admin.login');
+// Route::get('/login', [UserController::class, 'loginPage'])->name('admin.login');
+Route::get('/auth/login', [UserController::class, 'authLoginPage'])->name('login');
 Route::group(['middleware' => 'auth'], function () {
 
     // Admin Routes (Accessible only by admin users)
@@ -95,14 +96,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/Attendance/AttendanceReport', [AttendanceController::class, 'attendanceReport'])->name('attendanceReport');
         Route::get('/Attendance/searchAttendanceReport', [AttendanceController::class, 'searchAttendanceReport'])->name('searchAttendanceReport');
         Route::get('/Attendance/delete/{id}', [AttendanceController::class, 'attendanceDelete'])->name('attendanceDelete');
-
-        // department
-        Route::get('/Networking/department', [OrganizationController::class, 'department'])->name('organization.department');
-        Route::post('/Organization/department/store', [OrganizationController::class, 'store'])->name('organization.department.store');
-        Route::get('/Organization/delete/{id}', [OrganizationController::class, 'delete'])->name('Organization.delete');
-        Route::get('/Organization/edit/{id}', [OrganizationController::class, 'edit'])->name('Organization.edit');
-        Route::put('/Organization/update/{id}', [OrganizationController::class, 'update'])->name('Organization.update');
-        Route::get('/Organization/Search/Department', [OrganizationController::class, 'searchDepartment'])->name('searchDepartment');
 
         // designation
         Route::get('/Organization/designation', [DesignationController::class, 'designation'])->name('organization.designation');
@@ -128,26 +121,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/LeaveType/delete/{id}', [LeaveController::class, 'LeaveDelete'])->name('leave.leaveType.delete');
         Route::get('/LeaveType/edit/{id}', [LeaveController::class, 'leaveEdit'])->name('leave.leaveType.edit');
         Route::put('/designation/update/{id}', [LeaveController::class, 'LeaveUpdate'])->name('leave.leaveType.update');
-
-        // Salary Structure
-        Route::get('/SalaryStructure/createSalary', [SalaryController::class, 'createSalary'])->name('salary.create.form');
-        Route::get('/SalaryStructure/viewSalary', [SalaryController::class, 'viewSalary'])->name('salary.view');
-        Route::post('/Salary/store', [SalaryController::class, 'salaryStore'])->name('salary.store.data');
-        Route::get('/Salary/delete/{id}', [SalaryController::class, 'salaryDelete'])->name('salaryDelete');
-        Route::get('/Salary/edit/{id}', [SalaryController::class, 'salaryEdit'])->name('salaryEdit');
-        Route::put('/Salary/update/{id}', [SalaryController::class, 'salaryUpdate'])->name('salaryUpdate');
-
-        // Payroll
-        Route::get('Payroll/createPayroll', [PayrollController::class, 'createPayroll'])->name('payroll.create');
-        Route::get('/Payroll/PayrollList', [PayrollController::class, 'viewPayroll'])->name('payroll.view');
-        Route::post('/Payroll/store', [PayrollController::class, 'payrollStore'])->name('payroll.store');
-        Route::get('/Payroll/Single/{employee_id}/{month}', [PayrollController::class, 'singlePayroll'])->name('singlePayroll');
-        Route::get('/Payroll/allPayrollList', [PayrollController::class, 'allPayroll'])->name('allPayrollList');
-        Route::get('/Payroll/delete/{id}', [PayrollController::class, 'deletePayroll'])->name('payrollDelete');
-        Route::get('/Payroll/edit/{id}', [PayrollController::class, 'payrollEdit'])->name('payrollEdit');
-        Route::put('/Payroll/update/{id}', [PayrollController::class, 'payrollUpdate'])->name('payrollUpdate');
-        Route::get('/search-AllPayroll', [PayrollController::class, 'searchAllPayroll'])->name('searchAllPayroll');
-
 
         // Task Management
         Route::get('/Task/createTask', [TaskController::class, 'createTask'])->name('createTask');
@@ -235,11 +208,6 @@ Route::group(['middleware' => 'auth'], function () {
         // user profile
         Route::get('/myProfile', [UserController::class, 'myProfile'])->name('profile');
 
-        // payroll
-        Route::get('/Payroll/MyPayrollList', [PayrollController::class, 'myPayroll'])->name('myPayroll');
-        Route::get('/Payroll/mySingle/{employeeID}/{month}', [PayrollController::class, 'MySingle'])->name('mySinglePayroll');
-        Route::get('/search-myPayroll', [PayrollController::class, 'searchMyPayroll'])->name('searchMyPayroll');
-
 
 
         // Notices for Employee
@@ -270,7 +238,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/api/user', [UserController::class, 'store']);
 
     Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
+    Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);
+    Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
 
     Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
+    Route::post('/api/tasks', [TaskController::class, 'store']);
+    Route::get('/api/all_tasks', [TaskController::class, 'allTasks']);
+
+    Route::get('/api/task_types', [TaskTypeController::class, 'index']);
+    Route::post('/api/task_types', [TaskTypeController::class, 'store']);
+
+    Route::get('/unassigned_tasks', [UserController::class, 'unassignedTasksPage']);
+    Route::get('/api/unassigned_tasks', [TaskController::class, 'getUnassignedTasks']);
+    Route::get('/api/department_users', [UserController::class, 'getUsersByDepartment']);
+    Route::patch('/api/tasks', [TaskController::class, 'update']);
 });
 

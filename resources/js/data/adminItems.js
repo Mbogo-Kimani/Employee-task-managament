@@ -3,6 +3,7 @@ export const adminNavItems = [
     name: 'Departments',
     icon: '/icons/building.svg',
     hasOptions: true,
+    href: '#',
     options: [
       {
         name: 'Admin'
@@ -11,7 +12,7 @@ export const adminNavItems = [
         name: 'Marketing'
       },
       {
-        name: 'Networking'
+        name: 'Technicians'
       },
       {
         name: 'Accounting/finance'
@@ -27,39 +28,47 @@ export const adminNavItems = [
       },
     ]
   },
+  // {
+  //   name: 'Employees',
+  //   icon: '/icons/user-group.svg',
+  //   hasOptions: true,
+  // },
+  // {
+  //   name: 'Attendance',
+  //   icon: '/icons/clock.svg',
+  //   hasOptions: true,
+  // },
+  // {
+  //   name: 'Leave',
+  //   icon: '/icons/leave.svg',
+  //   hasOptions: true,
+  // },
   {
-    name: 'Employees',
-    icon: '/icons/user-group.svg',
-    hasOptions: true,
-  },
-  {
-    name: 'Attendance',
-    icon: '/icons/clock.svg',
-    hasOptions: true,
-  },
-  {
-    name: 'Leave',
-    icon: '/icons/leave.svg',
-    hasOptions: true,
-  },
-  {
-    name: 'Task',
+    name: 'Tasks',
     icon: '/icons/list-check.svg',
-    hasOptions: true,
+    href: '/admin/tasks',
+    hasOptions: false,
   },
   {
     name: 'Users',
     icon: '/icons/circle-user.svg',
+    href: '/admin/employees',
     hasOptions: false,
   },
-  {
-    name: 'Notices',
-    icon: '/icons/check.svg',
-    hasOptions: false,
-  },
+  // {
+  //   name: 'Notices',
+  //   icon: '/icons/check.svg',
+  //   hasOptions: false,
+  // },
 ];
 
 export const adminPageItems = [
+  {
+    numberToDisplay: '',
+    name: 'New Task',
+    pictureSrc: 'assests/image/task.png',
+    href: '/admin/new_task',
+  },
   {
     numberToDisplay: 'users',
     name: 'Total Employees',
@@ -67,16 +76,10 @@ export const adminPageItems = [
     href: '/admin/employees',
   },
   // {
-  //   numberToDisplay: 'totalTasks',
-  //   name: 'Assigned Task',
-  //   pictureSrc: 'assests/image/task.png',
-  //   href: '/Task/TaskList',
-  // },
-  // {
   //   numberToDisplay: 'departments',
   //   name: 'Departments',
   //   pictureSrc: 'assests/image/department.png',
-  //   href: '/Networking/department',
+  //   href: '#',
   // },
   // {
   //   numberToDisplay: 'pendingLeaves',

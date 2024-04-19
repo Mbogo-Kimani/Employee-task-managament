@@ -4,6 +4,7 @@ import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/
 import taskStatus from '../data/enums/taskStatus';
 import requestHandler from '../services/requestHandler';
 import Modal from '../Components/Common/Modal';
+import { handlePage } from '../data/utils';
 
 function Tasks({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -56,18 +57,6 @@ function Tasks({ user }) {
     }
   }
 
-  function handlePrevPage () {
-    if (tasks.prev_page_url) {
-      requestHandler.get(tasks.prev_page_url, setTasks);
-    }
-  }
-
-  function handleNextPage () {
-    if (tasks.next_page_url) {
-      requestHandler.get(tasks.next_page_url, setTasks);
-    }
-  }
-
   function handleChange(e) {
     setReport({...report, [e.target.name]: e.target.value});
   }
@@ -83,7 +72,6 @@ function Tasks({ user }) {
   function toggleReport (task_id) {
     toggleOpenModal();
     setReport({...report, task_id});
-    console.log(task_id);
   }
 
   function submitReport (e) {
@@ -181,7 +169,7 @@ function Tasks({ user }) {
                     "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
                     "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
                   }
-                  onClick={handlePrevPage}
+                  onClick={() => handlePage(tasks.prev_page_url, setTasks)}
                 >
                   Previous
                 </li>
@@ -195,7 +183,7 @@ function Tasks({ user }) {
                     "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
                     "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
                   }
-                  onClick={handleNextPage}
+                  onClick={() => handlePage(tasks.next_page_url, setTasks)}
                 >
                   Next
                 </li>
