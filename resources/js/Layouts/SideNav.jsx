@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
 import NavItem from '../Components/NavItem';
 import requestHandler from '../services/requestHandler';
-import Icon from '../Components/Icon';
 import { Link } from '@inertiajs/react';
+import Icon from '../Components/Common/Icon';
 
 function SideNav({ navItems, children }) {
   function navigateToLogout() {
     requestHandler.post('/logout');
   }
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(hasLargeWidth());
+
+  function hasLargeWidth() {
+    return window.innerWidth < 640;
+  }
 
   const toggleCollapse = () => {
     setCollapsed(!collapsed);
   };
 
-  const expandOnItemClick = () => {
-    if (collapsed) {
-      setCollapsed(false);
-    }
-  };
-
   return (
     <div className={`flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen ${collapsed ? 'collapsed' : ''}`}>
       <nav className='bg-white dark:bg-gray-800 h-[50px] w-full text-gray-900 dark:text-gray-100 flex items-center fixed z-10 shadow-md'>
-        <Icon className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer' onClick={toggleCollapse} src='/icons/burger.svg'/>
+        <Icon src='burger' className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer' onClick={toggleCollapse} />
         <Link className='ml-4 w-[100px] h-[auto] block my-auto' href="/dashboard">
-          <img src="/images/Elephant.png" alt="Dashboard Image"/>
+          <Icon src="/images/etnet.png" alt="Dashboard Image"/>
         </Link>
         <div className="flex-grow" />
         <form action="">
@@ -50,12 +48,11 @@ function SideNav({ navItems, children }) {
                 options={item.options}
                 href={item.href}
                 collapsed={collapsed}
-                onClick={expandOnItemClick}
               />
             ))}
           </ul>
         </nav>
-        <div className='pt-8 px-8 w-full'>
+        <div className='pt-8 px-8 w-full bg-gray-100 dark:bg-gray-800 overflow-x-hidden'>
           { children }
         </div>
       </div>

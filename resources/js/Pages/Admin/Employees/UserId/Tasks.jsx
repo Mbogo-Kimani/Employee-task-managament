@@ -3,6 +3,7 @@ import { navItemsDeterminer, pageData as defaultPageData} from '../../../../data
 import SideNav from '../../../../Layouts/SideNav';
 import requestHandler from '../../../../services/requestHandler';
 import taskStatus from '../../../../data/enums/taskStatus';
+import TableComp from '../../../../Components/Common/TableComp';
 
 function Tasks({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -35,33 +36,7 @@ function Tasks({ user }) {
   return (
     <SideNav navItems={pageItems}>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-scroll">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-4 py-3">
-                Name
-              </th>
-              <th scope="col" className="px-2 py-3">
-                Description
-              </th>
-              <th scope="col" className="px-2 py-3">
-                From Date
-              </th>
-              <th scope="col" className="px-2 py-3">
-                To Date
-              </th>
-              <th scope="col" className="px-2 py-3">
-                Status
-              </th>
-              <th scope="col" className="px-2 py-3">
-                Finished At
-              </th>
-              <th scope="col" className="px-2 py-3">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Action']}>
           {
             (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
               return (
@@ -105,8 +80,7 @@ function Tasks({ user }) {
               );
             })
           }
-          </tbody>
-        </table>
+        </TableComp>
         {/* <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
           <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
             Showing

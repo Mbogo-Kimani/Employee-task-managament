@@ -6,6 +6,7 @@ import Modal from '../Components/Common/Modal';
 import SelectComp from '../Components/Common/SelectComp';
 import { displayErrors } from '../data/utils';
 import PaginatorNav from '../Components/Common/PaginatorNav';
+import TableComp from '../Components/Common/TableComp';
 
 function UnassignedTasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -95,27 +96,7 @@ function UnassignedTasks({ user }) {
   return (
     <SideNav navItems={navItems}>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-x-scroll">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-4 py-3">
-                Task Name
-              </th>
-              <th scope="col" className="px-2 py-3">
-                Task Type
-              </th>
-              <th scope="col" className="px-2 py-3">
-                From
-              </th>
-              <th scope="col" className="px-2 py-3">
-                To
-              </th>
-              <th scope="col" className="px-2 py-3">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <TableComp columns={['Task Name', 'Task Type', 'From', 'To', 'Action']}>
           {
             (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
               return (
@@ -146,9 +127,7 @@ function UnassignedTasks({ user }) {
               );
             })
           }
-          </tbody>
-        </table>
-
+        </TableComp>
         <PaginatorNav
           state={tasks}
           setState={setTasks}
