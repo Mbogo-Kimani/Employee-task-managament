@@ -5,9 +5,11 @@ import requestHandler from '../../services/requestHandler';
 import departmentEnum from '../../data/enums/department';
 import clearanceLevel from '../../data/enums/clearanceLevel';
 import Modal from '../../Components/Common/Modal';
-import Icon from '../../Components/Icon';
 import { router } from '@inertiajs/react';
 import { displayErrors } from '../../data/utils';
+import TableComp from '../../Components/Common/TableComp';
+import PaginatorNav from '../../Components/Common/PaginatorNav';
+import Icon from '../../Components/Common/Icon';
 
 function Employees({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -277,7 +279,12 @@ function Employees({ user }) {
                         onChange={handleChange}
                         required
                       />
-                      <Icon src={`/icons/eye-${showPasswords ? 'open' : 'close'}.svg`} className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
+                      {
+                        showPasswords ?
+                        <Icon src='eyeOpen' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
+                        :
+                        <Icon src='eyeClose' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
+                      }
                     </div>
                     {
                       (errors.password || errors.errors?.password) && 
@@ -325,86 +332,35 @@ function Employees({ user }) {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-4 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-2 py-3">
-                  Department
-                </th>
-                <th scope="col" className="px-2 py-3">
-                  Email
-                </th>
-                <th scope="col" className="px-2 py-3">
-                  Leader
-                </th>
-                <th scope="col" className="px-2 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                (Array.isArray(users.data) ? users.data : []).map((elem, index) => {
-                  return (
-                    <tr key={elem.id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        { elem.name }
-                      </th>
-                      <td
-                        scope="row"
-                        className="px-2 py-4"
-                      >
-                        { departmentEnum[elem.role] }
-                      </td>
-                      <td className="px-2 py-4">
-                        { elem.email }
-                      </td>
-                      <td className="px-2 py-4">
-                        { clearanceLevel[elem.clearance_level] }
-                      </td>
-                      <td className="px-2 py-4 hover:underline dark:hover:text-blue-300 hover:text-blue-500 cursor-pointer" onClick={() => navigateToIndividualTasks(elem.id)}>
-                        View Tasks
-                      </td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </table>
-          <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto pl-4">
-              Showing
-              <span className="font-semibold text-gray-900 dark:text-white"> {users.current_page} - { users.last_page }</span> of <span className="font-semibold text-gray-900 dark:text-white">{ users.total }</span></span>
-            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-              <li
-                className={
-                  users.prev_page_url ?
-                  "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
-                  "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
-                }
-                onClick={handlePrevPage}
-              >
-                Previous
-              </li>
-              <li className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
-                { users.current_page }
-              </li>
-            
-              <li
-                className={
-                  users.next_page_url ?
-                  "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
-                  "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
-                }
-                onClick={handleNextPage}
-              >
-                Next
-              </li>
-            </ul>
-          </nav>
+          <TableComp columns={['Name', 'Department', 'Email', 'Leader', 'Action']}>
+            {
+              (Array.isArray(users.data) ? users.data : []).map((elem, index) => {
+                return (
+                  <tr key={elem.id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      { elem.name }
+                    </th>
+                    <td
+                      scope="row"
+                      className="px-2 py-4"
+                    >
+                      { departmentEnum[elem.role] }
+                    </td>
+                    <td className="px-2 py-4">
+                      { elem.email }
+                    </td>
+                    <td className="px-2 py-4">
+                      { clearanceLevel[elem.clearance_level] }
+                    </td>
+                    <td className="px-2 py-4 hover:underline dark:hover:text-blue-300 hover:text-blue-500 cursor-pointer" onClick={() => navigateToIndividualTasks(elem.id)}>
+                      View Tasks
+                    </td>
+                  </tr>
+                );
+              })
+            }
+          </TableComp>
+          <PaginatorNav state={users} setState={setUsers}/>
         </div>
       </div>
     </SideNav>

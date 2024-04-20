@@ -112,7 +112,7 @@ class UserController extends Controller
 
 	public function navigateToAdminUserTasks() {
 		$user = auth()->user();
-		return Inertia::render('Admin/Employees/User/Tasks', compact('user'));
+		return Inertia::render('Admin/Employees/UserId/Tasks', compact('user'));
 	}
 
 	public function allTasksPage() {

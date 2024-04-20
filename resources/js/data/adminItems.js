@@ -1,7 +1,7 @@
 export const adminNavItems = [
   {
     name: 'Departments',
-    icon: '/icons/building.svg',
+    icon: 'building',
     hasOptions: true,
     href: '#',
     options: [
@@ -45,13 +45,13 @@ export const adminNavItems = [
   // },
   {
     name: 'Tasks',
-    icon: '/icons/list-check.svg',
+    icon: 'listCheck',
     href: '/admin/tasks',
     hasOptions: false,
   },
   {
     name: 'Users',
-    icon: '/icons/circle-user.svg',
+    icon: 'circleUser',
     href: '/admin/employees',
     hasOptions: false,
   },
