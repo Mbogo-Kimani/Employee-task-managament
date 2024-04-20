@@ -6,9 +6,11 @@
   --purple: rgb(75, 89, 133);
   --light-purple: #7d4fff;
   --luminous-green: #29cc97;
+  --dark-blue: #202b61;
   --blue: #357bf2;
   --gray: #6c757d;
   --light-gray: #f7fafc;
+  --orange: #f99526;
 }
 
 body {

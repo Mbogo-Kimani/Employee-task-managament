@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-import Icon from './Icon';
 import { router } from '@inertiajs/react';
+import Icon from './Common/Icon';
 
-function NavItem({ src, name, hasOptions, options = [], href = '#', collapsed, onClick }) {
+function NavItem({ src, name, hasOptions, options = [], href = '#', collapsed }) {
   const [showOptions, setShowOptions] = useState(false);
-
-  const handleItemClick = () => {
-    if (collapsed) {
-      onClick();
-    } else {
-      setShowOptions(!showOptions);
-    }
-  };
 
   function handleOptions() {
     if (hasOptions && options.length) setShowOptions(!showOptions);
-    else if (collapsed) onClick();
     else router.visit(href);
   }
 
@@ -23,10 +14,10 @@ function NavItem({ src, name, hasOptions, options = [], href = '#', collapsed, o
     <li className={!showOptions && collapsed ? 'hover:bg-blue-100' : ''}>
       <div className='flex items-center pl-3 pr-4 py-2 cursor-pointer' onClick={handleOptions}>
         {collapsed ? (
-          src && <Icon src={src} className="opacity-70 mr-3 h-[20px] w-[20px] z-0"/>
+          src && <Icon src={src} className="mr-3 h-[20px] w-[20px] z-0" fill='var(--luminous-green)'/>
         ) : (
           <>
-            {src && <Icon src={src} className="opacity-70 mr-3 h-[20px] w-[20px] z-0"/>}
+            {src && <Icon src={src} className="mr-3 h-[20px] w-[20px] z-0" fill='var(--luminous-green)'/>}
             <span className='mx-2'>{ name }</span>
             {hasOptions && (
               <span className={`${showOptions ? 'rotate-[-90deg]' : ''} ml-auto`}>

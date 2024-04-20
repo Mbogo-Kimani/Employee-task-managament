@@ -1,5 +1,5 @@
 import React from 'react'
-import Icon from './Icon'
+import Icon from './Common/Icon'
 import { Link } from '@inertiajs/react'
 
 function DashboardItem({ numberToDisplay, textToDisplay, pictureSrc, href }) {
@@ -21,7 +21,7 @@ function DashboardItem({ numberToDisplay, textToDisplay, pictureSrc, href }) {
             {
               pictureSrc ?
               <Icon
-                className="me-3 w-7 h-7 opacity-80"
+                className="me-3 w-8 h-8"
                 src={ pictureSrc }
                 alt=""
               />

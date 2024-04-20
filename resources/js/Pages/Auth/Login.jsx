@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import Icon from '../../Components/Icon';
 import { displayErrors } from '../../data/utils';
 import requestHandler from '../../services/requestHandler';
 import { router } from '@inertiajs/react';
+import Icon from '../../Components/Common/Icon';
 
 function Login() {
   const [newUser, setNewUser] = useState({
@@ -36,7 +36,7 @@ function Login() {
     <div className='flex justify-center items-center h-screen bg-white dark:bg-gray-900'>
       <div className="w-full h-full md:w-[75%] sm:w-[95%] sm:h-[75%] shadow-md bg-gray-100 dark:bg-gray-700">
         <div className="w-full flex justify-center h-[35%]">
-          <Icon src='/images/Elephant.png' imgClassName='w-[70%] md:w-[80%] h-auto md:max-h-[200px]'/>
+          <Icon src='/images/etnet.png' imgClassName='h-full w-full' className='max-w-[600px] max-h-[400px] md:w-[40%] md:h-full sm:w-[60%] sm:h-full w-full h-full'/>
         </div>
 
         <div className="h-[65%] flex justify-center items-center">
@@ -72,7 +72,12 @@ function Login() {
                   onChange={(e) => handleChange(e)}
                   required
                 />
-                <Icon src={`/icons/eye-${showPasswords ? 'open' : 'close'}.svg`} className='w-[30px] h-[30px] mr-4 cursor-pointer opacity-60' onClick={() => setShowPasswords(!showPasswords)}/>
+                {
+                  showPasswords ?
+                  <Icon src='eyeOpen' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
+                  :
+                  <Icon src='eyeClose' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
+                }
               </div>
               {
                 (errors.password || errors.errors?.password) && 
@@ -84,7 +89,7 @@ function Login() {
 
             <button
               type="submit"
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
+              className="hover:bg-gradient-to-r hover:from-[var(--blue)] hover:to-[var(--luminous-green)] w-full text-white font-semibold opacity-80 bg-[var(--blue)] focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
               onClick={(e) => submitNewUser(e)}
             >
               Submit

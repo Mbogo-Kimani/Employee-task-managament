@@ -5,6 +5,8 @@ import taskStatus from '../data/enums/taskStatus';
 import requestHandler from '../services/requestHandler';
 import Modal from '../Components/Common/Modal';
 import { handlePage } from '../data/utils';
+import TableComp from '../Components/Common/TableComp';
+import PaginatorNav from '../Components/Common/PaginatorNav';
 
 function Tasks({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -92,103 +94,50 @@ function Tasks({ user }) {
       <SideNav navItems={pageItems.navItems}>
         <div className="">
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-2 py-3">
-                    Name
-                  </th>
-                  <th scope="col" className="px-2 py-3">
-                    Description
-                  </th>
-                  <th scope="col" className="px-2 py-3">
-                    From Date
-                  </th>
-                  <th scope="col" className="px-2 py-3">
-                    To Date
-                  </th>
-                  <th scope="col" className="px-2 py-3">
-                    Status
-                  </th>
-                  <th scope="col" className="px-2 py-3">
-                    Finished At
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
-                    return (
-                      <tr key={task.id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          { task.name }
-                        </th>
-                        <th
-                          scope="row"
-                          title={ task.description || '' }
-                          className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At']}>
+              {
+                (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
+                  return (
+                    <tr key={task.id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th scope="row" className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        { task.name }
+                      </th>
+                      <th
+                        scope="row"
+                        title={ task.description || '' }
+                        className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        { task.description?.slice(0, 100) }
+                      </th>
+                      <td className="px-2 py-4">
+                        { task.from_date }
+                      </td>
+                      <td className="px-2 py-4">
+                        { task.to_date }
+                      </td>
+                      <td className="px-2 py-4">
+                        { taskStatus[task.status] }
+                      </td>
+                      {
+                        task.status === taskStatus.PENDING ?
+                        <td
+                          className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                          onClick={() => toggleReport(task.id)}
                         >
-                          { task.description?.slice(0, 100) }
-                        </th>
-                        <td className="px-2 py-4">
-                          { task.from_date }
+                          Report
                         </td>
-                        <td className="px-2 py-4">
-                          { task.to_date }
+                        :
+                        <td className='px-2 py-4 cursor-pointer' title='Report already submitted'>
+                          Report
                         </td>
-                        <td className="px-2 py-4">
-                          { taskStatus[task.status] }
-                        </td>
-                        {
-                          task.status === taskStatus.PENDING ?
-                          <td
-                            className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                            onClick={() => toggleReport(task.id)}
-                          >
-                            Report
-                          </td>
-                          :
-                          <td className='px-2 py-4 cursor-pointer' title='Report already submitted'>
-                            Report
-                          </td>
-                        }
-                      </tr>
-                    );
-                  })
-                }
-              </tbody>
-            </table>
-            <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-              <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-                Showing
-                <span className="font-semibold text-gray-900 dark:text-white"> {tasks.current_page} - { tasks.last_page }</span> of <span className="font-semibold text-gray-900 dark:text-white">{ tasks.total }</span></span>
-              <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                <li
-                  className={
-                    tasks.prev_page_url ?
-                    "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
-                    "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
-                  }
-                  onClick={() => handlePage(tasks.prev_page_url, setTasks)}
-                >
-                  Previous
-                </li>
-                <li className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
-                  { tasks.current_page }
-                </li>
-              
-                <li
-                  className={
-                    tasks.next_page_url ?
-                    "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
-                    "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
-                  }
-                  onClick={() => handlePage(tasks.next_page_url, setTasks)}
-                >
-                  Next
-                </li>
-              </ul>
-            </nav>
+                      }
+                    </tr>
+                  );
+                })
+              }
+            </TableComp>
+
+            <PaginatorNav state={tasks} setState={setTasks} />
           </div>
         </div>
       </SideNav>
@@ -196,9 +145,9 @@ function Tasks({ user }) {
         show={showModal}
         onClose={toggleCloseModal}
       >
-        <div className="p-4 w-full">
-          <div className="bg-white rounded-lg shadow dark:bg-gray-700">
-            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+        <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
+          <div className="bg-white rounded-lg shadow dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">
+            <div className="flex items-center justify-between md:p-5 border-b rounded-t dark:border-gray-600 w-full">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Write your report
               </h3>
@@ -213,8 +162,8 @@ function Tasks({ user }) {
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <div className="p-4 md:p-5">
-              <form className="space-y-4 p-8" action="#">
+            <div className="p-1 md:p-5 sm:p-3 w-full">
+              <form className="space-y-4 sm:p-8" action="#">
                 <div>
                   <label
                     htmlFor="title"
