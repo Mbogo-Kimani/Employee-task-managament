@@ -1,16 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavItem from '../Components/NavItem';
 import requestHandler from '../services/requestHandler';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import Icon from '../Components/Common/Icon';
 
-function SideNav({ navItems, children }) {
-  function navigateToLogout() {
-    requestHandler.post('/logout');
-  }
-
+function SideNav({ navItems, user, children }) {
   const [collapsed, setCollapsed] = useState(hasLargeWidth());
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [response, setResponse] = useState(false);
+
+  useEffect(() => {
+    checkLogoutResponse();
+  }, [response])
+
+  function checkLogoutResponse() {
+    if (response) {
+      router.visit('/auth/login');
+    }
+  }
+
+  function navigateToLogout() {
+    requestHandler.post('/logout', null, setResponse);
+  }
+
+  function navigateToProfile() {
+    console.log('profile page');
+  }
 
   function hasLargeWidth() {
     return window.innerWidth < 640;
@@ -24,6 +39,11 @@ function SideNav({ navItems, children }) {
     setDropdownOpen(!dropdownOpen);
   };
 
+  function getFirstName(elem) {
+    if (elem && elem.name) return elem.name.split(' ')[0];
+    else return '';
+  }
+
   return (
     <div className={`flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen ${collapsed ? 'collapsed' : ''}`}>
       <nav className='bg-white dark:bg-gray-800 h-[50px] w-full text-gray-900 dark:text-gray-100 flex items-center fixed z-10 shadow-md'>
@@ -33,8 +53,8 @@ function SideNav({ navItems, children }) {
         </Link>
         <div className="flex grow"/>
         <div className="relative">
-          <div className="flex items-center cursor-pointer" onClick={toggleDropdown}>
-            <span className="mr-1"></span>
+          <div className="flex items-center cursor-pointer px-3 py-2 mx-6" onClick={toggleDropdown}>
+            <span className="mr-1">{ getFirstName(user) }</span>
             <svg
               className={`w-3 h-3  transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
               xmlns="http://www.w3.org/2000/svg"
@@ -50,10 +70,10 @@ function SideNav({ navItems, children }) {
             <div className="absolute right-0 mt-2 w-40 bg-white divide-y divide-gray-100 rounded-lg shadow">
               <ul className="py-2 text-sm text-gray-700">
               <li>
-                  <button className='block px-4 py-2 hover:bg-gray-100' onClick={navigateToLogout}>Profile</button>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToProfile}>Profile</button>
                 </li>
                 <li>
-                  <button className='block px-4 py-2 hover:bg-gray-100' onClick={navigateToLogout}>Logout</button>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToLogout}>Logout</button>
                 </li>
                 
               </ul>

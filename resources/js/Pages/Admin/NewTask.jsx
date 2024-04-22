@@ -122,7 +122,7 @@ function NewTask({ user }) {
   }
 
   return (
-    <SideNav navItems={navItems}>
+    <SideNav navItems={navItems} user={user}>
       <div>
         <div className='mb-4 w-full flex'>
           <button

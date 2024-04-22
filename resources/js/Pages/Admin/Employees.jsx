@@ -115,7 +115,7 @@ function Employees({ user }) {
   }
 
   return (
-    <SideNav navItems={pageItems.navItems}>
+    <SideNav navItems={pageItems.navItems} user={user}>
       <div className="">
         <div className='mb-4 w-full flex'>
           <button

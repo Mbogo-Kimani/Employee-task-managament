@@ -5,6 +5,7 @@ import requestHandler from '../../services/requestHandler';
 import taskStatus from '../../data/enums/taskStatus';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
+import Icon from '../../Components/Common/Icon';
 
 function Tasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -33,14 +34,14 @@ function Tasks({ user }) {
     requestHandler.get('/api/all_tasks', setTasks);
   }
 
-  function toggleReport (task_id) {
+  function toggleEditTask (task_id) {
     console.log(task_id);
     // toggleOpenModal();
     // setReport({...report, task_id});
   }
 
   return (
-    <SideNav navItems={navItems}>
+    <SideNav navItems={navItems} user={user}>
       <div>
         <div className='mb-4 w-full flex'>
           <a
@@ -51,7 +52,7 @@ function Tasks({ user }) {
           </a>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Status', 'Finished At']}>
+          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Status', 'Finished At', 'Action']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
@@ -78,6 +79,13 @@ function Tasks({ user }) {
                     <td className="px-2 py-4">
                       { task.task_finished_at || '' }
                     </td>
+                    <td className="px-2 py-4">
+                      <Icon
+                        src='edit'
+                        className='w-[20px] h-[20px] opacity-60 hover:opacity-80 cursor-pointer'
+                        onClick={() => toggleEditTask(task.id)}
+                      />
+                    </td>
                   </tr>
                 );
               })
@@ -90,4 +98,4 @@ function Tasks({ user }) {
   )
 }
 
-export default Tasks
+export default Tasks;

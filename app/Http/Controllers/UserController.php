@@ -18,14 +18,6 @@ class UserController extends Controller
         return view('admin.pages.AdminLogin.adminLogin');
     }
 
-    public function logout()
-    {
-
-        auth()->logout();
-        // notify()->success('Successfully Logged Out');
-        return redirect('/auth/login');
-    }
-
     // user delete
 
     public function userDelete($id)
@@ -35,7 +27,7 @@ class UserController extends Controller
         $user->delete();
       }
 
-      notify()->success('User Deleted Successfully.');
+      // notify()->success('User Deleted Successfully.');
       return redirect()->back();
     }
 
@@ -176,5 +168,11 @@ class UserController extends Controller
 
 		abort(401, 'Invalid user email or password');
     // return redirect()->back()->withErrors();
+  }
+
+	public function logout()
+  {
+    auth()->logout();
+		return response()->json(['message' => 'Logout was successful']);
   }
 }
