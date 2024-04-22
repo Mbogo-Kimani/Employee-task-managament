@@ -64,7 +64,7 @@ export const adminNavItems = [
 
 export const adminPageItems = [
   {
-    numberToDisplay: '',
+    numberToDisplay: '+',
     name: 'New Task',
     pictureSrc: 'assets/image/task.png',
     href: '/admin/new_task',

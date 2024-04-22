@@ -34,7 +34,7 @@ function Tasks({ user }) {
   }
 
   return (
-    <SideNav navItems={pageItems}>
+    <SideNav navItems={pageItems} user={user}>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Action']}>
           {

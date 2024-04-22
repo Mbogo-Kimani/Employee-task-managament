@@ -26,7 +26,7 @@ function Home(props) {
   }, [])
 
   return (
-    <SideNav navItems={pageItems.navItems}>
+    <SideNav navItems={pageItems.navItems} user={props?.user}>
       <div>
         <div className="page-header text-gray-900 dark:text-gray-100">
           <span id="dayOfWeek" className="page-heading" style={{fontSize: '30px'}}>{ day }</span>
@@ -44,7 +44,7 @@ function Home(props) {
                 return (
                   <DashboardItem
                     key={idx}
-                    numberToDisplay={props[item.numberToDisplay]}
+                    numberToDisplay={item.numberToDisplay === '+' ? item.numberToDisplay : props[item.numberToDisplay]}
                     textToDisplay={item.name}
                     pictureSrc={item.pictureSrc}
                     href={item.href}

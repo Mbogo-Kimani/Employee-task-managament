@@ -8,7 +8,7 @@ function TableComp({ columns, children }) {
         {
           (Array.isArray(columns) ? columns : []).map((column, index) => {
             return (
-              <th scope='col' key={ index || column } className="px-2 py-3">
+              <th scope='col' key={ index || column } className={`${index === 0 ? 'px-4' : 'px-2'} py-3 text-[var(--dark-blue)]`}>
                 { column }
               </th>
             )

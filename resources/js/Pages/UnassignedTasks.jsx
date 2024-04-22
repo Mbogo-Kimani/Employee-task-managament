@@ -94,7 +94,7 @@ function UnassignedTasks({ user }) {
   }
 
   return (
-    <SideNav navItems={navItems}>
+    <SideNav navItems={navItems} user={user}>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp columns={['Task Name', 'Task Type', 'From', 'To', 'Action']}>
           {
