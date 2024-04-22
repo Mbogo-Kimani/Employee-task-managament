@@ -22,6 +22,8 @@ class Task extends Model
 		'department_id',
 		'task_finished_at',
     'task_type_id',
+    'received_by_department_head',
+    'received_by_department_member',
   ];
 
   public function user()

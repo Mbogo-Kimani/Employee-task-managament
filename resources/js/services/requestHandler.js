@@ -13,9 +13,10 @@ class RequestHandler {
    * @param {String} url - endpoint to make request
    * @param {React.Dispatch<React.SetStateAction<any>>} stateSetter - react state to receive data
    * @param {React.Dispatch<React.SetStateAction<any>>} errorSetter - react state to receive errors if there
+   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
-  get(url, stateSetter = null, errorSetter = null) {
-    this.fetch({url}, stateSetter, errorSetter);
+  get(url, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    this.fetch({url}, stateSetter, errorSetter, loaderSetter);
   }
 
   // TODO: Document the post request
@@ -25,9 +26,10 @@ class RequestHandler {
    * @param {*} body 
    * @param {*} stateSetter 
    * @param {*} errorSetter 
+   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
-  post(url, body = null, stateSetter = null, errorSetter = null) {
-    this.fetch({url, method: 'POST', body}, stateSetter, errorSetter);
+  post(url, body = null, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    this.fetch({url, method: 'POST', body}, stateSetter, errorSetter, loaderSetter);
   }
 
   // TODO: Document the patch request
@@ -37,9 +39,10 @@ class RequestHandler {
    * @param {*} body 
    * @param {*} stateSetter 
    * @param {*} errorSetter 
+   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
-  patch(url, body = null, stateSetter = null, errorSetter = null) {
-    this.fetch({url, method: 'PATCH', body}, stateSetter, errorSetter);
+  patch(url, body = null, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    this.fetch({url, method: 'PATCH', body}, stateSetter, errorSetter, loaderSetter);
   }
   
   // TODO: Document the put request
@@ -49,20 +52,23 @@ class RequestHandler {
    * @param {*} body 
    * @param {*} stateSetter 
    * @param {*} errorSetter 
+   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
-  put(url, body = null, stateSetter = null, errorSetter = null) {
-    this.fetch({url, method: 'PUT', body}, stateSetter, errorSetter);
+  put(url, body = null, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    this.fetch({url, method: 'PUT', body}, stateSetter, errorSetter, loaderSetter);
   }
 
   // TODO: Document the delete request
-  /**
+  /**   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
+
    * 
    * @param {*} url 
    * @param {*} stateSetter 
    * @param {*} errorSetter 
+   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
-  delete(url, stateSetter = null, errorSetter = null) {
-    this.fetch({url, method: 'DELETE'}, stateSetter, errorSetter);
+  delete(url, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    this.fetch({url, method: 'DELETE'}, stateSetter, errorSetter, loaderSetter);
   }
 
   // TODO: Document the general fetch request
@@ -71,9 +77,11 @@ class RequestHandler {
    * @param {*} param0 
    * @param {*} stateSetter 
    * @param {*} errorSetter 
+   * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    * @returns 
    */
-  async fetch ({url, method = 'GET', body}, stateSetter, errorSetter) {
+  async fetch ({url, method = 'GET', body}, stateSetter, errorSetter, loaderSetter) {
+    if (loaderSetter) loaderSetter(true);
     try {
       let resp = null;
       if (body) {
@@ -103,9 +111,11 @@ class RequestHandler {
         console.error(errorResp);
         if (errorSetter) errorSetter(errorResp);
       }
+      if (loaderSetter) loaderSetter(false);
     } catch (error) {
       console.error(error);
       if (errorSetter) errorSetter(error);
+      if (loaderSetter) loaderSetter(false);
     }
   }
 }
