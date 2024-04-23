@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
+use App\Models\Task;
+
 
 class UserController extends Controller
 {
@@ -134,6 +136,16 @@ class UserController extends Controller
 		}
 
 		return Inertia::render('UnassignedTasks', compact('user'));
+	}
+
+	public function assignedTasksPage() {
+		$user = auth()->user();
+
+		if ($user && $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('AssignedTasks', compact('user'));
 	}
 
 	public function getUsersByDepartment() {

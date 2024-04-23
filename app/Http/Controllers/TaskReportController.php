@@ -72,9 +72,10 @@ class TaskReportController extends Controller
      * @param  \App\Models\TaskReport  $taskReport
      * @return \Illuminate\Http\Response
      */
-    public function show(TaskReport $taskReport)
+    public function show(Request $request, $id)
     {
-        //
+        $report = TaskReport::where('task_id',$id)->get();
+        return response()->json($report);
     }
 
     /**
@@ -95,9 +96,23 @@ class TaskReportController extends Controller
      * @param  \App\Models\TaskReport  $taskReport
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TaskReport $taskReport)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required',
+            'status' => 'required|string',
+        ]);
+        $task_report = TaskReport::findOrFail($request->id);
+        
+        if($request->get('status') == 'approved'){
+            $task_report->is_approved = true;
+        }else{
+            $task_report->is_rejected = true;
+        }
+        $task_report->save();
+
+		return response()->json(['message' => 'Report updated successfully']);
+
     }
 
     /**

@@ -1,3 +1,5 @@
+import department from "./enums/department";
+
 export const inventoryNavtems = [
   {
     name: 'Maintenance tasks',
@@ -57,11 +59,17 @@ export const storeManagerPageItems = [
     // numberToDisplay: 'tasks',
     numberToDisplay: 'totalTasks',
     pictureSrc: 'assets/image/users.png',
-    href: '/tasks',
+    href: `/tasks`,
   },
   {
     name: 'Tasks to Assign',
-    numberToDisplay: 'tasksNotAssigned'
+    numberToDisplay: 'tasksNotAssigned',
+    href: '/unassigned_tasks'
+  },
+  {
+    name: 'Tasks Assigned',
+    numberToDisplay: 'tasksAssigned',
+    href: '/assigned_tasks'
   },
   // {
   //   name: 'Register Faulty Product',
