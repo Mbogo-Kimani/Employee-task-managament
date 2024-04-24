@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,9 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
   Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
+  Route::get('/notifications', function () {
+    return Inertia::render('Notification');
+})->name('dashboard');
 
   Route::get('/tasks', [HomeController::class, 'tasksPage']);
   Route::get('/api/tasks', [TaskController::class, 'index']);
