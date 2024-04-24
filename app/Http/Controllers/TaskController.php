@@ -79,7 +79,18 @@ class TaskController extends Controller
 										->whereNull('user_id')
 										->with('taskType')
 										->paginate(20);
+			return response()->json($tasks);
+		}
+	}
 
+	public function getAssignedTasks() {
+		$user = auth()->user();
+
+		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			$tasks = Task::where('department_id', $user->department_id)
+										->whereNotNull('user_id')
+										->with('taskType')
+										->paginate(20);
 			return response()->json($tasks);
 		}
 	}
