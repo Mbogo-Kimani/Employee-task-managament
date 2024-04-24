@@ -305,20 +305,20 @@ class TaskController extends Controller
 
     public function editTask($id)
     {
-        $task = Task::find($id);
+        $task = Task::findOrFail($id);
+
+
         return view('admin.pages.Task.editTask', compact('task'));
     }
-    public function updateTask(Request $request, $id)
+    public function updateTask(Request $request)
     {
-        $task = Task::find($id);
+        $task = Task::findOrFail($request->id);
         if ($task) {
-            $task->update([
-                'task_name' => $request->task_name,
-                'task_description' => $request->task_description,
-            ]);
-            notify()->success('Updated successfully.');
-            return redirect()->back();
+            $task->update($request->all());
+            return response()->json(['message' => 'Task has been updated successfully']);
         }
+
+        abort(400, 'Something wrong happened');
     }
 
 
