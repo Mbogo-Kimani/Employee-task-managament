@@ -66,6 +66,12 @@ class HomeController extends Controller
 
 	public function tasksPage () {
 		$user = auth()->user();
+   
+    if (!$user) {
+			return redirect('/login');
+    }
+    
+
 		return Inertia::render('Tasks', compact('user'));
 	}
 
