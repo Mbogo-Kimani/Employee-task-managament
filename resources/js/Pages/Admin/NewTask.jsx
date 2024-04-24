@@ -7,6 +7,8 @@ import { router } from '@inertiajs/react';
 import SelectComp from '../../Components/Common/SelectComp';
 import { displayErrors } from '../../data/utils';
 import Modal from '../../Components/Common/Modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function NewTask({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -29,6 +31,7 @@ function NewTask({ user }) {
     task_type_name: '',
     task_type_description: '',
   });
+  
 
   useEffect(() => {
     setNavItems(
@@ -114,15 +117,25 @@ function NewTask({ user }) {
   function submitNewtask(e) {
     e.preventDefault();
     requestHandler.post('/api/tasks', newTask, setResponse, setErrors);
+    if(response){
+      notify('Task added')
+    }
   }
 
   function submitNewTaskType (e) {
     e.preventDefault();
     requestHandler.post('/api/task_types', newTaskType, setTaskTypeResponse, setErrors);
+   
   }
 
+  const notify = (string) => {
+    toast.success(string,{
+      position: "top-center"
+    })
+  }
   return (
     <SideNav navItems={navItems} user={user}>
+      <ToastContainer/>
       <div>
         <div className='mb-4 w-full flex'>
           <button
