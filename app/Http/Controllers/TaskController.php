@@ -104,6 +104,28 @@ class TaskController extends Controller
 		}
 	}
 
+	public function markTaskReceivedByHOD (Request $request) {
+		$task = Task::find($request->taskId);
+
+		if ($task) {
+			$task->received_by_department_head = true;
+			$task->save();
+			
+			return response()->json(['message' => 'Task received successfully']);
+		}
+	}
+
+	public function markTaskReceivedByUser (Request $request) {
+		$task = Task::find($request->taskId);
+
+		if ($task) {
+			$task->received_by_department_member = true;
+			$task->save();
+
+			return response()->json(['message' => 'Task received successfully']);
+		}
+	}
+
 
 
     // My Task

@@ -6,6 +6,7 @@ import taskStatus from '../../data/enums/taskStatus';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 import Icon from '../../Components/Common/Icon';
+import { loaderSetter } from '../../Components/Common/Loader';
 
 function Tasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -31,7 +32,7 @@ function Tasks({ user }) {
   }, []);
 
   function fetchAllTasks() {
-    requestHandler.get('/api/all_tasks', setTasks);
+    requestHandler.get('/api/all_tasks', setTasks, null, loaderSetter);
   }
 
   function toggleEditTask (task_id) {

@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
+import Loader from './Components/Common/Loader';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'ET~NET Ltd';
 
@@ -11,6 +12,11 @@ createInertiaApp({
     return pages[`./Pages/${name}.jsx`]
   },
   setup({ el, App, props }) {
-    createRoot(el).render(<App {...props} />)
+    createRoot(el).render(
+      <>
+        <Loader />
+        <App {...props} />
+      </>
+    )
   },
 })

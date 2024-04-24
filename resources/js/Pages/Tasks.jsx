@@ -7,6 +7,7 @@ import Modal from '../Components/Common/Modal';
 import { handlePage } from '../data/utils';
 import TableComp from '../Components/Common/TableComp';
 import PaginatorNav from '../Components/Common/PaginatorNav';
+import { loaderSetter } from '../Components/Common/Loader';
 
 function Tasks({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -40,8 +41,8 @@ function Tasks({ user }) {
   }, [])
 
   useEffect(() => {
-    checkResponse()
-  }, [response])
+    checkResponse();
+  }, [response]);
 
   function fetchTasks () {
     requestHandler.get('/api/tasks', setTasks);
@@ -71,9 +72,15 @@ function Tasks({ user }) {
     setShowModal(true);
   }
 
-  function toggleReport (task_id) {
-    toggleOpenModal();
-    setReport({...report, task_id});
+  function toggleReport (taskId) {
+    const thisTask = tasks.data.find(task => task.id === taskId);
+
+    if (thisTask.received_by_department_member) {
+      toggleOpenModal();
+      setReport({...report, taskId});
+    } else {
+      requestHandler.post('/api/received_by_department_member', { taskId }, fetchTasks, null, loaderSetter);
+    }
   }
 
   function submitReport (e) {
@@ -119,16 +126,20 @@ function Tasks({ user }) {
                         { taskStatus[task.status] }
                       </td>
                       {
-                        task.status === taskStatus.PENDING ?
+                        task.status === taskStatus.PENDING || task.status === taskStatus.REJECTED ?
                         <td
                           className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                           onClick={() => toggleReport(task.id)}
                         >
-                          Report
+                          {
+                            task.received_by_department_member ?
+                            'Report' :
+                            'Confirm Received'
+                          }
                         </td>
                         :
                         <td className='px-2 py-4 cursor-pointer' title='Report already submitted'>
-                          Report
+                          Submitted
                         </td>
                       }
                     </tr>
@@ -175,7 +186,7 @@ function Tasks({ user }) {
                     type="text"
                     name="title"
                     id="reportTitfirstle"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white outline-none"
                     placeholder="Enter a title"
                     value={report.title}
                     onChange={handleChange}
@@ -198,7 +209,7 @@ function Tasks({ user }) {
                   <textarea
                     id="report-content"
                     rows="4"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                     placeholder="Write your report here..."
                     name='content'
                     onChange={handleChange}

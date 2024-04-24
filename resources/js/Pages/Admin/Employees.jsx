@@ -10,6 +10,7 @@ import { displayErrors } from '../../data/utils';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 import Icon from '../../Components/Common/Icon';
+import { loaderSetter } from '../../Components/Common/Loader';
 
 function Employees({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -70,7 +71,7 @@ function Employees({ user }) {
   }
 
   function fetchUsers() {
-    requestHandler.get('/api/employees', setUsers);
+    requestHandler.get('/api/employees', setUsers, null, loaderSetter);
   }
   
   function fetchDepartments() {
@@ -79,18 +80,6 @@ function Employees({ user }) {
 
   function fetchClearanceLevels() {
     requestHandler.get('/api/clearance_levels', setClearanceLevels);
-  }
-
-  function handlePrevPage () {
-    if (users.prev_page_url) {
-      requestHandler.get(users.prev_page_url, setUsers);
-    }
-  }
-
-  function handleNextPage () {
-    if (users.next_page_url) {
-      requestHandler.get(users.next_page_url, setUsers);
-    }
   }
 
   function toggleOpenModal() {

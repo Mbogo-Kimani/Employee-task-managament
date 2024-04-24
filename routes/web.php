@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/pending_tasks', [TaskController::class, 'getPending']);
 
   Route::post('/api/task_reports', [TaskReportController::class, 'store']);
+  Route::get('/reports/new', [TaskReportController::class, 'newReportPage']);
 
   Route::get('/admin/employees', [UserController::class, 'adminEmployeesPage']);
   Route::get('/api/employees', [UserController::class, 'index']);
@@ -81,5 +82,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/unassigned_tasks', [TaskController::class, 'getUnassignedTasks']);
   Route::get('/api/department_users', [UserController::class, 'getUsersByDepartment']);
   Route::patch('/api/tasks', [TaskController::class, 'update']);
+  Route::post('/api/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
+  Route::post('/api/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
 });
 

@@ -50,6 +50,12 @@ export const leadTechnicianNavItems = [
     icon: 'assignment',
     hasOptions: false,
   },
+  {
+    name: 'New Report',
+    href: '/reports/new',
+    icon: 'file',
+    hasOptions: false,
+  },
 ];
 
 export const leadTechnicianPageItems = [

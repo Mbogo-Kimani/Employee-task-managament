@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClearanceLevelEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\Task;
 use App\Models\TaskReport;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TaskReportController extends Controller
 {
@@ -42,28 +44,26 @@ class TaskReportController extends Controller
 				'content' => 'required|string',
 			]);
 
-			$currentTask = Task::find($request->task_id);
+			$currentTask = Task::find($request->taskId);
 
-			if ($currentTask->taskReports->count()) {
-				return response()->json(['title' => 'You have already submitted this report'], 422);
-			}
+			// if ($currentTask->taskReports->count()) {
+			// 	return response()->json(['title' => 'You have already submitted this report'], 422);
+			// }
 			
-			if ($currentTask) {
-				$taskReport = TaskReport::create([
-					'title' => $request->title,
-					'content' => $request->content,
-					'task_id' => $request->task_id,
-				]);
+			$taskReport = TaskReport::create([
+				'title' => $request->title,
+				'content' => $request->content,
+				'task_id' => $request->taskId,
+			]);
 
-				if ($taskReport) {
-					$currentTask->status = TaskStatusEnum::DONE;
-					$currentTask->task_finished_at = now();
-					$currentTask->save();
-					return response()->json(['message' => 'Report saved successfully']);
-				}
+			if ($taskReport && $currentTask) {
+				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL;
+				$currentTask->task_finished_at = now();
+				$currentTask->save();
+				return response()->json(['message' => 'Report saved successfully']);
 			}
 
-			abort(400, 'Something wrong happened');
+			return response()->json('');
     }
 
     /**
@@ -110,4 +110,13 @@ class TaskReportController extends Controller
     {
         //
     }
+
+		public function newReportPage()
+		{
+			$user = auth()->user();
+
+			if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
+				return Inertia::render('Reports/NewReport', compact('user'));
+			}
+		}
 }
