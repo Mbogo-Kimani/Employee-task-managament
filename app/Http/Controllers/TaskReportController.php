@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TaskStatusEnum;
+use App\Enums\DepartmentEnum;
 use App\Models\Task;
 use App\Models\TaskReport;
 use Illuminate\Http\Request;
@@ -117,14 +118,29 @@ class TaskReportController extends Controller
 
     }
 
+    public function getReports(){
+        $user = auth()->user();
+        if($user->department_id !== DepartmentEnum::ADMIN){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+
+        $reports = TaskReport::where('is_approved', true)->get();
+
+        return response()->json($reports);
+    }
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\TaskReport  $taskReport
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TaskReport $taskReport)
+    public function destroy($id)
     {
-        //
+        $report = TaskReport::find($id);
+        if (!$report) {
+            // TODO multilingualization
+            throw new NotFoundHttpException('Not found');
+        }
+        $report->delete();
     }
 }

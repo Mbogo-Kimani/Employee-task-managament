@@ -9,6 +9,7 @@ import Icon from '../../Components/Common/Icon';
 
 function Tasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
+  const [reports, setReports] = useState({})
   const [tasks, setTasks] = useState({
     data: [],
     from: 1,
@@ -28,6 +29,7 @@ function Tasks({ user }) {
 
   useEffect(() => {
     fetchAllTasks();
+    getReports();
   }, []);
 
   function fetchAllTasks() {
@@ -39,7 +41,9 @@ function Tasks({ user }) {
     // toggleOpenModal();
     // setReport({...report, task_id});
   }
-
+  function getReports(){
+    requestHandler.get('/api/admin/reports',setReports)
+  }
   return (
     <SideNav navItems={navItems} user={user}>
       <div>

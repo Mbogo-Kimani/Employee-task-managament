@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
   Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
+  Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
 
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/api/tasks', [TaskController::class, 'store']);
