@@ -9,6 +9,8 @@ import Icon from '../../Components/Common/Icon';
 import Modal from "../../Components/Common/Modal";
 import SelectComp from '../../Components/Common/SelectComp';
 import departmentsEnum from '../../data/enums/department';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -42,13 +44,15 @@ function Tasks({ user }) {
   }, [])
 
   useEffect(() => {
-    fetchAllTasks();
-    // getReports();
-  }, []);
+    if(response){
+      notify('Task updated successfully')
+    }
+  }, [response]);
 
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
+    fetchAllTasks();
   }, []);
 
   function fetchAllTasks() {
@@ -66,6 +70,12 @@ function Tasks({ user }) {
     requestHandler.get('/api/admin/reports',setReports)
   }
 
+  const notify = (string) => {
+    toast.success(string,{
+      position: "top-center"
+    })
+  }
+
   function deleteTask(id){
     try{
       requestHandler.delete(`/api/task/${id}`)
@@ -74,13 +84,19 @@ function Tasks({ user }) {
       console.error('Error deleting task:', error);
     }
     fetchAllTasks()
+    notify('Task deleted')
   }
 
   function submitEditedTask(e){
     e.preventDefault()
     requestHandler.put('/api/task',editTask, setResponse, setErrors)
+    
+    
+  
     fetchAllTasks();
     setShowModal(false)
+    
+    
   }
 
   function handleChange(e){
@@ -97,6 +113,7 @@ function Tasks({ user }) {
   }
   return (
     <SideNav navItems={navItems} user={user}>
+      <ToastContainer/>
       <div>
         <div className='mb-4 w-full flex'>
           <a

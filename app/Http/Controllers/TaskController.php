@@ -341,4 +341,16 @@ class TaskController extends Controller
 
         return view('admin.pages.Task.searchTask', compact('tasks'));
     }
+
+    public function updateFeedBack(Request $request, $id){
+        $request->validate([
+            'feedback' => 'required'
+        ]);
+        $task = Task::findOrFail($id);
+
+        $task->feedback_if_rejected = $request->feedback;
+        $task->save();
+
+        return response()->json(['message' => 'FeedBack has been submitted']);
+    }
 }
