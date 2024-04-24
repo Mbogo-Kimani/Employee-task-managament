@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/api/tasks', [TaskController::class, 'store']);
   Route::get('/api/all_tasks', [TaskController::class, 'allTasks']);
+  Route::delete('/api/task/{id}', [TaskController::class, 'deleteTask']);
 
   Route::get('/api/task_types', [TaskTypeController::class, 'index']);
   Route::post('/api/task_types', [TaskTypeController::class, 'store']);

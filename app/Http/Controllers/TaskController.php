@@ -296,9 +296,9 @@ class TaskController extends Controller
         $task = Task::find($id);
         if ($task && $task->status !== 'completed') {
             $task->delete();
-            notify()->success('Task Deleted Successfully.');
+            return response()->json(['message' => 'Task deleted successfully']);
         } else {
-            notify()->error('Cannot delete a completed task.');
+            return response()->json(['message' => 'Cannot delete a completed task']);
         }
         return redirect()->back();
     }

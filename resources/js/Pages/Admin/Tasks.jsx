@@ -30,7 +30,7 @@ function Tasks({ user }) {
   useEffect(() => {
     fetchAllTasks();
     getReports();
-  }, []);
+  }, [tasks]);
 
   function fetchAllTasks() {
     requestHandler.get('/api/all_tasks', setTasks);
@@ -44,6 +44,16 @@ function Tasks({ user }) {
   function getReports(){
     requestHandler.get('/api/admin/reports',setReports)
   }
+
+  function deleteTask(id){
+    try{
+      requestHandler.delete(`/api/task/${id}`)
+      setTasks(tasks.filter(task => task.id !== id));
+    }catch(error){
+      console.error('Error deleting task:', error);
+    }
+    
+  }
   return (
     <SideNav navItems={navItems} user={user}>
       <div>
@@ -56,7 +66,7 @@ function Tasks({ user }) {
           </a>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Status', 'Finished At', 'Action']}>
+          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Status', 'Finished At', 'Edit']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
@@ -88,6 +98,13 @@ function Tasks({ user }) {
                         src='edit'
                         className='w-[20px] h-[20px] opacity-60 hover:opacity-80 cursor-pointer'
                         onClick={() => toggleEditTask(task.id)}
+                      />
+                    </td>
+                    <td className="px-2 py-4">
+                      <Icon
+                        src='delete'
+                        className='w-[15px] h-[15px] opacity-60 hover:opacity-80 cursor-pointer'
+                        onClick={() => deleteTask(task.id)}
                       />
                     </td>
                   </tr>
