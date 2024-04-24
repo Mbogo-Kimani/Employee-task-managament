@@ -195,11 +195,11 @@ function AssignedTasks({ user }) {
                             <div className="p-1 md:p-5 sm:p-3 w-full">
                                 {report[0]?.content}
                             </div>
-                            
+  
                         </div>
                         <div className="mb-4 w-full flex">
                                 <button
-                                    className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto mt-5 text-gray-900 hover:text-gray-100"
+                                    className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mt-5 text-gray-900 hover:text-gray-100"
                                     onClick={() => updateReport('approved', report[0]?.id)}
                                 >
                                     Approve

@@ -106,8 +106,10 @@ class TaskReportController extends Controller
         
         if($request->get('status') == 'approved'){
             $task_report->is_approved = true;
+            $task_report->is_rejected = false;
         }else{
             $task_report->is_rejected = true;
+            $task_report->is_approved = false;
         }
         $task_report->save();
 
