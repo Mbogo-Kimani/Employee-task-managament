@@ -44,13 +44,15 @@ function Tasks({ user }) {
   }, [])
 
   useEffect(() => {
-    fetchAllTasks();
-    // getReports();
-  }, []);
+    if(response){
+      notify('Task updated successfully')
+    }
+  }, [response]);
 
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
+    fetchAllTasks();
   }, []);
 
   function fetchAllTasks() {
@@ -89,7 +91,7 @@ function Tasks({ user }) {
     e.preventDefault()
     requestHandler.put('/api/task',editTask, setResponse, setErrors)
     
-      notify('Task updated successfully')
+    
   
     fetchAllTasks();
     setShowModal(false)
