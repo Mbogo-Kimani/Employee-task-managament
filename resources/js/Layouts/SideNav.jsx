@@ -52,6 +52,9 @@ function SideNav({ navItems, user, children }) {
           <Icon src="/images/etnet.png" alt="Dashboard Image"/>
         </Link>
         <div className="flex grow"/>
+        <Link className='w-[40px] h-[auto] block my-auto' href="/notifications">
+          <Icon src="notification" alt="Dashboard Notiifcations" className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer'/>
+        </Link>
         <div className="relative">
           <div className="flex items-center cursor-pointer px-3 py-2 mx-6" onClick={toggleDropdown}>
             <span className="mr-1">{ getFirstName(user) }</span>
@@ -84,6 +87,11 @@ function SideNav({ navItems, user, children }) {
       <div className='flex pt-[50px]'>
         <nav className={`shadow-sm bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[w-[${collapsed ? '50' : '200'}px] transition-all duration-300 ease-in-out`}>
           <ul>
+            <NavItem
+              src="home"
+              name="Home"
+              href="/dashboard"
+            />
             {(Array.isArray(navItems) ? navItems : []).map(item => (
               <NavItem
                 key={item.name}

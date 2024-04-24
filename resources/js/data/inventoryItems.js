@@ -64,12 +64,14 @@ export const storeManagerPageItems = [
   {
     name: 'Tasks to Assign',
     numberToDisplay: 'tasksNotAssigned',
-    href: '/unassigned_tasks'
+    href: '/unassigned_tasks',
+    pictureSrc: 'assignment',
   },
   {
     name: 'Tasks Assigned',
     numberToDisplay: 'tasksAssigned',
-    href: '/assigned_tasks'
+    href: '/assigned_tasks',
+    pictureSrc: 'assignment',
   },
   // {
   //   name: 'Register Faulty Product',
