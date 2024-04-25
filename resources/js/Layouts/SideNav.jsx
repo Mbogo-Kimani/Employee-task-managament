@@ -45,7 +45,7 @@ function SideNav({ navItems, user, children }) {
   }
 
   return (
-    <div className={`flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen relative ${collapsed ? 'collapsed' : ''}`}>
       <nav className='bg-white dark:bg-gray-800 h-[50px] w-full text-gray-900 dark:text-gray-100 flex items-center fixed z-10 shadow-md'>
         <Icon src='burger' className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer' onClick={toggleCollapse} />
         <Link className='ml-4 w-[100px] h-[auto] block my-auto' href="/dashboard">

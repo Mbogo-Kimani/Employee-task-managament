@@ -7,6 +7,7 @@ import SelectComp from '../Components/Common/SelectComp';
 import { displayErrors } from '../data/utils';
 import PaginatorNav from '../Components/Common/PaginatorNav';
 import TableComp from '../Components/Common/TableComp';
+import { loaderSetter } from '../Components/Common/Loader';
 
 function UnassignedTasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -74,11 +75,17 @@ function UnassignedTasks({ user }) {
   }
 
   function openUserAssignModal(taskId) {
-    setCurrentTask(tasks.data.find(task => task.id === taskId));
-    setNewAssignment({...newAssignment, task: taskId});
-    setShowAssignUserModal(true);
-  }
+    const thisTask = tasks.data.find(task => task.id === taskId);
+    setCurrentTask(thisTask);
 
+    if (thisTask.received_by_department_head) {
+      setNewAssignment({...newAssignment, task: taskId});
+      setShowAssignUserModal(true);
+    } else {
+      requestHandler.post('/api/received_by_department_head', { taskId }, fetchUnassignedTasks, null, loaderSetter);
+    }
+  }
+  
   function closeUserAssignModal() {
     setShowAssignUserModal(false);
   }
@@ -121,7 +128,11 @@ function UnassignedTasks({ user }) {
                     className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                     onClick={() => openUserAssignModal(task.id)}
                   >
-                    Assign
+                    {
+                      !task.received_by_department_head ?
+                      'Confirm Received' :
+                      'Assign'
+                    }
                   </td>
                 </tr>
               );
