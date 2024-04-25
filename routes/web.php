@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,9 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
   Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
+  Route::get('/notifications', function () {
+    return Inertia::render('Notification');
+})->name('dashboard');
 
   Route::get('/tasks', [HomeController::class, 'tasksPage']);
   Route::get('/api/tasks', [TaskController::class, 'index']);
@@ -70,10 +74,14 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
   Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
+  Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
 
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/api/tasks', [TaskController::class, 'store']);
   Route::get('/api/all_tasks', [TaskController::class, 'allTasks']);
+  Route::delete('/api/task/{id}', [TaskController::class, 'deleteTask']);
+  Route::put('/api/task/', [TaskController::class, 'updateTask']);
+  Route::patch('/api/task/{id}', [TaskController::class, 'updateFeedBack']);
 
   Route::get('/api/task_types', [TaskTypeController::class, 'index']);
   Route::post('/api/task_types', [TaskTypeController::class, 'store']);

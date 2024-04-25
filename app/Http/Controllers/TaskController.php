@@ -318,29 +318,29 @@ class TaskController extends Controller
         $task = Task::find($id);
         if ($task && $task->status !== 'completed') {
             $task->delete();
-            notify()->success('Task Deleted Successfully.');
+            return response()->json(['message' => 'Task deleted successfully']);
         } else {
-            notify()->error('Cannot delete a completed task.');
+            return response()->json(['message' => 'Cannot delete a completed task']);
         }
         return redirect()->back();
     }
 
     public function editTask($id)
     {
-        $task = Task::find($id);
+        $task = Task::findOrFail($id);
+
+
         return view('admin.pages.Task.editTask', compact('task'));
     }
-    public function updateTask(Request $request, $id)
+    public function updateTask(Request $request)
     {
-        $task = Task::find($id);
+        $task = Task::findOrFail($request->id);
         if ($task) {
-            $task->update([
-                'task_name' => $request->task_name,
-                'task_description' => $request->task_description,
-            ]);
-            notify()->success('Updated successfully.');
-            return redirect()->back();
+            $task->update($request->all());
+            return response()->json(['message' => 'Task has been updated successfully']);
         }
+
+        abort(400, 'Something wrong happened');
     }
 
 
@@ -362,5 +362,17 @@ class TaskController extends Controller
         })->paginate(10);
 
         return view('admin.pages.Task.searchTask', compact('tasks'));
+    }
+
+    public function updateFeedBack(Request $request, $id){
+        $request->validate([
+            'feedback' => 'required'
+        ]);
+        $task = Task::findOrFail($id);
+
+        $task->feedback_if_rejected = $request->feedback;
+        $task->save();
+
+        return response()->json(['message' => 'FeedBack has been submitted']);
     }
 }
