@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
 use Inertia\Inertia;
@@ -98,5 +99,9 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/api/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
   Route::post('/api/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
+
+  Route::get('/new_equipment',[UserController::class, 'newEquipmentsPage']);
+  Route::post('/api/equipments', [EquipmentController::class, 'store']);
+
 });
 

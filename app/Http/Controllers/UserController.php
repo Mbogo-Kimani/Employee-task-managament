@@ -128,6 +128,16 @@ class UserController extends Controller
 		return Inertia::render('Admin/NewTask', compact('user'));
 	}
 
+	public function newEquipmentsPage() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('Inventory/NewEquipment', compact('user'));
+	}
+
 	public function unassignedTasksPage() {
 		$user = auth()->user();
 
