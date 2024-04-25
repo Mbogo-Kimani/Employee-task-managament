@@ -101,7 +101,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/api/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
 
   Route::get('/new_equipment',[UserController::class, 'newEquipmentsPage']);
+  Route::get('/equipments',[UserController::class, 'equipmentsPage']);
   Route::post('/api/equipments', [EquipmentController::class, 'store']);
+  Route::get('/api/equipments', [EquipmentController::class, 'index']);
 
 });
 
