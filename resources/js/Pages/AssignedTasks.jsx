@@ -85,35 +85,40 @@ function AssignedTasks({ user }) {
         setShowModal(true);
     }
 
-		function updateReport(string, id){
-			let data = {
-				id: id,
-				status: string
-			}
-				if(string == 'approved'){
-					requestHandler.patch(`/api/report`,data);
-				}else{
-					requestHandler.patch(`/api/report`,data);
-				}
-		}
-
-        function handleChange(e){
-            setFeedBack(e.target.value)
+    function updateReport(string, id){
+        let data = {
+            id: id,
+            status: string
         }
-
-        function submitFeedBack(e){
-            e.preventDefault()
-
-            const text = {
-                feedback: feedBack
+            if(string == 'approved'){
+                requestHandler.patch(`/api/report`,data);
+            }else{
+                requestHandler.patch(`/api/report`,data);
             }
-            requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
+    }
+
+    function handleChange(e){
+        setFeedBack(e.target.value)
+    }
+
+    function submitFeedBack(e){
+        e.preventDefault()
+
+        const text = {
+            feedback: feedBack
         }
-        function openFeedBackModal(task){
-            setShowFeedbackModal(true)
-            setTask(task)
-            console.log(task);
-        }
+        requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
+    }
+    function openFeedBackModal(task){
+        setShowFeedbackModal(true)
+        setTask(task)
+        console.log(task);
+    }
+
+    function unassignTask(id){
+        requestHandler.patch(`/api/tasks/${id}`,{}, setResponse, setErrors)
+        setTasks(tasks.filter(task => task.id !== id));
+    }
 
 
     return (
@@ -177,7 +182,7 @@ function AssignedTasks({ user }) {
                                         </td>
                                     )}
                                     {
-                                        task.status == taskStatus.AWAITING_APPROVAL && (
+                                        task.status == taskStatus.AWAITING_APPROVAL ? (
                                         <td
                                             className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                                             onClick={() =>
@@ -186,8 +191,24 @@ function AssignedTasks({ user }) {
                                         >
                                             FeedBack
                                         </td>
+                                        )
+                                        :
+                                        (<td
+                                            className="px-2 py-4 cursor-pointer"
+                                            title="Report already submitted"
+                                        >
+                                            -
+                                        </td>
                                     )
                                     }
+                                    <td
+                                        className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                                        onClick={() =>
+                                            unassignTask(task.id)
+                                        }
+                                        >
+                                            Unassign
+                                    </td>
                                 </tr>
                             );
                         }

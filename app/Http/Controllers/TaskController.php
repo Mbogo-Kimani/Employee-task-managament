@@ -115,6 +115,21 @@ class TaskController extends Controller
 		}
 	}
 
+  public function unassignTask(Request $request, $id) {
+    $user = auth()->user();
+
+		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
+      $task = Task::find($id);
+
+      if ($task) {
+				$task->user_id = NULL;
+				$task->save();
+
+				return response()->json(['message' => 'Task unassigned successfully']);
+			}
+    }
+  }
+
 	public function markTaskReceivedByHOD (Request $request) {
 		$task = Task::find($request->taskId);
 
