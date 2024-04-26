@@ -71,6 +71,14 @@ function Equipments({ user }) {
 
     return (
         <SideNav navItems={navItems} user={user}>
+            <div className='mb-4 w-full flex'>
+                <a
+                    className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
+                    href='/new_equipment'
+                >
+                    Add New Equipment
+                </a>
+            </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
                     columns={["Name", "Model", "Status", "Quantity","Department", "Purchase Date", "Edit"]}
