@@ -117,7 +117,6 @@ function AssignedTasks({ user }) {
 
     function unassignTask(id){
         requestHandler.patch(`/api/tasks/${id}`,{}, setResponse, setErrors)
-        setTasks(tasks.filter(task => task.id !== id));
     }
 
 
