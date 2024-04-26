@@ -11,6 +11,7 @@ export const inventoryNavtems = [
     icon: '/icons/hammer.svg',
     hasOptions: false,
   },
+ 
 ];
 
 export const inventoryPageItems = [
@@ -49,6 +50,11 @@ export const storeManagerNavItems = [
   {
     name: 'Replacement Requests',
     icon: '/icons/hammer.svg',
+    hasOptions: false,
+  },
+  {
+    name: 'Equipments',
+    icon: 'equipment',
     hasOptions: false,
   },
 ];
