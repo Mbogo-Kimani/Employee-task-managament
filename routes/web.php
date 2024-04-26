@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CircularController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
@@ -98,5 +99,8 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/api/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
   Route::post('/api/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
+
+  Route::get('/admin/circulars/new_circular', [CircularController::class, 'create']);
+  Route::post('/api/circular', [CircularController::class, 'store']);
 });
 
