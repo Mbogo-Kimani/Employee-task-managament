@@ -61,15 +61,12 @@ function Tasks({ user }) {
   }
 
   function toggleEditTask (task) {
-    console.log(task);
     setEditTask(task);
     setShowModal(true);
     // toggleOpenModal();
     // setReport({...report, task_id});
   }
-  function getReports(){
-    requestHandler.get('/api/admin/reports',setReports)
-  }
+  
 
   const notify = (string) => {
     toast.success(string,{

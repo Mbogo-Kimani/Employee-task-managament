@@ -112,10 +112,19 @@ class UserController extends Controller
 	public function allTasksPage() {
 		$user = auth()->user();
 		
-		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
+		if ($user->role !== DepartmentEnum::ADMIN) {
 			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
 		}
 		return Inertia::render('Admin/Tasks', compact('user'));
+	}
+
+	public function showReports() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+		return Inertia::render('Admin/Reports', compact('user'));
 	}
 
 	public function newTaskPage() {

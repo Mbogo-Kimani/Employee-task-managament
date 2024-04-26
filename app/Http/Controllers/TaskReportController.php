@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\TaskReport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Resources\ReportResourceCollection;
 
 class TaskReportController extends Controller
 {
@@ -126,7 +127,7 @@ class TaskReportController extends Controller
 
         $reports = TaskReport::where('is_approved', true)->get();
 
-        return response()->json($reports);
+        return new ReportResourceCollection($reports );
     }
     /**
      * Remove the specified resource from storage.
