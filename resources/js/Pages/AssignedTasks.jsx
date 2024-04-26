@@ -112,7 +112,6 @@ function AssignedTasks({ user }) {
     function openFeedBackModal(task){
         setShowFeedbackModal(true)
         setTask(task)
-        console.log(task);
     }
 
     function unassignTask(id){

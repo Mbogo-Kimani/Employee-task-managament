@@ -96,7 +96,6 @@ function UnassignedTasks({ user }) {
 
   function submitNewAssignment(e) {
     e.preventDefault();
-    console.log(newAssignment);
     requestHandler.patch('/api/tasks', newAssignment, setResponse, setErrors);
   }
 

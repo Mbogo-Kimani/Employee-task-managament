@@ -98,7 +98,6 @@ function Tasks({ user }) {
   }
 
   function handleChange(e){
-     console.log(e.target.value);
      setEditTask({...editTask, [e.target.name]: e.target.value})
   }
 
