@@ -126,7 +126,7 @@ function AssignedTasks({ user }) {
             <ToastContainer/>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
-                    columns={["Task Name", "Task Type", "From", "To", "Report", "Feedback","Action"]}
+                    columns={["Task Name", "Task Type","Handler", "From", "To", "Report", "Feedback"]}
                 >
                     {(Array.isArray(tasks.data) ? tasks.data : []).map(
                         (task, index) => {
@@ -154,6 +154,9 @@ function AssignedTasks({ user }) {
                                             task.task_type.name) ||
                                             ""}
                                     </th>
+                                    <td className="px-2 py-4">
+                                        {task.user && task.user.name}
+                                    </td>
                                     <td className="px-2 py-4">
                                         {task.from_date ||
                                             parseDate(task.created_at)}
