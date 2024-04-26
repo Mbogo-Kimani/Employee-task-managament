@@ -55,9 +55,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
   Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
-  Route::get('/notifications', function () {
-    return Inertia::render('Notification');
-})->name('dashboard');
 
   Route::get('/tasks', [HomeController::class, 'tasksPage']);
   Route::get('/api/tasks', [TaskController::class, 'index']);
@@ -110,5 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/admin/circulars/new_circular', [CircularController::class, 'create']);
   Route::post('/api/circular', [CircularController::class, 'store']);
+	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
+	Route::get('/api/circulars', [CircularController::class, 'index']);
 });
 
