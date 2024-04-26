@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CircularController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
@@ -106,5 +107,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/api/equipments', [EquipmentController::class, 'store']);
   Route::get('/api/equipments', [EquipmentController::class, 'index']);
 
+
+  Route::get('/admin/circulars/new_circular', [CircularController::class, 'create']);
+  Route::post('/api/circular', [CircularController::class, 'store']);
 });
 
