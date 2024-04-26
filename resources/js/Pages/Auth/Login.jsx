@@ -4,8 +4,7 @@ import requestHandler from '../../services/requestHandler';
 import { router } from '@inertiajs/react';
 import Icon from '../../Components/Common/Icon';
 import { TailSpin } from 'react-loader-spinner';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 function Login() {
   const [newUser, setNewUser] = useState({
@@ -47,7 +46,6 @@ function Login() {
 
   return (
     <div className='flex justify-center items-center h-screen bg-white dark:bg-gray-900'>
-      <ToastContainer/>
       <div className="w-full h-full md:w-[75%] sm:w-[95%] sm:h-[75%] shadow-md bg-gray-100 dark:bg-gray-700">
         <div className="w-full flex justify-center h-[35%]">
           <Icon src='/images/etnet.png' imgClassName='h-full w-full' className='max-w-[600px] max-h-[400px] md:w-[40%] md:h-full sm:w-[60%] sm:h-full w-full h-full'/>
