@@ -57,7 +57,7 @@ function SideNav({ navItems, user, children }) {
         </Link>
         <div className="relative">
           <div className="flex items-center cursor-pointer px-3 py-2 mx-6" onClick={toggleDropdown}>
-            <span className="mr-1">{ getFirstName(user) }</span>
+            <span className="mr-3">{ getFirstName(user) }</span>
             <svg
               className={`w-3 h-3  transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
               xmlns="http://www.w3.org/2000/svg"

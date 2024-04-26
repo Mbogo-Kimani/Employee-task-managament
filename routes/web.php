@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
 use Inertia\Inertia;
@@ -75,6 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
   Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
+  Route::get('/admin/reports', [UserController::class, 'showReports']);
   Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
 
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
@@ -99,6 +101,12 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/api/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
   Route::post('/api/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
+
+  Route::get('/new_equipment',[UserController::class, 'newEquipmentsPage']);
+  Route::get('/equipments',[UserController::class, 'equipmentsPage']);
+  Route::post('/api/equipments', [EquipmentController::class, 'store']);
+  Route::get('/api/equipments', [EquipmentController::class, 'index']);
+
 
   Route::get('/admin/circulars/new_circular', [CircularController::class, 'create']);
   Route::post('/api/circular', [CircularController::class, 'store']);

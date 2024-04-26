@@ -55,11 +55,12 @@ export const adminNavItems = [
     href: '/admin/employees',
     hasOptions: false,
   },
-  // {
-  //   name: 'Notices',
-  //   icon: '/icons/check.svg',
-  //   hasOptions: false,
-  // },
+  {
+    name: 'Reports',
+    icon: 'report',
+    hasOptions: false,
+    href: '/admin/reports'
+  },
 ];
 
 export const adminPageItems = [

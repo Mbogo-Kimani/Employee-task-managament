@@ -174,7 +174,7 @@ function AssignedTasks({ user }) {
                                         </td>
                                     )}
                                     {
-                                        task.status == taskStatus.DONE && (
+                                        task.status == taskStatus.AWAITING_APPROVAL && (
                                         <td
                                             className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                                             onClick={() =>
@@ -277,7 +277,7 @@ function AssignedTasks({ user }) {
                           <textarea
                             id="feedback-content"
                             rows="4"
-                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                             placeholder="Write your feedback here..."
                             name='content'
                             onChange={handleChange}

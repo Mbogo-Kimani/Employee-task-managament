@@ -8,6 +8,7 @@ import { handlePage } from '../data/utils';
 import TableComp from '../Components/Common/TableComp';
 import PaginatorNav from '../Components/Common/PaginatorNav';
 import { loaderSetter } from '../Components/Common/Loader';
+import clearanceLevelEnum from "../data/enums/clearanceLevel";
 
 function Tasks({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -22,6 +23,8 @@ function Tasks({ user }) {
     total: 0
   });
   const [showModal, setShowModal] = useState(false);
+  const [showFeedBackModal, setShowFeedBackModal] = useState(false);
+  const [feedBack, setFeedBack] = useState('');
   const [report, setReport] = useState({
     task_id: null,
     title: '',
@@ -46,6 +49,11 @@ function Tasks({ user }) {
 
   function fetchTasks () {
     requestHandler.get('/api/tasks', setTasks);
+  }
+
+  function getReport(id){
+    requestHandler.get(`/api/report/${id}`, setReport);
+    setShowFeedBackModal(true);
   }
 
   function checkResponse () {
@@ -95,13 +103,18 @@ function Tasks({ user }) {
       return errors.errors[key][0];
     }
   }
+
+  function openFeedBackModal(content){
+    setFeedBack(content)
+    setShowFeedBackModal(true)
+  }
   
   return (
     <>
-      <SideNav navItems={pageItems.navItems}>
+      <SideNav navItems={pageItems.navItems} user={user}>
         <div className="">
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At']}>
+            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback']}>
               {
                 (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                   return (
@@ -140,6 +153,19 @@ function Tasks({ user }) {
                         :
                         <td className='px-2 py-4 cursor-pointer' title='Report already submitted'>
                           Submitted
+                        </td>
+                      }
+                      {
+                        task.status !== taskStatus.PENDING  && task.feedback_if_rejected ?
+                          <td
+                          className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                          onClick={() => openFeedBackModal(task.feedback_if_rejected  )}
+                        >
+                          Feedback
+                        </td>
+                        :
+                        <td className='px-2 py-4 cursor-pointer' title='Feedback not yet submitted'>
+                          N/A
                         </td>
                       }
                     </tr>
@@ -234,6 +260,44 @@ function Tasks({ user }) {
           </div>
         </div>
       </Modal>
+      <Modal show={showFeedBackModal} onClose={() => setShowFeedBackModal(false)}>
+                    <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
+                    <button
+                                    type="button"
+                                    className="right-0 float-end end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8  inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    onClick={() => setShowFeedBackModal(false)}
+                                >
+                                    <svg
+                                        className="w-3 h-3"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 14 14"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                        />
+                                    </svg>
+                                    <span className="sr-only">Close modal</span>
+                                </button>
+                        <div className="bg-white rounded-lg shadow dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">
+                            <div className="flex items-center justify-between md:p-5 border-b rounded-t dark:border-gray-600 w-full">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                   Feedback
+                                </h3>
+                                
+                            </div>
+                            <div className="p-1 md:p-5 sm:p-3 w-full">
+                                {feedBack}
+                            </div>
+  
+                        </div>
+                    </div>
+                </Modal>
     </>
   )
 }

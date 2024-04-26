@@ -112,10 +112,19 @@ class UserController extends Controller
 	public function allTasksPage() {
 		$user = auth()->user();
 		
-		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
+		if ($user->role !== DepartmentEnum::ADMIN) {
 			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
 		}
 		return Inertia::render('Admin/Tasks', compact('user'));
+	}
+
+	public function showReports() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+		return Inertia::render('Admin/Reports', compact('user'));
 	}
 
 	public function newTaskPage() {
@@ -126,6 +135,26 @@ class UserController extends Controller
 		}
 
 		return Inertia::render('Admin/NewTask', compact('user'));
+	}
+
+	public function newEquipmentsPage() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('Inventory/NewEquipment', compact('user'));
+	}
+
+	public function equipmentsPage() {
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('Inventory/Equipments', compact('user'));
 	}
 
 	public function unassignedTasksPage() {
