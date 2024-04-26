@@ -126,7 +126,7 @@ function AssignedTasks({ user }) {
             <ToastContainer/>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
-                    columns={["Task Name", "Task Type","Handler", "From", "To", "Report", "Feedback"]}
+                    columns={["Task Name", "Task Type","Handler", "From", "To", "Report", "Feedback","Action"]}
                 >
                     {(Array.isArray(tasks.data) ? tasks.data : []).map(
                         (task, index) => {
