@@ -199,14 +199,25 @@ function AssignedTasks({ user }) {
                                         </td>
                                     )
                                     }
-                                    <td
+                                    {
+                                        task.status == taskStatus.PENDING ? 
+                                        <td
                                         className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                                         onClick={() =>
                                             unassignTask(task.id)
                                         }
                                         >
                                             Unassign
-                                    </td>
+                                        </td>
+                                        :
+                                        (<td
+                                            className="px-2 py-4"
+                                            title="Task already completed"
+                                            >
+                                                Unassign
+                                        </td>
+                                    )
+                                    }
                                 </tr>
                             );
                         }
