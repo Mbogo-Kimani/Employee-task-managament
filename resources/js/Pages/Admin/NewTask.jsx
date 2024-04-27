@@ -7,8 +7,7 @@ import { router } from '@inertiajs/react';
 import SelectComp from '../../Components/Common/SelectComp';
 import { displayErrors } from '../../data/utils';
 import Modal from '../../Components/Common/Modal';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 function NewTask({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -135,7 +134,6 @@ function NewTask({ user }) {
   }
   return (
     <SideNav navItems={navItems} user={user}>
-      <ToastContainer/>
       <div>
         <div className='mb-4 w-full flex'>
           <button

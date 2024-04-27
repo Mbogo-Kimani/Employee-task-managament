@@ -10,9 +10,7 @@ import { loaderSetter } from '../../Components/Common/Loader';
 import Modal from "../../Components/Common/Modal";
 import SelectComp from '../../Components/Common/SelectComp';
 import departmentsEnum from '../../data/enums/department';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from 'react-toastify';
 
 
 function Tasks({ user }) {
@@ -110,7 +108,6 @@ function Tasks({ user }) {
   }
   return (
     <SideNav navItems={navItems} user={user}>
-      <ToastContainer/>
       <div>
         <div className='mb-4 w-full flex'>
           <a
