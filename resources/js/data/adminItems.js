@@ -1,33 +1,33 @@
 export const adminNavItems = [
-  {
-    name: 'Departments',
-    icon: 'building',
-    hasOptions: true,
-    href: '#',
-    options: [
-      {
-        name: 'Admin',
-      },
-      {
-        name: 'Marketing',
-      },
-      {
-        name: 'Technicians',
-      },
-      {
-        name: 'Accounting/finance',
-      },
-      {
-        name: 'Inventory',
-      },
-      {
-        name: 'Customer Service',
-      },
-      {
-        name: 'Project Management',
-      },
-    ],
-  },
+  // {
+  //   name: 'Departments',
+  //   icon: 'building',
+  //   hasOptions: true,
+  //   href: '#',
+  //   options: [
+  //     {
+  //       name: 'Admin',
+  //     },
+  //     {
+  //       name: 'Marketing',
+  //     },
+  //     {
+  //       name: 'Technicians',
+  //     },
+  //     {
+  //       name: 'Accounting/finance',
+  //     },
+  //     {
+  //       name: 'Inventory',
+  //     },
+  //     {
+  //       name: 'Customer Service',
+  //     },
+  //     {
+  //       name: 'Project Management',
+  //     },
+  //   ],
+  // },
   // {
   //   name: 'Employees',
   //   icon: '/icons/user-group.svg',

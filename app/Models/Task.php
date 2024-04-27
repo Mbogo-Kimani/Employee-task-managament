@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
 {
@@ -36,9 +36,9 @@ class Task extends Model
     return $this->belongsTo(Department::class);
   }
 
-  public function taskReports(): HasMany
+  public function taskReport(): HasOne
   {
-    return $this->hasMany(TaskReport::class);
+    return $this->hasOne(TaskReport::class);
   }
 
   public function taskType(): BelongsTo
