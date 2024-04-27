@@ -75,7 +75,6 @@ function Tasks({ user }) {
   function deleteTask(id){
     try{
       requestHandler.delete(`/api/task/${id}`)
-      setTasks(tasks.filter(task => task.id !== id));
     }catch(error){
       console.error('Error deleting task:', error);
     }
@@ -106,6 +105,7 @@ function Tasks({ user }) {
   function fetchDepartments() {
     requestHandler.get('/api/departments', setDepartments);
   }
+
   return (
     <SideNav navItems={navItems} user={user}>
       <div>
@@ -139,7 +139,7 @@ function Tasks({ user }) {
                     <td className="px-2 py-4">
                       { (task.user && task.user.name) || 'None Assigned' }
                     </td>
-                    <td className="px-2 py-4">
+                    <td className={`px-2 py-4 ${task.status == taskStatus.DONE ? "text-green-500" : task.status == taskStatus.AWAITING_APPROVAL ? "text-amber-300" : task.status == taskStatus.AWAITING_APPROVAL && "text-red-500"}`}>
                       { taskStatus[task.status] || taskStatus[1] }
                     </td>
                     <td className="px-2 py-4">
