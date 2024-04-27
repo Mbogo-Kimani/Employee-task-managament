@@ -21,10 +21,8 @@ function Login() {
   }
 
   function submitNewUser(e) {
-    console.log(loading)
     e.preventDefault();
     requestHandler.post('/login', newUser, setResponse, setErrors, setLoading);
-    console.log(loading)
   }
 
   useEffect(() => {
