@@ -380,14 +380,18 @@ class TaskController extends Controller
     }
 
     public function updateFeedBack(Request $request, $id){
-        $request->validate([
-            'feedback' => 'required'
-        ]);
-        $task = Task::findOrFail($id);
+			$request->validate([
+          'feedback' => 'required'
+      ]);
+      $task = Task::find($id);
 
-        $task->feedback_if_rejected = $request->feedback;
-        $task->save();
+			if (!$task) {
+				abort(404, 'Task not found');
+			}
 
-        return response()->json(['message' => 'FeedBack has been submitted']);
+      $task->feedback_if_rejected = $request->feedback;
+      $task->save();
+
+      return response()->json(['message' => 'FeedBack has been submitted']);
     }
 }

@@ -32,9 +32,11 @@ function AssignedTasks({ user }) {
     const [users, setUsers] = useState([]);
     const [response, setResponse] = useState(false);
     const [report, setReport] = useState({});
-    const [feedBack, setFeedBack] = useState('');
+    const [feedback, setFeedback] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
+		const [feedbackOptional, setFeedbackOptional] = useState(false);
 
     useEffect(() => {
         setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
@@ -55,8 +57,11 @@ function AssignedTasks({ user }) {
             setShowFeedbackModal(false)
             toast.success(response.message,{
                 position: "top-center"
-            })
+            });
         }
+				if (response) {
+					closeModal();
+				}
     }
 
     function fetchUsers() {
@@ -85,24 +90,54 @@ function AssignedTasks({ user }) {
         setShowModal(true);
     }
 
-    function updateReport(string, id){
-        let data = {
-            id: id,
-            status: string
-        }
-        requestHandler.patch(`/api/report`,data,setResponse);
-        setShowModal(false);
+		function makeFeedbackVisible(status) {
+			if (status === 'approved') {
+				setShowTaskFeedback(true);
+				setFeedbackOptional(true);
+			} else if (status === 'rejected') {
+				setShowTaskFeedback(true);
+				setFeedbackOptional(false);
+			}
+		}
+
+		function makeFeedbackInvisible(e) {
+			e.preventDefault();
+			setShowTaskFeedback(false);
+		}
+
+		function closeModal() {
+			setShowModal(false);
+			setShowTaskFeedback(false);
+		}
+
+    function updateReport(e, id, taskId){
+			e.preventDefault();
+
+			if (feedbackOptional) {
+				if (feedback) {
+					requestHandler.patch(`/api/task/${taskId}`, { feedback: feedback }, setResponse, setErrors);
+				}
+				requestHandler.patch('/api/report', {id, status: 'approved'}, setResponse, setErrors);
+			} else {
+				if (feedback) {
+					// TODO: Make the below requests one instead of two
+					requestHandler.patch(`/api/task/${taskId}`, { feedback: feedback }, setResponse, setErrors);
+					requestHandler.patch('/api/report', {id, status: 'rejected'}, setResponse, setErrors);
+				} else {
+					toast.error('Feedback field is required');
+				}
+			}
     }
 
     function handleChange(e){
-        setFeedBack(e.target.value)
+        setFeedback(e.target.value)
     }
 
     function submitFeedBack(e){
         e.preventDefault()
 
         const text = {
-            feedback: feedBack
+            feedback: feedback
         }
         requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
     }
@@ -120,7 +155,7 @@ function AssignedTasks({ user }) {
         <SideNav navItems={navItems} user={user}>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
-                    columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Feedback","Action"]}
+                    columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Action"]}
                 >
                     {(Array.isArray(tasks.data) ? tasks.data : []).map(
                         (task, index) => {
@@ -169,8 +204,8 @@ function AssignedTasks({ user }) {
                                     >
                                       View Report
                                     </td>
-                                    {
-                                        task.status == taskStatus.AWAITING_APPROVAL ? (
+                                    {/* {
+                                        task.status == taskStatus.AWAITING_APPROVAL_BY_DEPARTMENT_HEAD ? (
                                         <td
                                             className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                                             onClick={() =>
@@ -188,7 +223,7 @@ function AssignedTasks({ user }) {
                                             -
                                         </td>
                                     )
-                                    }
+                                    } */}
                                     {
                                         task.status == taskStatus.PENDING ? 
                                         <td
@@ -201,10 +236,10 @@ function AssignedTasks({ user }) {
                                         </td>
                                         :
                                         (<td
-                                            className="px-2 py-4"
-                                            title="Task already completed"
-                                            >
-                                                Unassign
+                                        	className="px-2 py-4"
+                                        	title="Task already completed"
+                                        >
+                                          Ongoing
                                         </td>
                                     )
                                     }
@@ -215,12 +250,12 @@ function AssignedTasks({ user }) {
                 </TableComp>
                 <PaginatorNav state={tasks} setState={setTasks} />
 
-                <Modal show={showModal} onClose={() => setShowModal(false)}>
+                <Modal show={showModal} onClose={closeModal}>
                     <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
                     <button
                                     type="button"
                                     className="right-0 float-end end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8  inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                    onClick={() => setShowModal(false)}
+                                    onClick={closeModal}
                                 >
                                     <svg
                                         className="w-3 h-3"
@@ -253,18 +288,71 @@ function AssignedTasks({ user }) {
                         </div>
                         <div className="mb-4 w-full flex">
                                 <button
-                                    className="bg-green-600 hover:opacity-80 rounded-md px-5 py-2 mt-5 text-gray-100"
-                                    onClick={() => updateReport('approved', report[0]?.id)}
+                                    className="bg-green-600 hover:opacity-80 rounded-md px-5 py-2 mt-5 text-gray-100 disabled:hidden"
+                                    onClick={() => makeFeedbackVisible('approved')}
+																		disabled={showTaskFeedBack}
                                 >
                                     Approve
                                 </button>
                                 <button
-								    className="bg-red-600 hover:opacity-80 rounded-md px-5 py-2 ml-auto mt-5 text-gray-100"
-                                    onClick={() => updateReport('rejected', report[0]?.id)}
+								    className="bg-red-600 hover:opacity-80 rounded-md px-5 py-2 ml-auto mt-5 text-gray-100 disabled:hidden"
+                                    onClick={() => makeFeedbackVisible('rejected', report[0]?.id)}
+																		disabled={showTaskFeedBack}
                                 >
                                     Reject
                                 </button>
                             </div>
+
+														{	
+															showTaskFeedBack &&
+															(
+																<div className="mt-8">
+																	<div>
+																		<label
+																			htmlFor="feedback-content"
+																			className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+																		>
+																			Feedback {feedbackOptional ? '(optional)' : '*'}
+																		</label>
+
+																		<textarea
+																			id="feedback-content"
+																			rows="4"
+																			className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+																			placeholder="Write your feedback here..."
+																			name='feedback'
+																			onChange={handleChange}
+																			value={feedback}
+																		/>
+
+																		{
+																			(errors.feedback || errors.errors?.feedback) &&
+																				<p className="text-red-500 my-2 py-2">
+																					{ displayErrors(errors, 'feedback') }
+																				</p>
+																		}
+																	</div>
+
+																	<div className="flex justify-between mt-4 mb-2">
+																		<button
+                        						  type="submit"
+                        						  className="bg-gradient-to-r from-red-500 to-red-300 text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800"
+                        						  onClick={(e) => makeFeedbackInvisible(e)}
+                        						>
+                        						  Back
+                        						</button>
+
+																		<button
+                        						  type="submit"
+                        						  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800"
+                        						  onClick={(e) => updateReport(e, report[0]?.id, report[0]?.task_id)}
+                        						>
+                        						  Submit
+                        						</button>
+																	</div>
+																</div>
+															)
+														}
                     </div>
                 </Modal>
                 <Modal
