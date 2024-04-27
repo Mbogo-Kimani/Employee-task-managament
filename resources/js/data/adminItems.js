@@ -6,27 +6,27 @@ export const adminNavItems = [
     href: '#',
     options: [
       {
-        name: 'Admin'
+        name: 'Admin',
       },
       {
-        name: 'Marketing'
+        name: 'Marketing',
       },
       {
-        name: 'Technicians'
+        name: 'Technicians',
       },
       {
-        name: 'Accounting/finance'
+        name: 'Accounting/finance',
       },
       {
-        name: 'Inventory'
+        name: 'Inventory',
       },
       {
-        name: 'Customer Service'
+        name: 'Customer Service',
       },
       {
-        name: 'Project Management'
+        name: 'Project Management',
       },
-    ]
+    ],
   },
   // {
   //   name: 'Employees',
@@ -53,6 +53,12 @@ export const adminNavItems = [
     name: 'Users',
     icon: 'circleUser',
     href: '/admin/employees',
+    hasOptions: false,
+  },
+  {
+    name: 'New Circular',
+    href: '/admin/circulars/new_circular',
+    icon: 'file',
     hasOptions: false,
   },
   {

@@ -85,12 +85,13 @@ function SideNav({ navItems, user, children }) {
         </div>
       </nav>
       <div className='flex pt-[50px]'>
-        <nav className={`shadow-sm bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[w-[${collapsed ? '50' : '200'}px] transition-all duration-300 ease-in-out`}>
+        <nav className={`shadow-sm bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[${collapsed ? '50' : '200'}px] transition-all duration-300 ease-in-out`}>
           <ul>
             <NavItem
               src="home"
               name="Home"
               href="/dashboard"
+              collapsed={collapsed}
             />
             {(Array.isArray(navItems) ? navItems : []).map(item => (
               <NavItem

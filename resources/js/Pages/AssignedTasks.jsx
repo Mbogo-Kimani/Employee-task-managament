@@ -11,8 +11,7 @@ import { displayErrors } from "../data/utils";
 import PaginatorNav from "../Components/Common/PaginatorNav";
 import TableComp from "../Components/Common/TableComp";
 import taskStatus from "../data/enums/taskStatus";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 function AssignedTasks({ user }) {
     const [navItems, setNavItems] = useState(defaultPageData);
@@ -123,7 +122,6 @@ function AssignedTasks({ user }) {
 
     return (
         <SideNav navItems={navItems} user={user}>
-            <ToastContainer/>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
                     columns={["Task Name", "Task Type","Handler", "From", "To", "Report", "Feedback","Action"]}
@@ -164,23 +162,14 @@ function AssignedTasks({ user }) {
                                     <td className="px-2 py-4">
                                         {task.to_date || "Not Specified"}
                                     </td>
-                                    {task.status !== taskStatus.PENDING ? (
-                                        <td
-                                            className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                            onClick={() =>
-                                                getTaskReport(task.id)
-                                            }
-                                        >
-                                            Report
-                                        </td>
-                                    ) : (
-                                        <td
-                                            className="px-2 py-4 cursor-pointer"
-                                            title="Report already submitted"
-                                        >
-                                            -
-                                        </td>
-                                    )}
+                                    <td
+                                      className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                                      onClick={() =>
+                                        getTaskReport(task.id)
+                                      }
+                                    >
+                                      View Report
+                                    </td>
                                     {
                                         task.status == taskStatus.AWAITING_APPROVAL ? (
                                         <td
@@ -254,13 +243,13 @@ function AssignedTasks({ user }) {
                         </div>
                         <div className="mb-4 w-full flex">
                                 <button
-                                    className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mt-5 text-gray-900 hover:text-gray-100"
+                                    className="bg-green-600 hover:opacity-80 rounded-md px-5 py-2 mt-5 text-gray-100"
                                     onClick={() => updateReport('approved', report[0]?.id)}
                                 >
                                     Approve
                                 </button>
                                 <button
-                                    className="bg-red-500 hover:bg-red-600 rounded-md px-4 py-3 ml-auto mt-5 text-gray-900 hover:text-gray-100"
+								    className="bg-red-600 hover:opacity-80 rounded-md px-5 py-2 ml-auto mt-5 text-gray-100"
                                     onClick={() => updateReport('rejected', report[0]?.id)}
                                 >
                                     Reject
