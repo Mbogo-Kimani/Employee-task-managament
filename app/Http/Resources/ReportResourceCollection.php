@@ -13,18 +13,18 @@ class ReportResourceCollection extends ResourceCollection
      * @return array<int|string, mixed>
      */
    
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
-        return $this->collection->map(function ($report) {
+        return $this->collection->map(function ($task) {
             return [
-                'id' => $report->id,
-                'title' => $report->title,
-                'content' => $report->content,
-                'date' => $report->updated_at->format('Y-m-d H:i:s'),
-                'task_assignee' => $report->task->user->name,
-                'task_name' => $report->task->name,
-                'task_type' => $report->task->taskType->name,
-                'department' => $report->task->department->name,
+                'id' => $task->taskReport->id,
+                'title' => $task->taskReport->title,
+                'content' => $task->taskReport->content,
+                'date' => $task->taskReport->updated_at->format('Y-m-d H:i:s'),
+                'task_assignee' => $task->user->name,
+                'task_name' => $task->name,
+                'task_type' => $task->taskType->name,
+                'department' => $task->department->name,
             ];
         })->all();
     }

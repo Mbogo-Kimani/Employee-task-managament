@@ -31,7 +31,6 @@ const NewEquipment = ({user}) => {
 
   function handleChange(e){
     setEquipment({...equipment, [e.target.name]: e.target.value})
-    console.log(equipment);
   }
 
   function submitNewEquipment(e) {

@@ -66,12 +66,11 @@ function NewReport({ user }) {
                     onChange={handleChange}
                     required
                   />
-                  {
-                    (errors.title || errors.errors?.title) && 
-                    <p className="text-red-500 my-2 py-2">
-                      { displayErrors('title') }
+                  {(errors.title || errors.errors?.title) && (
+                    <p className='text-red-500 my-2 py-2'>
+                      {displayErrors(errors, 'title')}
                     </p>
-                  }  
+                  )}
                 </div>
                 <div>
                   <label
@@ -89,12 +88,11 @@ function NewReport({ user }) {
                     onChange={handleChange}
                     value={newReport.content}
                   />
-                  {
-                    (errors.content || errors.errors?.content) &&
-                    <p className="text-red-500 my-2 py-2">
-                      { displayErrors('content') }
+                  {(errors.content || errors.errors?.content) && (
+                    <p className='text-red-500 my-2 py-2'>
+                      {displayErrors(errors, 'content')}
                     </p>
-                  }
+                  )}
                 </div>
                 <button
                   type="submit"

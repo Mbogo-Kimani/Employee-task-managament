@@ -10,6 +10,7 @@ use App\Models\TaskReport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\ReportResourceCollection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskReportController extends Controller
 {
@@ -59,7 +60,7 @@ class TaskReportController extends Controller
 			]);
 
 			if ($taskReport && $currentTask) {
-				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL;
+				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL_BY_DEPARTMENT_HEAD;
 				$currentTask->task_finished_at = now();
 				$currentTask->save();
 				return response()->json(['message' => 'Report saved successfully']);
@@ -100,23 +101,38 @@ class TaskReportController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'id' => 'required',
-            'status' => 'required|string',
-        ]);
-        $task_report = TaskReport::findOrFail($request->id);
-        
-        if($request->get('status') == 'approved'){
-            $task_report->is_approved = true;
-            $task_report->is_rejected = false;
-        }else{
-            $task_report->is_rejected = true;
-            $task_report->is_approved = false;
-        }
-        $task_report->save();
+      $request->validate([
+        'id' => 'required',
+        'status' => 'required|string',
+      ]);
 
-		return response()->json(['message' => 'Report updated successfully']);
+			$task_report = TaskReport::find($request->id);
+			
+			if (!$task_report) {
+				abort(404, 'Report not found');
+			}
 
+			$task = $task_report->task;
+
+			if (!$task) {
+				abort(404, 'Task not found');
+			}
+
+			if ($request->status == 'rejected') {
+				if (!$task->feedback_if_rejected) {
+					return response()->json(['feedback' => 'Rejected task requires feedback'], 422);
+				}
+
+				$task->status = TaskStatusEnum::REJECTED;
+				$task->save();
+				return response()->json(['message' => 'Status updated successfully']);
+			}
+
+			if ($request->status == 'approved') {
+        $task->status = TaskStatusEnum::AWAITING_APPROVAL_BY_ADMIN;
+				$task->save();
+				return response()->json(['message' => 'Status updated successfully']);
+      }
     }
 
     public function getReports(){
@@ -125,9 +141,9 @@ class TaskReportController extends Controller
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
 
-        $reports = TaskReport::where('is_approved', true)->get();
+        $tasks = Task::where('status', TaskStatusEnum::AWAITING_APPROVAL_BY_ADMIN)->get();
 
-        return new ReportResourceCollection($reports );
+        return new ReportResourceCollection($tasks );
     }
     /**
      * Remove the specified resource from storage.

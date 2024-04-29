@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CircularController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
@@ -54,9 +55,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
   Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
-  Route::get('/notifications', function () {
-    return Inertia::render('Notification');
-})->name('dashboard');
 
   Route::get('/tasks', [HomeController::class, 'tasksPage']);
   Route::get('/api/tasks', [TaskController::class, 'index']);
@@ -94,6 +92,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/assigned_tasks', [TaskController::class, 'getAssignedTasks']);
   Route::get('/api/department_users', [UserController::class, 'getUsersByDepartment']);
   Route::patch('/api/tasks', [TaskController::class, 'update']);
+  Route::patch('/api/tasks/{id}', [TaskController::class, 'unassignTask']);
 
   Route::get('/api/report/{id}', [TaskReportController::class, 'show']);
   Route::patch('/api/report', [TaskReportController::class, 'update']);
@@ -106,5 +105,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/api/equipments', [EquipmentController::class, 'store']);
   Route::get('/api/equipments', [EquipmentController::class, 'index']);
 
+
+  Route::get('/admin/circulars/new_circular', [CircularController::class, 'create']);
+  Route::post('/api/circular', [CircularController::class, 'store']);
+	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
+	Route::get('/api/circulars', [CircularController::class, 'index']);
 });
 
