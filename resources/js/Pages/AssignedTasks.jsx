@@ -225,7 +225,7 @@ function AssignedTasks({ user }) {
                                     )
                                     } */}
                                     {
-                                        task.status == taskStatus.PENDING ? 
+                                        task.status == taskStatus.PENDING || task.status == taskStatus.REJECTED? 
                                         <td
                                         className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                                         onClick={() =>
