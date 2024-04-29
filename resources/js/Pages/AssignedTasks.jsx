@@ -207,12 +207,19 @@ function AssignedTasks({ user }) {
                                     {/* {
                                         task.status == taskStatus.AWAITING_APPROVAL_BY_DEPARTMENT_HEAD ? (
                                         <td
-                                            className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                            onClick={() =>
-                                                openFeedBackModal(task)
-                                            }
+                                        className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                                        onClick={() =>
+                                            unassignTask(task.id)
+                                        }
                                         >
-                                            FeedBack
+                                            Unassign
+                                        </td>
+                                        :
+                                        (<td
+                                        	className="px-2 py-4"
+                                        	title="Task already completed"
+                                        >
+                                          Ongoing
                                         </td>
                                         )
                                         :
@@ -225,7 +232,7 @@ function AssignedTasks({ user }) {
                                     )
                                     } */}
                                     {
-                                        task.status == taskStatus.PENDING ? 
+                                        task.status == taskStatus.PENDING || task.status == taskStatus.REJECTED? 
                                         <td
                                         className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                                         onClick={() =>

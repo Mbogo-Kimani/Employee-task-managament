@@ -24,7 +24,7 @@ function SideNav({ navItems, user, children }) {
   }
 
   function navigateToProfile() {
-    console.log('profile page');
+    router.visit('/profile');
   }
 
   function hasLargeWidth() {
