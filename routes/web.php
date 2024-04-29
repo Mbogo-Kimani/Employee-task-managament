@@ -69,6 +69,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/clearance_levels', [UserController::class, 'clearanceLevels']);
 
   Route::post('/api/user', [UserController::class, 'store']);
+	Route::get('/api/user/{id}', [UserController::class, 'show']);
+	Route::patch('/api/user', [UserController::class, 'update']);
+	Route::delete('/api/user/{id}', [UserController::class, 'delete']);
 
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
   Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);
