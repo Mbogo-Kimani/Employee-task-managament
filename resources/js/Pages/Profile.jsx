@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 
 const Profile = ({user}) => {
     const [navItems, setNavItems] = useState(defaultPageData);
-
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
     const [password, setPassword] = useState('');
@@ -31,7 +30,7 @@ const Profile = ({user}) => {
             toast.success(response.message,{
                 position: "top-center"
             });
-                window.location.reload()
+            window.location.reload()
         }
     }
 
@@ -48,8 +47,7 @@ const Profile = ({user}) => {
     };
   
     return (
-        <SideNav navItems={navItems} user={user}>
-
+    <SideNav navItems={navItems} user={user}>
       <div className="container mx-auto px-4 py-8">
         <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
         <form onSubmit={handleSubmit}>
