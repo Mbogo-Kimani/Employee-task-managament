@@ -104,9 +104,36 @@ class UserController extends Controller
 		return response()->json($user);
   }
 
+	public function update(Request $request)
+	{
+		$request->validate([
+			'email' => 'required|string|email|max:255',
+			'name' => 'required|string|max:255',
+			'password' => ['confirmed', Rules\Password::defaults()],
+		]);
+		$user = auth()->user();
+		
+		if ($user) {
+			// Update the user's attributes
+			$user->update([
+				'name' => $request->name,
+				'email' => $request->email,
+				'password' => Hash::make($request->password)
+			]);
+		
+			// Return a response indicating success
+			return response()->json(['message' => 'User updated successfully']);
+		}
+		abort(400, 'User not found');
+	}
 	public function navigateToAdminUserTasks() {
 		$user = auth()->user();
 		return Inertia::render('Admin/Employees/UserId/Tasks', compact('user'));
+	}
+
+	public function navigateToProfile() {
+		$user = auth()->user();
+		return Inertia::render('Profile', compact('user'));
 	}
 
 	public function allTasksPage() {
