@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/assigned_tasks', [TaskController::class, 'getAssignedTasks']);
   Route::get('/api/department_users', [UserController::class, 'getUsersByDepartment']);
   Route::patch('/api/tasks', [TaskController::class, 'update']);
+  Route::post('/api/filter/tasks', [TaskController::class, 'filterTasks']);
   Route::patch('/api/tasks/{id}', [TaskController::class, 'unassignTask']);
 
   Route::get('/api/report/{id}', [TaskReportController::class, 'show']);
