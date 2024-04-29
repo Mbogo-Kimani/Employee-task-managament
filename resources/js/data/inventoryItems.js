@@ -54,6 +54,7 @@ export const storeManagerNavItems = [
   },
   {
     name: 'Equipments',
+    href: '/equipments',
     icon: 'equipment',
     hasOptions: false,
   },
