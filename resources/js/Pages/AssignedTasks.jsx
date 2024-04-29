@@ -35,6 +35,8 @@ function AssignedTasks({ user }) {
     const [feedBack, setFeedBack] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
+		const [feedbackOptional, setFeedbackOptional] = useState(false);
 
     useEffect(() => {
         setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
@@ -176,12 +178,19 @@ function AssignedTasks({ user }) {
                                     {
                                         task.status == taskStatus.AWAITING_APPROVAL && (
                                         <td
-                                            className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                            onClick={() =>
-                                                openFeedBackModal(task)
-                                            }
+                                        className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                                        onClick={() =>
+                                            unassignTask(task.id)
+                                        }
                                         >
-                                            FeedBack
+                                            Unassign
+                                        </td>
+                                        :
+                                        (<td
+                                        	className="px-2 py-4"
+                                        	title="Task already completed"
+                                        >
+                                          Ongoing
                                         </td>
                                     )
                                     }
