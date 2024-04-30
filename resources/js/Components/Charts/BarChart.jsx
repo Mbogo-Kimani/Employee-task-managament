@@ -5,7 +5,7 @@ import Chart from 'chart.js/auto';
 
 
 
-const BarChart = ({pendingData, ongoingData}) => {
+const BarChart = ({pendingData, ongoingData, finishedData}) => {
   let chartData = {
     labels: ['Jan', 'Feb', 'Mar','Apr'],
     datasets: [
@@ -16,8 +16,13 @@ const BarChart = ({pendingData, ongoingData}) => {
       },
       {
         id: 2,
-        label: 'Ongoig',
+        label: 'Ongoing',
         data: ongoingData,
+      },
+      {
+        id: 2,
+        label: 'Completed',
+        data: finishedData,
       },
     ],
   }
