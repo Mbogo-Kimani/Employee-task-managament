@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/profile', [UserController::class, 'navigateToProfile']);
   Route::post('/api/user', [UserController::class, 'store']);
+	Route::get('/api/user/{id}', [UserController::class, 'show']);
+	Route::patch('/api/user', [UserController::class, 'updateUserDetails']);
+	Route::delete('/api/user/{id}', [UserController::class, 'delete']);
   Route::put('/api/user', [UserController::class, 'update']);
 
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);

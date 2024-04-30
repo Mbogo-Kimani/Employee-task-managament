@@ -15,42 +15,59 @@ use App\Models\Task;
 
 class UserController extends Controller
 {
-    public function loginPage()
-    {
-        return view('admin.pages.AdminLogin.adminLogin');
-    }
+	public function show(Request $request, $id) {
+    $user = auth()->user();
 
-    // user delete
+		if (!$user || $user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->with(['message' => 'Does not exist']);
+		}
 
-    public function userDelete($id)
-    {
-      $user = User::find($id);
-      if ($user) {
-        $user->delete();
-      }
+		$user_to_send = User::find($id);
 
-      // notify()->success('User Deleted Successfully.');
-      return redirect()->back();
-    }
+		if (!$user_to_send) {
+			abort(404, 'User does not exist');
+		}
 
-		// Search User
-    public function searchUser(Request $request)
-    {
-        $searchTerm = $request->search;
-        if ($searchTerm) {
-            $users = User::where('name', 'LIKE', '%' . $searchTerm . '%')
-                ->orWhere('email', 'LIKE', '%' . $searchTerm . '%')
-                ->orWhere('role', 'LIKE', '%' . $searchTerm . '%')
-                ->get();
-        } else {
-            $users = User::all();
-        }
+		return response()->json($user_to_send);
+	}
 
-        return view('admin.pages.Users.searchUserList', compact('users'));
-    }
+	public function updateUserDetails(Request $request) {
+		$user = auth()->user();
 
+		if (!$user || $user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->with(['message' => 'Action does not exist']);
+		}
 
-		
+		$request->validate([
+			'clearance_level' => 'required',
+			'email' => 'required|string|email|max:255',
+			'name' => 'required|string|max:255',
+			'role' => 'required',
+		]);
+
+		$user_to_edit = User::find($request->id);
+		$user_to_edit->name = $request->name;
+		$user_to_edit->email = $request->email;
+		$user_to_edit->role = $request->role;
+		$user_to_edit->image = $request->image;
+		$user_to_edit->department_id = $request->role;
+		$user_to_edit->clearance_level = $request->clearance_level;
+		$user_to_edit->save();
+
+		return response()->json(['message' => 'Employee edit successful']);
+	}
+
+	public function delete(Request $request, $id) {
+		$user = auth()->user();
+
+		if (!$user || $user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->with(['message' => 'Action does not exist']);
+		}
+
+		$user_to_delete = User::find($id);
+		$user_to_delete->delete();
+		return response()->json(['message' => 'Employee deleted successfully']);
+	}
 
   public function adminEmployeesPage() {
     $user = auth()->user();
