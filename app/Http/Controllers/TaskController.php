@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use AfricasTalking\SDK\AfricasTalking;
 
 class TaskController extends Controller
 {
@@ -48,6 +49,7 @@ class TaskController extends Controller
 			$tasks = Task::with(['department', 'user', 'taskType'])->paginate(20);
 			return response()->json($tasks);
 		}
+        
 	}
 
 	public function getPending(Request $request) {
@@ -152,7 +154,24 @@ class TaskController extends Controller
 		}
 	}
 
+    private function sendMessage()
+    {
+        $username = env('AT_USERNAME'); // use 'sandbox' for development in the test environment
+        $apiKey   = env('AT_API_KEY'); // use your sandbox app API key for development in the test environment
+        $AT       = new AfricasTalking($username, $apiKey);
 
+        // Get one of the services
+        $sms      = $AT->sms();
+
+        // Use the service
+        $result   = $sms->send([
+            'to'      => '+254726945514',
+            'message' => 'Hello World!',
+            'from' => env('AT_SHORTCODE')
+        ]);
+
+        return $result;
+    }
 
     // My Task
     public function myTask()
