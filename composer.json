@@ -13,6 +13,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "stevebauman/hypertext": "^1.1",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0"
     },

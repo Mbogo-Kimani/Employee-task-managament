@@ -76,6 +76,7 @@ return [
             'mailers' => [
                 'smtp',
                 'log',
+                'mailgun'
             ],
         ],
     ],
@@ -122,4 +123,11 @@ return [
         //     'timeout' => 5,
         // ],
     ],
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+     ],
 ];

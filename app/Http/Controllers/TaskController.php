@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Mail\TaskAssigned;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use Stevebauman\Hypertext\Transformer;
 
 class TaskController extends Controller
 {
@@ -44,7 +48,6 @@ class TaskController extends Controller
 
 	public function allTasks() {
 		$user = auth()->user();
-
 		if ($user->role == DepartmentEnum::ADMIN) {
 			$tasks = Task::with(['department', 'user', 'taskType'])->paginate(20);
 			return response()->json($tasks);
@@ -104,14 +107,22 @@ class TaskController extends Controller
 		]);
 
 		$user = auth()->user();
+        
 
 		if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$task = Task::find($request->task);
-
+            
 			if ($task) {
 				$task->user_id = $request->user;
 				$task->save();
-
+                $content = View::make('emails.task_assigned', ['task' => $task, 'user' => $task->user, 'client' => $task->client])->render();
+                $text = (new Transformer)
+                ->keepLinks()
+                ->keepNewLines()
+                ->toText($content);
+                $mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $task->user, 'client' => $task->client]);
+                $this->sendMessage($text,$task->user->phone_number);
+                $this->sendMail($task->user,$mail);
 				return response()->json(['message' => 'Task assigning successful']);
 			}
 		}
@@ -154,7 +165,7 @@ class TaskController extends Controller
 		}
 	}
 
-    private function sendMessage()
+    private function sendMessage($text,$phone_number)
     {
         $username = env('AT_USERNAME'); // use 'sandbox' for development in the test environment
         $apiKey   = env('AT_API_KEY'); // use your sandbox app API key for development in the test environment
@@ -165,12 +176,18 @@ class TaskController extends Controller
 
         // Use the service
         $result   = $sms->send([
-            'to'      => '+254726945514',
-            'message' => 'Hello World!',
+            'to'      => $phone_number,
+            'message' => $text,
             'from' => env('AT_SHORTCODE')
         ]);
-
         return $result;
+
+    }
+
+    private function sendMail($user,$mail)
+    {
+        Mail::to($user->email)->cc(config()->get('mail.from.address'))->send($mail);
+
     }
 
     // My Task
@@ -350,7 +367,7 @@ class TaskController extends Controller
     public function deleteTask($id)
     {
         $task = Task::find($id);
-        if ($task && $task->status !== 'completed') {
+        if ($task && $task->status !== TaskStatusEnum::DONE) {
             $task->delete();
             return response()->json(['message' => 'Task deleted successfully']);
         } else {

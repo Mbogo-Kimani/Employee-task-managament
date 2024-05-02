@@ -12,15 +12,21 @@ use Illuminate\Queue\SerializesModels;
 class TaskAssigned extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $content;
+    public $task;
+    public $user;
+    public $client;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($content)
     {
-        //
+        $this->content = (object)$content;
+        $this->task = $this->content->task;
+        $this->user = $this->content->user;
+        $this->client = $this->content->client;
     }
 
     /**
@@ -43,7 +49,7 @@ class TaskAssigned extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.task_assigned',
         );
     }
 
