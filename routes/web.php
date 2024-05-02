@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CircularController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
@@ -115,5 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/api/circular', [CircularController::class, 'store']);
 	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
 	Route::get('/api/circulars', [CircularController::class, 'index']);
+
+  Route::get('api/clients',[ClientController::class, 'index']);
 });
 

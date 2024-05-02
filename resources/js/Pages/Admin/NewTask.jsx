@@ -13,6 +13,7 @@ function NewTask({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [taskTypes, setTaskTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [clients, setClients] = useState([]);
   const [newTask, setNewTask] = useState({
     name: '',
     department: '',
@@ -41,6 +42,7 @@ function NewTask({ user }) {
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
+    fetchClients();
   }, []);
 
   useEffect(() => {
@@ -103,6 +105,10 @@ function NewTask({ user }) {
 
   function fetchDepartments() {
     requestHandler.get('/api/departments', setDepartments);
+  }
+
+  function fetchClients() {
+    requestHandler.get('/api/clients', setClients);
   }
 
   function handleChange(e) {
