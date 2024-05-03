@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\DepartmentEnum;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ClientController extends Controller
 {
@@ -16,5 +17,11 @@ class ClientController extends Controller
         }
         $clients = Client::all();
         return response()->json($clients);
+    }
+
+    public function clientsPage(Request $request)
+    {
+        $user = auth()->user();
+		return Inertia::render('Admin/Employees/UserId/Tasks', compact('user'));
     }
 }

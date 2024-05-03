@@ -118,5 +118,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/api/circulars', [CircularController::class, 'index']);
 
   Route::get('api/clients',[ClientController::class, 'index']);
+  Route::get('clients',[ClientController::class, 'clientsPage']);
 });
 
