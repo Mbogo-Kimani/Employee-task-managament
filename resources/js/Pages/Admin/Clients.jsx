@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react'
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../../data/indexNav';
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
-import departmentEnum from '../../data/enums/department';
+import clientStatusEnum from '../../data/enums/clientStatus';
 import Modal from '../../Components/Common/Modal';
 import { displayErrors } from '../../data/utils';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 import Icon from '../../Components/Common/Icon';
 import { loaderSetter } from '../../Components/Common/Loader';
-import EmployeesTableElem from '../../Components/Admin/EmployeesTableElem';
+import ClientsTableElem from '../../Components/Admin/ClientsTableElem';
 import { toast } from 'react-toastify';
+import SelectComp from '../../Components/Common/SelectComp';
 
 function Clients({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
-  const [clients, setclients] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [client, setClient] = useState({});
   const [newClient, setNewClient] = useState({});
   const [departments, setDepartments] = useState([]);
   const [clearanceLevels, setClearanceLevels] = useState([]);
@@ -25,7 +27,7 @@ function Clients({ user }) {
   const [formMode, setFormMode] = useState('');
   const [userEdited, setUserEdited] = useState();
   const [deleteUserModal, setDeleteUserModal] = useState(false);
-  const [deletedUser, setDeletedUser] = useState(newClient);
+  const [deletedClient, setDeletedClient] = useState(newClient);
 
   useEffect(() => {
     setPageItems(
@@ -52,7 +54,7 @@ function Clients({ user }) {
   }
 
   function fetchClients() {
-    requestHandler.get('/api/clients', setclients, null, loaderSetter);
+    requestHandler.get('/api/clients', setClients, null, loaderSetter);
   }
   
   function fetchDepartments() {
@@ -63,43 +65,33 @@ function Clients({ user }) {
     requestHandler.get('/api/clearance_levels', setClearanceLevels);
   }
 
-  function toggleOpenModal(mode = '', userId = null) {
-    if (mode) {
-      setFormMode(mode);
-      requestHandler.get(`/api/user/${userId}`, setNewClient);
-    }
+  function toggleOpenModal(mode,client = {}) {
+    setFormMode(mode)
+    setNewClient(client)
     setShowNewClientModal(true);
   }
 
   function toggleCloseModal() {
     setShowNewClientModal(false);
-    setNewClient({
-      name: '',
-      email: '',
-      role: '',
-      clearance_level: 2,
-      password: 'Etnet Technologies',
-      password_confirmation: 'Etnet Technologies',
-    });
   }
 
   function handleChange(e) {
     setNewClient({...newClient, [e.target.name]: e.target.value});
+    console.log(newClient);
   }
 
   function submitNewClient(e) {
     e.preventDefault();
     if (formMode === 'edit') {
-      requestHandler.patch('/api/user', newClient, editUserResponse, setErrors, loaderSetter);
+      requestHandler.patch('/api/client', newClient, setResponse, setErrors, loaderSetter);
     } else {
-      requestHandler.post('/api/user', newClient, setResponse, setErrors, loaderSetter);
+      requestHandler.post('/api/client', newClient, setResponse, setErrors, loaderSetter);
     }
   }
 
-  function openDeleteUserModal(e) {
-    e.preventDefault();
+  function openDeleteUserModal(client) {
     setDeleteUserModal(true);
-    setDeletedUser(newClient);
+    setDeletedClient(client);
   }
 
   function closeDeleteUserModal() {
@@ -108,10 +100,10 @@ function Clients({ user }) {
   }
 
   function deleteUser() {
-    requestHandler.delete(`/api/user/${deletedUser.id}`, deleteUserResponse, setErrors, loaderSetter);
+    requestHandler.delete(`/api/client/${deletedClient.id}`, deleteClientResponse, setErrors, loaderSetter);
   }
 
-  function deleteUserResponse(resp) {
+  function deleteClientResponse(resp) {
     if (resp) {
       toast.success('Employee Deleted successfully');
       closeDeleteUserModal();
@@ -170,7 +162,7 @@ function Clients({ user }) {
             <div className="bg-white rounded-lg shahiddendow dark:bg-gray-700">
               <div className="flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600">
                 {
-                  formMode && userEdited ?
+                  formMode == 'edit' ?
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Edit Client Details
                   </h3>
@@ -203,7 +195,7 @@ function Clients({ user }) {
                       type="text"
                       name="name"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter employee's name"
+                      placeholder="Enter client's name"
                       value={newClient.name}
                       onChange={handleChange}
                       required
@@ -227,7 +219,7 @@ function Clients({ user }) {
                       type="email"
                       name="email"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter employee's email"
+                      placeholder="Enter client's email"
                       value={newClient.email}
                       onChange={handleChange}
                       required
@@ -245,25 +237,17 @@ function Clients({ user }) {
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Department
+                      Phone Number
                     </label>
-                    <select
-                      name="role"
-                      value={newClient.role}
+                    <input
+                      type="text"
+                      name="phone_number"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's phone number"
+                      value={newClient.phone_number}
                       onChange={handleChange}
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option value="">Select Department</option>
-                      {
-                        (Array.isArray(departments) ? departments : []).map((department, index) => {
-                          return (
-                            <option key={department.id} value={departmentEnum[department.enum_key]}>
-                              {department.name}
-                            </option>
-                          )
-                        })
-                      }
-                    </select>
+                      required
+                    />
                     {
                       (errors.name || errors.errors?.name) && 
                       <p className="text-red-500 my-2 py-1">
@@ -274,27 +258,20 @@ function Clients({ user }) {
 
                   <div>
                     <label
-                      htmlFor="clearance_level"
+                      htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Which Position in the Department?
+                      Address
                     </label>
-                    <select
-                      name="clearance_level"
-                      value={newClient.clearance_level}
+                    <input
+                      type="text"
+                      name="address"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's email"
+                      value={newClient.address}
                       onChange={handleChange}
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      {
-                        (Array.isArray(clearanceLevels) ? clearanceLevels : []).map((level, index) => {
-                          return (
-                            <option key={level.enum_id || index} value={level.enum_id}>
-                              {level.name}
-                            </option>
-                          )
-                        })
-                      }
-                    </select>
+                      required
+                    />
                     {
                       (errors.clearance_level || errors.errors?.clearance_level) && 
                       <p className="text-red-500 my-1 py-1">
@@ -305,29 +282,23 @@ function Clients({ user }) {
 
                   <div>
                     <label
-                      htmlFor="password"
+                      htmlFor="resident_building"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Password
+                      Building
                     </label>
                     <div
                      className='flex items-center pr-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
                     >
                       <input
-                        type={showPasswords ? 'text' : 'password'}
-                        name="password"
+                        type='text'
+                        name="resident_building"
                         className="bg-gray-50 border-transparent focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Enter default password"
-                        value={newClient.password}
+                        placeholder="Enter resident building"
+                        value={newClient.resident_building}
                         onChange={handleChange}
                         required
                       />
-                      {
-                        showPasswords ?
-                        <Icon src='eyeOpen' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
-                        :
-                        <Icon src='eyeClose' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
-                      }
                     </div>
                     {
                       (errors.password || errors.errors?.password) && 
@@ -339,27 +310,74 @@ function Clients({ user }) {
 
                   <div>
                     <label
-                      htmlFor="title"
+                      htmlFor="resident_hse_no"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Confirm Password
+                      Hse No
                     </label>
                     <input
-                      type={showPasswords ? 'text' : 'password'}
-                      name="password_confirmation"
+                      type='text'
+                      name="resident_hse_no"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter Password again"
-                      value={newClient.password_confirmation}
+                      placeholder="Enter house number"
+                      value={newClient.resident_hse_no}
                       onChange={handleChange}
                       required
                     />
-                    {
+                    {/* {
                       (errors.password_confirmation || errors.errors?.password_confirmation) && 
                       <p className="text-red-500 my-1 py-1">
                         { displayErrors(errors, 'password_confirmation') }
                       </p>
-                    }  
+                    }   */}
                   </div>
+                  <div>
+                    <label
+                      htmlFor="payment_method"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                        Payment Method
+                    </label>
+                    <input
+                      type='text'
+                      name="payment_method"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter house number"
+                      value={newClient.payment_method}
+                      onChange={handleChange}
+                      required
+                    />
+                    {/* {
+                      (errors.password_confirmation || errors.errors?.password_confirmation) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'password_confirmation') }
+                      </p>
+                    }   */}
+                  </div>
+                  <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="date"
+              name="payment_date"
+              id="payment_date"
+              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={newClient.payment_date}
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <label
+              htmlFor="payment_date" 
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Payment Date
+            </label>
+            {/* {
+              (errors.toDate || errors.errors?.toDate) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'toDate') }
+              </p>
+            }   */}
+          </div>
                   
                   <div className='w-full flex justify-between items-center'>
                     <button
@@ -369,17 +387,6 @@ function Clients({ user }) {
                     >
                       Submit
                     </button>
-
-                    {
-                      formMode && formMode === 'edit' && (
-                        <button
-                          className="bg-red-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
-                          onClick={(e) => openDeleteUserModal(e)}
-                        >
-                          Delete
-                        </button>
-                      )
-                    }
                   </div>
                 </form>
               </div>
@@ -392,16 +399,17 @@ function Clients({ user }) {
             {
               clients.map((elem, index) => {
                 return (
-                  <EmployeesTableElem
+                  <ClientsTableElem
                     key={elem.id || index}
                     elem={elem}
                     openModal={toggleOpenModal}
+                    openDeleteModal={openDeleteUserModal}
                   />
                 );
               })
             }
           </TableComp>
-          <PaginatorNav state={clients} setState={setclients}/>
+          <PaginatorNav state={clients} setState={setClients}/>
         </div>
       </div>
     </SideNav>

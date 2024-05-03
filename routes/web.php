@@ -118,6 +118,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/api/circulars', [CircularController::class, 'index']);
 
   Route::get('api/clients',[ClientController::class, 'index']);
+  Route::post('api/client',[ClientController::class, 'index']);
+  Route::patch('api/client',[ClientController::class, 'update']);
+  Route::delete('api/client/{id}',[ClientController::class, 'deleteClient']);
   Route::get('clients',[ClientController::class, 'clientsPage']);
 });
 

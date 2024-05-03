@@ -1,0 +1,6 @@
+export default {
+    1: 'PENDING',
+    2: 'ACTIVE',
+    3: 'INACTIVE',
+};
+  
