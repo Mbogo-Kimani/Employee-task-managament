@@ -39,7 +39,8 @@
             <!-- Add other task details as needed -->
         </ul>
     </p>
-        <p>Please review and take appropriate action.</p>
+        <p>Please review and take appropriate action. </p>
+        <a href="{{ env('APP_URL') }}/tasks">Task Link</a>
 
         <p class="footer">Thank you,<br>ETNET</p>
     </div>

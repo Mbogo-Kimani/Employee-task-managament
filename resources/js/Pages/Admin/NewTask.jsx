@@ -26,11 +26,7 @@ function NewTask({ user }) {
   const [response, setResponse] = useState(false);
   const [taskTypeResponse, setTaskTypeResponse] = useState(false);
   const [newTaskTypeModal, setNewTaskTypeModal] = useState(false);
-  const [newTaskType, setNewTaskType] = useState({
-    task_type_department: '',
-    task_type_name: '',
-    task_type_description: '',
-  });
+  const [newTaskType, setNewTaskType] = useState({});
   
 
   useEffect(() => {
@@ -122,6 +118,7 @@ function NewTask({ user }) {
   function submitNewtask(e) {
     e.preventDefault();
     requestHandler.post('/api/tasks', newTask, setResponse, setErrors);
+
     if(response){
       notify('Task added')
     }
@@ -129,6 +126,7 @@ function NewTask({ user }) {
 
   function submitNewTaskType (e) {
     e.preventDefault();
+    console.log(newTaskType);
     requestHandler.post('/api/task_types', newTaskType, setTaskTypeResponse, setErrors);
    
   }
