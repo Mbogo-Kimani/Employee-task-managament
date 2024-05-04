@@ -66,6 +66,9 @@ function ClientsTableElem({ elem, openModal, openDeleteModal }) {
       <td className="px-2 py-4">    
         {elem.payment_method}
       </td>
+      <td className="px-2 py-4">    
+        {elem.payment_plan}
+      </td>
       <td className="px-2 py-4 relative">
            <DropDown>
                 <Menu.Item>

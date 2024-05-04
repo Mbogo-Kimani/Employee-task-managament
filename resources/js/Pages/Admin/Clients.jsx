@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../../data/indexNav';
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
-import clientStatusEnum from '../../data/enums/clientStatus';
+import paymentPlanEnum from '../../data/enums/PaymentPlan';
 import Modal from '../../Components/Common/Modal';
 import { displayErrors } from '../../data/utils';
 import TableComp from '../../Components/Common/TableComp';
@@ -100,21 +100,8 @@ function Clients({ user }) {
   }
 
   function deleteUser() {
-    requestHandler.delete(`/api/client/${deletedClient.id}`, deleteClientResponse, setErrors, loaderSetter);
-  }
-
-  function deleteClientResponse(resp) {
-    if (resp) {
-      toast.success('Employee Deleted successfully');
-      closeDeleteUserModal();
-    }
-  }
-
-  function editUserResponse(resp) {
-    if (resp) {
-      toast.success('Employee Edited successfully');
-      closeDeleteUserModal();
-    }
+    requestHandler.delete(`/api/client/${deletedClient.id}`, setResponse, setErrors, loaderSetter);
+    setDeleteUserModal(false)
   }
 
   return (
@@ -267,7 +254,7 @@ function Clients({ user }) {
                       type="text"
                       name="address"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter client's email"
+                      placeholder="Enter client's address"
                       value={newClient.address}
                       onChange={handleChange}
                       required
@@ -342,7 +329,7 @@ function Clients({ user }) {
                       type='text'
                       name="payment_method"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter house number"
+                      placeholder="Enter payment method"
                       value={newClient.payment_method}
                       onChange={handleChange}
                       required
@@ -378,6 +365,39 @@ function Clients({ user }) {
               </p>
             }   */}
           </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="payment_plan"
+              id="payment_plan"
+              // value={newTask.taskType}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            >
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{newClient.payment_plan ? newClient.payment_plan : "Payment Plan *"}</option>
+              {
+                Object.keys(paymentPlanEnum).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  return (
+                    <option
+                      key={ key }
+                      value={ key }
+                      title={ key }
+                      className='bg-transparent text-gray-900 dark:text-gray-300'
+                    >
+                      { paymentPlanEnum[key]}
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              // (errors.taskType || errors.errors?.taskType) && 
+              // <p className="text-red-500 my-2 py-1">
+              //   { displayErrors(errors, 'taskType') }
+              // </p>
+            }  
+          </div>
                   
                   <div className='w-full flex justify-between items-center'>
                     <button
@@ -395,7 +415,7 @@ function Clients({ user }) {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Action']}>
+          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Plan', 'Action']}>
             {
               clients.map((elem, index) => {
                 return (

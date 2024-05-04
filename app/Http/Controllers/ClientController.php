@@ -22,7 +22,34 @@ class ClientController extends Controller
     public function clientsPage(Request $request)
     {
         $user = auth()->user();
+        if($user->department_id !== DepartmentEnum::ADMIN){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
 		return Inertia::render('Admin/Clients', compact('user'));
+    }
+
+    public function store(Request $request)
+    {
+        $user = auth()->user();
+        if($user->department_id !== DepartmentEnum::ADMIN){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients',
+            'phone_number' => 'required|string|max:255',
+            'address' => 'required|string',
+            'resident_building' => 'required|string',
+            'resident_hse_no' => 'required|string',
+            'payment_date' => 'required|date',
+            'payment_method' => 'required|required_if_accepted:payment_date',
+            'payment_plan' => 'required|required_if_accepted:payment_date',
+		]);
+
+		$client = Client::create($request->all());
+      
+		return response()->json(['message' => 'Client created successfuly','client' => $client]);
     }
 
     public function update(Request $request)
@@ -35,7 +62,7 @@ class ClientController extends Controller
         $request->validate([
             'id' =>' required|exists:clients',
             'name' => 'string|max:255',
-            'email' => 'email|unique',
+            'email' => 'email',
             'phone_number' => 'string|max:255',
             'address' => 'string',
             'resident_building' => 'string',
