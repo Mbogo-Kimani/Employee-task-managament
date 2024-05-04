@@ -56,6 +56,12 @@ export const adminNavItems = [
     hasOptions: false,
   },
   {
+    name: 'Clients',
+    icon: 'clients',
+    href: '/admin/clients',
+    hasOptions: false,
+  },
+  {
     name: 'New Circular',
     href: '/admin/circulars/new_circular',
     icon: 'file',
