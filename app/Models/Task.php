@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class Task extends Model
 {
@@ -44,5 +46,30 @@ class Task extends Model
   public function taskType(): BelongsTo
   {
     return $this->belongsTo(TaskType::class);
+  }
+
+  public function scopeFilter(Builder $query, array $filters)
+  {
+    foreach ($filters as $key => $value) {
+      // Check if the filter method exists and call it
+      if (method_exists($this, $key)) {
+          $this->$key($query, $value);
+      }
+    }
+  }
+
+  public function status($query, $status)
+    {
+        return $query->where('status', intval($status));
+    }
+
+  public function type($query, $type)
+  {
+      return $query->where('task_type_id', (int)$type);
+  }
+
+  public function departmentId($query, $type)
+  {
+      return $query->where('department_id', (int)$type);
   }
 }

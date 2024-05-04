@@ -130,6 +130,12 @@ class TaskController extends Controller
     }
   }
 
+  public function filterTasks(Request $request)
+  {
+       $tasks = Task::filter(request(['type', 'status','departmentId']))->paginate(10);
+       return response()->json($tasks);
+  }
+
 	public function markTaskReceivedByHOD (Request $request) {
 		$task = Task::find($request->taskId);
 
