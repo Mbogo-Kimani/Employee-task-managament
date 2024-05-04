@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
   Route::get('/admin/reports', [UserController::class, 'showReports']);
   Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
+  Route::post('/api/admin/approve_report', [TaskReportController::class, 'adminApprove']);
 
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/api/tasks', [TaskController::class, 'store']);
