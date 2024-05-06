@@ -29,12 +29,16 @@ function ClientsTableElem({ elem, openModal, openDeleteModal }) {
     let endDate;
     switch(plan){
         case 'monthly':
-        endDate = startDate.setMonth(startDate.getMonth() + 1)
+        endDate = new Date(startDate.setMonth(startDate.getMonth() + 1))
+        break;
         case 'quarterly':
         endDate = startDate.setMonth(startDate.getMonth() + 3)
+        break;
         case 'annually':
         endDate = startDate.setMonth(startDate.getMonth() + 12)
+        break;
     }
+
     return endDate >= new Date()
   }
   return (

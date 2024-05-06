@@ -25,7 +25,6 @@ class TaskController extends Controller
 			'department' => 'required',
 			'taskType' => 'required',
 		]);
-
 		$newTask = Task::create([
 			'name' => $request->name,
 			'department_id' => $request->department,
@@ -34,6 +33,11 @@ class TaskController extends Controller
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
 		]);
+
+        if($request->client){
+            $newTask->client_id = intval($request->client);
+            $newTask->save();
+        }
 
 		return response()->json(['message' => 'Task saved successfully']);
 	}
@@ -49,7 +53,7 @@ class TaskController extends Controller
 	public function allTasks() {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-			$tasks = Task::with(['department', 'user', 'taskType'])->paginate(20);
+			$tasks = Task::with(['department', 'user', 'taskType','client'])->paginate(20);
 			return response()->json($tasks);
 		}
         
@@ -117,7 +121,7 @@ class TaskController extends Controller
 				$task->save();
                 $content = View::make('emails.task_assigned', ['task' => $task, 'user' => $task->user, 'client' => $task->client])->render();
                 $text = (new Transformer)
-                ->keepLinks()
+                ->keepLinks() 
                 ->keepNewLines()
                 ->toText($content);
                 $mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $task->user, 'client' => $task->client]);

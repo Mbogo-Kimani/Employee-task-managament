@@ -27,7 +27,7 @@ function NewTask({ user }) {
   const [taskTypeResponse, setTaskTypeResponse] = useState(false);
   const [newTaskTypeModal, setNewTaskTypeModal] = useState(false);
   const [newTaskType, setNewTaskType] = useState({});
-  
+
 
   useEffect(() => {
     setNavItems(
@@ -126,7 +126,6 @@ function NewTask({ user }) {
 
   function submitNewTaskType (e) {
     e.preventDefault();
-    console.log(newTaskType);
     requestHandler.post('/api/task_types', newTaskType, setTaskTypeResponse, setErrors);
    
   }
@@ -239,7 +238,7 @@ function NewTask({ user }) {
                 { displayErrors(errors, 'department') }
               </p>
             }  
-          </div>
+          </div>        
 
           <div className="relative z-0 w-full mb-5 group">
             <input
@@ -290,7 +289,34 @@ function NewTask({ user }) {
               </p>
             }  
           </div>
-
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="client"
+              id="client"
+              value={newTask.client}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            >
+              <option value="" className='text-gray-900 dark:text-gray-300'>Select Client</option>
+                      {
+                        (Array.isArray(clients) ? clients : []).map((individual, index) => {
+                          return (
+                            <option key={individual.id || index} value={individual.id}>
+                              {individual.name}
+                            </option>
+                          )
+                        })
+                      }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.department || errors.errors?.department) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'department') }
+              </p>
+            }  
+            </div>
           <div className="relative z-0 w-full mb-5 group">
             <label
               htmlFor="description" 
