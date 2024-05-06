@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import DashboardItem from '../Components/DashboardItem'
 import SideNav from '../Layouts/SideNav';
+import BarChart from '../Components/Charts/BarChart'
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
+import requestHandler from '../services/requestHandler';
 
 function Home(props) {
   const [day, setDay] = useState('');
+  const [tasks,setTasks] = useState({})
+  const [tasksDone,setTasksDone] = useState({})
+  const [errors,setErrors] = useState({})
   const [dateUK, setDateUK] = useState('');
+  const [pendingDataSet, setPendingDataSet] = useState([]);
+  const [ongoingDataSet, setOngoingDataSet] = useState([]);
+  const [finishedDataSet, setFinishedDataSet] = useState([]);
   const [pageItems, setPageItems] = useState(defaultPageData);
 
   useEffect(() => {
@@ -23,7 +31,64 @@ function Home(props) {
     setPageItems(
       pageAndNavItemsDeterminer(props.user?.role, props.user?.clearance_level)
     );
+    fetchTasks()
   }, [])
+
+  useEffect(() => {
+    if(tasks.data){
+      calculateStats(true)
+      calculateStats(false)
+
+    }
+  },[tasks])
+
+  useEffect(() => {
+    if(tasksDone.data){
+      calculateStats(false,true)
+    }
+  },[tasksDone])
+  
+  const fetchTasks = () => {
+    const filters = {
+      type: '1',
+      status: '1'
+    }
+    const filtersDone = {
+      type: '1',
+      status: '5'
+    }
+    requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
+    requestHandler.post('/api/filter/tasks',filtersDone, setTasksDone, setErrors)
+    
+  }
+  const fetchTasksDone = () => {
+    
+  }
+
+  function getNumberOfTasksForMonth(tasks, year, month, pending = true) {
+    // Filter tasks based on the year and month
+    console.log(tasksDone);
+    const filteredTasks = tasks.filter(task => {
+        const taskDate = new Date(task.updated_at);
+        return taskDate.getFullYear() === year && taskDate.getMonth() === month - 1 && (pending ? !task.received_by_department_member : task.received_by_department_member);
+    });
+
+    // Return the number of filtered tasks
+    return filteredTasks.length;
+  }
+
+  const calculateStats = (pending,done = false) => {
+    let year = 2024
+    let months = [1,2,3,4]
+    let dataSet = []
+
+    months.forEach((month) => {
+        dataSet.push(getNumberOfTasksForMonth(done ? tasksDone.data : tasks.data,year,month,pending))
+
+    })
+    pending ? setPendingDataSet(dataSet) : setOngoingDataSet(dataSet)
+    done && setFinishedDataSet(dataSet)
+  }
 
   return (
     <SideNav navItems={pageItems.navItems} user={props?.user}>
@@ -53,6 +118,12 @@ function Home(props) {
               })
             }
           </div>
+        </section>
+        <section>
+          <div className='w-[50vw]'>
+            <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
+          </div>
+           
         </section>
       </div>
     </SideNav>

@@ -63,3 +63,7 @@ select {
   border-top: var(--size) solid black;
   top: 55%;
 }
+
+.custom-select option:not(:checked) {
+  background-color: #fff !important; /* Apply styles to options that are not selected */
+}

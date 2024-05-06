@@ -11,6 +11,14 @@ export default {
   DONE: 5,
 };
 
+export const taskStatusKeys = {
+  1: 'Pending',
+  2: 'Awaiting Department Approval',
+  3: 'Awaiting Admin Approval',
+  4: 'Rejected',
+  5: 'Done',
+}
+
 export const taskStatusKeys = [
   {
     id: 1,

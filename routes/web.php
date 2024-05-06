@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CircularController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
@@ -97,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/api/assigned_tasks', [TaskController::class, 'getAssignedTasks']);
   Route::get('/api/department_users', [UserController::class, 'getUsersByDepartment']);
   Route::patch('/api/tasks', [TaskController::class, 'update']);
+  Route::post('/api/filter/tasks', [TaskController::class, 'filterTasks']);
   Route::patch('/api/tasks/{id}', [TaskController::class, 'unassignTask']);
 
   Route::get('/api/report/{id}', [TaskReportController::class, 'show']);
@@ -115,5 +117,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/api/circular', [CircularController::class, 'store']);
 	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
 	Route::get('/api/circulars', [CircularController::class, 'index']);
+
+  Route::get('api/clients',[ClientController::class, 'index']);
+  Route::post('api/client',[ClientController::class, 'store']);
+  Route::patch('api/client',[ClientController::class, 'update']);
+  Route::delete('api/client/{id}',[ClientController::class, 'deleteClient']);
+  Route::get('admin/clients',[ClientController::class, 'clientsPage']);
 });
 

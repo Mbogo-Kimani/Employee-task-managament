@@ -13,6 +13,7 @@ function NewTask({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [taskTypes, setTaskTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [clients, setClients] = useState([]);
   const [newTask, setNewTask] = useState({
     name: '',
     department: '',
@@ -25,11 +26,7 @@ function NewTask({ user }) {
   const [response, setResponse] = useState(false);
   const [taskTypeResponse, setTaskTypeResponse] = useState(false);
   const [newTaskTypeModal, setNewTaskTypeModal] = useState(false);
-  const [newTaskType, setNewTaskType] = useState({
-    task_type_department: '',
-    task_type_name: '',
-    task_type_description: '',
-  });
+  const [newTaskType, setNewTaskType] = useState({});
   
 
   useEffect(() => {
@@ -41,6 +38,7 @@ function NewTask({ user }) {
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
+    fetchClients();
   }, []);
 
   useEffect(() => {
@@ -105,6 +103,10 @@ function NewTask({ user }) {
     requestHandler.get('/api/departments', setDepartments);
   }
 
+  function fetchClients() {
+    requestHandler.get('/api/clients', setClients);
+  }
+
   function handleChange(e) {
     setNewTask({...newTask, [e.target.name]: e.target.value})
   }
@@ -116,6 +118,7 @@ function NewTask({ user }) {
   function submitNewtask(e) {
     e.preventDefault();
     requestHandler.post('/api/tasks', newTask, setResponse, setErrors);
+
     if(response){
       notify('Task added')
     }
@@ -123,6 +126,7 @@ function NewTask({ user }) {
 
   function submitNewTaskType (e) {
     e.preventDefault();
+    console.log(newTaskType);
     requestHandler.post('/api/task_types', newTaskType, setTaskTypeResponse, setErrors);
    
   }
