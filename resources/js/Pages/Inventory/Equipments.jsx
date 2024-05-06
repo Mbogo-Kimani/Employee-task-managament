@@ -5,13 +5,9 @@ import {
 } from "../../data/indexNav";
 import SideNav from "../../Layouts/SideNav";
 import requestHandler from "../../services/requestHandler";
-import Modal from "../../Components/Common/Modal";
-import SelectComp from "../../Components/Common/SelectComp";
-import { displayErrors } from "../../data/utils";
 import PaginatorNav from "../../Components/Common/PaginatorNav";
 import TableComp from "../../Components/Common/TableComp";
-import taskStatus from "../../data/enums/taskStatus";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import departmentsEnum from '../../data/enums/department';
 import Icon from '../../Components/Common/Icon';
