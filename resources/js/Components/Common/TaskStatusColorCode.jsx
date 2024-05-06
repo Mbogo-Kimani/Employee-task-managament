@@ -1,12 +1,12 @@
 import React from 'react'
-import { taskStatusKeys } from '../../data/enums/taskStatus';
+import { taskStatusRender } from '../../data/enums/taskStatus';
 import Icon from './Icon';
 
 function TaskStatusColorCode() {
   return (
     <div className='flex flex-col lg:flex-row mb-5'>
 			{
-        (Array.isArray(taskStatusKeys) ? taskStatusKeys : []).map((stat, index) => {
+        (Array.isArray(taskStatusRender) ? taskStatusRender : []).map((stat, index) => {
           return (
             <div key={stat.id || index} className="flex flex-start mx-5 items-center">
               {
