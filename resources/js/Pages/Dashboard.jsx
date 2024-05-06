@@ -67,7 +67,6 @@ function Home(props) {
 
   function getNumberOfTasksForMonth(tasks, year, month, pending = true) {
     // Filter tasks based on the year and month
-    console.log(tasksDone);
     const filteredTasks = tasks.filter(task => {
         const taskDate = new Date(task.updated_at);
         return taskDate.getFullYear() === year && taskDate.getMonth() === month - 1 && (pending ? !task.received_by_department_member : task.received_by_department_member);
@@ -81,7 +80,7 @@ function Home(props) {
     let year = 2024
     let months = [1,2,3,4]
     let dataSet = []
-
+   
     months.forEach((month) => {
         dataSet.push(getNumberOfTasksForMonth(done ? tasksDone.data : tasks.data,year,month,pending))
 
@@ -120,7 +119,8 @@ function Home(props) {
           </div>
         </section>
         <section>
-          <div className='w-[50vw]'>
+          <div className='w-[50vw] mt-5'>
+            <h2 className='font-medium text-xl'>Installations</h2>
             <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
           </div>
            

@@ -3,6 +3,7 @@ import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../../da
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import paymentPlanEnum from '../../data/enums/PaymentPlan';
+import paymentMethodEnum from '../../data/enums/paymentMethod';
 import Modal from '../../Components/Common/Modal';
 import { displayErrors } from '../../data/utils';
 import TableComp from '../../Components/Common/TableComp';
@@ -305,7 +306,7 @@ function Clients({ user }) {
                     <input
                       type='text'
                       name="resident_hse_no"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-10"
                       placeholder="Enter house number"
                       value={newClient.resident_hse_no}
                       onChange={handleChange}
@@ -318,29 +319,7 @@ function Clients({ user }) {
                       </p>
                     }   */}
                   </div>
-                  <div>
-                    <label
-                      htmlFor="payment_method"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Payment Method
-                    </label>
-                    <input
-                      type='text'
-                      name="payment_method"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter payment method"
-                      value={newClient.payment_method}
-                      onChange={handleChange}
-                      required
-                    />
-                    {/* {
-                      (errors.password_confirmation || errors.errors?.password_confirmation) && 
-                      <p className="text-red-500 my-1 py-1">
-                        { displayErrors(errors, 'password_confirmation') }
-                      </p>
-                    }   */}
-                  </div>
+                  
                   <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
@@ -367,6 +346,39 @@ function Clients({ user }) {
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
+              name="payment_method"
+              id="payment_method"
+              // value={newTask.taskType}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            >
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{newClient.payment_method ? newClient.payment_method : "Payment Method"}</option>
+              {
+                Object.keys(paymentMethodEnum).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  return (
+                    <option
+                      key={ key }
+                      value={ key }
+                      title={ key }
+                      className='bg-transparent text-gray-900 dark:text-gray-300'
+                    >
+                      { paymentMethodEnum[key]}
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              // (errors.taskType || errors.errors?.taskType) && 
+              // <p className="text-red-500 my-2 py-1">
+              //   { displayErrors(errors, 'taskType') }
+              // </p>
+            }  
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
               name="payment_plan"
               id="payment_plan"
               // value={newTask.taskType}
@@ -374,7 +386,7 @@ function Clients({ user }) {
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{newClient.payment_plan ? newClient.payment_plan : "Payment Plan *"}</option>
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{newClient.payment_plan ? newClient.payment_plan : "Payment Plan"}</option>
               {
                 Object.keys(paymentPlanEnum).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
