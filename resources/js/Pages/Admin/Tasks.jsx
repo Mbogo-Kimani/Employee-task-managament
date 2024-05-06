@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { navItemsDeterminer, pageData as defaultPageData } from '../../data/indexNav';
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
-import taskStatus from '../../data/enums/taskStatus';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 import Icon from '../../Components/Common/Icon';
@@ -11,11 +10,12 @@ import Modal from "../../Components/Common/Modal";
 import SelectComp from '../../Components/Common/SelectComp';
 import departmentsEnum from '../../data/enums/department';
 import { toast } from 'react-toastify';
+import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
+import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
 
 
 function Tasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
-  const [reports, setReports] = useState({})
   const [departments, setDepartments] = useState([]);
   const [taskTypes, setTaskTypes] = useState([]);
 
@@ -40,7 +40,7 @@ function Tasks({ user }) {
     setNavItems(
       navItemsDeterminer(user?.role, user?.clearance_level)
     );
-  }, [])
+  }, []);
 
   useEffect(() => {
     if(response){
@@ -67,15 +67,13 @@ function Tasks({ user }) {
   
 
   const notify = (string) => {
-    toast.success(string,{
-      position: "top-center"
-    })
+    toast.success(string);
   }
 
   function deleteTask(id){
-    try{
+    try {
       requestHandler.delete(`/api/task/${id}`)
-    }catch(error){
+    } catch(error) {
       console.error('Error deleting task:', error);
     }
     fetchAllTasks()
@@ -83,19 +81,14 @@ function Tasks({ user }) {
   }
 
   function submitEditedTask(e){
-    e.preventDefault()
-    requestHandler.put('/api/task',editTask, setResponse, setErrors)
-    
-    
-  
+    e.preventDefault();
+    requestHandler.put('/api/task',editTask, setResponse, setErrors);
     fetchAllTasks();
-    setShowModal(false)
-    
-    
+    setShowModal(false);
   }
 
   function handleChange(e){
-     setEditTask({...editTask, [e.target.name]: e.target.value})
+    setEditTask({...editTask, [e.target.name]: e.target.value})
   }
 
   function fetchTaskTypes() {
@@ -109,6 +102,7 @@ function Tasks({ user }) {
   return (
     <SideNav navItems={navItems} user={user}>
       <div>
+        <TaskStatusColorCode />
         <div className='mb-4 w-full flex'>
           <a
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
@@ -139,8 +133,8 @@ function Tasks({ user }) {
                     <td className="px-2 py-4">
                       { (task.user && task.user.name) || 'None Assigned' }
                     </td>
-                    <td className={`px-2 py-4 ${task.status == taskStatus.DONE ? "text-green-500" : task.status == taskStatus.AWAITING_APPROVAL ? "text-amber-300" : task.status == taskStatus.AWAITING_APPROVAL && "text-red-500"}`}>
-                      { taskStatus[task.status] || taskStatus[1] }
+                    <td className={`px-2 py-4`}>
+                      <TaskStatusIndicator status={task.status} />
                     </td>
                     <td className="px-2 py-4">
                       { task.task_finished_at || '' }
