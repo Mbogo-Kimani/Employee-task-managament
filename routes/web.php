@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
 use Inertia\Inertia;
@@ -117,6 +118,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/api/circular', [CircularController::class, 'store']);
 	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
 	Route::get('/api/circulars', [CircularController::class, 'index']);
+
+	Route::get('/api/notifications', [NotificationController::class, 'index']);
+	Route::get('/api/unread_notifications_count', [NotificationController::class, 'unreadNotificationsCount']);
+	Route::post('/api/mark_as_read', [NotificationController::class, 'markAsRead']);
 
   Route::get('api/clients',[ClientController::class, 'index']);
   Route::post('api/client',[ClientController::class, 'store']);

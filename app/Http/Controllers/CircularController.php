@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DepartmentEnum;
+use App\Jobs\CreateNotificationsFromCirculars;
 use App\Models\Circular;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -67,6 +68,7 @@ class CircularController extends Controller
 		]);
 
 		$newCircular->save();
+    CreateNotificationsFromCirculars::dispatch($newCircular);
 
 		return response()->json(['message' => 'Circular saved successfully']);
   }
