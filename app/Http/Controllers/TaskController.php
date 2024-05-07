@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Jobs\TaskReminder;
 use App\Mail\TaskAssigned;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Stevebauman\Hypertext\Transformer;
@@ -20,6 +22,7 @@ use Stevebauman\Hypertext\Transformer;
 class TaskController extends Controller
 {
 	public function store(Request $request) {
+        $user = auth()->user();
 		$request->validate([
 			'name' => 'required|string|max:255',
 			'department' => 'required',
@@ -38,6 +41,22 @@ class TaskController extends Controller
             $newTask->client_id = intval($request->client);
             $newTask->save();
         }
+
+        $currentDate = Carbon::now();
+        $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
+
+        $delay = $currentDate->diffInHours($endDate);
+
+        if($delay >= 48){
+            $nearDue = $delay - 24;
+            TaskReminder::dispatch($newTask,$user)->delay($nearDue);
+        }
+
+        TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay));
+        TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay + 24));
+
+
+
 
 		return response()->json(['message' => 'Task saved successfully']);
 	}
@@ -196,7 +215,7 @@ class TaskController extends Controller
 
     private function sendMail($user,$mail)
     {
-        Mail::to($user->email)->cc(config()->get('mail.from.address'))->send($mail);
+        Mail::to($user->email)->cc(config()->get('mail.from.address'))->queue($mail);
 
     }
 
@@ -362,17 +381,6 @@ class TaskController extends Controller
         }
     }
 
-
-    public function completeTaskLate($id)
-    {
-        $task = Task::find($id);
-        if ($task) {
-            $task->status = 'completed in late';
-            $task->save();
-            notify()->success('Completed But in Late');
-            return redirect()->back();
-        }
-    }
 
     public function deleteTask($id)
     {
