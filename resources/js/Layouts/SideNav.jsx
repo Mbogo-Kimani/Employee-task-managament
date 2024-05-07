@@ -3,15 +3,25 @@ import NavItem from '../Components/NavItem';
 import requestHandler from '../services/requestHandler';
 import { Link, router } from '@inertiajs/react';
 import Icon from '../Components/Common/Icon';
+import Badge from '../Components/Common/Badge';
 
 function SideNav({ navItems, user, children }) {
   const [collapsed, setCollapsed] = useState(hasLargeWidth());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [response, setResponse] = useState(false);
+  const [notificationsCount, setNotificationsCount] = useState(0);
 
   useEffect(() => {
     checkLogoutResponse();
-  }, [response])
+  }, [response]);
+
+  useEffect(() => {
+    fetchUnreadNotificationCount();
+  }, []);
+  
+  function fetchUnreadNotificationCount() {
+    requestHandler.get('/api/unread_notifications_count', setNotificationsCount);
+  }
 
   function checkLogoutResponse() {
     if (response) {
@@ -52,7 +62,8 @@ function SideNav({ navItems, user, children }) {
           <Icon src="/images/etnet.png" alt="Dashboard Image"/>
         </Link>
         <div className="flex grow"/>
-        <Link className='w-[40px] h-[auto] block my-auto' href="/notifications">
+        <Link className='w-[40px] h-[auto] block my-auto relative' href="/notifications">
+          <Badge numberToDisplay={notificationsCount} size={'5px'} className='right-[-0.5rem] top-[-0.5rem] z-10' textClassName='text-xs px-1.5'/>
           <Icon src="notification" alt="Dashboard Notiifcations" className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer'/>
         </Link>
         <div className="relative">
