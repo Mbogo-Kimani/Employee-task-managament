@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { navItemsDeterminer, pageData as defaultPageData} from '../../../../data/indexNav';
 import SideNav from '../../../../Layouts/SideNav';
 import requestHandler from '../../../../services/requestHandler';
-import taskStatus from '../../../../data/enums/taskStatus';
+import taskStatus, { taskStatusKeys } from '../../../../data/enums/taskStatus';
 import TableComp from '../../../../Components/Common/TableComp';
 
 function Tasks({ user }) {
@@ -58,7 +58,7 @@ function Tasks({ user }) {
                     { task.to_date }
                   </td>
                   <td className="px-2 py-4">
-                    { taskStatus[task.status] }
+                    { taskStatusKeys[task.status] }
                   </td>
                   <td className="px-2 py-4">
                     { task.task_finished_at || '' }

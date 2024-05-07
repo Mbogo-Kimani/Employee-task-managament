@@ -4,11 +4,11 @@ import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/
 import taskStatus from '../data/enums/taskStatus';
 import requestHandler from '../services/requestHandler';
 import Modal from '../Components/Common/Modal';
-import { handlePage } from '../data/utils';
 import TableComp from '../Components/Common/TableComp';
 import PaginatorNav from '../Components/Common/PaginatorNav';
 import { loaderSetter } from '../Components/Common/Loader';
-import clearanceLevelEnum from "../data/enums/clearanceLevel";
+import TaskStatusColorCode from '../Components/Common/TaskStatusColorCode';
+import TaskStatusIndicator from '../Components/Common/TaskStatusIndicator';
 
 function Tasks({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -113,6 +113,7 @@ function Tasks({ user }) {
     <>
       <SideNav navItems={pageItems.navItems} user={user}>
         <div className="">
+          <TaskStatusColorCode />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback']}>
               {
@@ -136,7 +137,7 @@ function Tasks({ user }) {
                         { task.to_date }
                       </td>
                       <td className="px-2 py-4">
-                        { taskStatus[task.status] }
+                        <TaskStatusIndicator status={task.status} />
                       </td>
                       {
                         task.status === taskStatus.PENDING || task.status === taskStatus.REJECTED ?
