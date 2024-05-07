@@ -11,8 +11,11 @@ import Modal from "../../Components/Common/Modal";
 import SelectComp from '../../Components/Common/SelectComp';
 import departmentsEnum from '../../data/enums/department';
 import { toast } from 'react-toastify';
+import { Menu, Transition } from '@headlessui/react'
+import DropDown from '../../Components/Common/DropDown';
 import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
+
 
 
 function Tasks({ user }) {
@@ -229,20 +232,36 @@ function Tasks({ user }) {
                     <td className="px-2 py-4">
                       { task.task_finished_at || '' }
                     </td>
-                    <td className="px-2 py-4">
-                      <Icon
-                        src='edit'
-                        className='w-[20px] h-[20px] opacity-60 hover:opacity-80 cursor-pointer'
-                        onClick={() => toggleEditTask(task)}
-                      />
-                    </td>
-                    <td className="px-2 py-4">
-                      <Icon
-                        src='delete'
-                        className='w-[15px] h-[15px] opacity-60 hover:opacity-80 cursor-pointer'
-                        onClick={() => deleteTask(task.id)}
-                      />
-                    </td>
+                    <td className="px-2 py-4 relative">
+                      <DropDown>
+                            <Menu.Item>
+                                    {({ active }) => (
+                                    <button
+                                        className={`${
+                                        active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                        } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                        onClick={() => toggleEditTask(task)}
+                                    >
+                                        <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                                        <span className='block py-3 px-2'>Edit</span>   
+                                    </button>
+                                    )}
+                            </Menu.Item>  
+                            <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                className={`${
+                                  active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                onClick={() => deleteTask(task.id)}
+                              >
+                                <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(34 197 94)'/>
+                                <span className='block py-3 px-2'>Delete</span>
+                              </button>
+                            )}
+                          </Menu.Item>  
+                      </DropDown>
+                  </td>
                   </tr>
                 );
               })

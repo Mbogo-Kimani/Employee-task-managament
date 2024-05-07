@@ -22,7 +22,7 @@ body {
 }
 
 .custom-select {
-  min-width: 250px;
+  /* min-width: 250px; */
   position: relative;
 }
 
@@ -61,7 +61,8 @@ select {
   border-left: var(--size) solid transparent;
   border-right: var(--size) solid transparent;
   border-top: var(--size) solid black;
-  top: 55%;
+  /* top: 30%;   */
+
 }
 
 .custom-select option:not(:checked) {
