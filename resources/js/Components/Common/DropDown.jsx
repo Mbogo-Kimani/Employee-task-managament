@@ -1,8 +1,8 @@
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment } from 'react'
 import Icon from '../Common/Icon';
 
-export default function Example({children}) {
+export default function DropDown({children}) {
   return (
     <div className="w-16 text-right">
       <Menu as="div" className="relative inline-block text-left">
@@ -20,7 +20,7 @@ export default function Example({children}) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+          <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-10">
             <div className="px-1 py-1 ">
               {children}
             </div>

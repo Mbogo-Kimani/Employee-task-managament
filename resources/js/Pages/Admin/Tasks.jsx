@@ -37,6 +37,10 @@ function Tasks({ user }) {
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
   const [filters, setFilters] = useState({});
+  const [handlers, setHandlers] = useState({
+    admins: [],
+    departmentHeads: []
+  });
 
 
   useEffect(() => {
@@ -57,8 +61,16 @@ function Tasks({ user }) {
     fetchAllTasks();
   }, []);
 
+  useEffect(() => {
+    fetchHandlers();
+  }, [editTask])
+
   function fetchAllTasks() {
     requestHandler.get('/api/all_tasks', setTasks, null, loaderSetter);
+  }
+
+  function fetchHandlers() {
+    if (Object.keys(editTask).length > 0) requestHandler.get(`/api/admin_department_handlers/${editTask.department?.id}`, setHandlers);
   }
 
   function toggleEditTask (task) {
@@ -200,7 +212,7 @@ function Tasks({ user }) {
             </button>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Task Name', 'Task Type', 'Department','Client', 'Handler', 'Status', 'Finished At', 'Edit']}>
+          <TableComp columns={['Task Name', 'Task Type', 'Department','Client', 'Handler', 'Status', 'Finished At', 'Action']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
@@ -308,7 +320,7 @@ function Tasks({ user }) {
             <SelectComp
               name="task_type_id"
               id="taskType"
-              value={editTask.task_type}
+              value={editTask.task_type?.id}
               onChange={(e) => handleChange(e)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -342,7 +354,7 @@ function Tasks({ user }) {
             <SelectComp
               name="department_id"
               id="department"
-              value={editTask.department}
+              value={editTask.department?.id}
               onChange={(e) => handleChange(e)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -372,6 +384,72 @@ function Tasks({ user }) {
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="adminHandler"
+              id="adminHandler"
+              value={editTask.adminHandler}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!editTask.adminHandler ? 'text-gray-500': 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>Assign Admin</option>
+              {
+                (Array.isArray(handlers.admins) ? handlers.admins : []).map((type, index) => {
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ type.id }
+                      className={'text-gray-900'}
+                    >
+                      { type.name }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.adminHandler || errors.errors?.adminHandler) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'adminHandler') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="departmentHandler"
+              id="departmentHandler"
+              value={editTask.departmentHandler}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!editTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>{'Assign Department Head'}</option>
+              {
+                (Array.isArray(handlers.departmentHeads) ? handlers.departmentHeads : []).map((type, index) => {
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ type.id }
+                      className='text-gray-900'
+                    >
+                      { type.name }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.departmentHandler || errors.errors?.departmentHandler) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'departmentHandler') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
               name="from_date"
@@ -386,7 +464,7 @@ function Tasks({ user }) {
               htmlFor="name" 
               className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              From (optional)
+              From
             </label>
             {/* {
               (errors.fromDate || errors.errors?.fromDate) && 
@@ -411,7 +489,7 @@ function Tasks({ user }) {
               htmlFor="name" 
               className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              To (optional)
+              To
             </label>
             {/* {
               (errors.toDate || errors.errors?.toDate) && 
