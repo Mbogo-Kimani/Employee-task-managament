@@ -6,11 +6,10 @@ import {
 import SideNav from "../Layouts/SideNav";
 import requestHandler from "../services/requestHandler";
 import Modal from "../Components/Common/Modal";
-import SelectComp from "../Components/Common/SelectComp";
 import { displayErrors } from "../data/utils";
 import PaginatorNav from "../Components/Common/PaginatorNav";
 import TableComp from "../Components/Common/TableComp";
-import taskStatus from "../data/enums/taskStatus";
+import taskStatus, { taskStatusKeys } from "../data/enums/taskStatus";
 import { toast } from 'react-toastify';
 
 
@@ -187,7 +186,7 @@ function AssignedTasks({ user }) {
                                         {task.user && task.user.name}
                                     </td>
                                     <td className="px-2 py-4">
-                                        {taskStatus[task.status]}
+                                        {taskStatusKeys[task.status]}
                                     </td>
                                     <td className="px-2 py-4">
                                         {task.from_date ||

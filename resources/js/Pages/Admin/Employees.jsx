@@ -59,6 +59,14 @@ function Employees({ user }) {
     checkResponse();
   }, [response]);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('new');
+
+  useEffect(() => {
+    if(myParam){
+      setShowNewUserModal(true)
+    }
+  },[])
   function checkResponse () {
     if (response) {
       fetchUsers();

@@ -84,9 +84,15 @@ export const adminPageItems = [
   },
   {
     numberToDisplay: 'users',
-    name: 'Total Employees',
+    name: 'New Employee',
     pictureSrc: 'assets/image/teamwork.png',
-    href: '/admin/employees',
+    href: '/admin/employees?new=true',
+  },
+  {
+    numberToDisplay: 'users',
+    name: 'New Client',
+    pictureSrc: 'assets/image/teamwork.png',
+    href: '/admin/clients?new=true',
   },
   // {
   //   numberToDisplay: 'departments',

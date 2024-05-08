@@ -22,7 +22,7 @@ body {
 }
 
 .custom-select {
-  /* min-width: 350px; */
+  /* min-width: 250px; */
   position: relative;
 }
 
@@ -50,20 +50,21 @@ select {
   pointer-events: none;
 }
 
-.custom-select::before {
+/* .custom-select::before {
   border-left: var(--size) solid transparent;
   border-right: var(--size) solid transparent;
   border-bottom: var(--size) solid black;
   top: 40%;
-}
+} */
 
 .custom-select::after {
   border-left: var(--size) solid transparent;
   border-right: var(--size) solid transparent;
   border-top: var(--size) solid black;
-  top: 55%;
+  /* top: 30%;   */
+
 }
 
-.custom-select option:not(:checked) {
+select option:not(:checked) {
   background-color: #fff !important; /* Apply styles to options that are not selected */
 }

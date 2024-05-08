@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import DashboardItem from '../Components/DashboardItem'
 import SideNav from '../Layouts/SideNav';
 import BarChart from '../Components/Charts/BarChart'
+import ClientChart from '../Components/Charts/ClientsChart'
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
 import requestHandler from '../services/requestHandler';
 
@@ -10,10 +11,12 @@ function Home(props) {
   const [tasks,setTasks] = useState({})
   const [tasksDone,setTasksDone] = useState({})
   const [errors,setErrors] = useState({})
+  const [clients, setClients] = useState([]);
   const [dateUK, setDateUK] = useState('');
   const [pendingDataSet, setPendingDataSet] = useState([]);
   const [ongoingDataSet, setOngoingDataSet] = useState([]);
   const [finishedDataSet, setFinishedDataSet] = useState([]);
+  const [clientDataSet, setClientDataSet] = useState([]);
   const [pageItems, setPageItems] = useState(defaultPageData);
 
   useEffect(() => {
@@ -32,16 +35,20 @@ function Home(props) {
       pageAndNavItemsDeterminer(props.user?.role, props.user?.clearance_level)
     );
     fetchTasks()
+    fetchClients()
   }, [])
 
   useEffect(() => {
     if(tasks.data){
       calculateStats(true)
       calculateStats(false)
-
     }
   },[tasks])
-
+  useEffect(() => {
+      if(clients.data){
+        calculateStats(false,false,true)
+      }
+  },[clients])
   useEffect(() => {
     if(tasksDone.data){
       calculateStats(false,true)
@@ -61,33 +68,45 @@ function Home(props) {
     requestHandler.post('/api/filter/tasks',filtersDone, setTasksDone, setErrors)
     
   }
-  const fetchTasksDone = () => {
-    
+  function fetchClients() {
+    requestHandler.get('/api/clients', setClients);
   }
 
   function getNumberOfTasksForMonth(tasks, year, month, pending = true) {
     // Filter tasks based on the year and month
-    console.log(tasksDone);
     const filteredTasks = tasks.filter(task => {
         const taskDate = new Date(task.updated_at);
-        return taskDate.getFullYear() === year && taskDate.getMonth() === month - 1 && (pending ? !task.received_by_department_member : task.received_by_department_member);
+        return taskDate.getFullYear() === year && taskDate.getMonth() === month - 1 && ( pending ? !task.received_by_department_member : task.received_by_department_member);
     });
 
     // Return the number of filtered tasks
     return filteredTasks.length;
   }
 
-  const calculateStats = (pending,done = false) => {
+  function getNumberOfClientsPerMonth(year,month){
+   
+    const filteredClients = clients?.data.filter(client => {
+        const createdAt = new Date(client.created_at)
+        return createdAt.getFullYear() === year && createdAt.getMonth() === month - 1;
+      })
+      return filteredClients.length
+  }
+
+  const calculateStats = (pending,done = false, clientStat = false) => {
     let year = 2024
-    let months = [1,2,3,4]
+    let months = [1,2,3,4,5]
     let dataSet = []
-
+   
     months.forEach((month) => {
-        dataSet.push(getNumberOfTasksForMonth(done ? tasksDone.data : tasks.data,year,month,pending))
-
+        if(clientStat){
+          dataSet.push(getNumberOfClientsPerMonth(year,month))
+        }else{
+          dataSet.push(getNumberOfTasksForMonth(done ? tasksDone.data : tasks.data,year,month,pending))
+        }
     })
     pending ? setPendingDataSet(dataSet) : setOngoingDataSet(dataSet)
     done && setFinishedDataSet(dataSet)
+    clientStat && setClientDataSet(dataSet)
   }
 
   return (
@@ -119,9 +138,14 @@ function Home(props) {
             }
           </div>
         </section>
-        <section>
-          <div className='w-[50vw]'>
+        <section className='flex'>
+          <div className='w-[40vw] mt-5 mr-5'>
+            <h2 className='font-medium text-xl'>Installations</h2>
             <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
+          </div>
+          <div className='w-[40vw] mt-5'>
+            <h2 className='font-medium text-xl'>Clients Onboarded</h2>
+            <ClientChart clientData={clientDataSet}/>
           </div>
            
         </section>

@@ -11,15 +11,17 @@ import Modal from "../../Components/Common/Modal";
 import SelectComp from '../../Components/Common/SelectComp';
 import departmentsEnum from '../../data/enums/department';
 import { toast } from 'react-toastify';
+import { Menu, Transition } from '@headlessui/react'
+import DropDown from '../../Components/Common/DropDown';
+import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
+import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
+
 
 
 function Tasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
-  const [reports, setReports] = useState({})
   const [departments, setDepartments] = useState([]);
   const [taskTypes, setTaskTypes] = useState([]);
-
-
   const [tasks, setTasks] = useState({
     data: [],
     from: 1,
@@ -41,7 +43,7 @@ function Tasks({ user }) {
     setNavItems(
       navItemsDeterminer(user?.role, user?.clearance_level)
     );
-  }, [])
+  }, []);
 
   useEffect(() => {
     if(response){
@@ -68,15 +70,13 @@ function Tasks({ user }) {
   
 
   const notify = (string) => {
-    toast.success(string,{
-      position: "top-center"
-    })
+    toast.success(string);
   }
 
   function deleteTask(id){
-    try{
+    try {
       requestHandler.delete(`/api/task/${id}`)
-    }catch(error){
+    } catch(error) {
       console.error('Error deleting task:', error);
     }
     fetchAllTasks()
@@ -84,17 +84,14 @@ function Tasks({ user }) {
   }
 
   function submitEditedTask(e){
-    e.preventDefault()
-    requestHandler.put('/api/task',editTask, setResponse, setErrors)
-
+    e.preventDefault();
+    requestHandler.put('/api/task',editTask, setResponse, setErrors);
     fetchAllTasks();
-    setShowModal(false)
-    
-    
+    setShowModal(false);
   }
 
   function handleChange(e){
-     setEditTask({...editTask, [e.target.name]: e.target.value})
+    setEditTask({...editTask, [e.target.name]: e.target.value})
   }
 
   function handleFilters(e){
@@ -116,6 +113,7 @@ function Tasks({ user }) {
   return (
     <SideNav navItems={navItems} user={user}>
       <div>
+        <TaskStatusColorCode />
         <div className='mb-4 w-full flex'>
           <a
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
@@ -178,7 +176,7 @@ function Tasks({ user }) {
               required={true}
               className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('status') ? "bg-green-400" : "bg-transparent"}`}
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Task status *</option>
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Task status</option>
               {
                 Object.keys(taskStatus).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
@@ -198,11 +196,11 @@ function Tasks({ user }) {
               className={`bg-green-400 to-green-300 hover:from-green-500 hover:to-green-600 px-4 py-2 rounded-md `}
               onClick={(e) => submitFilters(e)}
             >
-             Filter ({Object.keys(filters).length})
+             Filters ({Object.keys(filters).length})
             </button>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Status', 'Finished At', 'Edit']}>
+          <TableComp columns={['Task Name', 'Task Type', 'Department','Client', 'Handler', 'Status', 'Finished At', 'Edit']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
@@ -221,28 +219,47 @@ function Tasks({ user }) {
                       { (task.department && task.department.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
+                      { (task.client && task.client.name) || 'None Assigned' }
+                    </td>
+                    <td className="px-2 py-4">
                       { (task.user && task.user.name) || 'None Assigned' }
                     </td>
-                    <td className={`px-2 py-4 ${task.status == taskStatus.DONE ? "text-green-500" : task.status == taskStatus.AWAITING_APPROVAL ? "text-amber-300" : task.status == taskStatus.AWAITING_APPROVAL && "text-red-500"}`}>
-                      { taskStatus[task.status] || taskStatus[1] }
+                    <td className={`px-2 py-4`}>
+                      <TaskStatusIndicator status={task.status} />
                     </td>
                     <td className="px-2 py-4">
                       { task.task_finished_at || '' }
                     </td>
-                    <td className="px-2 py-4">
-                      <Icon
-                        src='edit'
-                        className='w-[20px] h-[20px] opacity-60 hover:opacity-80 cursor-pointer'
-                        onClick={() => toggleEditTask(task)}
-                      />
-                    </td>
-                    <td className="px-2 py-4">
-                      <Icon
-                        src='delete'
-                        className='w-[15px] h-[15px] opacity-60 hover:opacity-80 cursor-pointer'
-                        onClick={() => deleteTask(task.id)}
-                      />
-                    </td>
+                    <td className="px-2 py-4 relative">
+                      <DropDown>
+                            <Menu.Item>
+                                    {({ active }) => (
+                                    <button
+                                        className={`${
+                                        active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                        } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                        onClick={() => toggleEditTask(task)}
+                                    >
+                                        <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                                        <span className='block py-3 px-2'>Edit</span>   
+                                    </button>
+                                    )}
+                            </Menu.Item>  
+                            <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                className={`${
+                                  active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                onClick={() => deleteTask(task.id)}
+                              >
+                                <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(34 197 94)'/>
+                                <span className='block py-3 px-2'>Delete</span>
+                              </button>
+                            )}
+                          </Menu.Item>  
+                      </DropDown>
+                  </td>
                   </tr>
                 );
               })
