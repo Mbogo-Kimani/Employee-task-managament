@@ -117,7 +117,7 @@ class UserController extends Controller
 			'role' => $request->role,
 			'department_id' => $request->role,
 		]);
-      
+		Mail::to($user->email)->send(new \App\Mail\EmailVerification());
 		return response()->json($user);
   }
 
