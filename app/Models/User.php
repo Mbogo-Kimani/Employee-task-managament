@@ -33,6 +33,11 @@ class User extends Authenticatable
     return $this->tasks()->where('status', TaskStatusEnum::PENDING)->get();
   }
 
+  public function notifications(): HasMany
+  {
+    return $this->hasMany(Notification::class);
+  }
+
 	protected $fillable = [
 		'name',
 		'email',
