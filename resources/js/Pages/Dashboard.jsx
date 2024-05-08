@@ -5,6 +5,8 @@ import BarChart from '../Components/Charts/BarChart'
 import ClientChart from '../Components/Charts/ClientsChart'
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
 import requestHandler from '../services/requestHandler';
+import departmentsEnum from '../data/enums/department';
+
 
 function Home(props) {
   const [day, setDay] = useState('');
@@ -139,15 +141,21 @@ function Home(props) {
           </div>
         </section>
         <section className='flex'>
-          <div className='w-[40vw] mt-5 mr-5'>
-            <h2 className='font-medium text-xl'>Installations</h2>
-            <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
-          </div>
-          <div className='w-[40vw] mt-5'>
-            <h2 className='font-medium text-xl'>Clients Onboarded</h2>
-            <ClientChart clientData={clientDataSet}/>
-          </div>
-           
+          {
+            props.user?.role == departmentsEnum.ADMIN && (
+              <>
+                <div className='w-[40vw] mt-5 mr-5'>
+                  <h2 className='font-medium text-xl'>Installations</h2>
+                  <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
+                </div>
+                <div className='w-[40vw] mt-5'>
+                  <h2 className='font-medium text-xl'>Clients Onboarded</h2>
+                  <ClientChart clientData={clientDataSet}/>
+                </div>
+              </>
+
+            )
+          }  
         </section>
       </div>
     </SideNav>

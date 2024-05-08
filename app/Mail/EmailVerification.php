@@ -18,9 +18,10 @@ class EmailVerification extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public $user;
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -43,7 +44,7 @@ class EmailVerification extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.email_verification',
         );
     }
 

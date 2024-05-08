@@ -42,6 +42,7 @@ function Employees({ user }) {
   const [userEdited, setUserEdited] = useState();
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedUser, setDeletedUser] = useState(newUser);
+  const [countryCode, setCountryCode] = useState('+254')
 
   useEffect(() => {
     setPageItems(
@@ -74,6 +75,7 @@ function Employees({ user }) {
         name: '',
         email: '',
         role: '',
+        phone_number: '',
         clearance_level: 2,
         password: 'Etnet Technologies',
         password_confirmation: 'Etnet Technologies',
@@ -108,6 +110,7 @@ function Employees({ user }) {
       name: '',
       email: '',
       role: '',
+      phone_number: '',
       clearance_level: 2,
       password: 'Etnet Technologies',
       password_confirmation: 'Etnet Technologies',
@@ -154,6 +157,10 @@ function Employees({ user }) {
       toast.success('Employee Edited successfully');
       closeDeleteUserModal();
     }
+  }
+
+  function handlePhoneNumberChange(e){
+    setNewUser({...newUser,[e.target.name]: countryCode + e.target.value})
   }
 
   return (
@@ -270,7 +277,24 @@ function Employees({ user }) {
                       </p>
                     }  
                   </div>
-
+                  <div className='flex'>
+                    <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                      <option value="" disabled>Select Country Code</option>
+                      <option value="+254">+254 (Kenya)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+91">+91 (India)</option>
+                      {/* Add more country codes as needed */}
+                    </select>
+                    <input
+                      type="tel"
+                      name='phone_number'
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      value={newUser.phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Enter phone number"
+                      required
+                    />
+                  </div>
                   <div>
                     <label
                       htmlFor="title"
