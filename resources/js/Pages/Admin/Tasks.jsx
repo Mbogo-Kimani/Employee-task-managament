@@ -22,8 +22,6 @@ function Tasks({ user }) {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [departments, setDepartments] = useState([]);
   const [taskTypes, setTaskTypes] = useState([]);
-
-
   const [tasks, setTasks] = useState({
     data: [],
     from: 1,

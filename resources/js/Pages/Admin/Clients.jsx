@@ -46,6 +46,15 @@ function Clients({ user }) {
     checkResponse();
   }, [response]);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('new');
+
+  useEffect(() => {
+    if(myParam){
+      setShowNewClientModal(true)
+    }
+  },[])
+
   function checkResponse () {
     if (response) {
       fetchClients();
@@ -429,7 +438,7 @@ function Clients({ user }) {
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
           <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Plan', 'Action']}>
             {
-              clients.map((elem, index) => {
+              clients?.data?.map((elem, index) => {
                 return (
                   <ClientsTableElem
                     key={elem.id || index}

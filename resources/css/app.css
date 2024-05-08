@@ -65,6 +65,6 @@ select {
 
 }
 
-.custom-select option:not(:checked) {
+select option:not(:checked) {
   background-color: #fff !important; /* Apply styles to options that are not selected */
 }
