@@ -83,13 +83,13 @@ export const adminPageItems = [
     href: '/admin/new_task',
   },
   {
-    numberToDisplay: 'users',
+    numberToDisplay: '+',
     name: 'New Employee',
     pictureSrc: 'assets/image/teamwork.png',
     href: '/admin/employees?new=true',
   },
   {
-    numberToDisplay: 'users',
+    numberToDisplay: '+',
     name: 'New Client',
     pictureSrc: 'assets/image/teamwork.png',
     href: '/admin/clients?new=true',

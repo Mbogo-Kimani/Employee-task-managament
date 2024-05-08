@@ -48,6 +48,8 @@ Route::get('/contact', function () {
 Route::post('/login', [UserController::class, 'login'])->name('admin.login.post');
 // Route::get('/login', [UserController::class, 'loginPage'])->name('admin.login');
 Route::get('/auth/login', [UserController::class, 'authLoginPage'])->name('login');
+Route::post('/auth/change_password', [UserController::class, 'setPassword']);
+Route::get('/change_password', [UserController::class, 'changePasswordPage'])->name('change_password');
 
 Route::group(['middleware' => 'auth'], function () {
   
