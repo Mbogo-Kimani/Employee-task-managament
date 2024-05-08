@@ -300,7 +300,7 @@ function NewTask({ user }) {
             >
               <option value="" className='text-gray-900 dark:text-gray-300'>Select Client</option>
                       {
-                        (Array.isArray(clients) ? clients : []).map((individual, index) => {
+                        (Array.isArray(clients.data) ? clients.data : []).map((individual, index) => {
                           return (
                             <option key={individual.id || index} value={individual.id}>
                               {individual.name}

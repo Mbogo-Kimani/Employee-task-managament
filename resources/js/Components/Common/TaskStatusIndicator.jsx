@@ -1,9 +1,9 @@
 import React from 'react'
 import Icon from './Icon';
-import { taskStatusKeys } from '../../data/enums/taskStatus';
+import { taskStatusRender } from '../../data/enums/taskStatus';
 
 function TaskStatusIndicator({ status }) {
-  const statusComp = taskStatusKeys.find(key => key.id === status);
+  const statusComp = taskStatusRender.find(key => key.id === status);
   
   if (statusComp) {
     return (
