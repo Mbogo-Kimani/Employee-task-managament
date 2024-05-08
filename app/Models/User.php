@@ -38,16 +38,6 @@ class User extends Authenticatable
     return $this->hasMany(Notification::class);
   }
 
-	protected $fillable = [
-		'name',
-		'email',
-		'role',
-		'image',
-		'department_id',
-		'clearance_level',
-    'password',
-	];
-
   protected $hidden = [
     'password',
     'remember_token',

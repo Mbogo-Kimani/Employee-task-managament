@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Enums\ClearanceLevelEnum;
 use App\Enums\DepartmentEnum;
+use App\Helpers\ApiLib;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
@@ -82,6 +85,23 @@ class UserController extends Controller
 		return response()->json($users);
 	}
 
+	public function setPassword(Request $request){
+		$request->validate([
+			'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'token' => 'required|string'
+		]);
+
+		$user = User::where('verification_token',$request->token)->first();
+
+		if(!$user){
+			throw new NotFoundHttpException('User not found');
+		}
+		$user->password = Hash::make($request->password);
+		$user->save();
+
+		return response()->json(['message' => 'Password has been set succesfully']);
+	}
+
 	public function clearanceLevels() {
 		return response()->json([
 			[
@@ -105,17 +125,19 @@ class UserController extends Controller
 			'name' => 'required|string|max:255',
 			'password' => ['required', 'confirmed', Rules\Password::defaults()],
 			'role' => 'required',
+			'phone_number' => 'required|string'
 		]);
-
 		$user = User::create([
 			'clearance_level' => $request->clearance_level,
 			'email' => $request->email,
 			'name' => $request->name,
 			'password' => Hash::make($request->password),
+			'verification_token' => ApiLib::createVerificationToken(24),
 			'role' => $request->role,
 			'department_id' => $request->role,
+			'phone_number' => $request->phone_number,
 		]);
-      
+		Mail::to($user->email)->send(new \App\Mail\EmailVerification($user));
 		return response()->json($user);
   }
 
@@ -233,6 +255,10 @@ class UserController extends Controller
 
 	public function authLoginPage () {
 		return Inertia::render('Auth/Login');
+	}
+
+	public function changePasswordPage () {
+		return Inertia::render('Auth/ChangePassword');
 	}
 
 	public function login(Request $request)
