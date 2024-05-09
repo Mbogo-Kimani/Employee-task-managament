@@ -73,6 +73,12 @@ export const adminNavItems = [
     hasOptions: false,
     href: '/admin/reports'
   },
+  {
+    name: 'Maps',
+    icon: 'map',
+    hasOptions: false,
+    href: '/admin/maps'
+  },
 ];
 
 export const adminPageItems = [
