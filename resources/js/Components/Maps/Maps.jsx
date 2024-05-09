@@ -59,7 +59,7 @@ function Maps({view}) {
     }}
     style={{width: "80vw", height: "90vh"}}
     mapStyle={`mapbox://styles/mapbox/${view}`}
-    mapboxAccessToken="pk.eyJ1IjoiamVycnk4OCIsImEiOiJjbHZ5dzZpYmYwanBxMmltZXBjcGtpcmhhIn0.sNWGw8ZNZm8yZhW0Rt7fkQ"
+    mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
     >
       <Layer {...parkLayer} /> 
       <Layer {...buildingLayer} /> 
