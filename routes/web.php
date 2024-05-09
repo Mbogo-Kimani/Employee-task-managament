@@ -78,6 +78,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::patch('/api/user', [UserController::class, 'updateUserDetails']);
 	Route::delete('/api/user/{id}', [UserController::class, 'delete']);
   Route::put('/api/user', [UserController::class, 'update']);
+	Route::get('/api/admins', [UserController::class, 'getAdmins']);
+	Route::get('/api/department_heads/{department_id}', [UserController::class, 'getDepartmentHeads']);
+	Route::get('/api/admin_department_handlers/{department_id}', [UserController::class, 'getAllHandlers']);
 
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
   Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);

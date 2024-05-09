@@ -22,11 +22,13 @@ use Stevebauman\Hypertext\Transformer;
 class TaskController extends Controller
 {
 	public function store(Request $request) {
-        $user = auth()->user();
+    $user = auth()->user();
 		$request->validate([
 			'name' => 'required|string|max:255',
 			'department' => 'required',
 			'taskType' => 'required',
+			'fromDate' => 'required',
+			'toDate' => 'required',
 		]);
 		$newTask = Task::create([
 			'name' => $request->name,
@@ -35,28 +37,27 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
+      'admin_handler_id' => $request->adminHandler,
+      'department_handler_id' => $request->departmentHandler,
 		]);
 
-        if($request->client){
-            $newTask->client_id = intval($request->client);
-            $newTask->save();
-        }
+    if($request->client){
+      $newTask->client_id = intval($request->client);
+      $newTask->save();
+    }
 
-        $currentDate = Carbon::now();
-        $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
+    $currentDate = Carbon::now();
+    $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
 
-        $delay = $currentDate->diffInHours($endDate);
+    $delay = $currentDate->diffInHours($endDate);
 
-        if($delay >= 48){
-            $nearDue = $delay - 24;
-            TaskReminder::dispatch($newTask,$user)->delay($nearDue);
-        }
+    if($delay >= 48){
+      $nearDue = $delay - 24;
+      TaskReminder::dispatch($newTask,$user)->delay($nearDue);
+    }
 
-        TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay));
-        TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay + 24));
-
-
-
+    TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay));
+    TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay + 24));
 
 		return response()->json(['message' => 'Task saved successfully']);
 	}
@@ -64,7 +65,7 @@ class TaskController extends Controller
 	public function index(Request $request) {
 		$currentUser = auth()->user();
 		$tasks = Task::where('user_id', $currentUser->id)
-					->paginate(10);
+					->paginate(20);
 		
 		return response()->json($tasks);
 	}
@@ -168,7 +169,9 @@ class TaskController extends Controller
 
   public function filterTasks(Request $request)
   {
-       $tasks = Task::filter(request(['type', 'status','departmentId']))->paginate(10);
+       $tasks = Task::filter(request(['type', 'status','departmentId']))
+			 							->with(['department', 'user', 'taskType','client'])
+										->paginate(20);
        return response()->json($tasks);
   }
 

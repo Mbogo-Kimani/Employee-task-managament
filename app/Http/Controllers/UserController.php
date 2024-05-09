@@ -284,4 +284,29 @@ class UserController extends Controller
     auth()->logout();
 		return response()->json(['message' => 'Logout was successful']);
   }
+
+	public function getAdmins() {
+		$admins = User::where('department_id', DepartmentEnum::ADMIN)->get();
+		return response()->json($admins);
+	}
+
+	public function getDepartmentHeads($department_id) {
+		if ($department_id) {
+			$department_heads = User::where('department_id', $department_id)
+															->where('clearance_level', ClearanceLevelEnum::DEPARTMENT_LEADER)
+															->get();
+			return response()->json($department_heads);
+		}
+	}
+
+	public function getAllHandlers($department_id) {
+		if ($department_id) {
+			$admins = User::where('department_id', DepartmentEnum::ADMIN)->get();
+			$department_heads = User::where('department_id', $department_id)
+															->where('clearance_level', ClearanceLevelEnum::DEPARTMENT_LEADER)
+															->get();
+
+			return response()->json(['admins' => $admins, 'departmentHeads' => $department_heads]);
+		}
+	}
 }
