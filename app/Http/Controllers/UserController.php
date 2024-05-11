@@ -264,11 +264,21 @@ class UserController extends Controller
 	public function mapsPage(){
 		$user = auth()->user();
 		
-		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
+		if ($user->role !== DepartmentEnum::ADMIN) {
 			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
 		}
 
 		return Inertia::render('Admin/ISPmap', compact('user'));
+	}
+
+	public function employeesStatsPage(){
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('Admin/EmployeeStat', compact('user'));
 	}
 
 	public function login(Request $request)

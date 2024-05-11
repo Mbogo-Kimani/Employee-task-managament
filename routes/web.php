@@ -50,7 +50,9 @@ Route::post('/login', [UserController::class, 'login'])->name('admin.login.post'
 Route::get('/auth/login', [UserController::class, 'authLoginPage'])->name('login');
 Route::post('/auth/change_password', [UserController::class, 'setPassword']);
 Route::get('/change_password', [UserController::class, 'changePasswordPage'])->name('change_password');
-
+Route::get('/token', function () {
+    return csrf_token(); 
+});
 Route::group(['middleware' => 'auth'], function () {
   
 	Route::group(['middleware' => ['auth', 'IsEmployee']], function () {
@@ -87,6 +89,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
   Route::get('/admin/reports', [UserController::class, 'showReports']);
   Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
+  Route::get('/api/admin/tasks', [TaskController::class, 'getTasksByUsers']);
+  Route::get('/admin/employees/stats', [UserController::class, 'employeesStatsPage']);
 
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/api/tasks', [TaskController::class, 'store']);

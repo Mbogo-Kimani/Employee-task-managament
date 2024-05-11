@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Http\Resources\EmployeeTaskResource;
 use App\Jobs\TaskReminder;
 use App\Mail\TaskAssigned;
 use Carbon\Carbon;
@@ -99,6 +100,23 @@ class TaskController extends Controller
 
 		return response()->json($tasks);
 	}
+
+    public function getTasksByUsers(Request $request)
+    {
+        $user = auth()->user();
+		if ($user->role == DepartmentEnum::ADMIN) {
+			$users = User::all();
+
+            $results = [];
+            foreach ($users as $user){
+                $tasks = $user->tasks;
+                
+                $results[] = new EmployeeTaskResource($user,$tasks);
+            }
+
+            return response()->json($results);
+		}
+    }
 
 	public function getUnassignedTasks() {
 		$user = auth()->user();
