@@ -133,5 +133,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::patch('api/client',[ClientController::class, 'update']);
   Route::delete('api/client/{id}',[ClientController::class, 'deleteClient']);
   Route::get('admin/clients',[ClientController::class, 'clientsPage']);
+
+  Route::get('/admin/maps',[UserController::class, 'mapsPage']);
 });
 
