@@ -45,22 +45,21 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::post('/login', [UserController::class, 'login'])->name('admin.login.post');
+// Route::post('/api/login', [UserController::class, 'login'])->name('admin.login.post');
 // Route::get('/login', [UserController::class, 'loginPage'])->name('admin.login');
 Route::get('/auth/login', [UserController::class, 'authLoginPage'])->name('login');
 Route::post('/auth/change_password', [UserController::class, 'setPassword']);
 Route::get('/change_password', [UserController::class, 'changePasswordPage'])->name('change_password');
-Route::get('/token', function () {
-    return csrf_token(); 
-});
-Route::group(['middleware' => 'auth'], function () {
+
+
+Route::middleware('auth:sanctum')->group( function () {
   
-	Route::group(['middleware' => ['auth', 'IsEmployee']], function () {
+	Route::middleware('auth:sanctum')->group(function () {
     Route::get('/myProfile', [UserController::class, 'myProfile'])->name('profile');
   });
+Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
 
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
-  Route::get('/dashboard', [HomeController::class, 'home'])->name('dashboard');
 
   Route::get('/tasks', [HomeController::class, 'tasksPage']);
   Route::get('/api/tasks', [TaskController::class, 'index']);
@@ -70,9 +69,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/reports/new', [TaskReportController::class, 'newReportPage']);
 
   Route::get('/admin/employees', [UserController::class, 'adminEmployeesPage']);
-  Route::get('/api/employees', [UserController::class, 'index']);
-  Route::get('/api/departments', [DepartmentController::class, 'index']);
-  Route::get('/api/clearance_levels', [UserController::class, 'clearanceLevels']);
+  // Route::get('/api/employees', [UserController::class, 'index']);
+  // Route::get('/api/departments', [DepartmentController::class, 'index']);
+  // Route::get('/api/clearance_levels', [UserController::class, 'clearanceLevels']);
 
   Route::get('/profile', [UserController::class, 'navigateToProfile']);
   Route::post('/api/user', [UserController::class, 'store']);
@@ -94,7 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/api/tasks', [TaskController::class, 'store']);
-  Route::get('/api/all_tasks', [TaskController::class, 'allTasks']);
+  // Route::get('/api/all_tasks', [TaskController::class, 'allTasks']);
   Route::delete('/api/task/{id}', [TaskController::class, 'deleteTask']);
   Route::put('/api/task/', [TaskController::class, 'updateTask']);
   Route::patch('/api/task/{id}', [TaskController::class, 'updateFeedBack']);
@@ -132,7 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/api/unread_notifications_count', [NotificationController::class, 'unreadNotificationsCount']);
 	Route::post('/api/mark_as_read', [NotificationController::class, 'markAsRead']);
 
-  Route::get('api/clients',[ClientController::class, 'index']);
+  // Route::get('api/clients',[ClientController::class, 'index']);
   Route::post('api/client',[ClientController::class, 'store']);
   Route::patch('api/client',[ClientController::class, 'update']);
   Route::delete('api/client/{id}',[ClientController::class, 'deleteClient']);

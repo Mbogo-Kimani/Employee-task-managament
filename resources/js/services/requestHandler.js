@@ -5,9 +5,10 @@ class RequestHandler {
       'Content-Type': 'application/json',
       accept: 'application/json',
       'X-CSRF-TOKEN': this.token,
+      'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
     };
   }
-
+  
   /**
    * Perform all get requests
    * @param {String} url - endpoint to make request
@@ -16,6 +17,7 @@ class RequestHandler {
    * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
   get(url, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    
     this.fetch({url}, stateSetter, errorSetter, loaderSetter);
   }
 

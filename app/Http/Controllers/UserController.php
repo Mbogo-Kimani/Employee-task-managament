@@ -292,16 +292,18 @@ class UserController extends Controller
 
     $login = auth()->attempt($credentials);
     if ($login) {
-      return response()->json(['message' => 'Login Successful']);
+      $token = $request->user()->createToken('token_auth')->plainTextToken;;
+      return response()->json(['message' => 'Login Successful','token' => $token]);
     }
 
 		abort(401, 'Invalid user email or password');
     // return redirect()->back()->withErrors();
   }
 
-	public function logout()
+	public function logout(Request $request)
   {
-    auth()->logout();
+    $request->user()->tokens()->delete();
+    // auth()->user()->tokens()->delete();
 		return response()->json(['message' => 'Logout was successful']);
   }
 
