@@ -15,6 +15,7 @@ import { Menu, Transition } from '@headlessui/react'
 import DropDown from '../../Components/Common/DropDown';
 import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
+import { router } from '@inertiajs/react';
 
 
 
@@ -116,6 +117,10 @@ function Tasks({ user }) {
 
   function fetchDepartments() {
     requestHandler.get('/api/departments', setDepartments);
+  }
+
+  function navigateToTasksView(id) {
+    router.visit(`/task/${id}`)
   }
 
   function submitFilters(e){
@@ -244,32 +249,45 @@ function Tasks({ user }) {
                     </td>
                     <td className="px-2 py-4 relative">
                       <DropDown>
-                            <Menu.Item>
-                                    {({ active }) => (
-                                    <button
-                                        className={`${
-                                        active ? 'bg-green-200 text-black' : 'text-gray-900'
-                                        } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                                        onClick={() => toggleEditTask(task)}
-                                    >
-                                        <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
-                                        <span className='block py-3 px-2'>Edit</span>   
-                                    </button>
-                                    )}
-                            </Menu.Item>  
-                            <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  active ? 'bg-green-200 text-black' : 'text-gray-900'
-                                } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                                onClick={() => deleteTask(task.id)}
-                              >
-                                <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(34 197 94)'/>
-                                <span className='block py-3 px-2'>Delete</span>
-                              </button>
-                            )}
-                          </Menu.Item>  
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              onClick={() => toggleEditTask(task)}
+                            >
+                              <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                              <span className='block py-3 px-2'>Edit</span>   
+                            </button>
+                          )}
+                        </Menu.Item>  
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                                active ? 'bg-green-200 text-black' : 'text-gray-900'
+                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              onClick={() => deleteTask(task.id)}
+                            >
+                              <Icon src='trash' className='w-4 h-4 mr-2' fill='rgb(239 68 68)'/>
+                              <span className='block py-3 px-2'>Delete</span>
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                                active ? 'bg-green-200 text-black' : 'text-gray-900'
+                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              onClick={() => navigateToTasksView(task.id)}
+                            >
+                              <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
+                              <span className='block py-3 px-2'>View</span>
+                            </button>
+                          )}
+                        </Menu.Item>
                       </DropDown>
                   </td>
                   </tr>
@@ -387,10 +405,10 @@ function Tasks({ user }) {
             <SelectComp
               name="adminHandler"
               id="adminHandler"
-              value={editTask.adminHandler}
+              value={handlers.admins.find(ind => ind.id === editTask.admin_handler_id)?.id}
               onChange={(e) => handleChange(e)}
               required={true}
-              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!editTask.adminHandler ? 'text-gray-500': 'text-gray-900 dark:text-white'}`}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
             >
               <option value="" className='text-gray-400'>Assign Admin</option>
               {
@@ -420,10 +438,10 @@ function Tasks({ user }) {
             <SelectComp
               name="departmentHandler"
               id="departmentHandler"
-              value={editTask.departmentHandler}
+              value={handlers.departmentHeads.find(ind => ind.id === editTask.department_handler_id)?.id}
               onChange={(e) => handleChange(e)}
               required={true}
-              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!editTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
             >
               <option value="" className='text-gray-400'>{'Assign Department Head'}</option>
               {

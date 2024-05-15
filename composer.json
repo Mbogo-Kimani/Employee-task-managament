@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "ext-pcntl": "*",
         "africastalking/africastalking": "^3.0",
+        "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^1.0",
@@ -16,6 +17,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "predis/predis": "^2.2",
+        "pusher/pusher-php-server": "^7.2",
         "stevebauman/hypertext": "^1.1",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0"

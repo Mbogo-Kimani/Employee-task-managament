@@ -38,6 +38,11 @@ class User extends Authenticatable
     return $this->hasMany(Notification::class);
   }
 
+  public function taskMessages()
+  {
+    return $this->hasMany(TaskMessage::class);
+  }
+
   protected $hidden = [
     'password',
     'remember_token',

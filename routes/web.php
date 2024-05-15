@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
 use Inertia\Inertia;
@@ -94,6 +95,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::delete('/api/task/{id}', [TaskController::class, 'deleteTask']);
   Route::put('/api/task/', [TaskController::class, 'updateTask']);
   Route::patch('/api/task/{id}', [TaskController::class, 'updateFeedBack']);
+  Route::get('/task/{task_id}', [TaskController::class, 'tasksViewPage']);
+  Route::get('/api/get_task/{id}', [TaskController::class, 'show']);
+  Route::get('/api/task_messages/{task_id}', [TaskController::class, 'getTaskMessages']);
+
+  Route::post('/api/messages', [TaskMessageController::class, 'store']);
 
   Route::get('/api/task_types', [TaskTypeController::class, 'index']);
   Route::post('/api/task_types', [TaskTypeController::class, 'store']);

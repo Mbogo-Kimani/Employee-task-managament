@@ -17,10 +17,60 @@ use App\Mail\TaskAssigned;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
+use Inertia\Inertia;
 use Stevebauman\Hypertext\Transformer;
 
 class TaskController extends Controller
 {
+	public function show($id) {
+		if ($id) {
+			$admin_handler = null;
+			$department_handler = null;
+			$handler = null;
+
+			$task = Task::find($id);
+
+			if ($task->admin_handler_id) {
+				$admin_handler = User::where('id', $task->admin_handler_id)
+															->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+															->get()[0];
+			}
+
+			if ($task->department_handler_id) {
+				$department_handler = User::where('id', $task->department_handler_id)
+																	->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+																	->get()[0];
+			}
+
+			if ($task->user_id) {
+				$handler = User::where('id', $task->user_id)
+												->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+												->get()[0];
+			}
+
+			return response()->json([
+				'admin' => $admin_handler,
+				'department_head' => $department_handler,
+				'handler' => $handler,
+				'task' => $task,
+			]);
+		}
+	}
+
+	public function getTaskMessages($id) {
+		if ($id) {
+			$task = Task::find($id);
+			$messages = $task->taskMessages()->get();
+
+			return response()->json($messages);
+		}
+	} 
+
+	public function tasksViewPage() {
+		$user = auth()->user();
+		return Inertia::render('Task/Id', compact('user'));
+	}
+
 	public function store(Request $request) {
     $user = auth()->user();
 		$request->validate([
@@ -76,7 +126,7 @@ class TaskController extends Controller
 			$tasks = Task::with(['department', 'user', 'taskType','client'])->paginate(20);
 			return response()->json($tasks);
 		}
-        
+
 	}
 
 	public function getPending(Request $request) {
@@ -221,169 +271,6 @@ class TaskController extends Controller
         Mail::to($user->email)->cc(config()->get('mail.from.address'))->queue($mail);
 
     }
-
-    // My Task
-    public function myTask()
-    {
-        // $userId = auth()->user()->id;
-        // $tasks = Task::where('employee_id', $userId)
-        //     ->whereIn('status', ['pending', 'completed on time', 'completed in late'])
-        //     ->paginate(5);
-
-        // return view('admin.pages.Task.myTask', compact('tasks'));
-
-        $employee = Auth::user()->employee;
-
-        if (!$employee) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $tasks = Task::with(['employee'])
-            ->where('employee_id', $employee->id)
-            ->get();
-
-        $tasks->each(function ($task) {
-            $employee = $task->employee;
-            $employee->load('designation', 'department'); // Assuming you have relationships defined in Employee model
-            $task->designation = $employee->designation->name;
-            $task->department = $employee->department->name;
-        });
-
-        return view('admin.pages.Task.myTask', compact('tasks'));
-    }
-
-
-
-    public function storeTask(Request $request)
-    {
-        // Check if the employee has an ongoing or completed task
-        $employeePendingTask = Task::where('employee_id', $request->employee_id)
-            ->where('status', 'pending')
-            ->exists();
-
-        // If there's no pending task, allow assignment of a new task
-        if (!$employeePendingTask) {
-            // Validation for new task assignment
-            $validate = Validator::make($request->all(), [
-                'from_date' => 'required|date|after_or_equal:today',
-                'to_date' => 'required|date|after_or_equal:from_date',
-                'task_name' => 'required',
-                'employee_id' => 'required|unique:tasks,employee_id,NULL,id,from_date,' . $request->from_date,
-                'task_description' => 'nullable|string',
-            ]);
-
-            // Check for overlapping dates for the same employee (similar to the previous check)
-            $overlappingTasks = Task::where('employee_id', $request->employee_id)
-                ->where(function ($query) use ($request) {
-                    $query->where(function ($q) use ($request) {
-                        $q->where('from_date', '<=', $request->from_date)
-                            ->where('to_date', '>=', $request->from_date);
-                    })->orWhere(function ($q) use ($request) {
-                        $q->where('from_date', '>=', $request->from_date)
-                            ->where('from_date', '<=', $request->to_date);
-                    });
-                })
-                ->exists();
-
-            if ($validate->fails() || $overlappingTasks) {
-                if ($overlappingTasks) {
-                    notify()->error('Overlapping dates for the same employee.');
-                } else {
-                    notify()->error($validate->getMessageBag());
-                }
-                return redirect()->back();
-            }
-
-            // Task creation logic
-            $fromDate = new \DateTime($request->from_date);
-            $toDate = new \DateTime($request->to_date);
-            $totalDays = $fromDate->diff($toDate)->days + 1;
-
-            Task::create([
-                'employee_id' => $request->employee_id,
-                'task_name' => $request->task_name,
-                'from_date' => $request->from_date,
-                'to_date' => $request->to_date,
-                'total_days' => $totalDays,
-                'task_description' => $request->task_description,
-            ]);
-
-            notify()->success('New Task created');
-            return redirect()->back();
-        } else {
-            // If there's a pending task, check if it's completed on time or late
-            $completedTask = Task::where('employee_id', $request->employee_id)
-                ->whereIn('status', ['completed on time', 'completed in late'])
-                ->exists();
-
-            if ($completedTask) {
-                // Task creation logic
-                $fromDate = new \DateTime($request->from_date);
-                $toDate = new \DateTime($request->to_date);
-                $totalDays = $fromDate->diff($toDate)->days + 1;
-
-                Task::create([
-                    'employee_id' => $request->employee_id,
-                    'task_name' => $request->task_name,
-                    'from_date' => $request->from_date,
-                    'to_date' => $request->to_date,
-                    'total_days' => $totalDays,
-                    'task_description' => $request->task_description,
-                ]);
-
-                notify()->success('New Task created');
-                return redirect()->back();
-            }
-        }
-
-        // If the employee has a pending task and it's not completed on time or late, prevent assignment of a new task
-        notify()->error('This employee has a pending task that needs to be completed on time or late before assigning a new task.');
-        return redirect()->back();
-    }
-
-
-
-
-    // task list
-    public function taskList()
-    {
-
-
-        $tasks  =  Task::with(['employee'])->get();
-        $tasks->each(function ($task) {
-            $employee = $task->employee;
-            $employee->load('designation', 'department'); // Assuming you have relationships defined in Employee model
-            $task->designation = $employee->designation->name;
-            $task->department = $employee->department->name;
-        });
-        return view('admin.pages.Task.viewTask', compact('tasks'));
-    }
-
-    // Task Completed InTime and Late
-    public function completeTaskOnTime($id)
-    {
-        $task = Task::find($id);
-        if ($task) {
-            $completionDate = now();
-            $toDate = \Carbon\Carbon::createFromFormat('Y-m-d', $task->to_date);
-            $fromDate = \Carbon\Carbon::createFromFormat('Y-m-d', $task->from_date);
-
-            if ($completionDate->gt($toDate)) {
-                $task->status = 'completed in late';
-                notify()->success('Completed But in Late');
-            } else if ($completionDate->lt($fromDate)) {
-                // Error: Attempted completion before the task's start date
-                notify()->error('Task completion cannot occur before the designated start date');
-            } else {
-                $task->status = 'completed on time';
-                notify()->success('Completed on Time');
-            }
-
-            $task->save();
-            return redirect()->back();
-        }
-    }
-
 
     public function deleteTask($id)
     {
