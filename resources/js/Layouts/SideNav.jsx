@@ -44,7 +44,7 @@ function SideNav({ navItems, user, children }) {
   }
 
   function navigateToLogout() {
-    requestHandler.post('/logout', null, setResponse);
+    requestHandler.post('/api/logout', null, setResponse);
   }
 
   function navigateToProfile() {

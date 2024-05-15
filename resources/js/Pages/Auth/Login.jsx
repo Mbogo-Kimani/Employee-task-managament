@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { displayErrors } from '../../data/utils';
 import requestHandler from '../../services/requestHandler';
 import { router } from '@inertiajs/react';
@@ -6,6 +6,7 @@ import Icon from '../../Components/Common/Icon';
 import Form from '../../Components/Forms/forms';
 import { TailSpin } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
+
 
 function Login() {
   const [newUser, setNewUser] = useState({
@@ -17,13 +18,15 @@ function Login() {
   const [response, setResponse] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
+
   function handleChange(e) {
     setNewUser({...newUser, [e.target.name]: e.target.value})
   }
 
   function submitNewUser(e) {
     e.preventDefault();
-    requestHandler.post('/login', newUser, setResponse, setErrors, setLoading);
+    requestHandler.post('/api/login', newUser, setResponse, setErrors, setLoading);
   }
 
   useEffect(() => {
@@ -31,8 +34,9 @@ function Login() {
   }, [response]);
 
   function checkResponse() {
-    if (response) {
-      router.visit('/dashboard');
+    if (response.token) {
+        localStorage.setItem('auth_token',response.token);
+        router.visit('/dashboard')
       notify()
     }
   }
