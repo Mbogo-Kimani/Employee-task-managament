@@ -25,9 +25,9 @@ class HomeController extends Controller
 		$tasks = 0;
 		$totalTasks = 0;
     $user = $request->user();
-  
+
     if (!$user) {
-			return redirect('/login');
+			return redirect('/auth/login');
     }
 
     if ($user && $user->role == DepartmentEnum::ADMIN) {

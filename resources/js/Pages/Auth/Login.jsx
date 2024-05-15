@@ -33,9 +33,9 @@ function Login() {
   }, [response]);
 
   function checkResponse() {
-    if (response) {
-      localStorage.setItem('auth_token',response.token)
-      window.location.href = '/dashboard'
+    if (response.token) {
+        localStorage.setItem('auth_token',response.token);
+        router.visit('/dashboard')
       notify()
     }
   }

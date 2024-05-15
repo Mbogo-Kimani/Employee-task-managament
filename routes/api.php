@@ -33,5 +33,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/employees', [UserController::class, 'index']);
   Route::get('/departments', [DepartmentController::class, 'index']);
   Route::get('/clearance_levels', [UserController::class, 'clearanceLevels']);
+  Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
+  Route::post('/filter/tasks', [TaskController::class, 'filterTasks']);
 
 });
