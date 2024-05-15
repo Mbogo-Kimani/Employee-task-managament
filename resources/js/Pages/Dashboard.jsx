@@ -6,7 +6,7 @@ import ClientChart from '../Components/Charts/ClientsChart'
 import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
 import requestHandler from '../services/requestHandler';
 import departmentsEnum from '../data/enums/department';
-
+import { useTranslation } from 'react-i18next';
 
 function Home(props) {
   const [day, setDay] = useState('');
@@ -111,6 +111,8 @@ function Home(props) {
     clientStat && setClientDataSet(dataSet)
   }
 
+  const { t } = useTranslation();
+
   return (
     <SideNav navItems={pageItems.navItems} user={props?.user}>
       <div>
@@ -118,7 +120,7 @@ function Home(props) {
           <span id="dayOfWeek" className="page-heading" style={{fontSize: '30px'}}>{ day }</span>
           <br/>
           <span id='ct7' className="page-heading text-[25px]" style={{fontSize: '25px'}}>{ dateUK }</span>
-          <p className="text-lg animated-text"> <span>Hello, </span>
+          <p className="text-lg animated-text"> <span>{t('greeting')}, </span>
             <span className="font-bold ">{ props.user?.name }</span>
           </p>
           <hr/>
@@ -145,11 +147,11 @@ function Home(props) {
             props.user?.role == departmentsEnum.ADMIN && (
               <>
                 <div className='w-[40vw] mt-5 mr-5'>
-                  <h2 className='font-medium text-xl'>Installations</h2>
+                  <h2 className='font-medium text-xl'>{t('installations')}</h2>
                   <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
                 </div>
                 <div className='w-[40vw] mt-5'>
-                  <h2 className='font-medium text-xl'>Clients Onboarded</h2>
+                  <h2 className='font-medium text-xl'>{t('clients-onboarded')}</h2>
                   <ClientChart clientData={clientDataSet}/>
                 </div>
               </>
