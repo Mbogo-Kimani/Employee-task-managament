@@ -1,28 +1,29 @@
 import React from 'react'
 import {Bar} from 'react-chartjs-2'
 import Chart from 'chart.js/auto';
-
+import { useTranslation } from 'react-i18next';
 
 
 
 const BarChart = ({pendingData, ongoingData, finishedData}) => {
-  // console.log(pendingData,ongoingData,finishedData);
+  const {t} = useTranslation()
+  
   let chartData = {
     labels: ['Jan', 'Feb', 'Mar','Apr','May'],
     datasets: [
       {
         id: 1,
-        label: 'Pending',
+        label: t('pending'),
         data: pendingData,
       },
       {
         id: 2,
-        label: 'Ongoing',
+        label: t('ongoing'),
         data: ongoingData,
       },
       {
         id: 2,
-        label: 'Completed',
+        label: t('completed'),
         data: finishedData,
       },
     ],

@@ -4,12 +4,15 @@ import requestHandler from '../services/requestHandler';
 import { Link, router } from '@inertiajs/react';
 import Icon from '../Components/Common/Icon';
 import Badge from '../Components/Common/Badge';
+import { useTranslation } from 'react-i18next';
+import {changeLanguage} from '../i18n'
 
 function SideNav({ navItems, user, children }) {
   const [collapsed, setCollapsed] = useState(hasLargeWidth());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [response, setResponse] = useState(false);
   const [notificationsCount, setNotificationsCount] = useState(0);
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'en')
 
   useEffect(() => {
     checkLogoutResponse();
@@ -18,11 +21,22 @@ function SideNav({ navItems, user, children }) {
   useEffect(() => {
     fetchUnreadNotificationCount();
   }, []);
+
+  useEffect(() => {
+    changeLanguage(language);
+    localStorage.setItem('language',language)
+  }, [language]);
+
+
   
+  const {t} = useTranslation()
   function fetchUnreadNotificationCount() {
     requestHandler.get('/api/unread_notifications_count', setNotificationsCount);
   }
-
+  const switchLanguage = () => {
+    setLanguage(language == 'en' ? 'zh' : 'en')
+    window.location.reload()
+  }
   function checkLogoutResponse() {
     if (response) {
       router.visit('/auth/login');
@@ -84,10 +98,13 @@ function SideNav({ navItems, user, children }) {
             <div className="absolute right-0 mt-2 w-40 bg-white divide-y divide-gray-100 rounded-lg shadow">
               <ul className="py-2 text-sm text-gray-700">
               <li>
-                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToProfile}>Profile</button>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToProfile}>{t('profile')}</button>
                 </li>
                 <li>
-                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToLogout}>Logout</button>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={switchLanguage}>{language == 'en' ? '切换语言' : 'Switch Language'}</button>
+                </li>
+                <li>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToLogout}>{t('logout')}</button>
                 </li>
                 
               </ul>
