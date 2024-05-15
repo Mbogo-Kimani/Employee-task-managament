@@ -13,7 +13,7 @@ const EmployeeChart = ({users,data}) => {
     datasets: [
       {
         id: 1,
-        label: 'employees',
+        label: 'tasks',
         axis: 'y',
         data: data,
         borderWidth: 0,
