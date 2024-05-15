@@ -6,6 +6,7 @@ import Loader from './Components/Common/Loader';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import './i18n';
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'ET~NET Ltd';

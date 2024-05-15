@@ -15,6 +15,7 @@ import { Menu, Transition } from '@headlessui/react'
 import DropDown from '../../Components/Common/DropDown';
 import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
+import i18next from '../../i18n'
 
 
 
@@ -68,7 +69,6 @@ function Tasks({ user }) {
   function fetchAllTasks() {
     requestHandler.get('/api/all_tasks', setTasks, null, loaderSetter);
   }
-
   function fetchHandlers() {
     if (Object.keys(editTask).length > 0) requestHandler.get(`/api/admin_department_handlers/${editTask.department?.id}`, setHandlers);
   }
@@ -131,7 +131,7 @@ function Tasks({ user }) {
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
             href='/admin/new_task'
           >
-            Add New Task
+            {i18next.t('add-new-task')}
           </a>
         </div>
         <div className="flex space-x-4">
@@ -141,7 +141,7 @@ function Tasks({ user }) {
             className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('departmentId') ? "bg-green-400" : "bg-transparent"}`}
             onChange={(e) => handleFilters(e)}
             >
-              <option value="" className={`bg-transparent text-gray-900 dark:text-red-300 `}>Departments</option>
+              <option value="" className={`bg-transparent text-gray-900 dark:text-red-300 `}>{i18next.t('departments')}</option>
               {
                 (Array.isArray(departments) ? departments : []).map((type, index) => {
                   return (
@@ -164,7 +164,7 @@ function Tasks({ user }) {
               required={true}
               className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('type') ? "bg-green-400" : "bg-transparent"}`}
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Task Types</option>
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{i18next.t('task-types')}</option>
               {
                 (Array.isArray(taskTypes) ? taskTypes : [red]).map((type, index) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
@@ -188,7 +188,7 @@ function Tasks({ user }) {
               required={true}
               className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('status') ? "bg-green-400" : "bg-transparent"}`}
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Task status</option>
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{i18next.t('task-types')}</option>
               {
                 Object.keys(taskStatus).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
@@ -208,7 +208,7 @@ function Tasks({ user }) {
               className={`bg-green-400 to-green-300 hover:from-green-500 hover:to-green-600 px-4 py-2 rounded-md `}
               onClick={(e) => submitFilters(e)}
             >
-             Filters ({Object.keys(filters).length})
+              {i18next.t('filters')}({Object.keys(filters).length})
             </button>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">

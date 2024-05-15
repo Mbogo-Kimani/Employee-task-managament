@@ -1,3 +1,5 @@
+import i18next from '../../i18n'
+
 export default {
   PENDING: 1,
   AWAITING_APPROVAL_BY_DEPARTMENT_HEAD: 2,
@@ -17,7 +19,7 @@ export const taskStatusKeys = {
 export const taskStatusRender = [
   {
     id: 1,
-    name: 'Pending',
+    name: i18next.t('pending'),
     key: 'PENDING',
     description: 'Task is still in progress',
     color: 'var(--gray)',
@@ -25,7 +27,7 @@ export const taskStatusRender = [
   },
   {
     id: 2,
-    name: 'Awaiting Department Approval',
+    name: i18next.t('department-approval'),
     key: 'AWAITING_APPROVAL_BY_DEPARTMENT_HEAD',
     description: 'Task awaits approval from the head of department',
     color: 'rgb(59 130 246)',
@@ -33,7 +35,7 @@ export const taskStatusRender = [
   },
   {
     id: 3,
-    name: 'Awaiting Admin Approval',
+    name: i18next.t('admin-approval'),
     key: 'AWAITING_APPROVAL_BY_ADMIN',
     description: 'Task awaits approval from the admin',
     color: 'rgb(6 182 212)',
@@ -41,7 +43,7 @@ export const taskStatusRender = [
   },
   {
     id: 4,
-    name: 'Rejected',
+    name: i18next.t('rejected'),
     key: 'REJECTED',
     description: 'The task has not met the criteria required',
     color: 'rgb(239 68 68)',
@@ -49,7 +51,7 @@ export const taskStatusRender = [
   },
   {
     id: 5,
-    name: 'Done',
+    name: i18next.t('done'),
     key: 'DONE',
     description: 'The task is completed and approved',
     color: 'rgb(34 197 94)',
