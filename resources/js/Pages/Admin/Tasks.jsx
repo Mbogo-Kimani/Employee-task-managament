@@ -15,7 +15,7 @@ import { Menu, Transition } from '@headlessui/react'
 import DropDown from '../../Components/Common/DropDown';
 import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 
 
 
@@ -277,15 +277,15 @@ function Tasks({ user }) {
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <button
+                            <Link
                               className={`${
                                 active ? 'bg-green-200 text-black' : 'text-gray-900'
                               } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                              onClick={() => navigateToTasksView(task.id)}
+                              href={`/task/${id}`}
                             >
                               <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
                               <span className='block py-3 px-2'>View</span>
-                            </button>
+                            </Link>
                           )}
                         </Menu.Item>
                       </DropDown>
