@@ -78,4 +78,8 @@ class Task extends Model
   {
       return $query->where('department_id', (int)$type);
   }
+
+  public function taskMessages() {
+    return $this->hasMany(TaskMessage::class);
+  }
 }

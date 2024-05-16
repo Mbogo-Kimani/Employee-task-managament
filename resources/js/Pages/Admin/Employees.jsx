@@ -40,7 +40,6 @@ function Employees() {
   const [showPasswords, setShowPasswords] = useState(false);
   const [response, setResponse] = useState(false);
   const [formMode, setFormMode] = useState('');
-  const [userEdited, setUserEdited] = useState();
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedUser, setDeletedUser] = useState(newUser);
   const [countryCode, setCountryCode] = useState('+254')
@@ -93,8 +92,8 @@ function Employees() {
   }
 
   function toggleOpenModal(mode = '', userId = null) {
-    if (mode) {
-      setFormMode(mode);
+    setFormMode(mode);
+    if (mode && mode === 'edit') {
       requestHandler.get(`/api/user/${userId}`, setNewUser);
     }
     setShowNewUserModal(true);
@@ -173,7 +172,7 @@ function Employees() {
           </button>
           <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
-            onClick={toggleOpenModal}
+            onClick={() => toggleOpenModal('new')}
           >
             Add New Employee
           </button>
@@ -212,7 +211,7 @@ function Employees() {
             <div className="bg-white rounded-lg shahiddendow dark:bg-gray-700">
               <div className="flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600">
                 {
-                  formMode && userEdited ?
+                  formMode === 'edit' ?
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Edit Employee Details
                   </h3>

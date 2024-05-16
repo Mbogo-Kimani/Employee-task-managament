@@ -9,6 +9,10 @@ import PaginatorNav from '../Components/Common/PaginatorNav';
 import { loaderSetter } from '../Components/Common/Loader';
 import TaskStatusColorCode from '../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../Components/Common/TaskStatusIndicator';
+import DropDown from '../Components/Common/DropDown';
+import { Menu } from '@headlessui/react';
+import Icon from '../Components/Common/Icon';
+import { router } from '@inertiajs/react';
 
 function Tasks() {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -102,6 +106,10 @@ function Tasks() {
     setFeedBack(content)
     setShowFeedBackModal(true)
   }
+
+  function navigateToTasksView(id) {
+    router.visit(`/task/${id}`)
+  }
   
   return (
     <>
@@ -109,7 +117,7 @@ function Tasks() {
         <div className="">
           <TaskStatusColorCode />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback']}>
+            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback', 'Action']}>
               {
                 (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                   return (
@@ -152,7 +160,7 @@ function Tasks() {
                       }
                       {
                         task.status !== taskStatus.PENDING  && task.feedback_if_rejected ?
-                          <td
+                        <td
                           className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                           onClick={() => openFeedBackModal(task.feedback_if_rejected  )}
                         >
@@ -162,7 +170,24 @@ function Tasks() {
                         <td className='px-2 py-4 cursor-pointer' title='Feedback not yet submitted'>
                           N/A
                         </td>
-                      }
+                        }
+                         <td className="px-2 py-4 relative">
+                          <DropDown>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                  } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                  onClick={() => navigateToTasksView(task.id)}
+                                >
+                                  <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
+                                  <span className='block py-3 px-2'>View</span>
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </DropDown>
+                      </td>
                     </tr>
                   );
                 })

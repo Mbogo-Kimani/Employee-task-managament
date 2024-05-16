@@ -18,10 +18,60 @@ use App\Mail\TaskAssigned;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
+use Inertia\Inertia;
 use Stevebauman\Hypertext\Transformer;
 
 class TaskController extends Controller
 {
+	public function show($id) {
+		if ($id) {
+			$admin_handler = null;
+			$department_handler = null;
+			$handler = null;
+
+			$task = Task::find($id);
+
+			if ($task->admin_handler_id) {
+				$admin_handler = User::where('id', $task->admin_handler_id)
+															->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+															->get()[0];
+			}
+
+			if ($task->department_handler_id) {
+				$department_handler = User::where('id', $task->department_handler_id)
+																	->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+																	->get()[0];
+			}
+
+			if ($task->user_id) {
+				$handler = User::where('id', $task->user_id)
+												->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+												->get()[0];
+			}
+
+			return response()->json([
+				'admin' => $admin_handler,
+				'department_head' => $department_handler,
+				'handler' => $handler,
+				'task' => $task,
+			]);
+		}
+	}
+
+	public function getTaskMessages($id) {
+		if ($id) {
+			$task = Task::find($id);
+			$messages = $task->taskMessages()->get();
+
+			return response()->json($messages);
+		}
+	} 
+
+	public function tasksViewPage() {
+		$user = auth()->user();
+		return Inertia::render('Task/Id', compact('user'));
+	}
+
 	public function store(Request $request) {
     $user = auth()->user();
 		$request->validate([
@@ -77,7 +127,7 @@ class TaskController extends Controller
 			$tasks = Task::with(['department', 'user', 'taskType','client'])->paginate(20);
 			return response()->json($tasks);
 		}
-        
+
 	}
 
 	public function getPending(Request $request) {
@@ -240,7 +290,6 @@ class TaskController extends Controller
 
     }
 
-   
     public function deleteTask($id)
     {
         $task = Task::find($id);
