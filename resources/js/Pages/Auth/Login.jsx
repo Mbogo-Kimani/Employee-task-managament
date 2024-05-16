@@ -6,6 +6,7 @@ import Icon from '../../Components/Common/Icon';
 import Form from '../../Components/Forms/forms';
 import { TailSpin } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
+import { AppContext } from '../../appContext';
 
 
 function Login() {
@@ -17,6 +18,7 @@ function Login() {
   const [showPasswords, setShowPasswords] = useState(false);
   const [response, setResponse] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user, loginUser } = useContext(AppContext)
 
 
 
@@ -35,8 +37,18 @@ function Login() {
 
   function checkResponse() {
     if (response.token) {
-        localStorage.setItem('auth_token',response.token);
-        router.visit('/dashboard')
+        const data = {
+          'auth_token': response.token,
+          'user': response.user
+        }
+
+        Object.keys(data).forEach((key) => {
+          const value = typeof data[key] === 'object' ? JSON.stringify(data[key]) : data[key];
+          localStorage.setItem(key,value);
+        })
+
+        loginUser(response.user)
+        router.visit(`/dashboard/${response.user.id}`)
       notify()
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import NavItem from '../Components/NavItem';
 import requestHandler from '../services/requestHandler';
 import { Link, router } from '@inertiajs/react';
@@ -6,14 +6,19 @@ import Icon from '../Components/Common/Icon';
 import Badge from '../Components/Common/Badge';
 import { useTranslation } from 'react-i18next';
 import {changeLanguage} from '../i18n'
+import { AppContext } from '../appContext';
+import { navItemsDeterminer, pageData as defaultPageData } from '../data/indexNav';
 
-function SideNav({ navItems, user, children }) {
+
+function SideNav({ children }) {
   const [collapsed, setCollapsed] = useState(hasLargeWidth());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [response, setResponse] = useState(false);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [language, setLanguage] = useState(localStorage.getItem('language') || 'en')
-
+  const [navItems, setNavItems] = useState(defaultPageData);
+  const { userData } = useContext(AppContext)
+  
   useEffect(() => {
     checkLogoutResponse();
   }, [response]);
@@ -27,9 +32,14 @@ function SideNav({ navItems, user, children }) {
     localStorage.setItem('language',language)
   }, [language]);
 
-
+  useEffect(() => {
+    setNavItems(
+      navItemsDeterminer(userData?.role, userData?.clearance_level)
+    );
+  }, []);
   
   const {t} = useTranslation()
+
   function fetchUnreadNotificationCount() {
     requestHandler.get('/api/unread_notifications_count', setNotificationsCount);
   }
@@ -82,7 +92,7 @@ function SideNav({ navItems, user, children }) {
         </Link>
         <div className="relative">
           <div className="flex items-center cursor-pointer px-3 py-2 mx-6" onClick={toggleDropdown}>
-            <span className="mr-3">{ getFirstName(user) }</span>
+            <span className="mr-3">{ getFirstName(userData) }</span>
             <svg
               className={`w-3 h-3  transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
               xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +103,7 @@ function SideNav({ navItems, user, children }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
             </svg>
           </div>
-          
+         
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-40 bg-white divide-y divide-gray-100 rounded-lg shadow">
               <ul className="py-2 text-sm text-gray-700">
@@ -118,7 +128,7 @@ function SideNav({ navItems, user, children }) {
             <NavItem
               src="home"
               name="Home"
-              href="/dashboard"
+              href={`/dashboard/${userData.id}`}
               collapsed={collapsed}
             />
             {(Array.isArray(navItems) ? navItems : []).map(item => (

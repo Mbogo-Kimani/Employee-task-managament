@@ -9,8 +9,7 @@ import Chart from 'chart.js/auto';
 import EmployeeChart from '../../Components/Charts/EmployeeChart'
 import { loaderSetter } from '../../Components/Common/Loader';
 
-const EmployeeStat = ({user}) => {
-	const [pageItems, setPageItems] = useState(defaultPageData);
+const EmployeeStat = () => {
 	const [users, setUsers] = useState({});
 	const [response, setResponse] = useState(false);
 	const [userDataSet, setUserDataSet] = useState([])
@@ -26,12 +25,6 @@ const EmployeeStat = ({user}) => {
 		}
 	},[users])
 
-	useEffect(() => {
-		setNavItems(
-		  navItemsDeterminer(user?.role, user?.clearance_level)
-		);
-	  }, []);
-
 	function fetchUsersTaks() {
     requestHandler.get('/api/admin/tasks', setUsers, null, loaderSetter);
   	}
@@ -42,12 +35,11 @@ const EmployeeStat = ({user}) => {
 		users?.forEach((user) => {
 				dataSet.push(user.tasks.length)
 		})
-		console.log(dataSet);
 		setUserDataSet(dataSet)
 	}
 
 	return (
-		<SideNav navItems={navItems} user={user}>
+		<SideNav>
 			<div>
 				<h2 className='text-center text-xl font-bold'>Employee Statistics</h2>
 				<EmployeeChart users={users} data={userDataSet}/>

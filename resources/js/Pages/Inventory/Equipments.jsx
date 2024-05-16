@@ -34,9 +34,6 @@ function Equipments({ user }) {
     const [showModal, setShowModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
-    useEffect(() => {
-        setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-    }, []);
 
     useEffect(() => {
         fetchEquipments();
@@ -66,7 +63,7 @@ function Equipments({ user }) {
     }
 
     return (
-        <SideNav navItems={navItems} user={user}>
+        <SideNav >
             <div className='mb-4 w-full flex'>
                 <a
                     className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"

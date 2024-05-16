@@ -13,11 +13,6 @@ function NewReport({ user }) {
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
 
-  useEffect(() => {
-    setNavItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     checkResponse();
@@ -42,7 +37,7 @@ function NewReport({ user }) {
   }
 
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <div className="flex justify-center items-center">
         <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
           <div className="dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">

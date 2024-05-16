@@ -71,13 +71,9 @@ class UserController extends Controller
 	}
 
   public function adminEmployeesPage() {
-    $user = auth()->user();
-
-		if ($user && $user->role == DepartmentEnum::ADMIN) {
-			return Inertia::render('Admin/Employees', compact('user'));
-		}
     
-		return redirect('/dashboard')->with(['error' => 'Page does not exist']);
+    return Inertia::render('Admin/Employees');
+    
   }
 
 	public function index() {
@@ -164,8 +160,7 @@ class UserController extends Controller
 		abort(400, 'User not found');
 	}
 	public function navigateToAdminUserTasks() {
-		$user = auth()->user();
-		return Inertia::render('Admin/Employees/UserId/Tasks', compact('user'));
+		return Inertia::render('Admin/Employees/UserId/Tasks');
 	}
 
 	public function navigateToProfile() {
@@ -174,71 +169,37 @@ class UserController extends Controller
 	}
 
 	public function allTasksPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-		return Inertia::render('Admin/Tasks', compact('user'));
+		return Inertia::render('Admin/Tasks');
 	}
 
 	public function showReports() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-		return Inertia::render('Admin/Reports', compact('user'));
+		return Inertia::render('Admin/Reports');
 	}
 
 	public function newTaskPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
 
-		return Inertia::render('Admin/NewTask', compact('user'));
+		return Inertia::render('Admin/NewTask');
 	}
 
-	public function newEquipmentsPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
+	public function newEquipmentsPage() 
+  {
 
-		return Inertia::render('Inventory/NewEquipment', compact('user'));
+		return Inertia::render('Inventory/NewEquipment');
 	}
 
 	public function equipmentsPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
 
-		return Inertia::render('Inventory/Equipments', compact('user'));
+		return Inertia::render('Inventory/Equipments');
 	}
 
 	public function unassignedTasksPage() {
-		$user = auth()->user();
 
-		if ($user && $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-
-		return Inertia::render('UnassignedTasks', compact('user'));
+		return Inertia::render('UnassignedTasks');
 	}
 
 	public function assignedTasksPage() {
-		$user = auth()->user();
 
-		if ($user && $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-
-		return Inertia::render('AssignedTasks', compact('user'));
+		return Inertia::render('AssignedTasks');
 	}
 
 	public function getUsersByDepartment() {
@@ -262,23 +223,12 @@ class UserController extends Controller
 	}
 
 	public function mapsPage(){
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
 
-		return Inertia::render('Admin/ISPmap', compact('user'));
+		return Inertia::render('Admin/ISPmap');
 	}
 
 	public function employeesStatsPage(){
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-
-		return Inertia::render('Admin/EmployeeStat', compact('user'));
+		return Inertia::render('Admin/EmployeeStat');
 	}
 
 	public function login(Request $request)
@@ -292,8 +242,9 @@ class UserController extends Controller
 
     $login = auth()->attempt($credentials);
     if ($login) {
+      $user = auth()->user();
       $token = $request->user()->createToken('token_auth')->plainTextToken;;
-      return response()->json(['message' => 'Login Successful','token' => $token]);
+      return response()->json(['message' => 'Login Successful','token' => $token, 'user' => $user]);
     }
 
 		abort(401, 'Invalid user email or password');

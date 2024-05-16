@@ -4,18 +4,12 @@ import requestHandler from "../../services/requestHandler";
 import SideNav from "../../Layouts/SideNav";
 import { navItemsDeterminer, pageData as defaultPageData } from '../../data/indexNav';
 
-const ISPmap = ({user}) => {
+const ISPmap = () => {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [view,setView] = useState('satellite-streets-v11')
 
-    useEffect(() => {
-        setNavItems(
-            navItemsDeterminer(user?.role, user?.clearance_level)
-        );
-        
-    }, [])
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
         <div className='flex justify-between w-[30vw] mb-5'>
             <button onClick={() => setView('streets-v9')} className={`w-52 border rounded mr-5 hover:bg-green-200 cursor-pointer ${view == 'streets-v9' ? "bg-green-500" : "bg-transparent"}`}>
                 Street view
