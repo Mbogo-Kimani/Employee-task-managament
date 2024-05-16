@@ -5,8 +5,7 @@ import requestHandler from '../../../../services/requestHandler';
 import taskStatus, { taskStatusKeys } from '../../../../data/enums/taskStatus';
 import TableComp from '../../../../Components/Common/TableComp';
 
-function Tasks({ user }) {
-  const [pageItems, setPageItems] = useState(defaultPageData);
+function Tasks() {
   const [tasks, setTasks] = useState({
     data: [],
     from: 1,
@@ -18,11 +17,7 @@ function Tasks({ user }) {
     total: 0,
   });
 
-  useEffect(() => {
-    setPageItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
+
 
   useEffect(() => {
     fetchTasks();
@@ -34,7 +29,7 @@ function Tasks({ user }) {
   }
 
   return (
-    <SideNav navItems={pageItems} user={user}>
+    <SideNav>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Action']}>
           {

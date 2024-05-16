@@ -21,11 +21,7 @@ class ClientController extends Controller
 
     public function clientsPage(Request $request)
     {
-        $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
-            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-        }
-		return Inertia::render('Admin/Clients', compact('user'));
+		return Inertia::render('Admin/Clients');
     }
 
     public function store(Request $request)

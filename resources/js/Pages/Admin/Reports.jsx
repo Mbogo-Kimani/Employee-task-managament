@@ -7,7 +7,7 @@ import { navItemsDeterminer, pageData as defaultPageData } from '../../data/inde
 import Modal from "../../Components/Common/Modal";
 
 
-const Reports = ({user}) => {
+const Reports = () => {
   const [reports, setReports] = useState({})
   const [report, setReport] = useState({})
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -17,11 +17,6 @@ const Reports = ({user}) => {
     getReports()
   },[])
 
-  useEffect(() => {
-    setNavItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, [])
 
 
   function getReports(){
@@ -34,7 +29,7 @@ const Reports = ({user}) => {
   }
 
   return (
-  <SideNav navItems={navItems} user={user}>
+  <SideNav>
   <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp
             columns={["Title","Employee", "Department", "Task Name", "Task Type", "Date", "Report"]}

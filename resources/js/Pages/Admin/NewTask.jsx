@@ -9,7 +9,7 @@ import { displayErrors } from '../../data/utils';
 import Modal from '../../Components/Common/Modal';
 import { toast } from 'react-toastify';
 
-function NewTask({ user }) {
+function NewTask() {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [taskTypes, setTaskTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -33,11 +33,6 @@ function NewTask({ user }) {
   const [departmentHeads, setDepartmentHeads] = useState([]);
   const [departmentHandlerElemText, setDepartmentHandlerElemText] = useState('');
 
-  useEffect(() => {
-    setNavItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchTaskTypes();
@@ -164,7 +159,7 @@ function NewTask({ user }) {
     })
   }
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <div>
         <div className='mb-4 w-full flex'>
           <button

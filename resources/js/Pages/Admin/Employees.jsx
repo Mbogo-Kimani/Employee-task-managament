@@ -13,7 +13,7 @@ import EmployeesTableElem from '../../Components/Admin/EmployeesTableElem';
 import { toast } from 'react-toastify';
 import {router} from "@inertiajs/react"
 
-function Employees({ user }) {
+function Employees() {
   const [pageItems, setPageItems] = useState(defaultPageData);
   const [users, setUsers] = useState({
     data: [],
@@ -44,11 +44,6 @@ function Employees({ user }) {
   const [deletedUser, setDeletedUser] = useState(newUser);
   const [countryCode, setCountryCode] = useState('+254')
 
-  useEffect(() => {
-    setPageItems(
-      pageAndNavItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -149,6 +144,7 @@ function Employees({ user }) {
     if (resp) {
       toast.success('Employee Deleted successfully');
       closeDeleteUserModal();
+      fetchUsers();
     }
   }
 
@@ -156,6 +152,7 @@ function Employees({ user }) {
     if (resp) {
       toast.success('Employee Edited successfully');
       closeDeleteUserModal();
+      fetchUsers();
     }
   }
 
@@ -164,7 +161,7 @@ function Employees({ user }) {
   }
 
   return (
-    <SideNav navItems={pageItems.navItems} user={user}>
+    <SideNav>
       <div className="">
         <div className='mb-4 w-full flex'>
           <button

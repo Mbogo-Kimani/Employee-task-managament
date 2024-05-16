@@ -13,7 +13,7 @@ import taskStatus, { taskStatusKeys } from "../data/enums/taskStatus";
 import { toast } from 'react-toastify';
 
 
-function AssignedTasks({ user }) {
+function AssignedTasks() {
     const [navItems, setNavItems] = useState(defaultPageData);
     const [tasks, setTasks] = useState({
         data: [],
@@ -36,10 +36,6 @@ function AssignedTasks({ user }) {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
 		const [feedbackOptional, setFeedbackOptional] = useState(false);
-
-    useEffect(() => {
-        setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-    }, []);
 
     useEffect(() => {
         fetchAssignedTasks();
@@ -151,7 +147,7 @@ function AssignedTasks({ user }) {
 
 
     return (
-        <SideNav navItems={navItems} user={user}>
+        <SideNav >
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
                     columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Action"]}

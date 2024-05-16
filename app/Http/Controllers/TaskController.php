@@ -267,8 +267,8 @@ class TaskController extends Controller
 
     private function sendMessage($text,$phone_number)
     {
-        $username = env('AT_USERNAME'); // use 'sandbox' for development in the test environment
-        $apiKey   = env('AT_API_KEY'); // use your sandbox app API key for development in the test environment
+        $username = config('sms.username'); // use 'sandbox' for development in the test environment
+        $apiKey   = config('sms.api_key'); // use your sandbox app API key for development in the test environment
         $AT       = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
@@ -302,13 +302,6 @@ class TaskController extends Controller
         return redirect()->back();
     }
 
-    public function editTask($id)
-    {
-        $task = Task::findOrFail($id);
-
-
-        return view('admin.pages.Task.editTask', compact('task'));
-    }
     public function updateTask(Request $request)
     {
         $task = Task::findOrFail($request->id);

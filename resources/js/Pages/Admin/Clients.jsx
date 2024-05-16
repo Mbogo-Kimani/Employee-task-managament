@@ -14,7 +14,7 @@ import ClientsTableElem from '../../Components/Admin/ClientsTableElem';
 import { toast } from 'react-toastify';
 import SelectComp from '../../Components/Common/SelectComp';
 
-function Clients({ user }) {
+function Clients() {
   const [pageItems, setPageItems] = useState(defaultPageData);
   const [clients, setClients] = useState([]);
   const [client, setClient] = useState({});
@@ -30,11 +30,6 @@ function Clients({ user }) {
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedClient, setDeletedClient] = useState(newClient);
 
-  useEffect(() => {
-    setPageItems(
-      pageAndNavItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchClients();
@@ -115,7 +110,7 @@ function Clients({ user }) {
   }
 
   return (
-    <SideNav navItems={pageItems.navItems} user={user}>
+    <SideNav>
       <div className="">
         <div className='mb-4 w-full flex'>
           <button

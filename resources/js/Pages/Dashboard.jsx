@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import DashboardItem from '../Components/DashboardItem'
 import SideNav from '../Layouts/SideNav';
 import BarChart from '../Components/Charts/BarChart'
@@ -7,6 +7,8 @@ import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/
 import requestHandler from '../services/requestHandler';
 import departmentsEnum from '../data/enums/department';
 import { useTranslation } from 'react-i18next';
+import { AppContext } from '../appContext';
+
 
 function Home(props) {
   const [day, setDay] = useState('');
@@ -20,6 +22,8 @@ function Home(props) {
   const [finishedDataSet, setFinishedDataSet] = useState([]);
   const [clientDataSet, setClientDataSet] = useState([]);
   const [pageItems, setPageItems] = useState(defaultPageData);
+  const { userData } = useContext(AppContext)
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -34,7 +38,7 @@ function Home(props) {
 
   useEffect(() => {
     setPageItems(
-      pageAndNavItemsDeterminer(props.user?.role, props.user?.clearance_level)
+      pageAndNavItemsDeterminer(userData?.role, userData?.clearance_level)
     );
     fetchTasks()
     fetchClients()
@@ -114,14 +118,14 @@ function Home(props) {
   const { t } = useTranslation();
 
   return (
-    <SideNav navItems={pageItems.navItems} user={props?.user}>
+    <SideNav>
       <div>
         <div className="page-header text-gray-900 dark:text-gray-100">
           <span id="dayOfWeek" className="page-heading" style={{fontSize: '30px'}}>{ day }</span>
           <br/>
           <span id='ct7' className="page-heading text-[25px]" style={{fontSize: '25px'}}>{ dateUK }</span>
           <p className="text-lg animated-text"> <span>{t('greeting')}, </span>
-            <span className="font-bold ">{ props.user?.name }</span>
+            <span className="font-bold ">{ userData?.name }</span>
           </p>
           <hr/>
         </div>
@@ -144,7 +148,7 @@ function Home(props) {
         </section>
         <section className='flex'>
           {
-            props.user?.role == departmentsEnum.ADMIN && (
+            userData?.role == departmentsEnum.ADMIN && (
               <>
                 <div className='w-[40vw] mt-5 mr-5'>
                   <h2 className='font-medium text-xl'>{t('installations')}</h2>

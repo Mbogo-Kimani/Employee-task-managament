@@ -35,13 +35,7 @@ class CircularController extends Controller
     */
   public function create()
   {
-    $user = auth()->user();
-
-		if ($user->role == DepartmentEnum::ADMIN && $user->department_id == DepartmentEnum::ADMIN) {
-			return Inertia::render('Admin/Circulars/NewCircular', compact('user'));
-		} else {
-			abort(401, 'You do not have permission to view this page');
-		}
+			return Inertia::render('Admin/Circulars/NewCircular');
   }
 
   /**

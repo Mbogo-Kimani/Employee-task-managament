@@ -65,9 +65,6 @@ function NewCircular({ user }) {
   
   const refs = Array.from({ length: allDepartments.length }, () => useRef(null));
 
-  useEffect(() => {
-    setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-  }, []);
 
   useEffect(() => {
     checkResponse();
@@ -130,7 +127,7 @@ function NewCircular({ user }) {
   }
 
   return (
-    <SideNav user={user} navItems={navItems}>
+    <SideNav >
       <div className='p-1 md:p-5 sm:p-3 w-full'>
         <form className='space-y-4 sm:p-8' action='#'>
           <div>

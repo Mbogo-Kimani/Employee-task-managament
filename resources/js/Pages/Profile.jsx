@@ -47,7 +47,7 @@ const Profile = ({user}) => {
     };
   
     return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <div className="container mx-auto px-4 py-8">
         <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
         <form onSubmit={handleSubmit}>

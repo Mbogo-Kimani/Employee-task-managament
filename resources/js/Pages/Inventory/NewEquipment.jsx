@@ -23,9 +23,6 @@ const NewEquipment = ({user}) => {
 
 
   useEffect(() => {
-    setNavItems(
-    navItemsDeterminer(user?.role, user?.clearance_level)
-    );
     fetchDepartments()
   }, []);
 
@@ -50,7 +47,7 @@ const NewEquipment = ({user}) => {
   }
 
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <div>
       <form className="max-w-md mx-auto">
           <div className="relative z-0 w-full mb-5 group">

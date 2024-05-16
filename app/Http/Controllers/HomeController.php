@@ -15,16 +15,15 @@ use Inertia\Inertia;
 class HomeController extends Controller
 {
 
-  public function home(Request $request)
+  public function home(Request $request,$id)
   {
     $users = User::count();
-    // $departments = Department::count();
 
     $pendingLeaves = 0; // Default value for pending leaves
 
 		$tasks = 0;
 		$totalTasks = 0;
-    $user = $request->user();
+    $user = User::find($id);
 
     if (!$user) {
 			return redirect('/auth/login');
@@ -33,15 +32,14 @@ class HomeController extends Controller
     if ($user && $user->role == DepartmentEnum::ADMIN) {
 
 		} else if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
-      $allTasks = Task::where('user_id', $user->id)
-                    ->where('status', TaskStatusEnum::PENDING);
-                    // ->paginate(20);
+      $totalTasks = Task::where('user_id', $user->id)
+                    ->where('status', TaskStatusEnum::PENDING)
+                    ->count();
 
       $tasksNotAssigned = Task::where('department_id', $user->department_id)
                               ->whereNull('user_id')
                               ->count();
 
-      $totalTasks = $allTasks->count();
 			return Inertia::render('Dashboard', compact('user', 'totalTasks', 'tasksNotAssigned'));
     }
     
@@ -58,14 +56,7 @@ class HomeController extends Controller
   }
 
 	public function tasksPage () {
-		$user = auth()->user();
-   
-    if (!$user) {
-			return redirect('/login');
-    }
-    
-
-		return Inertia::render('Tasks', compact('user'));
+		return Inertia::render('Tasks');
 	}
 
 

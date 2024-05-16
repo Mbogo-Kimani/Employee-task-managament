@@ -14,7 +14,7 @@ import { Menu } from '@headlessui/react';
 import Icon from '../Components/Common/Icon';
 import { router } from '@inertiajs/react';
 
-function Tasks({ user }) {
+function Tasks() {
   const [pageItems, setPageItems] = useState(defaultPageData);
   const [tasks, setTasks] = useState({
     data: [],
@@ -36,12 +36,6 @@ function Tasks({ user }) {
   });
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
-
-  useEffect(() => {
-    setPageItems(
-      pageAndNavItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, [])
 
   useEffect(() => {
     fetchTasks();
@@ -119,7 +113,7 @@ function Tasks({ user }) {
   
   return (
     <>
-      <SideNav navItems={pageItems.navItems} user={user}>
+      <SideNav>
         <div className="">
           <TaskStatusColorCode />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

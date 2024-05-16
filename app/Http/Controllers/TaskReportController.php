@@ -119,9 +119,9 @@ class TaskReportController extends Controller
 			}
 
 			if ($request->status == 'rejected') {
-				if (!$task->feedback_if_rejected) {
-					return response()->json(['feedback' => 'Rejected task requires feedback'], 422);
-				}
+				// if (!$task->feedback_if_rejected) {
+				// 	return response()->json(['feedback' => 'Rejected task requires feedback'], 422);
+				// }
 
 				$task->status = TaskStatusEnum::REJECTED;
 				$task->save();
@@ -132,7 +132,7 @@ class TaskReportController extends Controller
         $task->status = TaskStatusEnum::AWAITING_APPROVAL_BY_ADMIN;
 				$task->save();
 				return response()->json(['message' => 'Status updated successfully']);
-      }
+            }
     }
 
     public function getReports(){

@@ -20,7 +20,7 @@ import { Link, router } from '@inertiajs/react';
 
 
 
-function Tasks({ user }) {
+function Tasks() {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [departments, setDepartments] = useState([]);
   const [taskTypes, setTaskTypes] = useState([]);
@@ -43,13 +43,6 @@ function Tasks({ user }) {
     admins: [],
     departmentHeads: []
   });
-
-
-  useEffect(() => {
-    setNavItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     if(response){
@@ -128,7 +121,7 @@ function Tasks({ user }) {
     requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
   }
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <div>
         <TaskStatusColorCode />
         <div className='mb-4 w-full flex'>

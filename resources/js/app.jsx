@@ -8,10 +8,13 @@ import { ToastContainer } from 'react-toastify';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './i18n';
 import { router } from '@inertiajs/react';
+import { AppProvider } from './appContext';
 
 router.on("before", (ev) => {
 	ev.detail.visit.headers["Authorization"] = `Bearer ${localStorage.getItem('auth_token')}`;
+  ev.detail.visit.headers["accept"] = "application/json";
 });
+
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'ET~NET Ltd';
@@ -28,6 +31,7 @@ createInertiaApp({
   },
   setup({ el, App, props }) {
     createRoot(el).render(
+      <AppProvider>
       <>
         <ToastContainer
           position='top-center'
@@ -43,6 +47,7 @@ createInertiaApp({
         <Loader />
         <App {...props} />
       </>
+      </AppProvider>
     );
   },
 });

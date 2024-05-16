@@ -20,7 +20,6 @@ function Notification({ user }) {
   });
 
   useEffect(() => {
-    setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
     getNotifications();
     markNotificationsAsRead();
   }, []);
@@ -34,7 +33,7 @@ function Notification({ user }) {
   }
 
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <ul className='w-full'>
         {
           (Array.isArray(notifications.data) ? notifications.data : []).map((item, index) => {
