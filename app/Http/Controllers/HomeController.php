@@ -9,12 +9,13 @@ use App\Models\Contact;
 
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
 
-  public function home()
+  public function home(Request $request)
   {
     $users = User::count();
     // $departments = Department::count();
@@ -23,10 +24,10 @@ class HomeController extends Controller
 
 		$tasks = 0;
 		$totalTasks = 0;
-    $user = auth()->user();
+    $user = $request->user();
 
     if (!$user) {
-			return redirect('/login');
+			return redirect('/auth/login');
     }
 
     if ($user && $user->role == DepartmentEnum::ADMIN) {
@@ -52,15 +53,7 @@ class HomeController extends Controller
 			return Inertia::render('Dashboard', compact('user', 'totalTasks'));
     }
 
-    // $users = User::count();
-    // $completedOnTimeTasks = Task::where('status', 'completed on time')->count();
-    // $completedInLateTasks = Task::where('status', 'completed in late')->count();
-    // $totalCompletedTasks = $completedOnTimeTasks + $completedInLateTasks;
-
-    // $totalTasks = Task::count() - $totalCompletedTasks;
-
-    // Now you can use $totalTasks in your view or wherever needed
-    // return view('admin.dashboard', compact('user', 'employees', 'departments', 'pendingLeaves', 'users', 'totalTasks'));
+   
     return Inertia::render('Dashboard', compact('user', 'users', 'totalTasks'));
   }
 

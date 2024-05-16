@@ -7,7 +7,7 @@ class RequestHandler {
       'X-CSRF-TOKEN': this.token,
     };
   }
-
+  
   /**
    * Perform all get requests
    * @param {String} url - endpoint to make request
@@ -16,6 +16,7 @@ class RequestHandler {
    * @param {React.Dispatch<React.SetStateAction<any>>} loaderSetter - react state to set loading to true or false accordingly
    */
   get(url, stateSetter = null, errorSetter = null, loaderSetter = null) {
+    
     this.fetch({url}, stateSetter, errorSetter, loaderSetter);
   }
 
@@ -84,10 +85,11 @@ class RequestHandler {
     if (loaderSetter) loaderSetter(true);
     try {
       let resp = null;
+      const headers = this.interceptHeaders()
       if (body) {
         resp = await fetch(url, {
           method: method,
-          headers: this.jsonHeaders,
+          headers: headers,
           body: (
                   method === 'POST' ||
                   method === 'PUT' ||
@@ -99,7 +101,7 @@ class RequestHandler {
       } else {
         resp = await fetch(url, {
           method: method,
-          headers: this.jsonHeaders,
+          headers: headers,
         });
       }
 
@@ -117,6 +119,13 @@ class RequestHandler {
       if (errorSetter) errorSetter(error);
       if (loaderSetter) loaderSetter(false);
     }
+  }
+
+  interceptHeaders() {
+    // Perform any header modifications here
+    const modifiedHeaders = { ...this.jsonHeaders };
+    modifiedHeaders['Authorization'] = `Bearer ${localStorage.getItem('auth_token')}`;
+    return modifiedHeaders;
   }
 }
 

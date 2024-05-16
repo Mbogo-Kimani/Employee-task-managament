@@ -11,6 +11,7 @@ import Icon from '../../Components/Common/Icon';
 import { loaderSetter } from '../../Components/Common/Loader';
 import EmployeesTableElem from '../../Components/Admin/EmployeesTableElem';
 import { toast } from 'react-toastify';
+import {router} from "@inertiajs/react"
 
 function Employees({ user }) {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -166,6 +167,12 @@ function Employees({ user }) {
     <SideNav navItems={pageItems.navItems} user={user}>
       <div className="">
         <div className='mb-4 w-full flex'>
+          <button
+            className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-3 text-gray-800 hover:text-gray-100"
+            onClick={() => router.visit('/admin/employees/stats')}
+          >
+            Employees Statistics
+          </button>
           <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
             onClick={() => toggleOpenModal('new')}

@@ -1,3 +1,4 @@
+import i18next from '../i18n'
 export const adminNavItems = [
   // {
   //   name: 'Departments',
@@ -44,37 +45,37 @@ export const adminNavItems = [
   //   hasOptions: true,
   // },
   {
-    name: 'Tasks',
+    name: i18next.t('tasks'),
     icon: 'listCheck',
     href: '/admin/tasks',
     hasOptions: false,
   },
   {
-    name: 'Users',
+    name: i18next.t('users'),
     icon: 'circleUser',
     href: '/admin/employees',
     hasOptions: false,
   },
   {
-    name: 'Clients',
+    name: i18next.t('clients'),
     icon: 'clients',
     href: '/admin/clients',
     hasOptions: false,
   },
   {
-    name: 'New Circular',
+    name: i18next.t('new-circular'),
     href: '/admin/circulars/new_circular',
     icon: 'file',
     hasOptions: false,
   },
   {
-    name: 'Reports',
+    name: i18next.t('reports'),
     icon: 'report',
     hasOptions: false,
     href: '/admin/reports'
   },
   {
-    name: 'Maps',
+    name: i18next.t('maps'),
     icon: 'map',
     hasOptions: false,
     href: '/admin/maps'
@@ -84,19 +85,19 @@ export const adminNavItems = [
 export const adminPageItems = [
   {
     numberToDisplay: '+',
-    name: 'New Task',
+    name: i18next.t('new-task'),
     pictureSrc: 'assets/image/task.png',
     href: '/admin/new_task',
   },
   {
     numberToDisplay: '+',
-    name: 'New Employee',
+    name: i18next.t('new-employee'),
     pictureSrc: 'assets/image/teamwork.png',
     href: '/admin/employees?new=true',
   },
   {
     numberToDisplay: '+',
-    name: 'New Client',
+    name: i18next.t('new-client'),
     pictureSrc: 'assets/image/teamwork.png',
     href: '/admin/clients?new=true',
   },

@@ -264,11 +264,21 @@ class UserController extends Controller
 	public function mapsPage(){
 		$user = auth()->user();
 		
-		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
+		if ($user->role !== DepartmentEnum::ADMIN) {
 			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
 		}
 
 		return Inertia::render('Admin/ISPmap', compact('user'));
+	}
+
+	public function employeesStatsPage(){
+		$user = auth()->user();
+		
+		if ($user->role !== DepartmentEnum::ADMIN) {
+			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+		}
+
+		return Inertia::render('Admin/EmployeeStat', compact('user'));
 	}
 
 	public function login(Request $request)
@@ -282,16 +292,18 @@ class UserController extends Controller
 
     $login = auth()->attempt($credentials);
     if ($login) {
-      return response()->json(['message' => 'Login Successful']);
+      $token = $request->user()->createToken('token_auth')->plainTextToken;;
+      return response()->json(['message' => 'Login Successful','token' => $token]);
     }
 
 		abort(401, 'Invalid user email or password');
     // return redirect()->back()->withErrors();
   }
 
-	public function logout()
+	public function logout(Request $request)
   {
-    auth()->logout();
+    $request->user()->tokens()->delete();
+    // auth()->user()->tokens()->delete();
 		return response()->json(['message' => 'Logout was successful']);
   }
 
