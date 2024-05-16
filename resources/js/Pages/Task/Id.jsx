@@ -20,7 +20,7 @@ function Id({ user }) {
   const messagesEnd = useRef(null);
   const chatContainer = useRef(null);
   
-  const channel = window.Echo.channel('public.pusherbroadcast.1');
+  const channel = window.Echo.channel('private.taskmessagechat.1');
 
   const taskId = window.location.pathname.split('/')[2];
 

@@ -7,10 +7,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PusherBroadcast implements ShouldBroadcast
+class TaskMessageChatEvent implements ShouldBroadcastNow
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -33,7 +34,7 @@ class PusherBroadcast implements ShouldBroadcast
    */
   public function broadcastOn()
   {
-    return new Channel('public.pusherbroadcast.1');
+    return new Channel('private.taskmessagechat.1');
   }
 
 	public function broadcastAs()
