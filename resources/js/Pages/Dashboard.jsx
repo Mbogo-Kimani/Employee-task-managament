@@ -8,9 +8,10 @@ import requestHandler from '../services/requestHandler';
 import departmentsEnum from '../data/enums/department';
 import { useTranslation } from 'react-i18next';
 import { AppContext } from '../appContext';
+import { loaderSetter } from '../Components/Common/Loader';
 
 
-function Home(props) {
+function Home() {
   const [day, setDay] = useState('');
   const [tasks,setTasks] = useState({})
   const [tasksDone,setTasksDone] = useState({})
@@ -22,6 +23,7 @@ function Home(props) {
   const [finishedDataSet, setFinishedDataSet] = useState([]);
   const [clientDataSet, setClientDataSet] = useState([]);
   const [pageItems, setPageItems] = useState(defaultPageData);
+  const [dashboardNumbers, setDashboardNumbers] = useState({});
   const { userData } = useContext(AppContext)
 
 
@@ -40,8 +42,9 @@ function Home(props) {
     setPageItems(
       pageAndNavItemsDeterminer(userData?.role, userData?.clearance_level)
     );
-    fetchTasks()
-    fetchClients()
+    fetchTasks();
+    fetchClients();
+    fetchUserInfo();
   }, [])
 
   useEffect(() => {
@@ -60,6 +63,10 @@ function Home(props) {
       calculateStats(false,true)
     }
   },[tasksDone])
+
+  function fetchUserInfo() {
+    requestHandler.get(`/api/user_info`, setDashboardNumbers, null, loaderSetter);
+  }
   
   const fetchTasks = () => {
     const filters = {
@@ -136,7 +143,7 @@ function Home(props) {
                 return (
                   <DashboardItem
                     key={idx}
-                    numberToDisplay={item.numberToDisplay === '+' ? item.numberToDisplay : props[item.numberToDisplay]}
+                    numberToDisplay={item.numberToDisplay === '+' ? item.numberToDisplay : dashboardNumbers[item.numberToDisplay]}
                     textToDisplay={item.name}
                     pictureSrc={item.pictureSrc}
                     href={item.href}
