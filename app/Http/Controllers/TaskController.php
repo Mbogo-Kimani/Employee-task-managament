@@ -11,16 +11,83 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use AfricasTalking\SDK\AfricasTalking;
+use App\Http\Resources\EmployeeTaskResource;
+use App\Jobs\TaskReminder;
+use App\Mail\TaskAssigned;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use Inertia\Inertia;
+use Stevebauman\Hypertext\Transformer;
 
 class TaskController extends Controller
 {
+	public function show($id) {
+		if ($id) {
+			$admin_handler = null;
+			$department_handler = null;
+			$handler = null;
+
+			$task = Task::find($id);
+
+			if ($task->admin_handler_id) {
+				$admin_handler = User::where('id', $task->admin_handler_id)
+															->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+															->get()[0];
+			}
+
+			if ($task->department_handler_id) {
+				$department_handler = User::where('id', $task->department_handler_id)
+																	->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+																	->get()[0];
+			}
+
+			if ($task->user_id) {
+				$handler = User::where('id', $task->user_id)
+												->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+												->get()[0];
+			}
+
+			return response()->json([
+				'admin' => $admin_handler,
+				'department_head' => $department_handler,
+				'handler' => $handler,
+				'task' => $task,
+			]);
+		}
+	}
+
+	public function getTaskMessages($id) {
+		if ($id) {
+			$task = Task::find($id);
+			$messages = $task->taskMessages()->get();
+
+			return response()->json($messages);
+		}
+	} 
+
+	public function tasksViewPage(Request $request, $task_id) {
+		$user = auth()->user();
+		$task = Task::find($task_id);
+
+		if ($task && $user) {
+			if ($task->admin_handler_id == $user->id || $task->department_handler_id == $user->id || $task->user_id == $user->id) {
+				return Inertia::render('Task/Id');
+			}
+		}
+		abort(404, 'Resource not available');
+	}
+
 	public function store(Request $request) {
+    $user = auth()->user();
 		$request->validate([
 			'name' => 'required|string|max:255',
 			'department' => 'required',
 			'taskType' => 'required',
+			'fromDate' => 'required',
+			'toDate' => 'required',
 		]);
-
 		$newTask = Task::create([
 			'name' => $request->name,
 			'department_id' => $request->department,
@@ -28,7 +95,27 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
+      'admin_handler_id' => $request->adminHandler,
+      'department_handler_id' => $request->departmentHandler,
 		]);
+
+    if($request->client){
+      $newTask->client_id = intval($request->client);
+      $newTask->save();
+    }
+
+    $currentDate = Carbon::now();
+    $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
+
+    $delay = $currentDate->diffInHours($endDate);
+
+    if($delay >= 48){
+      $nearDue = $delay - 24;
+      TaskReminder::dispatch($newTask,$user)->delay($nearDue);
+    }
+
+    TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay));
+    TaskReminder::dispatch($newTask,$user)->delay(now()->addHours($delay + 24));
 
 		return response()->json(['message' => 'Task saved successfully']);
 	}
@@ -36,18 +123,18 @@ class TaskController extends Controller
 	public function index(Request $request) {
 		$currentUser = auth()->user();
 		$tasks = Task::where('user_id', $currentUser->id)
-					->paginate(10);
+					->paginate(20);
 		
 		return response()->json($tasks);
 	}
 
 	public function allTasks() {
 		$user = auth()->user();
-
 		if ($user->role == DepartmentEnum::ADMIN) {
-			$tasks = Task::with(['department', 'user', 'taskType'])->paginate(20);
+			$tasks = Task::with(['department', 'user', 'taskType','client'])->paginate(20);
 			return response()->json($tasks);
 		}
+
 	}
 
 	public function getPending(Request $request) {
@@ -70,6 +157,23 @@ class TaskController extends Controller
 
 		return response()->json($tasks);
 	}
+
+    public function getTasksByUsers(Request $request)
+    {
+        $user = auth()->user();
+		if ($user->role == DepartmentEnum::ADMIN) {
+			$users = User::all();
+
+            $results = [];
+            foreach ($users as $user){
+                $tasks = $user->tasks;
+                
+                $results[] = new EmployeeTaskResource($user,$tasks);
+            }
+
+            return response()->json($results);
+		}
+    }
 
 	public function getUnassignedTasks() {
 		$user = auth()->user();
@@ -102,14 +206,22 @@ class TaskController extends Controller
 		]);
 
 		$user = auth()->user();
+        
 
 		if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$task = Task::find($request->task);
-
+            
 			if ($task) {
 				$task->user_id = $request->user;
 				$task->save();
-
+                $content = View::make('emails.task_assigned', ['task' => $task, 'user' => $task->user, 'client' => $task->client])->render();
+                $text = (new Transformer)
+                ->keepLinks() 
+                ->keepNewLines()
+                ->toText($content);
+                $mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $task->user, 'client' => $task->client]);
+                $this->sendMessage($text,$task->user->phone_number);
+                $this->sendMail($task->user,$mail);
 				return response()->json(['message' => 'Task assigning successful']);
 			}
 		}
@@ -128,6 +240,14 @@ class TaskController extends Controller
 				return response()->json(['message' => 'Task unassigned successfully']);
 			}
     }
+  }
+
+  public function filterTasks(Request $request)
+  {
+       $tasks = Task::filter(request(['type', 'status','departmentId']))
+			 							->with(['department', 'user', 'taskType','client'])
+										->paginate(20);
+       return response()->json($tasks);
   }
 
 	public function markTaskReceivedByHOD (Request $request) {
@@ -152,186 +272,35 @@ class TaskController extends Controller
 		}
 	}
 
-
-
-    // My Task
-    public function myTask()
+    private function sendMessage($text,$phone_number)
     {
-        // $userId = auth()->user()->id;
-        // $tasks = Task::where('employee_id', $userId)
-        //     ->whereIn('status', ['pending', 'completed on time', 'completed in late'])
-        //     ->paginate(5);
+        $username = config('sms.username'); // use 'sandbox' for development in the test environment
+        $apiKey   = config('sms.api_key'); // use your sandbox app API key for development in the test environment
+        $AT       = new AfricasTalking($username, $apiKey);
 
-        // return view('admin.pages.Task.myTask', compact('tasks'));
+        // Get one of the services
+        $sms      = $AT->sms();
 
-        $employee = Auth::user()->employee;
+        // Use the service
+        $result   = $sms->send([
+            'to'      => $phone_number,
+            'message' => $text,
+            'from' => env('AT_SHORTCODE')
+        ]);
+        return $result;
 
-        if (!$employee) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $tasks = Task::with(['employee'])
-            ->where('employee_id', $employee->id)
-            ->get();
-
-        $tasks->each(function ($task) {
-            $employee = $task->employee;
-            $employee->load('designation', 'department'); // Assuming you have relationships defined in Employee model
-            $task->designation = $employee->designation->name;
-            $task->department = $employee->department->name;
-        });
-
-        return view('admin.pages.Task.myTask', compact('tasks'));
     }
 
-
-
-    public function storeTask(Request $request)
+    private function sendMail($user,$mail)
     {
-        // Check if the employee has an ongoing or completed task
-        $employeePendingTask = Task::where('employee_id', $request->employee_id)
-            ->where('status', 'pending')
-            ->exists();
+        Mail::to($user->email)->cc(config()->get('mail.from.address'))->queue($mail);
 
-        // If there's no pending task, allow assignment of a new task
-        if (!$employeePendingTask) {
-            // Validation for new task assignment
-            $validate = Validator::make($request->all(), [
-                'from_date' => 'required|date|after_or_equal:today',
-                'to_date' => 'required|date|after_or_equal:from_date',
-                'task_name' => 'required',
-                'employee_id' => 'required|unique:tasks,employee_id,NULL,id,from_date,' . $request->from_date,
-                'task_description' => 'nullable|string',
-            ]);
-
-            // Check for overlapping dates for the same employee (similar to the previous check)
-            $overlappingTasks = Task::where('employee_id', $request->employee_id)
-                ->where(function ($query) use ($request) {
-                    $query->where(function ($q) use ($request) {
-                        $q->where('from_date', '<=', $request->from_date)
-                            ->where('to_date', '>=', $request->from_date);
-                    })->orWhere(function ($q) use ($request) {
-                        $q->where('from_date', '>=', $request->from_date)
-                            ->where('from_date', '<=', $request->to_date);
-                    });
-                })
-                ->exists();
-
-            if ($validate->fails() || $overlappingTasks) {
-                if ($overlappingTasks) {
-                    notify()->error('Overlapping dates for the same employee.');
-                } else {
-                    notify()->error($validate->getMessageBag());
-                }
-                return redirect()->back();
-            }
-
-            // Task creation logic
-            $fromDate = new \DateTime($request->from_date);
-            $toDate = new \DateTime($request->to_date);
-            $totalDays = $fromDate->diff($toDate)->days + 1;
-
-            Task::create([
-                'employee_id' => $request->employee_id,
-                'task_name' => $request->task_name,
-                'from_date' => $request->from_date,
-                'to_date' => $request->to_date,
-                'total_days' => $totalDays,
-                'task_description' => $request->task_description,
-            ]);
-
-            notify()->success('New Task created');
-            return redirect()->back();
-        } else {
-            // If there's a pending task, check if it's completed on time or late
-            $completedTask = Task::where('employee_id', $request->employee_id)
-                ->whereIn('status', ['completed on time', 'completed in late'])
-                ->exists();
-
-            if ($completedTask) {
-                // Task creation logic
-                $fromDate = new \DateTime($request->from_date);
-                $toDate = new \DateTime($request->to_date);
-                $totalDays = $fromDate->diff($toDate)->days + 1;
-
-                Task::create([
-                    'employee_id' => $request->employee_id,
-                    'task_name' => $request->task_name,
-                    'from_date' => $request->from_date,
-                    'to_date' => $request->to_date,
-                    'total_days' => $totalDays,
-                    'task_description' => $request->task_description,
-                ]);
-
-                notify()->success('New Task created');
-                return redirect()->back();
-            }
-        }
-
-        // If the employee has a pending task and it's not completed on time or late, prevent assignment of a new task
-        notify()->error('This employee has a pending task that needs to be completed on time or late before assigning a new task.');
-        return redirect()->back();
-    }
-
-
-
-
-    // task list
-    public function taskList()
-    {
-
-
-        $tasks  =  Task::with(['employee'])->get();
-        $tasks->each(function ($task) {
-            $employee = $task->employee;
-            $employee->load('designation', 'department'); // Assuming you have relationships defined in Employee model
-            $task->designation = $employee->designation->name;
-            $task->department = $employee->department->name;
-        });
-        return view('admin.pages.Task.viewTask', compact('tasks'));
-    }
-
-    // Task Completed InTime and Late
-    public function completeTaskOnTime($id)
-    {
-        $task = Task::find($id);
-        if ($task) {
-            $completionDate = now();
-            $toDate = \Carbon\Carbon::createFromFormat('Y-m-d', $task->to_date);
-            $fromDate = \Carbon\Carbon::createFromFormat('Y-m-d', $task->from_date);
-
-            if ($completionDate->gt($toDate)) {
-                $task->status = 'completed in late';
-                notify()->success('Completed But in Late');
-            } else if ($completionDate->lt($fromDate)) {
-                // Error: Attempted completion before the task's start date
-                notify()->error('Task completion cannot occur before the designated start date');
-            } else {
-                $task->status = 'completed on time';
-                notify()->success('Completed on Time');
-            }
-
-            $task->save();
-            return redirect()->back();
-        }
-    }
-
-
-    public function completeTaskLate($id)
-    {
-        $task = Task::find($id);
-        if ($task) {
-            $task->status = 'completed in late';
-            $task->save();
-            notify()->success('Completed But in Late');
-            return redirect()->back();
-        }
     }
 
     public function deleteTask($id)
     {
         $task = Task::find($id);
-        if ($task && $task->status !== 'completed') {
+        if ($task && $task->status !== TaskStatusEnum::DONE) {
             $task->delete();
             return response()->json(['message' => 'Task deleted successfully']);
         } else {
@@ -340,13 +309,6 @@ class TaskController extends Controller
         return redirect()->back();
     }
 
-    public function editTask($id)
-    {
-        $task = Task::findOrFail($id);
-
-
-        return view('admin.pages.Task.editTask', compact('task'));
-    }
     public function updateTask(Request $request)
     {
         $task = Task::findOrFail($request->id);

@@ -6,15 +6,20 @@ import {
 import SideNav from "../Layouts/SideNav";
 import requestHandler from "../services/requestHandler";
 import Modal from "../Components/Common/Modal";
-import SelectComp from "../Components/Common/SelectComp";
 import { displayErrors } from "../data/utils";
 import PaginatorNav from "../Components/Common/PaginatorNav";
 import TableComp from "../Components/Common/TableComp";
 import taskStatus from "../data/enums/taskStatus";
 import { toast } from 'react-toastify';
+import DropDown from "../Components/Common/DropDown";
+import { Menu } from "@headlessui/react";
+import Icon from "../Components/Common/Icon";
+import { Link } from "@inertiajs/react";
+import TaskStatusColorCode from "../Components/Common/TaskStatusColorCode";
+import TaskStatusIndicator from "../Components/Common/TaskStatusIndicator";
 
 
-function AssignedTasks({ user }) {
+function AssignedTasks() {
     const [navItems, setNavItems] = useState(defaultPageData);
     const [tasks, setTasks] = useState({
         data: [],
@@ -37,10 +42,6 @@ function AssignedTasks({ user }) {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
 		const [feedbackOptional, setFeedbackOptional] = useState(false);
-
-    useEffect(() => {
-        setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-    }, []);
 
     useEffect(() => {
         fetchAssignedTasks();
@@ -141,10 +142,6 @@ function AssignedTasks({ user }) {
         }
         requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
     }
-    function openFeedBackModal(task){
-        setShowFeedbackModal(true)
-        setTask(task)
-    }
 
     function unassignTask(id){
         requestHandler.patch(`/api/tasks/${id}`,{}, setResponse, setErrors)
@@ -152,7 +149,10 @@ function AssignedTasks({ user }) {
 
 
     return (
-        <SideNav navItems={navItems} user={user}>
+        <SideNav >
+			<div>
+				<TaskStatusColorCode />
+			</div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
                     columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Action"]}
@@ -187,7 +187,7 @@ function AssignedTasks({ user }) {
                                         {task.user && task.user.name}
                                     </td>
                                     <td className="px-2 py-4">
-                                        {taskStatus[task.status]}
+                                        <TaskStatusIndicator status={task.status} />
                                     </td>
                                     <td className="px-2 py-4">
                                         {task.from_date ||
@@ -204,52 +204,48 @@ function AssignedTasks({ user }) {
                                     >
                                       View Report
                                     </td>
-                                    {/* {
-                                        task.status == taskStatus.AWAITING_APPROVAL_BY_DEPARTMENT_HEAD ? (
-                                        <td
-                                        className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                        onClick={() =>
-                                            unassignTask(task.id)
-                                        }
-                                        >
-                                            Unassign
-                                        </td>
-                                        :
-                                        (<td
-                                        	className="px-2 py-4"
-                                        	title="Task already completed"
-                                        >
-                                          Ongoing
-                                        </td>
-                                        )
-                                        :
-                                        (<td
-                                            className="px-2 py-4 cursor-pointer"
-                                            title="Report already submitted"
-                                        >
-                                            -
-                                        </td>
-                                    )
-                                    } */}
-                                    {
-                                        task.status == taskStatus.PENDING || task.status == taskStatus.REJECTED? 
-                                        <td
-                                        className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                        onClick={() =>
-                                            unassignTask(task.id)
-                                        }
-                                        >
-                                            Unassign
-                                        </td>
-                                        :
-                                        (<td
-                                        	className="px-2 py-4"
-                                        	title="Task already completed"
-                                        >
-                                          Ongoing
-                                        </td>
-                                    )
-                                    }
+                                    <td>
+                                      <DropDown>
+                                        <Menu.Item>
+                                          {({ active }) => (
+																						task.status == taskStatus.PENDING || task.status == taskStatus.REJECTED ?
+                                            <button
+                                              className={`${
+                                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                              onClick={() => unassignTask(task.id)}
+                                            >
+                                              <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                                              <span className='block py-3 px-2'>Unassign</span>   
+                                            </button>
+																						:
+																						<button
+                                              className={`${
+                                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                              disabled
+																							title="Task is ongoing"
+                                            >
+                                              <Icon src='edit' className='w-4 mr-2' fill='var(--gray)'/>
+                                              <span className='block py-3 px-2'>Ongoing</span>   
+                                            </button>
+                                          )}
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                          {({ active }) => (
+                                            <Link
+                                              className={`${
+                                                active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                              href={`/task/${task.id}`}
+                                            >
+                                              <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
+                                              <span className='block py-3 px-2'>View</span>
+                                            </Link>
+                                          )}
+                                        </Menu.Item>
+                                      </DropDown>
+																		</td>
                                 </tr>
                             );
                         }

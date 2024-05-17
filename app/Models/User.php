@@ -33,15 +33,15 @@ class User extends Authenticatable
     return $this->tasks()->where('status', TaskStatusEnum::PENDING)->get();
   }
 
-	protected $fillable = [
-		'name',
-		'email',
-		'role',
-		'image',
-		'department_id',
-		'clearance_level',
-    'password',
-	];
+  public function notifications(): HasMany
+  {
+    return $this->hasMany(Notification::class);
+  }
+
+  public function taskMessages()
+  {
+    return $this->hasMany(TaskMessage::class);
+  }
 
   protected $hidden = [
     'password',

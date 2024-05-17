@@ -4,13 +4,17 @@ import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/
 import taskStatus from '../data/enums/taskStatus';
 import requestHandler from '../services/requestHandler';
 import Modal from '../Components/Common/Modal';
-import { handlePage } from '../data/utils';
 import TableComp from '../Components/Common/TableComp';
 import PaginatorNav from '../Components/Common/PaginatorNav';
 import { loaderSetter } from '../Components/Common/Loader';
-import clearanceLevelEnum from "../data/enums/clearanceLevel";
+import TaskStatusColorCode from '../Components/Common/TaskStatusColorCode';
+import TaskStatusIndicator from '../Components/Common/TaskStatusIndicator';
+import DropDown from '../Components/Common/DropDown';
+import { Menu } from '@headlessui/react';
+import Icon from '../Components/Common/Icon';
+import { router } from '@inertiajs/react';
 
-function Tasks({ user }) {
+function Tasks() {
   const [pageItems, setPageItems] = useState(defaultPageData);
   const [tasks, setTasks] = useState({
     data: [],
@@ -32,12 +36,6 @@ function Tasks({ user }) {
   });
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
-
-  useEffect(() => {
-    setPageItems(
-      pageAndNavItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, [])
 
   useEffect(() => {
     fetchTasks();
@@ -108,13 +106,18 @@ function Tasks({ user }) {
     setFeedBack(content)
     setShowFeedBackModal(true)
   }
+
+  function navigateToTasksView(id) {
+    router.visit(`/task/${id}`)
+  }
   
   return (
     <>
-      <SideNav navItems={pageItems.navItems} user={user}>
+      <SideNav>
         <div className="">
+          <TaskStatusColorCode />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback']}>
+            <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback', 'Action']}>
               {
                 (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                   return (
@@ -136,7 +139,7 @@ function Tasks({ user }) {
                         { task.to_date }
                       </td>
                       <td className="px-2 py-4">
-                        { taskStatus[task.status] }
+                        <TaskStatusIndicator status={task.status} />
                       </td>
                       {
                         task.status === taskStatus.PENDING || task.status === taskStatus.REJECTED ?
@@ -157,7 +160,7 @@ function Tasks({ user }) {
                       }
                       {
                         task.status !== taskStatus.PENDING  && task.feedback_if_rejected ?
-                          <td
+                        <td
                           className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
                           onClick={() => openFeedBackModal(task.feedback_if_rejected  )}
                         >
@@ -167,7 +170,24 @@ function Tasks({ user }) {
                         <td className='px-2 py-4 cursor-pointer' title='Feedback not yet submitted'>
                           N/A
                         </td>
-                      }
+                        }
+                         <td className="px-2 py-4 relative">
+                          <DropDown>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                  } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                  onClick={() => navigateToTasksView(task.id)}
+                                >
+                                  <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
+                                  <span className='block py-3 px-2'>View</span>
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </DropDown>
+                      </td>
                     </tr>
                   );
                 })

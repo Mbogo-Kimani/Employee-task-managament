@@ -4,17 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Enums\ClearanceLevelEnum;
 use App\Enums\DepartmentEnum;
+use App\Enums\TaskStatusEnum;
+use App\Helpers\ApiLib;
 use App\Http\Controllers\Controller;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
-use App\Models\Task;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
+	public function fetchUserNumbers() {
+		$user = auth()->user();
+		$totalTasks = 0;
+
+		if ($user) {
+			$totalTasks = Task::where('user_id', $user->id)
+													->where('status', TaskStatusEnum::PENDING)
+													->count();
+
+			if ($user->role == DepartmentEnum::ADMIN) {
+				// return response()->json(['users' => User::count()]);
+			}
+			else if ($user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
+				$tasksNotAssigned = Task::where('department_id', $user->department_id)
+																->whereNull('user_id')
+																->count();
+
+				return response()->json(['totalTasks' => $totalTasks, 'tasksNotAssigned' => $tasksNotAssigned]);
+			}
+			else {
+				return response()->json(['totalTasks' => $totalTasks]);
+			}
+		}
+	}
+
 	public function show(Request $request, $id) {
     $user = auth()->user();
 
@@ -70,18 +98,31 @@ class UserController extends Controller
 	}
 
   public function adminEmployeesPage() {
-    $user = auth()->user();
-
-		if ($user && $user->role == DepartmentEnum::ADMIN) {
-			return Inertia::render('Admin/Employees', compact('user'));
-		}
     
-		return redirect('/dashboard')->with(['error' => 'Page does not exist']);
+    return Inertia::render('Admin/Employees');
+    
   }
 
 	public function index() {
 		$users = User::paginate(20);
 		return response()->json($users);
+	}
+
+	public function setPassword(Request $request){
+		$request->validate([
+			'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'token' => 'required|string'
+		]);
+
+		$user = User::where('verification_token',$request->token)->first();
+
+		if(!$user){
+			throw new NotFoundHttpException('User not found');
+		}
+		$user->password = Hash::make($request->password);
+		$user->save();
+
+		return response()->json(['message' => 'Password has been set succesfully']);
 	}
 
 	public function clearanceLevels() {
@@ -107,17 +148,19 @@ class UserController extends Controller
 			'name' => 'required|string|max:255',
 			'password' => ['required', 'confirmed', Rules\Password::defaults()],
 			'role' => 'required',
+			'phone_number' => 'required|string'
 		]);
-
 		$user = User::create([
 			'clearance_level' => $request->clearance_level,
 			'email' => $request->email,
 			'name' => $request->name,
 			'password' => Hash::make($request->password),
+			'verification_token' => ApiLib::createVerificationToken(24),
 			'role' => $request->role,
 			'department_id' => $request->role,
+			'phone_number' => $request->phone_number,
 		]);
-      
+		Mail::to($user->email)->send(new \App\Mail\EmailVerification($user));
 		return response()->json($user);
   }
 
@@ -144,8 +187,7 @@ class UserController extends Controller
 		abort(400, 'User not found');
 	}
 	public function navigateToAdminUserTasks() {
-		$user = auth()->user();
-		return Inertia::render('Admin/Employees/UserId/Tasks', compact('user'));
+		return Inertia::render('Admin/Employees/UserId/Tasks');
 	}
 
 	public function navigateToProfile() {
@@ -154,71 +196,37 @@ class UserController extends Controller
 	}
 
 	public function allTasksPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-		return Inertia::render('Admin/Tasks', compact('user'));
+		return Inertia::render('Admin/Tasks');
 	}
 
 	public function showReports() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-		return Inertia::render('Admin/Reports', compact('user'));
+		return Inertia::render('Admin/Reports');
 	}
 
 	public function newTaskPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::ADMIN || $user->role !== DepartmentEnum::ADMIN) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
 
-		return Inertia::render('Admin/NewTask', compact('user'));
+		return Inertia::render('Admin/NewTask');
 	}
 
-	public function newEquipmentsPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
+	public function newEquipmentsPage() 
+  {
 
-		return Inertia::render('Inventory/NewEquipment', compact('user'));
+		return Inertia::render('Inventory/NewEquipment');
 	}
 
 	public function equipmentsPage() {
-		$user = auth()->user();
-		
-		if ($user->role !== DepartmentEnum::INVENTORY || $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
 
-		return Inertia::render('Inventory/Equipments', compact('user'));
+		return Inertia::render('Inventory/Equipments');
 	}
 
 	public function unassignedTasksPage() {
-		$user = auth()->user();
 
-		if ($user && $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-
-		return Inertia::render('UnassignedTasks', compact('user'));
+		return Inertia::render('UnassignedTasks');
 	}
 
 	public function assignedTasksPage() {
-		$user = auth()->user();
 
-		if ($user && $user->clearance_level !== ClearanceLevelEnum::DEPARTMENT_LEADER) {
-			return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-		}
-
-		return Inertia::render('AssignedTasks', compact('user'));
+		return Inertia::render('AssignedTasks');
 	}
 
 	public function getUsersByDepartment() {
@@ -237,6 +245,27 @@ class UserController extends Controller
 		return Inertia::render('Auth/Login');
 	}
 
+	public function changePasswordPage () {
+		return Inertia::render('Auth/ChangePassword');
+	}
+
+	public function mapsPage(){
+
+		return Inertia::render('Admin/ISPmap');
+	}
+
+	public function employeesStatsPage(){
+		return Inertia::render('Admin/EmployeeStat');
+	}
+
+	public function dashboard(Request $request) {
+    return Inertia::render('Dashboard');
+  }
+
+	public function tasksPage () {
+		return Inertia::render('Tasks');
+	}
+
 	public function login(Request $request)
   {
 		$request->validate([
@@ -248,16 +277,44 @@ class UserController extends Controller
 
     $login = auth()->attempt($credentials);
     if ($login) {
-      return response()->json(['message' => 'Login Successful']);
+      $user = auth()->user();
+      $token = $request->user()->createToken('token_auth')->plainTextToken;;
+      return response()->json(['message' => 'Login Successful','token' => $token, 'user' => $user]);
     }
 
 		abort(401, 'Invalid user email or password');
     // return redirect()->back()->withErrors();
   }
 
-	public function logout()
+	public function logout(Request $request)
   {
-    auth()->logout();
+    $request->user()->tokens()->delete();
+    // auth()->user()->tokens()->delete();
 		return response()->json(['message' => 'Logout was successful']);
   }
+
+	public function getAdmins() {
+		$admins = User::where('department_id', DepartmentEnum::ADMIN)->get();
+		return response()->json($admins);
+	}
+
+	public function getDepartmentHeads($department_id) {
+		if ($department_id) {
+			$department_heads = User::where('department_id', $department_id)
+															->where('clearance_level', ClearanceLevelEnum::DEPARTMENT_LEADER)
+															->get();
+			return response()->json($department_heads);
+		}
+	}
+
+	public function getAllHandlers($department_id) {
+		if ($department_id) {
+			$admins = User::where('department_id', DepartmentEnum::ADMIN)->get();
+			$department_heads = User::where('department_id', $department_id)
+															->where('clearance_level', ClearanceLevelEnum::DEPARTMENT_LEADER)
+															->get();
+
+			return response()->json(['admins' => $admins, 'departmentHeads' => $department_heads]);
+		}
+	}
 }

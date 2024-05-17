@@ -5,13 +5,9 @@ import {
 } from "../../data/indexNav";
 import SideNav from "../../Layouts/SideNav";
 import requestHandler from "../../services/requestHandler";
-import Modal from "../../Components/Common/Modal";
-import SelectComp from "../../Components/Common/SelectComp";
-import { displayErrors } from "../../data/utils";
 import PaginatorNav from "../../Components/Common/PaginatorNav";
 import TableComp from "../../Components/Common/TableComp";
-import taskStatus from "../../data/enums/taskStatus";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import departmentsEnum from '../../data/enums/department';
 import Icon from '../../Components/Common/Icon';
@@ -38,9 +34,6 @@ function Equipments({ user }) {
     const [showModal, setShowModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
-    useEffect(() => {
-        setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-    }, []);
 
     useEffect(() => {
         fetchEquipments();
@@ -70,7 +63,7 @@ function Equipments({ user }) {
     }
 
     return (
-        <SideNav navItems={navItems} user={user}>
+        <SideNav >
             <div className='mb-4 w-full flex'>
                 <a
                     className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"

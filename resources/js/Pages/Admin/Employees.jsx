@@ -11,8 +11,9 @@ import Icon from '../../Components/Common/Icon';
 import { loaderSetter } from '../../Components/Common/Loader';
 import EmployeesTableElem from '../../Components/Admin/EmployeesTableElem';
 import { toast } from 'react-toastify';
+import {router} from "@inertiajs/react"
 
-function Employees({ user }) {
+function Employees() {
   const [pageItems, setPageItems] = useState(defaultPageData);
   const [users, setUsers] = useState({
     data: [],
@@ -39,15 +40,10 @@ function Employees({ user }) {
   const [showPasswords, setShowPasswords] = useState(false);
   const [response, setResponse] = useState(false);
   const [formMode, setFormMode] = useState('');
-  const [userEdited, setUserEdited] = useState();
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedUser, setDeletedUser] = useState(newUser);
+  const [countryCode, setCountryCode] = useState('+254')
 
-  useEffect(() => {
-    setPageItems(
-      pageAndNavItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -59,6 +55,14 @@ function Employees({ user }) {
     checkResponse();
   }, [response]);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('new');
+
+  useEffect(() => {
+    if(myParam){
+      setShowNewUserModal(true)
+    }
+  },[])
   function checkResponse () {
     if (response) {
       fetchUsers();
@@ -66,6 +70,7 @@ function Employees({ user }) {
         name: '',
         email: '',
         role: '',
+        phone_number: '',
         clearance_level: 2,
         password: 'Etnet Technologies',
         password_confirmation: 'Etnet Technologies',
@@ -87,8 +92,8 @@ function Employees({ user }) {
   }
 
   function toggleOpenModal(mode = '', userId = null) {
-    if (mode) {
-      setFormMode(mode);
+    setFormMode(mode);
+    if (mode && mode === 'edit') {
       requestHandler.get(`/api/user/${userId}`, setNewUser);
     }
     setShowNewUserModal(true);
@@ -100,6 +105,7 @@ function Employees({ user }) {
       name: '',
       email: '',
       role: '',
+      phone_number: '',
       clearance_level: 2,
       password: 'Etnet Technologies',
       password_confirmation: 'Etnet Technologies',
@@ -138,6 +144,7 @@ function Employees({ user }) {
     if (resp) {
       toast.success('Employee Deleted successfully');
       closeDeleteUserModal();
+      fetchUsers();
     }
   }
 
@@ -145,16 +152,27 @@ function Employees({ user }) {
     if (resp) {
       toast.success('Employee Edited successfully');
       closeDeleteUserModal();
+      fetchUsers();
     }
   }
 
+  function handlePhoneNumberChange(e){
+    setNewUser({...newUser,[e.target.name]: countryCode + e.target.value})
+  }
+
   return (
-    <SideNav navItems={pageItems.navItems} user={user}>
+    <SideNav>
       <div className="">
         <div className='mb-4 w-full flex'>
           <button
+            className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-3 text-gray-800 hover:text-gray-100"
+            onClick={() => router.visit('/admin/employees/stats')}
+          >
+            Employees Statistics
+          </button>
+          <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
-            onClick={toggleOpenModal}
+            onClick={() => toggleOpenModal('new')}
           >
             Add New Employee
           </button>
@@ -193,7 +211,7 @@ function Employees({ user }) {
             <div className="bg-white rounded-lg shahiddendow dark:bg-gray-700">
               <div className="flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600">
                 {
-                  formMode && userEdited ?
+                  formMode === 'edit' ?
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Edit Employee Details
                   </h3>
@@ -262,7 +280,24 @@ function Employees({ user }) {
                       </p>
                     }  
                   </div>
-
+                  <div className='flex'>
+                    <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                      <option value="" disabled>Select Country Code</option>
+                      <option value="+254">+254 (Kenya)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+91">+91 (India)</option>
+                      {/* Add more country codes as needed */}
+                    </select>
+                    <input
+                      type="tel"
+                      name='phone_number'
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      value={newUser.phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Enter phone number"
+                      required
+                    />
+                  </div>
                   <div>
                     <label
                       htmlFor="title"

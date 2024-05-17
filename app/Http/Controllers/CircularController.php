@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DepartmentEnum;
+use App\Jobs\CreateNotificationsFromCirculars;
 use App\Models\Circular;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -34,13 +35,7 @@ class CircularController extends Controller
     */
   public function create()
   {
-    $user = auth()->user();
-
-		if ($user->role == DepartmentEnum::ADMIN && $user->department_id == DepartmentEnum::ADMIN) {
-			return Inertia::render('Admin/Circulars/NewCircular', compact('user'));
-		} else {
-			abort(401, 'You do not have permission to view this page');
-		}
+			return Inertia::render('Admin/Circulars/NewCircular');
   }
 
   /**
@@ -67,6 +62,7 @@ class CircularController extends Controller
 		]);
 
 		$newCircular->save();
+    CreateNotificationsFromCirculars::dispatch($newCircular);
 
 		return response()->json(['message' => 'Circular saved successfully']);
   }

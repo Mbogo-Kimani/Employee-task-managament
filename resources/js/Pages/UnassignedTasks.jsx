@@ -9,7 +9,7 @@ import PaginatorNav from '../Components/Common/PaginatorNav';
 import TableComp from '../Components/Common/TableComp';
 import { loaderSetter } from '../Components/Common/Loader';
 
-function UnassignedTasks({ user }) {
+function UnassignedTasks() {
   const [navItems, setNavItems] = useState(defaultPageData);
   const [tasks, setTasks] = useState({
     data: [],
@@ -31,11 +31,6 @@ function UnassignedTasks({ user }) {
   const [users, setUsers] = useState([]);
   const [response, setResponse] = useState(false);
 
-  useEffect(() => {
-    setNavItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchUnassignedTasks();
@@ -96,11 +91,11 @@ function UnassignedTasks({ user }) {
 
   function submitNewAssignment(e) {
     e.preventDefault();
-    requestHandler.patch('/api/tasks', newAssignment, setResponse, setErrors);
+    requestHandler.patch('/api/tasks', newAssignment, setResponse, setErrors, loaderSetter);
   }
 
   return (
-    <SideNav navItems={navItems} user={user}>
+    <SideNav>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp columns={['Task Name', 'Task Type', 'From', 'To', 'Action']}>
           {

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class EquipmentStatusEnum {
+class EquipmentsStatusEnum {
   const IN_USE = 1;
   const IN_MAINTENANCE = 2;
   const RETIRED = 3;
