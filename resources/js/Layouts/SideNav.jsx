@@ -17,7 +17,7 @@ function SideNav({ children }) {
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [language, setLanguage] = useState(localStorage.getItem('language') || 'en')
   const [navItems, setNavItems] = useState(defaultPageData);
-  const { userData } = useContext(AppContext)
+  const { userData, logoutUser } = useContext(AppContext);
   
   useEffect(() => {
     checkLogoutResponse();
@@ -49,6 +49,7 @@ function SideNav({ children }) {
   }
   function checkLogoutResponse() {
     if (response) {
+      logoutUser();
       router.visit('/auth/login');
     }
   }

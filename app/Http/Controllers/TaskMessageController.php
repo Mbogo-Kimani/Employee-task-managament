@@ -37,22 +37,28 @@ class TaskMessageController extends Controller
      */
     public function store(Request $request)
     {
-        $task = Task::find($request->taskId);
-        $user = auth()->user();
-        $department = $task->department;
-        $new_message = TaskMessage::create([
-            'content' => $request->message,
-            'task_id' => $task->id,
-            'sender_id' => $user->id,
-            'sender_department_id' => $user->department_id,
-            'user_id' => $user->id,
-            'department_id' => $department->id,
-            'message_status' => MessageStatusEnum::PENDING,
-        ]);
+      $task = Task::find($request->taskId);
+      $user = auth()->user();
+			if ($task && $user) {
+				if ($task->admin_handler_id == $user->id || $task->department_handler_id == $user->id || $task->user_id == $user->id) {
+					$department = $task->department;
+					$new_message = TaskMessage::create([
+						'content' => $request->message,
+						'task_id' => $task->id,
+						'sender_id' => $user->id,
+						'sender_department_id' => $user->department_id,
+						'user_id' => $user->id,
+						'department_id' => $department->id,
+						'message_status' => MessageStatusEnum::PENDING,
+					]);
+					event(new \App\Events\TaskMessageChatEvent($new_message));
+		
+					return response()->json($new_message);
+				}
+			} else {
+				abort(404, 'Resource not available');
+			}
 
-        event(new \App\Events\TaskMessageChatEvent($new_message));
-
-        return response()->json($new_message);
     }
 
     /**
