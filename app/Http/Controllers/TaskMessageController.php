@@ -50,7 +50,7 @@ class TaskMessageController extends Controller
             'message_status' => MessageStatusEnum::PENDING,
         ]);
 
-        event(new \App\Events\PusherBroadcast($new_message));
+        event(new \App\Events\TaskMessageChatEvent($new_message));
 
         return response()->json($new_message);
     }
