@@ -83,8 +83,8 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
   Route::get('/admin/reports', [UserController::class, 'showReports']);
   // Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
-  // Route::get('/api/admin/tasks', [TaskController::class, 'getTasksByUsers']);
   Route::get('/admin/employees/stats', [UserController::class, 'employeesStatsPage']);
+  Route::post('/api/admin/approve_report', [TaskReportController::class, 'adminApprove']);
 
   // Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   // Route::post('/api/tasks', [TaskController::class, 'store']);
@@ -93,7 +93,6 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   // Route::put('/api/task/', [TaskController::class, 'updateTask']);
   // Route::patch('/api/task/{id}', [TaskController::class, 'updateFeedBack']);
   Route::get('/task/{task_id}', [TaskController::class, 'tasksViewPage']);
-
 
   // Route::get('/api/task_types', [TaskTypeController::class, 'index']);
   // Route::post('/api/task_types', [TaskTypeController::class, 'store']);
