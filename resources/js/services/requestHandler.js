@@ -104,7 +104,10 @@ class RequestHandler {
           headers: headers,
         });
       }
-
+      if(resp.status === 401){
+        window.location.href = '/auth/login'
+      }
+      
       if (resp.ok) {
         const jsonResp = await resp.json();
         if (stateSetter) stateSetter(jsonResp || true);

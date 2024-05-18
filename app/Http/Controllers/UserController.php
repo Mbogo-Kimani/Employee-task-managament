@@ -231,6 +231,10 @@ class UserController extends Controller
 		return Inertia::render('Admin/EmployeeStat');
 	}
 
+  /**
+   *  @unauthenticated
+   */
+
 	public function login(Request $request)
   {
 		$request->validate([

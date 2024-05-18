@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect,useContext} from 'react'
 import requestHandler from "../services/requestHandler";
 import SideNav from "../Layouts/SideNav";
 import {
@@ -6,20 +6,19 @@ import {
     pageData as defaultPageData,
 } from "../data/indexNav";
 import { toast } from 'react-toastify';
+import {AppContext} from '../appContext'
 
 
-const Profile = ({user}) => {
+const Profile = () => {
     const [navItems, setNavItems] = useState(defaultPageData);
-    const [name, setName] = useState(user.name);
-    const [email, setEmail] = useState(user.email);
+    const {userData} = useContext(AppContext)
+    const [name, setName] = useState(userData.name);
+    const [email, setEmail] = useState(userData.email);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors,setErrors] = useState();
     const [response, setResponse] = useState();
 
-    useEffect(() => {
-        setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-    }, []);
 
     useEffect(() => {
         checkResponse();
