@@ -12,6 +12,8 @@ export const AppProvider = ({ children }) => {
 
   const logoutUser = () => {
     setUserData(null);
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
   };
 
 

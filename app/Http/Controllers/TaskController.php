@@ -67,9 +67,16 @@ class TaskController extends Controller
 		}
 	} 
 
-	public function tasksViewPage() {
+	public function tasksViewPage(Request $request, $task_id) {
 		$user = auth()->user();
-		return Inertia::render('Task/Id', compact('user'));
+		$task = Task::find($task_id);
+
+		if ($task && $user) {
+			if ($task->admin_handler_id == $user->id || $task->department_handler_id == $user->id || $task->user_id == $user->id) {
+				return Inertia::render('Task/Id');
+			}
+		}
+		abort(404, 'Resource not available');
 	}
 
 	public function store(Request $request) {

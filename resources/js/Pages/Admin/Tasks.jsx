@@ -11,7 +11,7 @@ import Modal from "../../Components/Common/Modal";
 import SelectComp from '../../Components/Common/SelectComp';
 import departmentsEnum from '../../data/enums/department';
 import { toast } from 'react-toastify';
-import { Menu, Transition } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import DropDown from '../../Components/Common/DropDown';
 import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
@@ -34,7 +34,16 @@ function Tasks() {
     to: 0,
     total: 0
   });
-  const [editTask, setEditTask] = useState({})
+  const [editTask, setEditTask] = useState({
+    name: '',
+    task_type_id: '',
+    department_id: '',
+    admin_handler_id: '',
+    department_handler_id: '',
+    from_date: '',
+    to_date: '',
+    description: '',
+  })
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
@@ -70,8 +79,6 @@ function Tasks() {
   function toggleEditTask (task) {
     setEditTask(task);
     setShowModal(true);
-    // toggleOpenModal();
-    // setReport({...report, task_id});
   }
   
 
@@ -112,10 +119,6 @@ function Tasks() {
     requestHandler.get('/api/departments', setDepartments);
   }
 
-  function navigateToTasksView(id) {
-    router.visit(`/task/${id}`)
-  }
-
   function submitFilters(e){
     e.preventDefault()
     requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
@@ -125,12 +128,12 @@ function Tasks() {
       <div>
         <TaskStatusColorCode />
         <div className='mb-4 w-full flex'>
-          <a
+          <Link
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
             href='/admin/new_task'
           >
             {i18next.t('add-new-task')}
-          </a>
+          </Link>
         </div>
         <div className="flex space-x-4">
             <SelectComp
@@ -300,7 +303,7 @@ function Tasks() {
             Add New Task Type
           </button>
         </div> */}
-        <form className="max-w-md mx-auto h-[90vh]">
+        <form className="max-w-md mx-auto h-auto min-h-[90vh]">
           <div className="relative z-0 w-full mb-5 group mt-10">
             <input
               type="text"
@@ -331,7 +334,7 @@ function Tasks() {
             <SelectComp
               name="task_type_id"
               id="taskType"
-              value={editTask.task_type?.id}
+              value={editTask.task_type_id}
               onChange={(e) => handleChange(e)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -365,7 +368,7 @@ function Tasks() {
             <SelectComp
               name="department_id"
               id="department"
-              value={editTask.department?.id}
+              value={editTask.department_id}
               onChange={(e) => handleChange(e)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -396,9 +399,9 @@ function Tasks() {
 
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
-              name="adminHandler"
-              id="adminHandler"
-              value={handlers.admins.find(ind => ind.id === editTask.admin_handler_id)?.id}
+              name="admin_handler_id"
+              id="admin_handler_id"
+              value={editTask.admin_handler_id}
               onChange={(e) => handleChange(e)}
               required={true}
               className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
@@ -420,18 +423,18 @@ function Tasks() {
             </SelectComp>
             <hr className="w-full border-[1px] border-gray-300" />
             {
-              (errors.adminHandler || errors.errors?.adminHandler) && 
+              (errors.admin_handler_id || errors.errors?.admin_handler_id) && 
               <p className="text-red-500 my-2 py-1">
-                { displayErrors(errors, 'adminHandler') }
+                { displayErrors(errors, 'admin_handler_id') }
               </p>
             }  
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
-              name="departmentHandler"
-              id="departmentHandler"
-              value={handlers.departmentHeads.find(ind => ind.id === editTask.department_handler_id)?.id}
+              name="department_handler_id"
+              id="department_handler_id"
+              value={editTask.department_handler_id}
               onChange={(e) => handleChange(e)}
               required={true}
               className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
@@ -453,9 +456,9 @@ function Tasks() {
             </SelectComp>
             <hr className="w-full border-[1px] border-gray-300" />
             {
-              (errors.departmentHandler || errors.errors?.departmentHandler) && 
+              (errors.department_handler_id || errors.errors?.department_handler_id) && 
               <p className="text-red-500 my-2 py-1">
-                { displayErrors(errors, 'departmentHandler') }
+                { displayErrors(errors, 'department_handler_id') }
               </p>
             }  
           </div>

@@ -16,8 +16,6 @@ class UserstableSeeder extends Seeder
    */
   public function run()
   {
-    $imagePath = 'https://i.ibb.co/1sspJdY/Akik-Hossain.jpg';
-
 		$departments = \App\Models\Department::all();
 		$keys = [
 			'ADMIN' => \App\Enums\DepartmentEnum::ADMIN,
@@ -34,7 +32,7 @@ class UserstableSeeder extends Seeder
 				'role' => \App\Enums\DepartmentEnum::INVENTORY,
 				'email' => 'hyben@mail.com',
 				'password' => bcrypt('kip2582'),
-				'image' => $imagePath,
+				'image' => '',
 				'department_id'=> 5
 		]);
 
@@ -46,7 +44,7 @@ class UserstableSeeder extends Seeder
 				'password' => Hash::make('12345678'),
 				'remember_token' => Str::random(10),
 				'role' => $keys[$departments[$i]->enum_key],
-				'image' => $imagePath,
+				'image' => '',
 				'department_id' => $departments[$i]->id,
 				'clearance_level' => \App\Enums\ClearanceLevelEnum::DEPARTMENT_LEADER,
 			]);
@@ -58,7 +56,7 @@ class UserstableSeeder extends Seeder
 				'password' => Hash::make('12345678'),
 				'remember_token' => Str::random(10),
 				'role' => $keys[$departments[$i]->enum_key],
-				'image' => $imagePath,
+				'image' => '',
 				'department_id' => $departments[$i]->id,
 				'clearance_level' => \App\Enums\ClearanceLevelEnum::REGULAR_EMPLOYEE,
 			]);

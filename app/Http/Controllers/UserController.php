@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\ClearanceLevelEnum;
 use App\Enums\DepartmentEnum;
+use App\Enums\TaskStatusEnum;
 use App\Helpers\ApiLib;
 use App\Http\Controllers\Controller;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +18,31 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
+	public function fetchUserNumbers() {
+		$user = auth()->user();
+		$totalTasks = 0;
+
+		if ($user) {
+			$totalTasks = Task::where('user_id', $user->id)
+													->where('status', TaskStatusEnum::PENDING)
+													->count();
+
+			if ($user->role == DepartmentEnum::ADMIN) {
+				// return response()->json(['users' => User::count()]);
+			}
+			else if ($user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
+				$tasksNotAssigned = Task::where('department_id', $user->department_id)
+																->whereNull('user_id')
+																->count();
+
+				return response()->json(['totalTasks' => $totalTasks, 'tasksNotAssigned' => $tasksNotAssigned]);
+			}
+			else {
+				return response()->json(['totalTasks' => $totalTasks]);
+			}
+		}
+	}
+
 	public function show(Request $request, $id) {
     $user = auth()->user();
 
@@ -231,10 +258,19 @@ class UserController extends Controller
 		return Inertia::render('Admin/EmployeeStat');
 	}
 
+
+	public function dashboard(Request $request) {
+    return Inertia::render('Dashboard');
+  }
+
+	public function tasksPage () {
+		return Inertia::render('Tasks');
+	}
+  
+  
   /**
    *  @unauthenticated
    */
-
 	public function login(Request $request)
   {
 		$request->validate([

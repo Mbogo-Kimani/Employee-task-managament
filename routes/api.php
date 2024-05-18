@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
 use App\Http\Controllers\UserController;
@@ -64,6 +65,7 @@ Route::middleware('auth:sanctum')->group( function () {
 	Route::patch('/user', [UserController::class, 'updateUserDetails']);
   Route::post('/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
   Route::post('/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
+  Route::get('/user_info', [UserController::class, 'fetchUserNumbers']);
   /**
    * Clients Controllers
   */
@@ -113,6 +115,14 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/report/{id}', [TaskReportController::class, 'show']);
   Route::patch('/report', [TaskReportController::class, 'update']);
   
+  /**
+   * Messages
+   */
+  Route::get('/get_task/{id}', [TaskController::class, 'show']);
+  Route::get('/task_messages/{task_id}', [TaskController::class, 'getTaskMessages']);
+  Route::post('/messages', [TaskMessageController::class, 'store']);
+
+
   /**
    * Logout Controller
    */

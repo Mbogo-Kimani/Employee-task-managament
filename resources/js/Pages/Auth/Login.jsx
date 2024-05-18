@@ -50,7 +50,7 @@ function Login() {
         })
 
         loginUser(response.user)
-        router.visit(`/dashboard/${response.user.id}`)
+        router.visit(`/dashboard`)
       notify()
     }
   }
