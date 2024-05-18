@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { navItemsDeterminer, pageData as defaultPageData } from '../../data/indexNav';
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
@@ -17,7 +17,7 @@ import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
 import i18next from '../../i18n'
 import { Link, router } from '@inertiajs/react';
-
+import { AppContext } from '../../appContext';
 
 
 function Tasks() {
@@ -52,7 +52,7 @@ function Tasks() {
     admins: [],
     departmentHeads: []
   });
-
+  const {userData} = useContext(AppContext);
   useEffect(() => {
     if(response){
       notify('Task updated successfully')
@@ -108,7 +108,6 @@ function Tasks() {
   }
 
   function handleFilters(e){
-    console.log(Object.keys(filters).includes('departmentId'))
     setFilters({...filters, [e.target.name]: e.target.value})
   }
   function fetchTaskTypes() {
@@ -277,7 +276,7 @@ function Tasks() {
                               className={`${
                                 active ? 'bg-green-200 text-black' : 'text-gray-900'
                               } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                              href={`/task/${task.id}`}
+                              href={`/task/${task.id}/${userData.id}`}
                             >
                               <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
                               <span className='block py-3 px-2'>View</span>

@@ -7,6 +7,7 @@ use App\Enums\DepartmentEnum;
 use App\Enums\TaskStatusEnum;
 use App\Helpers\ApiLib;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -283,6 +284,7 @@ class UserController extends Controller
     $login = auth()->attempt($credentials);
     if ($login) {
       $user = auth()->user();
+      $user = new UserResource($user);
       $token = $request->user()->createToken('token_auth')->plainTextToken;;
       return response()->json(['message' => 'Login Successful','token' => $token, 'user' => $user]);
     }
