@@ -10,6 +10,7 @@ import TableComp from "../../Components/Common/TableComp";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import departmentsEnum from '../../data/enums/department';
+import equipmentsEnum from '../../data/enums/equipmentStatus';
 import Icon from '../../Components/Common/Icon';
 
 function Equipments({ user }) {
@@ -99,7 +100,7 @@ function Equipments({ user }) {
                                         {equipment.model}
                                     </th>
                                     <td className="px-2 py-4">
-                                        {equipment.status}
+                                        {equipmentsEnum[equipment.status]}
                                     </td>
                                     <td className="px-2 py-4">
                                         {equipment.quantity}

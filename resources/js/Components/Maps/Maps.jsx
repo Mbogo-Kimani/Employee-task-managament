@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Map, {Layer, Marker} from 'react-map-gl';
+import Map, {Layer, Marker, Source} from 'react-map-gl';
 import Icon from '../../Components/Common/Icon';
 
 
@@ -23,10 +23,6 @@ const buildingLayer = {
   'minzoom': 15,
   'paint': {
       'fill-extrusion-color': '#aaa',
-
-      // Use an 'interpolate' expression to
-      // add a smooth transition effect to
-      // the buildings as the user zooms in.
       'fill-extrusion-height': [
           'interpolate',
           ['linear'],
@@ -49,6 +45,32 @@ const buildingLayer = {
   }
 }
 
+
+const lineData = {
+  'type': 'Feature',
+  'geometry': {
+    'type': 'LineString',
+    'coordinates': [
+      [36.787758, -1.293053],
+      [36.798140, -1.289100]
+    ]
+  }
+};
+
+const lineLayer = {
+  id: 'route',
+  type: 'line',
+  source: 'route',
+  layout: {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  paint: {
+    'line-color': '#ffb415',
+    'line-width': 3
+  }
+};
+
 function Maps({view}) {
   return <Map
     mapLib={import('mapbox-gl')}
@@ -62,10 +84,16 @@ function Maps({view}) {
     mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
     >
       <Layer {...parkLayer} /> 
-      <Layer {...buildingLayer} /> 
+      <Layer {...buildingLayer} />
+      <Source id="route" type="geojson" data={lineData}>
+        <Layer {...lineLayer} />
+      </Source> 
       <Marker longitude={36.787758} latitude={-1.293053} anchor="bottom" >
         <Icon src='pin' fill='#ff0000' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
-    </Marker> 
+      </Marker> 
+      <Marker longitude={36.798140} latitude={-1.289100} anchor="bottom" >
+        <Icon src='pin' fill='#ff0000' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
+      </Marker> 
     </Map>
     
 }

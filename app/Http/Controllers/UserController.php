@@ -258,6 +258,7 @@ class UserController extends Controller
 		return Inertia::render('Admin/EmployeeStat');
 	}
 
+
 	public function dashboard(Request $request) {
     return Inertia::render('Dashboard');
   }
@@ -265,7 +266,11 @@ class UserController extends Controller
 	public function tasksPage () {
 		return Inertia::render('Tasks');
 	}
-
+  
+  
+  /**
+   *  @unauthenticated
+   */
 	public function login(Request $request)
   {
 		$request->validate([

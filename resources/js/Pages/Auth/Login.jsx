@@ -35,6 +35,8 @@ function Login() {
     checkResponse();
   }, [response]);
 
+ 
+
   function checkResponse() {
     if (response.token) {
         const data = {
@@ -80,7 +82,7 @@ function Login() {
                 required
               />
               {
-                (errors.email || errors.errors?.email || errors.message || errors.errors?.message) && 
+                (errors.email || errors.errors?.email) && 
                 <p className="text-red-500 my-1 py-1 text-center">
                   { displayErrors(errors, 'email') || displayErrors(errors, 'message') }
                 </p>

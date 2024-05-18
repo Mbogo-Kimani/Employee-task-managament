@@ -11,8 +11,8 @@ export default function Form({input,setInput,errors,setErrors,onSubmit,children,
   const validate = (input) => {
     Object.keys(input).forEach((val) => {
         if(val == "email"){
+           
             !isEmailValid(input[val]) && setErrors({...errors,[val]: "Email must be valid"});
-            
         }
        
     })
@@ -20,8 +20,10 @@ export default function Form({input,setInput,errors,setErrors,onSubmit,children,
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrors({})
     validate(input)
-    if (!error) {
+    
+    if (Object.keys(errors).length == 0) {
       onSubmit(e)
     }
   };
