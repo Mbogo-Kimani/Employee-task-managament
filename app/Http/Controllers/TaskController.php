@@ -68,11 +68,11 @@ class TaskController extends Controller
 	} 
 
 	public function tasksViewPage(Request $request, $task_id) {
-		$user = auth()->user();
+		$user = User::find($request->id);
 		$task = Task::find($task_id);
-
-		if ($task && $user) {
-			if ($task->admin_handler_id == $user->id || $task->department_handler_id == $user->id || $task->user_id == $user->id) {
+        
+		if ($task) {
+			if ($task->admin_handler_id == $request->id || $task->department_handler_id == $request->id || $task->user_id == $request->id || ($task->admin_handler_id == null && $user->role == DepartmentEnum::ADMIN) || $task->department_id === $user->department_id && $user->clearance_level ===  ClearanceLevelEnum::DEPARTMENT_LEADER) {
 				return Inertia::render('Task/Id');
 			}
 		}
@@ -148,7 +148,6 @@ class TaskController extends Controller
 
 	public function tasksByUser(Request $request) {
 		$user = User::find($request->user_id);
-
 		if (!$user) {
 			abort(404, 'User does not exist');
 		}
