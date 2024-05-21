@@ -10,8 +10,12 @@ const SortElem = ({sortParams,filterFn}) => {
   const [filters, setFilters] = useState({});
 
   function handleFilters(e){
-    console.log(Object.keys(filters).includes('departmentId'))
     setFilters({...filters, [e.target.name]: e.target.value})
+  }
+  
+  const submitSort = (e) => {
+    e.preventDefault()
+    filterFn(filters)
   }
 
   return (
@@ -48,7 +52,7 @@ const SortElem = ({sortParams,filterFn}) => {
             >
               <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{i18next.t('task-types')}</option>
               {
-                (Array.isArray(sortParams.type) ? taskTypes : [red]).map((type, index) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                (Array.isArray(sortParams.type) ? sortParams.type : [red]).map((type, index) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
                     <option
                       key={ type.id || index }
@@ -62,7 +66,7 @@ const SortElem = ({sortParams,filterFn}) => {
                 })
               }
             </SelectComp>}
-            <SelectComp
+           { Object.keys(sortParams).includes('status') && <SelectComp
               name="status"
               id="status"
               // value={newTask.taskType}
@@ -85,10 +89,10 @@ const SortElem = ({sortParams,filterFn}) => {
                   )
                 })
               }
-            </SelectComp>
+            </SelectComp>}
             <button
               className={`bg-green-400 to-green-300 hover:from-green-500 hover:to-green-600 px-4 py-2 rounded-md `}
-              onClick={(e) => filterFn(e)}
+              onClick={(e) => submitSort(e)}
             >
               {i18next.t('filters')}({Object.keys(filters).length})
             </button>
