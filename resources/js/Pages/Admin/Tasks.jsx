@@ -52,6 +52,12 @@ function Tasks() {
     admins: [],
     departmentHeads: []
   });
+  const sortParams = {
+    'departmentId' : departments,
+    'type': taskTypes,
+    'status': taskStatus
+
+  }
 
   useEffect(() => {
     if(response){
