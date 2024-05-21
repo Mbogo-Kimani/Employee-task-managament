@@ -118,7 +118,7 @@ Route::middleware('auth:sanctum')->group( function () {
   /**
    * Messages
    */
-  Route::get('/get_task/{id}', [TaskController::class, 'show']);
+  Route::get('/get_task/{task_id}', [TaskController::class, 'show']);
   Route::get('/task_messages/{task_id}', [TaskController::class, 'getTaskMessages']);
   Route::post('/messages', [TaskMessageController::class, 'store']);
 

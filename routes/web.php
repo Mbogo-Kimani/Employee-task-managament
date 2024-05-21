@@ -92,7 +92,7 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   // Route::delete('/api/task/{id}', [TaskController::class, 'deleteTask']);
   // Route::put('/api/task/', [TaskController::class, 'updateTask']);
   // Route::patch('/api/task/{id}', [TaskController::class, 'updateFeedBack']);
-  Route::get('/task/{task_id}/{id}', [TaskController::class, 'tasksViewPage']);
+  Route::get('/task/{task_id}', [TaskController::class, 'tasksViewPage']);
 
   // Route::get('/api/task_types', [TaskTypeController::class, 'index']);
   // Route::post('/api/task_types', [TaskTypeController::class, 'store']);
