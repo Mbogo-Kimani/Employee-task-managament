@@ -129,7 +129,7 @@ function SideNav({ children }) {
             <NavItem
               src="home"
               name="Home"
-              href={`/dashboard/${userData.id}`}
+              href={`/dashboard`}
               collapsed={collapsed}
             />
             {(Array.isArray(navItems) ? navItems : []).map(item => (
