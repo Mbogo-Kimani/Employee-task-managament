@@ -19,6 +19,7 @@ import { Link } from "@inertiajs/react";
 import SortElem from "../Components/Task/SortElem"
 import TaskStatusColorCode from "../Components/Common/TaskStatusColorCode";
 import TaskStatusIndicator from "../Components/Common/TaskStatusIndicator";
+import clientStatus from '../data/enums/clientStatus';
 
 
 function AssignedTasks() {
@@ -48,11 +49,12 @@ function AssignedTasks() {
 
     const sortParams = {
       'type': taskTypes,
-      'status': taskStatusKeys
+      'status': taskStatusKeys,
+      'clientStatus': clientStatus
     }
 
     function submitFilters(filters){
-      requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
+      requestHandler.post('/api/filter/tasks?p=assigned',filters, setTasks, setErrors)
     }
     useEffect(() => {
         fetchAssignedTasks();

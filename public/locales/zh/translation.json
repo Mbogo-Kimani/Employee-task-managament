@@ -16,6 +16,8 @@
     "add-new-task": "添加新任务",
     "departments": "部门",
     "task-types": "任务类型",
+    "task-status": "任务状态",
+    "client-status": "客户端状态",
     "filters": "筛选",
     "tasks": "任务",
     "users": "用户",

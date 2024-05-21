@@ -26,19 +26,8 @@ function ClientsTableElem({ elem, openModal, openDeleteModal }) {
   }
   function getStatus(date,plan){
     let startDate = new Date(date)
-    let endDate;
-    switch(plan){
-        case 'monthly':
-        endDate = new Date(startDate.setMonth(startDate.getMonth() + 1))
-        break;
-        case 'quarterly':
-        endDate = startDate.setMonth(startDate.getMonth() + 3)
-        break;
-        case 'annually':
-        endDate = startDate.setMonth(startDate.getMonth() + 12)
-        break;
-    }
-
+    let endDate = new Date(startDate.setMonth(startDate.getMonth() + plan));
+    
     return endDate >= new Date()
   }
   return (

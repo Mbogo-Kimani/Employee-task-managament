@@ -10,6 +10,7 @@ import TableComp from '../Components/Common/TableComp';
 import { loaderSetter } from '../Components/Common/Loader';
 import {taskStatusKeys} from "../data/enums/taskStatus";
 import SortElem from "../Components/Task/SortElem"
+import clientStatus from '../data/enums/clientStatus';
 
 
 function UnassignedTasks() {
@@ -36,11 +37,12 @@ function UnassignedTasks() {
   const [taskTypes, setTaskTypes] = useState([]);
 
     const sortParams = {
-      'type': taskTypes
+      'type': taskTypes,
+      'clientStatus': clientStatus
     }
 
     function submitFilters(filters){
-      requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
+      requestHandler.post('/api/filter/tasks?p=unassigned',filters, setTasks, setErrors)
     }
 
 

@@ -431,7 +431,7 @@ function Clients() {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Plan', 'Action']}>
+          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Duration (months)', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (

@@ -17,7 +17,9 @@ import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
 import i18next from '../../i18n'
 import { Link, router } from '@inertiajs/react';
-
+import {AppContext} from '../../appContext'
+import SortElem from '../../Components/Task/SortElem'
+import clientStatus from '../../data/enums/clientStatus';
 
 
 function Tasks() {
@@ -56,7 +58,8 @@ function Tasks() {
   const sortParams = {
     'departmentId' : departments,
     'type': taskTypes,
-    'status': taskStatus
+    'status': taskStatus,
+    'clientStatus': clientStatus
   }
 
   useEffect(() => {
