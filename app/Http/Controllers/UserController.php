@@ -289,7 +289,7 @@ class UserController extends Controller
       return response()->json(['message' => 'Login Successful','token' => $token, 'user' => $user]);
     }
 
-		abort(401, 'Invalid user email or password');
+		return response()->json(['email' => 'Invalid user email or password'], 401);
     // return redirect()->back()->withErrors();
   }
 
