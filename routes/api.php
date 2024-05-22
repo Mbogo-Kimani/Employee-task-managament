@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/assigned_tasks', [TaskController::class, 'getAssignedTasks']);
   Route::get('/department_users', [UserController::class, 'getUsersByDepartment']);
   Route::patch('/tasks', [TaskController::class, 'update']);
+  Route::patch('/tasks-equipments', [TaskController::class, 'updateTaskEquipment']);
   Route::get('/task_types', [TaskTypeController::class, 'index']);
   Route::post('/task_types', [TaskTypeController::class, 'store']);
   Route::delete('/task/{id}', [TaskController::class, 'deleteTask']);

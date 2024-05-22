@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
 use Stevebauman\Hypertext\Transformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskController extends Controller
 {
@@ -131,7 +132,7 @@ class TaskController extends Controller
 	public function allTasks() {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-			$tasks = Task::with(['department', 'user', 'taskType','client'])->paginate(20);
+			$tasks = Task::with(['department', 'user', 'taskType','client','equipments'])->paginate(20);
 			return response()->json($tasks);
 		}
 
@@ -181,7 +182,7 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNull('user_id')
-										->with('taskType')
+										->with(['taskType','equipments'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -193,7 +194,7 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNotNull('user_id')
-										->with(['taskType','user'])
+										->with(['taskType','user','equipments'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -242,6 +243,26 @@ class TaskController extends Controller
     }
   }
 
+  public function updateTaskEquipment(Request $request){
+	$request->validate([
+		'equipments' => 'required',
+		'task' => 'required',
+	]);
+	$task = Task::find($request->task);
+	if(!$task){
+		throw new NotFoundHttpException('An error occured');
+	}
+	try{
+		foreach($request->equipments as $equipment){
+			$task->equipments()->syncWithoutDetaching($equipment);
+		}
+	}catch(\Exception $e){
+		abort(400,$e);
+	}
+	
+	return response()->json(['message' => 'Equipment assigning successful']);
+  }
+
   public function filterTasks(Request $request)
   {
        $tasks = Task::filter(request(['type', 'status','departmentId']))
@@ -249,7 +270,6 @@ class TaskController extends Controller
 										->paginate(20);
        return response()->json($tasks);
   }
-
 	public function markTaskReceivedByHOD (Request $request) {
 		$task = Task::find($request->taskId);
 
