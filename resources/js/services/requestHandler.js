@@ -104,7 +104,7 @@ class RequestHandler {
           headers: headers,
         });
       }
-      if(resp.status === 401){
+      if(resp.status === 401 && window.location.pathname !== '/auth/login'){
         window.location.href = '/auth/login'
       }
       

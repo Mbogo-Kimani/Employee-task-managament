@@ -210,7 +210,7 @@ class UserController extends Controller
 	}
 
 	public function newEquipmentsPage() 
-  {
+  	{
 
 		return Inertia::render('Inventory/NewEquipment');
 	}
@@ -218,6 +218,11 @@ class UserController extends Controller
 	public function equipmentsPage() {
 
 		return Inertia::render('Inventory/Equipments');
+	}
+
+	public function assignedEquipmentsPage() 
+	{
+		return Inertia::render('Inventory/AssignedEquipments');
 	}
 
 	public function unassignedTasksPage() {
@@ -289,7 +294,7 @@ class UserController extends Controller
       return response()->json(['message' => 'Login Successful','token' => $token, 'user' => $user]);
     }
 
-		abort(401, 'Invalid user email or password');
+		return response()->json(['email' => 'Invalid user email or password'], 401);
     // return redirect()->back()->withErrors();
   }
 

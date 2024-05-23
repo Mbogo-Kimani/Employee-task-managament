@@ -15,19 +15,24 @@ use AfricasTalking\SDK\AfricasTalking;
 use App\Http\Resources\EmployeeTaskResource;
 use App\Jobs\TaskReminder;
 use App\Mail\TaskAssigned;
+use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
 use Stevebauman\Hypertext\Transformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskController extends Controller
 {
 	public function show($id) {
+		$user = auth()->user();
+
 		if ($id) {
 			$admin_handler = null;
 			$department_handler = null;
 			$handler = null;
+			$client = null;
 
 			$task = Task::find($id);
 
@@ -49,11 +54,24 @@ class TaskController extends Controller
 												->get()[0];
 			}
 
+			if ($task->client_id) {
+				$client = Client::where('id', $task->client_id)
+												->get()[0];
+			}
+
+			$can_edit = (
+				$task->admin_handler_id == $user->id ||
+				$task->department_handler_id == $user->id ||
+				$task->user_id == $user->id
+			);
+
 			return response()->json([
 				'admin' => $admin_handler,
 				'department_head' => $department_handler,
 				'handler' => $handler,
 				'task' => $task,
+				'client' => $client,
+				'can_edit' => $can_edit,
 			]);
 		}
 	}
@@ -68,13 +86,10 @@ class TaskController extends Controller
 	} 
 
 	public function tasksViewPage(Request $request, $task_id) {
-		$user = User::find($request->id);
 		$task = Task::find($task_id);
-        
+		      
 		if ($task) {
-			if ($task->admin_handler_id == $request->id || $task->department_handler_id == $request->id || $task->user_id == $request->id || ($task->admin_handler_id == null && $user->role == DepartmentEnum::ADMIN) || $task->department_id === $user->department_id && $user->clearance_level ===  ClearanceLevelEnum::DEPARTMENT_LEADER) {
-				return Inertia::render('Task/Id');
-			}
+			return Inertia::render('Task/Id');
 		}
 		abort(404, 'Resource not available');
 	}
@@ -131,7 +146,7 @@ class TaskController extends Controller
 	public function allTasks() {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-			$tasks = Task::with(['department', 'user', 'taskType','client'])->paginate(20);
+			$tasks = Task::with(['department', 'user', 'taskType','client','equipments'])->paginate(20);
 			return response()->json($tasks);
 		}
 
@@ -180,7 +195,7 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNull('user_id')
-										->with('taskType')
+										->with(['taskType','equipments'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -192,7 +207,7 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNotNull('user_id')
-										->with(['taskType','user'])
+										->with(['taskType','user','equipments'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -241,6 +256,26 @@ class TaskController extends Controller
     }
   }
 
+  public function updateTaskEquipment(Request $request){
+	$request->validate([
+		'equipments' => 'required',
+		'task' => 'required',
+	]);
+	$task = Task::find($request->task);
+	if(!$task){
+		throw new NotFoundHttpException('An error occured');
+	}
+	try{
+		foreach($request->equipments as $equipment){
+			$task->equipments()->syncWithoutDetaching($equipment);
+		}
+	}catch(\Exception $e){
+		abort(400,$e);
+	}
+	
+	return response()->json(['message' => 'Equipment assigning successful']);
+  }
+
   public function filterTasks(Request $request)
   {
 	$user = auth()->user();
@@ -265,7 +300,6 @@ class TaskController extends Controller
        
        return response()->json($tasks);
   }
-
 	public function markTaskReceivedByHOD (Request $request) {
 		$task = Task::find($request->taskId);
 
