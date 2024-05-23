@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 
 class Task extends Model
 {
@@ -47,6 +49,11 @@ class Task extends Model
   public function taskReport(): HasOne
   {
     return $this->hasOne(TaskReport::class);
+  }
+
+  public function equipments(): BelongsToMany
+  {
+    return $this->belongsToMany(Equipment::class);
   }
 
   public function taskType(): BelongsTo

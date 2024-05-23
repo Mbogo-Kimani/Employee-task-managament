@@ -8,6 +8,10 @@ import { displayErrors } from '../data/utils';
 import PaginatorNav from '../Components/Common/PaginatorNav';
 import TableComp from '../Components/Common/TableComp';
 import { loaderSetter } from '../Components/Common/Loader';
+import Select from 'react-select';
+import DropDown from '../Components/Common/DropDown';
+import { Menu } from '@headlessui/react';
+import Icon from '../Components/Common/Icon';
 
 function UnassignedTasks() {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -22,19 +26,25 @@ function UnassignedTasks() {
     total: 0
   });
   const [showAssigUserModal, setShowAssignUserModal] = useState(false);
+  const [showEquipmentsModal, setShowEquipmentsModal] = useState(false);
   const [newAssignment, setNewAssignment] = useState({
     user: '',
     task: '',
+    equipments: []
   });
   const [currentTask, setCurrentTask] = useState(null);
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const [response, setResponse] = useState(false);
+  const [equipments, setEquipments] = useState({});
+  const [selectedEquipments, setSelectedEquipments] = useState([])
+
 
 
   useEffect(() => {
     fetchUnassignedTasks();
     fetchUsers();
+    fetchEquipments();
   }, []);
 
   useEffect(() => {
@@ -49,11 +59,16 @@ function UnassignedTasks() {
         task: '',
       });
       closeUserAssignModal();
+      setShowEquipmentsModal(false)
     }
   }
 
   function fetchUsers() {
     requestHandler.get('/api/department_users', setUsers);
+  }
+
+  function fetchEquipments(){
+    requestHandler.get("/api/equipments", setEquipments);
   }
 
   function fetchUnassignedTasks() {
@@ -80,6 +95,11 @@ function UnassignedTasks() {
       requestHandler.post('/api/received_by_department_head', { taskId }, fetchUnassignedTasks, null, loaderSetter);
     }
   }
+
+  function openEquipmentsModal(taskId){
+      setNewAssignment({...newAssignment,task: taskId})
+      setShowEquipmentsModal(true)
+  }
   
   function closeUserAssignModal() {
     setShowAssignUserModal(false);
@@ -88,16 +108,33 @@ function UnassignedTasks() {
   function handleChange(e) {
     setNewAssignment({...newAssignment, [e.target.name]: e.target.value})
   }
+  function handleEquipmentChange(values) {
+    setNewAssignment({...newAssignment,['equipments']: values.map((val) => {
+      return val.value
+    })})
+  }
+
+  function submitEquipmentsAssignment(e){
+    e.preventDefault();
+    requestHandler.patch('/api/tasks-equipments', newAssignment, setResponse, setErrors, loaderSetter);
+  }
 
   function submitNewAssignment(e) {
     e.preventDefault();
     requestHandler.patch('/api/tasks', newAssignment, setResponse, setErrors, loaderSetter);
   }
 
+  function getEquipments(id){
+    const filteredTask = tasks?.data.filter((task) => {
+      return task.id === id
+    })
+    return filteredTask[0].equipments;
+  }
+
   return (
     <SideNav>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-        <TableComp columns={['Task Name', 'Task Type', 'From', 'To', 'Action']}>
+        <TableComp columns={['Task Name', 'Task Type', 'From', 'To', 'Equipments', 'Action']}>
           {
             (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
               return (
@@ -118,16 +155,47 @@ function UnassignedTasks() {
                   <td className="px-2 py-4">
                     { task.to_date || 'Not Specified' }
                   </td>
-                  <td
-                    className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                    onClick={() => openUserAssignModal(task.id)}
-                  >
-                    {
-                      !task.received_by_department_head ?
-                      'Confirm Received' :
-                      'Assign'
+                  <td className="px-2 py-4 w-[30vw] flex flex-wrap">
+                    { 
+                      getEquipments(task.id)?.map((equipment) => {
+                        return (
+                          <span className='rounded bg-gray-200 m-2 p-1'>{equipment.name.trim()}</span>
+                        )
+                      })
                     }
                   </td>
+                  <td>
+                        <DropDown>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                className={`${
+                                active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                title="Assign User"
+                                onClick={() => openUserAssignModal(task.id)}
+                              >
+                                <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                                <span className='block py-3 px-2'>Assign Users</span>   
+                              </button>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                              className={`${
+                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              title="Assign Equipments"
+                              onClick={() => openEquipmentsModal(task.id)}
+                            >
+                              <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                              <span className='block py-3 px-2'>Assign Equipments</span>   
+                            </button>
+                            )}
+                          </Menu.Item>
+                        </DropDown>
+                      </td>
                 </tr>
               );
             })
@@ -205,6 +273,47 @@ function UnassignedTasks() {
               </div>
             </div>
           </div>
+        </Modal>
+        <Modal show={showEquipmentsModal} onClose={() => setShowEquipmentsModal(true)}>
+              <div className='p-4 h-[50vh]'>
+                <h2 className='text-center text-xl font-bold'>Equipments List</h2>
+                <button
+                  type="button"
+                  className="absolute top-3 right-3 end-2.5 float-right  text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  onClick={() => setShowEquipmentsModal(false)}
+                >
+                  <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+                <div className="relative z-0 w-full mt-7 group">
+                <Select
+                  defaultValue={selectedEquipments}
+                  onChange={(e) => handleEquipmentChange(e)}
+                  options={
+                    (Array.isArray(equipments) ? equipments : []).map((item) => {
+                      return(
+                        {
+                          value: item.id, label: item.name
+                        }
+                      )
+                    })
+                  }
+                  isMulti
+                  isSearchable
+                  maxMenuHeight={220}
+                />
+            <hr className="w-full border-[1px] border-gray-300" />
+          </div>
+          <button
+          type="submit"
+          className="float-right bg-gradient-to-r from-cyan-500 to-blue-500 w-[100px] text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
+          onClick={(e) => submitEquipmentsAssignment(e)}
+          >
+            Submit
+          </button>
+              </div>
         </Modal>
       </div>
     </SideNav>
