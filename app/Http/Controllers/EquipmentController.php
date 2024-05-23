@@ -6,7 +6,10 @@ use App\Enums\ClearanceLevelEnum;
 use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Enums\DepartmentEnum;
-
+use App\Http\Resources\AssignedEquipmentResource;
+use App\Models\Task;
+use Carbon\Carbon;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EquipmentController extends Controller
 {
@@ -14,7 +17,7 @@ class EquipmentController extends Controller
 		$user = auth()->user();
 		if($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER){
 			try{
-				$equipments = Equipment::all();
+				$equipments = Equipment::paginate(20);
 				return response()->json($equipments);
 			}catch(\Exception $e){
 				abort(400,$e);
@@ -43,4 +46,37 @@ class EquipmentController extends Controller
 
 		return response()->json(['message' => 'Equipment saved successfully']);
     }
+
+	public function getAssignedEquipments(Request $request)
+	{
+		$tasksWithEquipments = Task::whereNotNull('user_id')->whereHas('equipments')->get();
+		$result = [];
+		foreach ($tasksWithEquipments as $task){
+			foreach ($task->equipments as $equipment){
+				$result[] = new AssignedEquipmentResource($equipment,$task);
+			}	
+		}
+		return response()->json($result);
+	}
+
+	public function updateAssignment(Request $request)
+	{
+		$request->validate([
+			'type' => 'required|string',
+			'equipment_id' => 'required',
+			'task_id' => 'required'
+		]);
+		$task = Task::find($request->task_id);
+		if(!$task){
+			throw new NotFoundHttpException('Task does not exist');
+		}
+
+		if($request->type === "assign"){
+			$task->equipments()->updateExistingPivot($request->equipment_id, ['confirm_assigned' => true,'assigned_date' => Carbon::now()]);
+		}else if($request->type === 'return'){
+			$task->equipments()->detach($request->equipment_id);
+		}
+
+		return response()->json(['message' => 'Equipment updated succesfully']);
+	}
 }

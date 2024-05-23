@@ -210,7 +210,7 @@ class UserController extends Controller
 	}
 
 	public function newEquipmentsPage() 
-  {
+  	{
 
 		return Inertia::render('Inventory/NewEquipment');
 	}
@@ -218,6 +218,11 @@ class UserController extends Controller
 	public function equipmentsPage() {
 
 		return Inertia::render('Inventory/Equipments');
+	}
+
+	public function assignedEquipmentsPage() 
+	{
+		return Inertia::render('Inventory/AssignedEquipments');
 	}
 
 	public function unassignedTasksPage() {

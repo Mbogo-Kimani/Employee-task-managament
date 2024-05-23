@@ -95,7 +95,8 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::post('/equipments', [EquipmentController::class, 'store']);
   Route::get('/equipments', [EquipmentController::class, 'index']);
-  
+  Route::get('/equipments/assigned',[EquipmentController::class, 'getAssignedEquipments']);
+  Route::patch('/equipment/update',[EquipmentController::class, 'updateAssignment']);
   /**
    * Circulars Controllers
    */

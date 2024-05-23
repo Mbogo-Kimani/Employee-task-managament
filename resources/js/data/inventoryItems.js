@@ -11,13 +11,11 @@ export const inventoryNavtems = [
     icon: '/icons/hammer.svg',
     hasOptions: false,
   },
- 
 ];
 
 export const inventoryPageItems = [
   {
     name: 'My Tasks',
-    // numberToDisplay: 'tasks',
     numberToDisplay: 'totalTasks',
     pictureSrc: 'assets/image/task1.png',
     href: '/tasks',
@@ -58,12 +56,17 @@ export const storeManagerNavItems = [
     icon: 'equipment',
     hasOptions: false,
   },
+  {
+    name: 'Assigned Equipments',
+    href: '/assigned-equipments',
+    icon: 'equipment',
+    hasOptions: false,
+  },
 ];
 
 export const storeManagerPageItems = [
   {
     name: 'My Tasks',
-    // numberToDisplay: 'tasks',
     numberToDisplay: 'totalTasks',
     pictureSrc: 'assets/image/users.png',
     href: `/tasks`,
@@ -80,16 +83,4 @@ export const storeManagerPageItems = [
     href: '/assigned_tasks',
     pictureSrc: 'assignment',
   },
-  // {
-  //   name: 'Register Faulty Product',
-  // },
-  // {
-  //   name: 'Product in for Maitenance',
-  // },
-  // {
-  //   name: 'Product in for Replacement',
-  // },
-  // {
-  //   name: 'View Replacement Requests',
-  // },
 ];

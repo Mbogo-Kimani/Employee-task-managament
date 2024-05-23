@@ -77,7 +77,7 @@ function Equipments({ user }) {
                 <TableComp
                     columns={["Name", "Model", "Status", "Quantity","Department", "Purchase Date", "Edit"]}
                 >
-                    {(Array.isArray(equipments) ? equipments: []).map(
+                    {(Array.isArray(equipments.data) ? equipments.data: []).map(
                         (equipment, index) => {
                             return (
                                 <tr
@@ -102,7 +102,7 @@ function Equipments({ user }) {
                                     <td className="px-2 py-4">
                                         {equipmentsEnum[equipment.status]}
                                     </td>
-                                    <td className="px-2 py-4">
+                                    <td className="px-2 py-4 text-center">
                                         {equipment.quantity}
                                     </td>
                                     <td
@@ -127,7 +127,7 @@ function Equipments({ user }) {
                         }
                     )}
                 </TableComp>
-                <PaginatorNav state={tasks} setState={setTasks} />
+                <PaginatorNav state={equipments} setState={setEquipments} />
             </div>
         </SideNav>
     );
