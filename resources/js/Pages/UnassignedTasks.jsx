@@ -155,7 +155,7 @@ function UnassignedTasks() {
                   <td className="px-2 py-4">
                     { task.to_date || 'Not Specified' }
                   </td>
-                  <td className="px-2 py-4 w-5">
+                  <td className="px-2 py-4 w-[30vw] flex flex-wrap">
                     { 
                       getEquipments(task.id)?.map((equipment) => {
                         return (
