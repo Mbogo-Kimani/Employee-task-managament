@@ -8,10 +8,14 @@ import { displayErrors } from '../data/utils';
 import PaginatorNav from '../Components/Common/PaginatorNav';
 import TableComp from '../Components/Common/TableComp';
 import { loaderSetter } from '../Components/Common/Loader';
+import {taskStatusKeys} from "../data/enums/taskStatus";
+import SortElem from "../Components/Task/SortElem"
+import clientStatus from '../data/enums/clientStatus';
 import Select from 'react-select';
 import DropDown from '../Components/Common/DropDown';
 import { Menu } from '@headlessui/react';
 import Icon from '../Components/Common/Icon';
+
 
 function UnassignedTasks() {
   const [navItems, setNavItems] = useState(defaultPageData);
@@ -36,20 +40,36 @@ function UnassignedTasks() {
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const [response, setResponse] = useState(false);
+  const [taskTypes, setTaskTypes] = useState([]);
   const [equipments, setEquipments] = useState({});
   const [selectedEquipments, setSelectedEquipments] = useState([])
+
+    const sortParams = {
+      'type': taskTypes,
+      'clientStatus': clientStatus
+    }
+
+    function submitFilters(filters){
+      requestHandler.post('/api/filter/tasks?p=unassigned',filters, setTasks, setErrors)
+    }
 
 
 
   useEffect(() => {
     fetchUnassignedTasks();
     fetchUsers();
+    fetchTaskTypes();
     fetchEquipments();
   }, []);
 
   useEffect(() => {
     checkResponse()
   }, [response]);
+
+  function fetchTaskTypes() {
+    requestHandler.get('/api/task_types', setTaskTypes);
+  }
+
 
   function checkResponse () {
     if (response) {
@@ -133,6 +153,7 @@ function UnassignedTasks() {
 
   return (
     <SideNav>
+      <SortElem sortParams={sortParams} filterFn={submitFilters}/>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp columns={['Task Name', 'Task Type', 'From', 'To', 'Equipments', 'Action']}>
           {

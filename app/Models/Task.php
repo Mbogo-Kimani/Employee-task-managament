@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+
 
 class Task extends Model
 {
@@ -72,9 +74,9 @@ class Task extends Model
   }
 
   public function status($query, $status)
-    {
-        return $query->where('status', intval($status));
-    }
+  {
+      return $query->where('status', intval($status));
+  }
 
   public function type($query, $type)
   {
@@ -84,6 +86,13 @@ class Task extends Model
   public function departmentId($query, $type)
   {
       return $query->where('department_id', (int)$type);
+  }
+
+  public function clientStatus($query,$type){
+    $operator = $type ? '<' : '>';
+    $query->whereHas('client', function ($query) use($operator){
+      $query->whereRaw(DB::raw("DATE_ADD(payment_date, INTERVAL payment_plan MONTH) $operator NOW()"));
+    });
   }
 
   public function taskMessages() {

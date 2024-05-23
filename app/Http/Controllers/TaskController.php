@@ -110,8 +110,8 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
-      'admin_handler_id' => $request->adminHandler,
-      'department_handler_id' => $request->departmentHandler,
+      		'admin_handler_id' => $request->adminHandler,
+      		'department_handler_id' => $request->departmentHandler,
 		]);
 
     if($request->client){
@@ -278,9 +278,26 @@ class TaskController extends Controller
 
   public function filterTasks(Request $request)
   {
-       $tasks = Task::filter(request(['type', 'status','departmentId']))
+	$user = auth()->user();
+
+	if($request->query('p') === "unassigned"){
+		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
+										->where('department_id', $user->department_id)
+										->whereNull('user_id')
 			 							->with(['department', 'user', 'taskType','client'])
 										->paginate(20);
+	}else if($request->query('p') === "assigned"){
+		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
+										->where('department_id', $user->department_id)
+										->whereNotNull('user_id')
+			 							->with(['department', 'user', 'taskType','client'])
+										->paginate(20);
+	}else{
+		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
+			 							->with(['department', 'user', 'taskType','client'])
+										->paginate(20);
+	}
+       
        return response()->json($tasks);
   }
 	public function markTaskReceivedByHOD (Request $request) {

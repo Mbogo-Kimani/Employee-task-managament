@@ -10,13 +10,16 @@ import { displayErrors } from "../data/utils";
 import PaginatorNav from "../Components/Common/PaginatorNav";
 import TableComp from "../Components/Common/TableComp";
 import taskStatus from "../data/enums/taskStatus";
+import {taskStatusKeys} from "../data/enums/taskStatus";
 import { toast } from 'react-toastify';
 import DropDown from "../Components/Common/DropDown";
 import { Menu } from "@headlessui/react";
 import Icon from "../Components/Common/Icon";
 import { Link } from "@inertiajs/react";
+import SortElem from "../Components/Task/SortElem"
 import TaskStatusColorCode from "../Components/Common/TaskStatusColorCode";
 import TaskStatusIndicator from "../Components/Common/TaskStatusIndicator";
+import clientStatus from '../data/enums/clientStatus';
 
 
 function AssignedTasks() {
@@ -42,15 +45,32 @@ function AssignedTasks() {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
 		const [feedbackOptional, setFeedbackOptional] = useState(false);
+    const [taskTypes, setTaskTypes] = useState([]);
 
+    const sortParams = {
+      'type': taskTypes,
+      'status': taskStatusKeys,
+      'clientStatus': clientStatus
+    }
+
+    function submitFilters(filters){
+      requestHandler.post('/api/filter/tasks?p=assigned',filters, setTasks, setErrors)
+    }
     useEffect(() => {
         fetchAssignedTasks();
         fetchUsers();
+        fetchTaskTypes();
+
     }, []);
 
     useEffect(() => {
         checkResponse();
     }, [response]);
+
+    function fetchTaskTypes() {
+      requestHandler.get('/api/task_types', setTaskTypes);
+    }
+  
 
     function checkResponse() {
         if (response && response.message) {
@@ -153,6 +173,7 @@ function AssignedTasks() {
 			<div>
 				<TaskStatusColorCode />
 			</div>
+      <SortElem sortParams={sortParams} filterFn={submitFilters}/>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
                     columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Action"]}

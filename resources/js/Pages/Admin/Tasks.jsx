@@ -17,7 +17,9 @@ import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
 import i18next from '../../i18n'
 import { Link, router } from '@inertiajs/react';
-import { AppContext } from '../../appContext';
+import {AppContext} from '../../appContext'
+import SortElem from '../../Components/Task/SortElem'
+import clientStatus from '../../data/enums/clientStatus';
 
 
 function Tasks() {
@@ -52,7 +54,14 @@ function Tasks() {
     admins: [],
     departmentHeads: []
   });
-  const {userData} = useContext(AppContext);
+  const {userData} = useContext(AppContext);  
+  const sortParams = {
+    'departmentId' : departments,
+    'type': taskTypes,
+    'status': taskStatus,
+    'clientStatus': clientStatus
+  }
+
   useEffect(() => {
     if(response){
       notify('Task updated successfully')
@@ -118,10 +127,9 @@ function Tasks() {
     requestHandler.get('/api/departments', setDepartments);
   }
 
-  function submitFilters(e){
-    e.preventDefault()
+  function submitFilters(filters){
     requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
-  }
+  }                           
   return (
     <SideNav>
       <div>
@@ -134,7 +142,8 @@ function Tasks() {
             {i18next.t('add-new-task')}
           </Link>
         </div>
-        <div className="flex space-x-4">
+        <SortElem sortParams={sortParams} filterFn={submitFilters}/>
+        {/* <div className="flex space-x-4">
             <SelectComp
             name="departmentId"
             id="departmentId"
@@ -209,8 +218,8 @@ function Tasks() {
               onClick={(e) => submitFilters(e)}
             >
               {i18next.t('filters')}({Object.keys(filters).length})
-            </button>
-        </div>
+            </button> */}
+        {/* </div> */}
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
           <TableComp columns={['Task Name', 'Task Type', 'Department','Client', 'Handler', 'Status', 'Finished At', 'Action']}>
             {

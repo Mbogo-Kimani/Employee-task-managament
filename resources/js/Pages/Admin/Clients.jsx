@@ -310,7 +310,7 @@ function Clients() {
                     <input
                       type='text'
                       name="resident_hse_no"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-10"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter house number"
                       value={newClient.resident_hse_no}
                       onChange={handleChange}
@@ -323,13 +323,35 @@ function Clients() {
                       </p>
                     }   */}
                   </div>
-                  
-                  <div className="relative z-0 w-full mb-5 group">
+                  <div>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Payment Duration (months)
+                    </label>
+                    <input
+                      type="integer"
+                      name="payment_plan"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-10"
+                      placeholder="Enter payment duration"
+                      value={newClient.payment_plan}
+                      onChange={handleChange}
+                      required
+                    />
+                    {
+                      (errors.payment_plan || errors.errors?.payment_plan) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'clearance_level') }
+                      </p>
+                    }  
+                  </div>
+          <div className="relative z-0 w-full mb-5 mt-5 group">
             <input
               type="date"
               name="payment_date"
               id="payment_date"
-              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="mt-5 block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               value={newClient.payment_date}
               onChange={(e) => handleChange(e)}
@@ -337,7 +359,7 @@ function Clients() {
             />
             <label
               htmlFor="payment_date" 
-              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="z-0 peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Payment Date
             </label>
@@ -381,7 +403,7 @@ function Clients() {
               // </p>
             }  
           </div>
-          <div className="relative z-0 w-full mb-5 group">
+          {/* <div className="relative z-0 w-full mb-5 group">
             <SelectComp
               name="payment_plan"
               id="payment_plan"
@@ -405,15 +427,16 @@ function Clients() {
                   )
                 })
               }
-            </SelectComp>
-            <hr className="w-full border-[1px] border-gray-300" />
+            </SelectComp> */}
+            {/* <hr className="w-full border-[1px] border-gray-300" />
             {
               // (errors.taskType || errors.errors?.taskType) && 
               // <p className="text-red-500 my-2 py-1">
               //   { displayErrors(errors, 'taskType') }
               // </p>
             }  
-          </div>
+          </div> */}
+               
                   
                   <div className='w-full flex justify-between items-center'>
                     <button
@@ -431,7 +454,7 @@ function Clients() {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Plan', 'Action']}>
+          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Duration (months)', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (
