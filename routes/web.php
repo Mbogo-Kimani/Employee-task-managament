@@ -114,6 +114,7 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 
   Route::get('/new_equipment',[UserController::class, 'newEquipmentsPage']);
   Route::get('/equipments',[UserController::class, 'equipmentsPage']);
+  Route::get('/assigned-equipments',[UserController::class, 'assignedEquipmentsPage']);
   // Route::post('/api/equipments', [EquipmentController::class, 'store']);
   // Route::get('/api/equipments', [EquipmentController::class, 'index']);
 

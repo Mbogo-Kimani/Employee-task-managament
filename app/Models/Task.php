@@ -53,7 +53,7 @@ class Task extends Model
 
   public function equipments(): BelongsToMany
   {
-    return $this->belongsToMany(Equipment::class);
+    return $this->belongsToMany(Equipment::class)->withTimestamps()->withPivot('confirm_assigned','assigned_date');
   }
 
   public function taskType(): BelongsTo
