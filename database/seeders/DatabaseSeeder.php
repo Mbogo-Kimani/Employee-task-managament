@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserstableSeeder::class);
         // $this->call(TasksTableSeeder::class);
         $this->call(TaskTypeSeeder::class);
+        // $this->call(MapCoordinatesSeeder::class);
     }
 }
