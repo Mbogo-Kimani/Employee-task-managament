@@ -313,7 +313,7 @@ function UnassignedTasks() {
                   defaultValue={selectedEquipments}
                   onChange={(e) => handleEquipmentChange(e)}
                   options={
-                    (Array.isArray(equipments) ? equipments : []).map((item) => {
+                    (Array.isArray(equipments.data) ? equipments.data : []).map((item) => {
                       return(
                         {
                           value: item.id, label: item.name
