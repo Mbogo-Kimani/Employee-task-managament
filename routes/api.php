@@ -4,6 +4,8 @@ use App\Http\Controllers\CircularController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\MapLineController;
+use App\Http\Controllers\MapPointController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskMessageController;
@@ -130,5 +132,12 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
   
+  /**
+   * 
+   */
+  Route::get('/map_points', [MapPointController::class, 'index']);
+  Route::post('/map_points', [MapPointController::class, 'store']);
 
+  Route::get('/map_lines', [MapLineController::class, 'index']);
+  Route::post('/map_lines', [MapLineController::class, 'store']);
 });

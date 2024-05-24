@@ -257,7 +257,7 @@ class UserController extends Controller
 
 	public function mapsPage(){
 
-		return Inertia::render('Admin/ISPmap');
+		return Inertia::render('Admin/Maps');
 	}
 
 	public function employeesStatsPage(){
