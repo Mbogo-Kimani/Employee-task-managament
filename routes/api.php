@@ -3,7 +3,10 @@
 use App\Http\Controllers\CircularController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\EquipmentTaskController;
+use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\MapLineController;
 use App\Http\Controllers\MapPointController;
 use App\Http\Controllers\NotificationController;
@@ -99,6 +102,11 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/equipments', [EquipmentController::class, 'index']);
   Route::get('/equipments/assigned',[EquipmentController::class, 'getAssignedEquipments']);
   Route::patch('/equipment/update',[EquipmentController::class, 'updateAssignment']);
+
+  Route::get('/equipment_categories', [EquipmentCategoryController::class, 'index']);
+  Route::get('/equipment_types/{equipment_category_id}', [EquipmentTypeController::class, 'index']);
+
+  Route::post('/equipment_assignment', [EquipmentTaskController::class, 'store']);
   /**
    * Circulars Controllers
    */

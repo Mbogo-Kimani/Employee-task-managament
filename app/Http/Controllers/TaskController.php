@@ -195,7 +195,8 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNull('user_id')
-										->with(['taskType','equipments'])
+										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id')
+										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model'])
 										->paginate(20);
 			return response()->json($tasks);
 		}

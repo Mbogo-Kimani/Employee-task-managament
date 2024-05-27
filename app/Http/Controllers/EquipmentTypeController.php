@@ -7,15 +7,17 @@ use Illuminate\Http\Request;
 
 class EquipmentTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function index($id)
+  {
+    $equipment_types = EquipmentType::where('equipment_category_id', $id)->get();
+
+		return response()->json($equipment_types);
+  }
 
     /**
      * Show the form for creating a new resource.
