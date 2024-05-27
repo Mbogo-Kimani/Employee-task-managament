@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Enums\DepartmentEnum;
 use App\Http\Resources\AssignedEquipmentResource;
+use App\Http\Resources\EquipmentResourceCollection;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EquipmentController extends Controller
@@ -18,7 +20,8 @@ class EquipmentController extends Controller
 		if($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER){
 			try{
 				$equipments = Equipment::paginate(20);
-				return response()->json($equipments);
+				$data = new EquipmentResourceCollection($equipments);
+				return response()->json($data);
 			}catch(\Exception $e){
 				abort(400,$e);
 			}
@@ -78,5 +81,17 @@ class EquipmentController extends Controller
 		}
 
 		return response()->json(['message' => 'Equipment updated succesfully']);
+	}
+
+	public function upload(Request $request)
+	{
+		$file = $request->file('file');
+
+		if($file){
+			$fileName = $file->getClientOriginalName();
+			dd($fileName);
+
+			Storage::disk('public')->put($fileName, file_get_contents($file));
+		}
 	}
 }
