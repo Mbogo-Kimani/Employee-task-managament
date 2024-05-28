@@ -16,6 +16,7 @@ use App\Http\Resources\EmployeeTaskResource;
 use App\Jobs\TaskReminder;
 use App\Mail\TaskAssigned;
 use App\Models\Client;
+use App\Models\Equipment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
@@ -195,7 +196,7 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNull('user_id')
-										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id')
+										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head')
 										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model'])
 										->paginate(20);
 			return response()->json($tasks);
@@ -247,7 +248,7 @@ class TaskController extends Controller
 
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
       $task = Task::find($id);
-
+			
       if ($task) {
 				$task->user_id = NULL;
 				$task->save();
@@ -259,7 +260,9 @@ class TaskController extends Controller
 
   public function updateTaskEquipment(Request $request){
 	$request->validate([
-		'equipments' => 'required',
+		'equipment_category' => 'required',
+		'equipment_type' => 'required',
+		'quantity' => 'required',
 		'task' => 'required',
 	]);
 	$task = Task::find($request->task);
@@ -267,8 +270,16 @@ class TaskController extends Controller
 		throw new NotFoundHttpException('An error occured');
 	}
 	try{
-		foreach($request->equipments as $equipment){
-			$task->equipments()->syncWithoutDetaching($equipment);
+		foreach(range(1,$request->quantity) as $count){
+			$equipment = Equipment::where('equipment_type_id', $request->equipment_type)
+														->where('is_assigned', false)
+														->first();
+				
+			if($equipment){
+				$task->equipments()->syncWithoutDetaching($equipment);
+				$equipment->is_assigned = true;
+				$equipment->save();
+			}										
 		}
 	}catch(\Exception $e){
 		abort(400,$e);

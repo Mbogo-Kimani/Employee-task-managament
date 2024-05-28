@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::get('/all_tasks', [TaskController::class, 'allTasks']);
   Route::post('/filter/tasks', [TaskController::class, 'filterTasks']);
-  Route::patch('/tasks/{id}', [TaskController::class, 'unassignTask']);
+  Route::patch('/tasks/{task_id}', [TaskController::class, 'unassignTask']);
   Route::get('/tasks', [TaskController::class, 'index']);
   Route::get('/pending_tasks', [TaskController::class, 'getPending']);
   Route::get('/unassigned_tasks', [TaskController::class, 'getUnassignedTasks']);
@@ -55,9 +55,9 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::patch('/tasks-equipments', [TaskController::class, 'updateTaskEquipment']);
   Route::get('/task_types', [TaskTypeController::class, 'index']);
   Route::post('/task_types', [TaskTypeController::class, 'store']);
-  Route::delete('/task/{id}', [TaskController::class, 'deleteTask']);
+  Route::delete('/task/{task_id}', [TaskController::class, 'deleteTask']);
   Route::put('/task', [TaskController::class, 'updateTask']);
-  Route::patch('/task/{id}', [TaskController::class, 'updateFeedBack']);
+  Route::patch('/task/{task_id}', [TaskController::class, 'updateFeedBack']);
   Route::get('/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   Route::post('/tasks', [TaskController::class, 'store']);
   

@@ -6,6 +6,7 @@ use App\Enums\ClearanceLevelEnum;
 use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Enums\DepartmentEnum;
+use App\Enums\EquipmentsStatusEnum;
 use App\Http\Resources\AssignedEquipmentResource;
 use App\Http\Resources\EquipmentResourceCollection;
 use App\Models\EquipmentType;
@@ -23,6 +24,7 @@ class EquipmentController extends Controller
 			try{
 				$equipments = Equipment::paginate(20);
 				$data = new EquipmentResourceCollection($equipments);
+
 				return response()->json($data);
 			}catch(\Exception $e){
 				abort(400,$e);
@@ -54,6 +56,7 @@ class EquipmentController extends Controller
 	public function getAssignedEquipments(Request $request)
 	{
 		$tasksWithEquipments = Task::whereNotNull('user_id')->whereHas('equipments')->get();
+		
 		$result = [];
 		foreach ($tasksWithEquipments as $task){
 			foreach ($task->equipments as $equipment){
@@ -68,15 +71,24 @@ class EquipmentController extends Controller
 		$request->validate([
 			'type' => 'required|string',
 			'equipment_id' => 'required',
-			'task_id' => 'required'
+			'task_id' => 'required',
+			'serial_no' => 'nullable|string'
 		]);
+
 		$task = Task::find($request->task_id);
-		if(!$task){
-			throw new NotFoundHttpException('Task does not exist');
+
+		$equipment = Equipment::find($request->equipment_id);
+		if(!$task || !$equipment){
+			throw new NotFoundHttpException('Item does not exist');
 		}
 
 		if($request->type === "assign"){
 			$task->equipments()->updateExistingPivot($request->equipment_id, ['confirm_assigned' => true,'assigned_date' => Carbon::now()]);
+			$equipment->status =  EquipmentsStatusEnum::IN_USE;
+			if(!empty($request->serial_no)){
+				$equipment->serial_no = $request->serial_no;
+			}
+			$equipment->save();
 		}else if($request->type === 'return'){
 			$task->equipments()->detach($request->equipment_id);
 		}

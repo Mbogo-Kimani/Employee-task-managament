@@ -59,7 +59,6 @@ function UnassignedTasks() {
     fetchUnassignedTasks();
     fetchUsers();
     fetchTaskTypes();
-    fetchEquipments();
   }, []);
 
   useEffect(() => {
@@ -162,7 +161,7 @@ function UnassignedTasks() {
 
   function submitEquipmentsAssignment(e){
     e.preventDefault();
-    requestHandler.patch('/api/tasks-equipments', newAssignment, setResponse, setErrors, loaderSetter);
+    requestHandler.patch('/api/tasks-equipments', newEquipment, setResponse, setErrors, loaderSetter);
   }
 
   function submitNewAssignment(e) {
@@ -234,7 +233,7 @@ function UnassignedTasks() {
                                 onClick={() => openUserAssignModal(task.id)}
                               >
                                 <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
-                                <span className='block py-3 px-2'>Assign Users</span>   
+                                <span className='block py-3 px-2'>{task.received_by_department_head ? 'Assign Users' : 'Confirm Received'}</span>   
                               </button>
                             )}
                           </Menu.Item>
@@ -443,7 +442,7 @@ function UnassignedTasks() {
                 <button
                   type="submit"
                   className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8 ml-auto"
-                  onClick={(e) => submitNewEquipmentAssignment(e)}
+                  onClick={(e) => submitEquipmentsAssignment(e)}
                 >
                   Submit
                 </button>
