@@ -25,7 +25,8 @@ class AssignedEquipmentResource extends JsonResource
     {
         return [
             'id' => $this->equipment->id,
-            'name' => $this->equipment->name,
+            'name' => empty($this->equipment->name) ?  $this->equipment->equipmentType->manufacturer_name : $this->equipment->name,
+            'model' => $this->equipment->equipmentType->spec_model,
             'taskId' => $this->task->id,
             'taskName' => $this->task->name,
             'user' => $this->task->user->name,
