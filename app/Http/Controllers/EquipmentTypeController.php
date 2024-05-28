@@ -15,8 +15,7 @@ class EquipmentTypeController extends Controller
   public function index($id)
   {
     $equipment_types = EquipmentType::where('equipment_category_id', $id)->get();
-
-		return response()->json($equipment_types);
+	return response()->json($equipment_types);
   }
 
     /**
@@ -37,7 +36,16 @@ class EquipmentTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'equipment_category_id' => 'required',
+            'spec_model' => 'required|string',
+            'manufacturer_name' => 'required|string',
+            'description' => 'string'
+        ]);
+
+        EquipmentType::create($request->all());
+
+        return response()->json(['message' => 'Equipment type created successfully']);
     }
 
     /**

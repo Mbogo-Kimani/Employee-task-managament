@@ -8,8 +8,10 @@ use App\Models\Equipment;
 use App\Enums\DepartmentEnum;
 use App\Http\Resources\AssignedEquipmentResource;
 use App\Http\Resources\EquipmentResourceCollection;
+use App\Models\EquipmentType;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -31,21 +33,20 @@ class EquipmentController extends Controller
     public function store(Request $request){
         $request->validate([
 			'name' => 'required|string|max:255',
-			'department' => 'required',
-			'status' => 'required',
+			'equipment_type_id' => 'required',
+			'equipment_category_id' => 'required',
             'quantity' => 'required|integer',
-            'model' => 'required|string',
             'purchase_date' => 'required'
 		]);
-        
-		$newEquipment = Equipment::create([
-			'name' => $request->name,
-			'department_id' => $request->department,
-			'status' => intval($request->status),
-			'model' => $request->model,
-			'purchase_date' => $request->purchase_date,
-			'quantity' => $request->quantity,
-		]);
+
+		foreach(range(1,$request->quality) as $count){
+			Equipment::create([
+				'name' => $request->name,
+				'equipment_type_id' => $request->equipment_type_id,
+				'equipment_category_id' => $request->equipment_category_id,
+				'purchase_date' => $request->purchase_date
+			]);
+		};
 
 		return response()->json(['message' => 'Equipment saved successfully']);
     }
@@ -89,9 +90,33 @@ class EquipmentController extends Controller
 
 		if($file){
 			$fileName = $file->getClientOriginalName();
-			dd($fileName);
-
 			Storage::disk('public')->put($fileName, file_get_contents($file));
 		}
+	}
+
+	public function update(Request $request)
+	{
+		$request->validate([
+			'id' =>' required|exists:equipment',
+            'name' => 'nullable|string|max:255',
+			'serial_no' => 'nullable|string',
+			'status' => 'integer',
+            'purchase_date' => 'date',
+			'equipment_type_id' => 'integer'
+		]);
+
+		try{
+			if($request->equipment_type_id){
+				$equipmentType = EquipmentType::find($request->equipment_type_id);
+				$request['equipment_category_id'] = $equipmentType->equipment_category_id;
+			}
+			$values = $request->except(['model','manufacturer_name','category','categoryId']);
+			Equipment::find($request->id)->update($values);
+		}catch(\Exception $e){
+			abort(400,'An error occurred');
+		}
+
+		return response()->json(['message' => 'Equipment updated successfully']);
+		
 	}
 }

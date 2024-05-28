@@ -14,29 +14,23 @@ import equipmentsEnum from '../../data/enums/equipmentStatus';
 import Icon from '../../Components/Common/Icon';
 import Modal from "../../Components/Common/Modal";
 import SelectComp from "../../Components/Common/SelectComp";
+import { TailSpin } from "react-loader-spinner";
 
-function Equipments({ user }) {
+function Equipments() {
     const [navItems, setNavItems] = useState(defaultPageData);
-    const [tasks, setTasks] = useState({
-        data: [],
-        from: 1,
-        last_page: 0,
-        per_page: 10,
-        prev_page_url: null,
-        next_page_url: null,
-        to: 0,
-        total: 0,
-    });
+    const [equipment,setEquipment] = useState({});
     const [equipments, setEquipments] = useState({});
     const [currentTask, setCurrentTask] = useState(null);
     const [errors, setErrors] = useState({});
-    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState(false);
     const [report, setReport] = useState({});
     const [feedBack, setFeedBack] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
     const [inputFile, setInputFile] = useState()
+    const [equipmentTypes, setEquipmentTypes] = useState([])
+    const [newEquipment,setNewEquipment] = useState({})
 
     useEffect(() => {
         fetchEquipments();
@@ -44,13 +38,13 @@ function Equipments({ user }) {
     }, []);
 
     useEffect(() => {
-        // checkResponse();
+        checkResponse();
     }, [response]);
 
     function checkResponse() {
         if (response && response.message) {
             
-            setShowFeedbackModal(false)
+            setShowEditModal(false)
             toast.success(response.message,{
                 position: "top-center"
             })
@@ -61,20 +55,12 @@ function Equipments({ user }) {
         requestHandler.get("/api/equipments", setEquipments);
     }
 
-   function  handleChange(){
-
+   function  handleChange(e){
+      setEquipment({...equipment,[e.target.name]: e.target.value})
    }
     function handleInputFile(e){
         const formData = new FormData();
         console.log(e.target.files);
-        // for (var i = 0; i < e.target.files.length; i++) {
-        //     formData.append('files[]', files[i]);
-        //   }
-        // formData.append("file",e.target.files[0])
-        
-        // for (const pair of formData.entries()) {
-        //     console.log(pair[0]+ ', ' + pair[1]); 
-        // }
 
         setInputFile(e.target.files[0])
     }
@@ -97,10 +83,23 @@ function Equipments({ user }) {
         }); 
         // requestHandler.post('/api/equipments/upload',formData,setResponse)
     }
-    function toggleEditEquipment(id){
+    function toggleEditEquipment(equipment){
+        setEquipment(equipment)
         setShowEditModal(true)
+        fetchEquipmentTypes()
     }
 
+    function fetchEquipmentTypes(){
+      if(equipment.categoryId){
+        requestHandler.get(`/api/equipment_types/${equipment.categoryId}`, setEquipmentTypes);
+      }  
+    }
+
+    function submitNewEquipment(e){
+      e.preventDefault();
+      requestHandler.patch('/api/equipment/edit',equipment, setResponse, setErrors, setLoading)
+      fetchEquipments();
+    }
     return (
         <SideNav >
             <div className='mb-4 w-full flex'>
@@ -117,7 +116,7 @@ function Equipments({ user }) {
             </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
-                    columns={["Name", "Specification", "Quantity","Faulty", "Department", "Purchase Date", "Edit"]}
+                    columns={["Name","Serial No.", "Model", "Category", "Status", "Purchase Date", "Edit"]}
                 >
                     {(Array.isArray(equipments.data) ? equipments.data: []).map(
                         (equipment, index) => {
@@ -130,28 +129,29 @@ function Equipments({ user }) {
                                         scope="row"
                                         className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {equipment.name}
+                                        {equipment.name || equipment.manufacturer_name}
                                     </th>
+                                    <td className="px-2 py-4 text-center">
+                                        {equipment.serial_no ?? '-'}
+                                    </td>
                                     <th
                                         scope="row"
                                         title={
-                                            equipment.specification
+                                            equipment.model
                                         }
                                         className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {equipment.specification}
+                                        {equipment.model}
                                     </th>
-                                    <td className="px-2 py-4 text-center">
-                                        {equipment.quantity}
-                                    </td>
-                                    <td className="px-2 py-4 text-center">
-                                        {equipment.faulty ?? 0}
-                                    </td>
                                     <td
                                             className="px-2 py-4"
                                         >
-                                           {equipment.department}
+                                           {equipment.category}
                                     </td>
+                                    <td className="px-2 py-4 text-center">
+                                        {equipmentsEnum[equipment.status]}
+                                    </td>
+                                    
                                     <td
                                             className="px-2 py-4"
                                     >
@@ -172,7 +172,7 @@ function Equipments({ user }) {
                 <PaginatorNav state={equipments} setState={setEquipments} />
             </div>
             <Modal show={showEditModal} onClose={() => setShowEditModal(false)}>
-            <h2 className="text-center text-xl font-bold">Edit Equipment Details</h2>
+            <h2 className="text-center text-xl font-bold mb-8 mt-2">Edit Equipment Details</h2>
             
             <form className="max-w-md mx-auto p-5">
           <div className="relative z-0 w-full mb-5 group">
@@ -182,7 +182,7 @@ function Equipments({ user }) {
               id="name"
               className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              // value={newTask.name}
+              value={equipment.name}
               onChange={(e) => handleChange(e)}
               required
             />
@@ -200,31 +200,56 @@ function Equipments({ user }) {
               // </p>
             }  
           </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="text"
+              name="serial_no"
+              id="serial_no"
+              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=""
+              value={equipment.serial_no}
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <label
+              htmlFor="serial_no" 
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Serial Number
+              <span className='text-gray-900'> *</span>
+            </label>
+            {
+              // (errors.name || errors.errors?.name) && 
+              // <p className="text-red-500 my-2 py-1">
+              //   {/* { displayErrors(errors, 'name') } */}
+              // </p>
+            }  
+          </div>
 
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
-              name="status"
-              id="status"
-              // value={newTask.taskType}
+              name="equipment_type_id"
+              id="equipment_type_id"
+              value={equipment.model}
               onChange={(e) => handleChange(e)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Equipment status *</option>
-              {/* {
-                Object.keys(equipmentsStatusEnum).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{equipment.model}</option>
+              {
+                equipmentTypes?.map((equipmentType) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
                     <option
-                      key={ key }
-                      value={ key }
-                      title={ key }
+                      key={ equipmentType.id }
+                      value={ equipmentType.id }
+                      title={ equipmentType.name }
                       className='bg-transparent text-gray-900 dark:text-gray-300'
                     >
-                      { equipmentsStatusEnum[key]}
+                      { equipmentType.spec_model}
                     </option>
                   )
                 })
-              } */}
+              }
             </SelectComp>
             <hr className="w-full border-[1px] border-gray-300" />
             {
@@ -237,83 +262,33 @@ function Equipments({ user }) {
 
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
-              name="department"
-              id="department"
-              // value={newTask.department}
+              name="status"
+              id="status"
+              value={equipmentsEnum[equipment.status]}
               onChange={(e) => handleChange(e)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             >
-              <option value="" className='text-gray-900 dark:text-gray-300'>Select Department *</option>
-              {/* {
-                (Array.isArray(departments) ? departments : []).map((type, index) => {
+              <option value="" className='text-gray-900 dark:text-gray-300'>{equipmentsEnum[equipment.status]}</option>
+              {
+                (Object.keys(equipmentsEnum)).map((key) => {
                   return (
                     <option
-                      key={ type.id || index }
-                      value={ departmentsEnum[type.enum_key] }
+                      key={ key }
+                      value={ key }
                       className='text-gray-900'
                     >
-                      { type.name }
+                      { equipmentsEnum[key] }
                     </option>
                   )
                 })
-              } */}
+              }
             </SelectComp>
             <hr className="w-full border-[1px] border-gray-300" />
             {
               // (errors.department || errors.errors?.department) && 
               // <p className="text-red-500 my-2 py-1">
               //   { displayErrors(errors, 'department') }
-              // </p>
-            }  
-          </div>
-
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              name="model"
-              id="model"
-              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              // value={newTask.fromDate}
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <label
-              htmlFor="model" 
-              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Model
-            </label>
-            {
-              // (errors.fromDate || errors.errors?.fromDate) && 
-              // <p className="text-red-500 my-2 py-1">
-              //   { displayErrors(errors, 'fromDate') }
-              // </p>
-            }  
-          </div>
-
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="number"
-              name="quantity"
-              id="quantity"
-              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              // value={newTask.toDate}
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <label
-              htmlFor="quantity" 
-              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Quantity
-            </label>
-            {
-              // (errors.toDate || errors.errors?.toDate) && 
-              // <p className="text-red-500 my-2 py-1">
-              //   { displayErrors(errors, 'toDate') }
               // </p>
             }  
           </div>
@@ -348,7 +323,7 @@ function Equipments({ user }) {
               className="hover:bg-gradient-to-r hover:from-[var(--blue)] hover:to-[var(--luminous-green)] w-full text-white font-semibold opacity-80 bg-[var(--blue)] focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 dark:focus:ring-blue-800 my-8 flex justify-center items-center"
               onClick={(e) => submitNewEquipment(e)}
             >
-              {/* {
+              {
                 !loading ?
                 'Submit' :
                 <span>
@@ -363,7 +338,7 @@ function Equipments({ user }) {
                     wrapperClass=""
                   />
                 </span>
-              } */}
+              }
             </button>
         </form>
             </Modal>

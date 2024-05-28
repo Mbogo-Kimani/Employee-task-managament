@@ -14,10 +14,10 @@ return new class extends Migration
   public function up()
   {
     Schema::table('equipment', function (Blueprint $table) {
-      $table->dropColumn('name');
 			$table->dropColumn('department_id');
 			$table->dropColumn('quantity');
 			$table->dropColumn('model');
+      $table->string('name')->nullable()->change();
       $table->integer('status')->default(\App\Enums\EquipmentsStatusEnum::IN_STORAGE)->change();
       $table->dropColumn('faulty');
     });
@@ -31,12 +31,12 @@ return new class extends Migration
   public function down()
   {
     Schema::table('equipment', function (Blueprint $table) {
-      $table->string('name');
       $table->foreignId('department_id');
       $table->integer('quantity');
 			$table->string('model');
       $table->integer('status')->change();
       $table->integer('faulty')->nullable();
+      $table->string('name')->change();
     });
   }
 };

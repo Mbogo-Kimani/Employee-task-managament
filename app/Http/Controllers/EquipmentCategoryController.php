@@ -27,7 +27,17 @@ class EquipmentCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string'
+        ]);
+        
+        try{
+            EquipmentCategory::create($request->all());
+            return response()->json(['message' => 'Equipment Category created successfully']);
+        }catch(\Exception $e){
+            abort(400,$e);
+        }
+       
     }
 
     /**

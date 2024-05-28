@@ -18,12 +18,14 @@ class EquipmentResourceCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function ($equipment) {
                 return [
+                    'id' => $equipment->id,
+                    'categoryId' => $equipment->equipmentCategory->id,
                     'name' => $equipment->name,
-                    'faulty' => $equipment->faulty,
-                    'quantity' => Equipment::where('equipment_type_id',$equipment->equipment_type_id)->count(),
+                    'manufacturer_name' => $equipment->equipmentType->manufacturer_name,
+                    "serial_no" => $equipment->serial_no,
+                    'status' => $equipment->status,
                     'category' => $equipment->equipmentCategory->name,
-                    'department' => $equipment->department->name,
-                    'specification' => $equipment->equipmentType->spec_model,
+                    'model' => $equipment->equipmentType->spec_model,
                     'purchase_date' => $equipment->purchase_date,
                 ];
             }),
