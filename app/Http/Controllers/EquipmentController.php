@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Enums\DepartmentEnum;
 use App\Http\Resources\AssignedEquipmentResource;
+use App\Http\Resources\EquipmentResourceCollection;
+use App\Models\EquipmentType;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EquipmentController extends Controller
@@ -18,7 +22,8 @@ class EquipmentController extends Controller
 		if($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER){
 			try{
 				$equipments = Equipment::paginate(20);
-				return response()->json($equipments);
+				$data = new EquipmentResourceCollection($equipments);
+				return response()->json($data);
 			}catch(\Exception $e){
 				abort(400,$e);
 			}
@@ -28,21 +33,20 @@ class EquipmentController extends Controller
     public function store(Request $request){
         $request->validate([
 			'name' => 'required|string|max:255',
-			'department' => 'required',
-			'status' => 'required',
+			'equipment_type_id' => 'required',
+			'equipment_category_id' => 'required',
             'quantity' => 'required|integer',
-            'model' => 'required|string',
             'purchase_date' => 'required'
 		]);
-        
-		$newEquipment = Equipment::create([
-			'name' => $request->name,
-			'department_id' => $request->department,
-			'status' => intval($request->status),
-			'model' => $request->model,
-			'purchase_date' => $request->purchase_date,
-			'quantity' => $request->quantity,
-		]);
+
+		foreach(range(1,$request->quality) as $count){
+			Equipment::create([
+				'name' => $request->name,
+				'equipment_type_id' => $request->equipment_type_id,
+				'equipment_category_id' => $request->equipment_category_id,
+				'purchase_date' => $request->purchase_date
+			]);
+		};
 
 		return response()->json(['message' => 'Equipment saved successfully']);
     }
@@ -78,5 +82,41 @@ class EquipmentController extends Controller
 		}
 
 		return response()->json(['message' => 'Equipment updated succesfully']);
+	}
+
+	public function upload(Request $request)
+	{
+		$file = $request->file('file');
+
+		if($file){
+			$fileName = $file->getClientOriginalName();
+			Storage::disk('public')->put($fileName, file_get_contents($file));
+		}
+	}
+
+	public function update(Request $request)
+	{
+		$request->validate([
+			'id' =>' required|exists:equipment',
+            'name' => 'nullable|string|max:255',
+			'serial_no' => 'nullable|string',
+			'status' => 'integer',
+            'purchase_date' => 'date',
+			'equipment_type_id' => 'integer'
+		]);
+
+		try{
+			if($request->equipment_type_id){
+				$equipmentType = EquipmentType::find($request->equipment_type_id);
+				$request['equipment_category_id'] = $equipmentType->equipment_category_id;
+			}
+			$values = $request->except(['model','manufacturer_name','category','categoryId']);
+			Equipment::find($request->id)->update($values);
+		}catch(\Exception $e){
+			abort(400,'An error occurred');
+		}
+
+		return response()->json(['message' => 'Equipment updated successfully']);
+		
 	}
 }

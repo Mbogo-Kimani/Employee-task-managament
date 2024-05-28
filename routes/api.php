@@ -15,6 +15,7 @@ use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
 use App\Http\Controllers\UserController;
+use App\Models\EquipmentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -102,10 +103,14 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/equipments', [EquipmentController::class, 'index']);
   Route::get('/equipments/assigned',[EquipmentController::class, 'getAssignedEquipments']);
   Route::patch('/equipment/update',[EquipmentController::class, 'updateAssignment']);
+  Route::patch('/equipment/edit',[EquipmentController::class, 'update']);
+  Route::post('/equipments/upload', [EquipmentController::class, 'upload']);
+  
 
+  Route::post('/equipment_categories/new', [EquipmentCategoryController::class, 'store']);
   Route::get('/equipment_categories', [EquipmentCategoryController::class, 'index']);
   Route::get('/equipment_types/{equipment_category_id}', [EquipmentTypeController::class, 'index']);
-
+  Route::post('equipment_types/new', [EquipmentTypeController::class, 'store']);
   Route::post('/equipment_assignment', [EquipmentTaskController::class, 'store']);
   /**
    * Circulars Controllers

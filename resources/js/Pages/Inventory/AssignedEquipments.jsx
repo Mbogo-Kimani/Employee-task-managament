@@ -28,27 +28,24 @@ function AssignedEquipments({ user }) {
         total: 0,
     });
     const [equipments, setEquipments] = useState({});
-    const [currentTask, setCurrentTask] = useState(null);
-    const [errors, setErrors] = useState({});
-    const [users, setUsers] = useState([]);
+
     const [response, setResponse] = useState(false);
-    const [report, setReport] = useState({});
-    const [feedBack, setFeedBack] = useState('');
-    const [showModal, setShowModal] = useState(false);
-    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
 
 
     useEffect(() => {
         fetchAssignedEquipments();
-        // fetchUsers();
     }, []);
 
     useEffect(() => {
         checkResponse();
-    }, [response]);
+    }, [response]); 
 
     function checkResponse() {
-        fetchAssignedEquipments()
+        fetchAssignedEquipments();
+        toast.success(response.message,{
+            position: "top-center"
+        });
     }
 
     function fetchAssignedEquipments()
@@ -56,7 +53,8 @@ function AssignedEquipments({ user }) {
         requestHandler.get("/api/equipments/assigned", setEquipments);
     }
 
-    function confirm(string,equipmentId,taskId) {
+    function confirm(string,equipmentId,taskId) 
+    {
         const data = {
             'type': string,
             'equipment_id': equipmentId,
