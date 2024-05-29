@@ -197,7 +197,7 @@ class TaskController extends Controller
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNull('user_id')
 										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head')
-										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model'])
+										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name'])
 										->paginate(20);
 			return response()->json($tasks);
 		}

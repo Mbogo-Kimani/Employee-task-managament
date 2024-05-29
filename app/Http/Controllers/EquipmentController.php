@@ -24,7 +24,6 @@ class EquipmentController extends Controller
 			try{
 				$equipments = Equipment::paginate(20);
 				$data = new EquipmentResourceCollection($equipments);
-
 				return response()->json($data);
 			}catch(\Exception $e){
 				abort(400,$e);
@@ -72,7 +71,9 @@ class EquipmentController extends Controller
 			'type' => 'required|string',
 			'equipment_id' => 'required',
 			'task_id' => 'required',
-			'serial_no' => 'nullable|string'
+			'serial_no' => 'nullable|string',
+			'condition' => 'nullable|integer',
+			'description' => 'nullable|string'
 		]);
 
 		$task = Task::find($request->task_id);
@@ -91,6 +92,13 @@ class EquipmentController extends Controller
 			$equipment->save();
 		}else if($request->type === 'return'){
 			$task->equipments()->detach($request->equipment_id);
+			if($request->condition){
+				$equipment->status =  EquipmentsStatusEnum::IN_STORAGE;
+			}else{
+				$equipment->status =  EquipmentsStatusEnum::IN_MAINTENANCE;
+			}
+			$equipment->description = $request->description;
+			$equipment->save();
 		}
 
 		return response()->json(['message' => 'Equipment updated succesfully']);

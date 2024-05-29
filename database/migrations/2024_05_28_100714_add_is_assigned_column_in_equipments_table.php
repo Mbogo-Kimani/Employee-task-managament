@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('equipment', function (Blueprint $table) {
             $table->boolean('is_assigned')->default(false);
+            $table->longText('description')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('equipment', function (Blueprint $table) {
             $table->dropColumn('is_assigned');
+            $table->dropColumn('description');
         });
     }
 };

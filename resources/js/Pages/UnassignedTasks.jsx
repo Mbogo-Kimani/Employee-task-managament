@@ -216,7 +216,7 @@ function UnassignedTasks() {
                     { 
                       (getEquipments(task.id) || []).map((equipment) => {
                         return (
-                          <span className='rounded bg-gray-200 m-2 p-1'>{equipment.equipment_type?.spec_model || ''}</span>
+                          <span className='rounded bg-gray-200 m-2 p-1'>{equipment.equipment_category?.name} ({ equipment.equipment_type?.spec_model || ''})</span>
                         )
                       })
                     }
