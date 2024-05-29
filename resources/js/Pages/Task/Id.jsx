@@ -20,8 +20,6 @@ function Id({ user }) {
   const messagesEnd = useRef(null);
   const chatContainer = useRef(null);
   
-  const channel = window.Echo.channel('private.taskmessagechat.1');
-
   const taskId = window.location.pathname.split('/')[2];
 
   useEffect(() => {
@@ -34,6 +32,8 @@ function Id({ user }) {
   }, [messages])
 
   useEffect(() => {
+    const channel = window.Echo.channel('private.taskmessagechat.1');
+
     channel.subscribed().listen('.chat', (event) => {
       if (event.message && typeof(event.message) === 'string') {
         setMessages((prev) => [...prev, JSON.parse(event.message)]);
