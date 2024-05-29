@@ -284,7 +284,7 @@ function AssignedEquipments({ user }) {
                 <button
                   type="submit"
                   className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8 ml-auto"
-                  onClick={(e) => confirm(e,'assign')}
+                  onClick={(e) => confirm(e,'return')}
                 >
                   Submit
                 </button>
