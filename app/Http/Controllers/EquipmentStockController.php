@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EquipmentsStatusEnum;
+use App\Http\Resources\EquipmentStockResourceCollection;
 use App\Models\Equipment;
 use App\Models\EquipmentStock;
+use App\Models\EquipmentType;
 use Illuminate\Http\Request;
 
 class EquipmentStockController extends Controller
@@ -16,65 +18,25 @@ class EquipmentStockController extends Controller
      */
     public function index()
     {
-        $equipments = Equipment::all();
-        // $currentStock = Equipment::where('status', EquipmentsStatusEnum::IN_STORAGE)->get();
-        $data = new EquipmentStock
-        return response()->json();
+        $equipmentTypes = EquipmentType::all();
+        
+        $data = new EquipmentStockResourceCollection($equipmentTypes);
+        
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function updateThreshold(Request $request, EquipmentStock $equipmentStock)
     {
-        //
-    }
+        $request->validate([
+            'id' => 'required|exists:equipment_types',
+            'count' => 'required|integer'
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $equipmentType = EquipmentType::find($request->id);
+        $equipmentType->min_stock = $request->count;
+        $equipmentType->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\EquipmentStock  $equipmentStock
-     * @return \Illuminate\Http\Response
-     */
-    public function show(EquipmentStock $equipmentStock)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\EquipmentStock  $equipmentStock
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EquipmentStock $equipmentStock)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EquipmentStock  $equipmentStock
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EquipmentStock $equipmentStock)
-    {
-        //
+        return response()->json(['message' => 'Threshold has been set']);
     }
 
     /**

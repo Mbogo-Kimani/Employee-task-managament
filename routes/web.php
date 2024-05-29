@@ -46,21 +46,14 @@ Route::get('/auth/login', [UserController::class, 'authLoginPage'])->name('login
 Route::post('/auth/change_password', [UserController::class, 'setPassword']);
 Route::get('/change_password', [UserController::class, 'changePasswordPage'])->name('change_password');
 
-
-// Route::middleware('auth:sanctum')->group( function () {
   
 	Route::middleware('auth:sanctum')->group(function () {
     Route::get('/myProfile', [UserController::class, 'myProfile'])->name('profile');
   });
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
-  // Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
 
   Route::get('/tasks', [UserController::class, 'tasksPage']);
-  // Route::get('/api/tasks', [TaskController::class, 'index']);
-  // Route::get('/api/pending_tasks', [TaskController::class, 'getPending']);
-
-  // Route::post('/api/task_reports', [TaskReportController::class, 'store']);
   Route::get('/reports/new', [TaskReportController::class, 'newReportPage']);
 
   Route::get('/admin/employees', [UserController::class, 'adminEmployeesPage']);
@@ -69,15 +62,7 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   // Route::get('/api/clearance_levels', [UserController::class, 'clearanceLevels']);
 
   Route::get('/profile', [UserController::class, 'navigateToProfile']);
-  // Route::post('/api/user', [UserController::class, 'store']);
-	// Route::get('/api/user/{id}', [UserController::class, 'show']);
-	// Route::patch('/api/user', [UserController::class, 'updateUserDetails']);
-	// Route::delete('/api/user/{id}', [UserController::class, 'delete']);
-  // Route::put('/api/user', [UserController::class, 'update']);
-	// Route::get('/api/admins', [UserController::class, 'getAdmins']);
-	// Route::get('/api/department_heads/{department_id}', [UserController::class, 'getDepartmentHeads']);
-	// Route::get('/api/admin_department_handlers/{department_id}', [UserController::class, 'getAllHandlers']);
-
+  
   Route::get('/admin/employees/{user_id}/tasks', [UserController::class, 'navigateToAdminUserTasks']);
   Route::get('/admin/tasks', [UserController::class, 'allTasksPage']);
   Route::get('/admin/new_task', [UserController::class, 'newTaskPage']);
@@ -99,41 +84,17 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 
   Route::get('/unassigned_tasks', [UserController::class, 'unassignedTasksPage']);
   Route::get('/assigned_tasks', [UserController::class, 'assignedTasksPage']);
-  // Route::get('/api/unassigned_tasks', [TaskController::class, 'getUnassignedTasks']);
-  // Route::get('/api/assigned_tasks', [TaskController::class, 'getAssignedTasks']);
-  // Route::get('/api/department_users', [UserController::class, 'getUsersByDepartment']);
-  // Route::patch('/api/tasks', [TaskController::class, 'update']);
-  // Route::post('/api/filter/tasks', [TaskController::class, 'filterTasks']);
-  // Route::patch('/api/tasks/{id}', [TaskController::class, 'unassignTask']);
-
-  // Route::get('/api/report/{id}', [TaskReportController::class, 'show']);
-  // Route::patch('/api/report', [TaskReportController::class, 'update']);
-
-  // Route::post('/api/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
-  // Route::post('/api/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
 
   Route::get('/new_equipment',[UserController::class, 'newEquipmentsPage']);
   Route::get('/equipments',[UserController::class, 'equipmentsPage']);
   Route::get('/assigned-equipments',[UserController::class, 'assignedEquipmentsPage']);
-  // Route::post('/api/equipments', [EquipmentController::class, 'store']);
-  // Route::get('/api/equipments', [EquipmentController::class, 'index']);
-
+  Route::get('/equipments/stocks',[UserController::class, 'stocksPage']);
 
   Route::get('/admin/circulars/new_circular', [CircularController::class, 'create']);
-  // Route::post('/api/circular', [CircularController::class, 'store']);
 	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
-	// Route::get('/api/circulars', [CircularController::class, 'index']);
 
-	// Route::get('/api/notifications', [NotificationController::class, 'index']);
-	// Route::get('/api/unread_notifications_count', [NotificationController::class, 'unreadNotificationsCount']);
-	// Route::post('/api/mark_as_read', [NotificationController::class, 'markAsRead']);
-
-  // Route::get('api/clients',[ClientController::class, 'index']);
-  // Route::post('api/client',[ClientController::class, 'store']);
-  // Route::patch('api/client',[ClientController::class, 'update']);
-  // Route::delete('api/client/{id}',[ClientController::class, 'deleteClient']);
-  Route::get('admin/clients',[ClientController::class, 'clientsPage']);
+  Route::get('/admin/clients',[ClientController::class, 'clientsPage']);
 
   Route::get('/admin/maps',[UserController::class, 'mapsPage']);
-// });
+
 

@@ -62,6 +62,12 @@ export const storeManagerNavItems = [
     icon: 'equipment',
     hasOptions: false,
   },
+  {
+    name: 'Stocks',
+    href: '/equipments/stocks',
+    icon: 'stock',
+    hasOptions: false,
+  },
 ];
 
 export const storeManagerPageItems = [

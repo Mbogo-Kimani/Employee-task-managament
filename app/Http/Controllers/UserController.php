@@ -272,6 +272,10 @@ class UserController extends Controller
 	public function tasksPage () {
 		return Inertia::render('Tasks');
 	}
+
+	public function stocksPage () {
+		return Inertia::render('Inventory/Stock');
+	}
   
   
   /**

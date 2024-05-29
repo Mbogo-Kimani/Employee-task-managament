@@ -23,24 +23,19 @@
                         <h5>ET~NET</h5>
                     </div>
                     <div class="container">
-        <h2>New Task Assigned.</h2>
+        <h2>Depleted Stock.</h2>
         
-        <p>Hello {{ $user->name }},</p>
+        <p>Hello {{ $user }},</p>
 
-        <p>A new task has been assigned to you. Here are the details:</p>
+        <p>The following equipment is almost depleted.</p>
     <p>
         <ul>
-            <li><strong>Title:</strong> {{ $task->name }}.</li>
-            <li><strong>Description:</strong> {{ $task->description }}.</li>
-            <li><strong>Client:</strong> {{ isset($client) ? $client->name : 'N/A' }}.</li>
-            <li><strong>Address:</strong> {{ isset($client) ? $client->address : 'N/A' }}.</li>
-            <li><strong>Building:</strong> {{ isset($client) ? $client->resident_building : 'N/A' }}.</li>
-            <li><strong>Hse No:</strong> {{ isset($client) ? $client->resident_hse_no : 'N/A' }}.</li>
-            <!-- Add other task details as needed -->
+            <li><strong>Category:</strong> {{ $equipmentCategory }}.</li>
+            <li><strong>Model:</strong> {{ $equipmentType }}.</li>
+            <li><strong>Stock Left:</strong> {{ $equipmentCount }}.</li>
         </ul>
     </p>
         <p>Please review and take appropriate action. </p>
-        <a href="{{ env('APP_URL') }}/tasks">Task Link</a>
 
         <p class="footer">Thank you,<br>ETNET</p>
     </div>
