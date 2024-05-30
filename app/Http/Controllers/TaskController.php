@@ -147,7 +147,7 @@ class TaskController extends Controller
 	public function allTasks() {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-			$tasks = Task::with(['department', 'user', 'taskType','client','equipments'])->paginate(20);
+			$tasks = Task::with(['department', 'users', 'taskType','client','equipments'])->paginate(20);
 			return response()->json($tasks);
 		}
 
@@ -209,7 +209,7 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereNotNull('user_id')
-										->with(['taskType','user','equipments'])
+										->with(['taskType','users','equipments'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -228,8 +228,9 @@ class TaskController extends Controller
 			$task = Task::find($request->task);
             
 			if ($task) {
-				$task->user_id = $request->user;
-				$task->save();
+				$task->users()->attach($request->user);
+				// $task->save();
+				//TODO:send email to many users
                 $content = View::make('emails.task_assigned', ['task' => $task, 'user' => $task->user, 'client' => $task->client])->render();
                 $text = (new Transformer)
                 ->keepLinks() 
@@ -296,17 +297,17 @@ class TaskController extends Controller
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
 										->where('department_id', $user->department_id)
 										->whereNull('user_id')
-			 							->with(['department', 'user', 'taskType','client'])
+			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}else if($request->query('p') === "assigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
 										->where('department_id', $user->department_id)
 										->whereNotNull('user_id')
-			 							->with(['department', 'user', 'taskType','client'])
+			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}else{
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
-			 							->with(['department', 'user', 'taskType','client'])
+			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}
        

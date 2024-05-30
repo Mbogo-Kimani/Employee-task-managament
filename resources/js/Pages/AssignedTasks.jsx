@@ -205,7 +205,13 @@ function AssignedTasks() {
                                             ""}
                                     </th>
                                     <td className="px-2 py-4">
-                                        {task.user && task.user.name}
+                                      {
+                                       task.users?.map((user) => {
+                                        return (
+                                          <p>{user.name}</p>
+                                        )
+                                      })}
+                                        {/* {task.user && task.user.name} */}
                                     </td>
                                     <td className="px-2 py-4">
                                         <TaskStatusIndicator status={task.status} />

@@ -12,6 +12,7 @@ import clientStatus from '../data/enums/clientStatus';
 import DropDown from '../Components/Common/DropDown';
 import { Menu } from '@headlessui/react';
 import Icon from '../Components/Common/Icon';
+import Select from 'react-select';
 
 function UnassignedTasks() {
   const [tasks, setTasks] = useState({
@@ -27,7 +28,7 @@ function UnassignedTasks() {
   const [showAssigUserModal, setShowAssignUserModal] = useState(false);
   const [showEquipmentsModal, setShowEquipmentsModal] = useState(false);
   const [newAssignment, setNewAssignment] = useState({
-    user: '',
+    user: [],
     task: '',
     equipments: []
   });
@@ -150,11 +151,12 @@ function UnassignedTasks() {
     setShowAssignUserModal(false);
   }
 
-  function handleChange(e) {
-    setNewAssignment({...newAssignment, [e.target.name]: e.target.value})
-  }
-  function handleEquipmentChange(values) {
-    setNewAssignment({...newAssignment,['equipments']: values.map((val) => {
+  // function handleChange(e) {
+  //   console.log(e);
+  //   // setNewAssignment({...newAssignment, [e.target.name]: e.target.value})
+  // }
+  function handleChange(values) {
+    setNewAssignment({...newAssignment,['user']: values.map((val) => {
       return val.value
     })})
   }
@@ -294,7 +296,7 @@ function UnassignedTasks() {
                     >
                       Which user will you assign the task to?
                     </label>
-                    <SelectComp
+                    {/* <SelectComp
                       name='user'
                       className='bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                       value={newAssignment.user}
@@ -310,7 +312,23 @@ function UnassignedTasks() {
                           )
                         })
                       }
-                    </SelectComp>
+                    </SelectComp> */}
+                    <Select
+                        defaultValue={newAssignment.user}
+                        onChange={(e) => handleChange(e)}
+                        options={
+                          (Array.isArray(users) ? users : []).map((item) => {
+                            return(
+                              {
+                                value: item.id, label: item.name
+                              }
+                            )
+                          })
+                        }
+                        isMulti
+                        isSearchable
+                        maxMenuHeight={220}
+                      />
                     {
                       (errors.user || errors.errors?.user) && 
                       <p className="text-red-500 my-1 py-1">

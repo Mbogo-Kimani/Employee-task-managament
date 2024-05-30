@@ -243,7 +243,12 @@ function Tasks() {
                       { (task.client && task.client.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
-                      { (task.user && task.user.name) || 'None Assigned' }
+                      {task.users?.map((user) => {
+                        return (
+                          <p>{user.name}</p>
+                        )
+                      })}
+                      {/* { (task.users && task.users.name) || 'None Assigned' } */}
                     </td>
                     <td className={`px-2 py-4`}>
                       <TaskStatusIndicator status={task.status} />
