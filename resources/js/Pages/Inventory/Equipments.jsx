@@ -148,7 +148,7 @@ function Equipments() {
                                         >
                                            {equipment.category}
                                     </td>
-                                    <td className="px-2 py-4 text-center">
+                                    <td className="px-2 py-4">
                                         {equipmentsEnum[equipment.status]}
                                     </td>
                                     
