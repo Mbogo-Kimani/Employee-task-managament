@@ -9,10 +9,13 @@ use App\Enums\DepartmentEnum;
 use App\Enums\EquipmentsStatusEnum;
 use App\Http\Resources\AssignedEquipmentResource;
 use App\Http\Resources\EquipmentResourceCollection;
+use App\Mail\StockDepleted;
 use App\Models\EquipmentType;
 use App\Models\Task;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -89,6 +92,7 @@ class EquipmentController extends Controller
 			if(!empty($request->serial_no)){
 				$equipment->serial_no = $request->serial_no;
 			}
+			$this->checkStock($equipment);
 			$equipment->save();
 		}else if($request->type === 'return'){
 			$task->equipments()->detach($request->equipment_id);
@@ -97,6 +101,7 @@ class EquipmentController extends Controller
 			}else{
 				$equipment->status =  EquipmentsStatusEnum::IN_MAINTENANCE;
 			}
+			$equipment->is_assigned = false;
 			$equipment->description = $request->description;
 			$equipment->save();
 		}
@@ -112,6 +117,21 @@ class EquipmentController extends Controller
 			$fileName = $file->getClientOriginalName();
 			Storage::disk('public')->put($fileName, file_get_contents($file));
 		}
+	}
+
+	private function checkStock($equipment)
+	{
+		$equipmentsCount = Equipment::where('equipment_type_id', $equipment->equipment_type_id)->where('status', EquipmentsStatusEnum::IN_STORAGE)->count();
+		$admin = User::where('department_id', DepartmentEnum::ADMIN)->first();
+		$departmentLeader = User::where('department_id',DepartmentEnum::TECHNICIANS)->where('clearance_level',ClearanceLevelEnum::DEPARTMENT_LEADER)->first();
+
+		$threshold = $equipment->equipmentType->min_stock;
+
+		if($equipmentsCount <= $threshold){
+           Mail::to($admin->email)->send(new StockDepleted(['category' => $equipment->equipmentCategory->name, 'model' => $equipment->equipmentType->spec_model, 'name' => $admin->name, 'count' => $equipmentsCount]));
+           Mail::to($departmentLeader->email)->send(new StockDepleted(['category' => $equipment->equipmentCategory->name, 'model' => $equipment->equipmentType->spec_model, 'name' => $admin->name, 'count' => $equipmentsCount]));
+		}
+
 	}
 
 	public function update(Request $request)

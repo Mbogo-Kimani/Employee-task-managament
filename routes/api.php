@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\EquipmentStockController;
 use App\Http\Controllers\EquipmentTaskController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\MapLineController;
@@ -105,7 +106,8 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::patch('/equipment/update',[EquipmentController::class, 'updateAssignment']);
   Route::patch('/equipment/edit',[EquipmentController::class, 'update']);
   Route::post('/equipments/upload', [EquipmentController::class, 'upload']);
-  
+  Route::get('/equipments/stocks',[EquipmentStockController::class, 'index']);
+  Route::patch('/equipments/stocks/update',[EquipmentStockController::class, 'updateThreshold']);
 
   Route::post('/equipment_categories/new', [EquipmentCategoryController::class, 'store']);
   Route::get('/equipment_categories', [EquipmentCategoryController::class, 'index']);
