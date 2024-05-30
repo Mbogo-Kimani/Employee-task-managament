@@ -48,6 +48,10 @@ function Equipments() {
             toast.success(response.message,{
                 position: "top-center"
             })
+        }else if(response.error){
+          toast.error(response.error,{
+            position: "top-center"
+        })
         }
     }
 
@@ -60,27 +64,33 @@ function Equipments() {
    }
     function handleInputFile(e){
         const formData = new FormData();
-        console.log(e.target.files);
-
         setInputFile(e.target.files[0])
     }
 
-    function submitFile(e){
+    async function submitFile(e){
         e.preventDefault()
+       
         const formData = new FormData();
         formData.append("file",inputFile)
 
-        fetch('/api/equipments/upload', {
+        await fetch('/api/equipments/upload', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
             },
             body: formData
         }).then(response => {
-           
-        }).catch(error => {
-            
-        }); 
+          if (response.ok) {
+            return response.json();
+          }
+      })
+      .then(data => {
+          setResponse(data); 
+      }).catch(error => {
+          setErrors(error);
+      }); 
+
+      fetchEquipments();
         // requestHandler.post('/api/equipments/upload',formData,setResponse)
     }
     function toggleEditEquipment(equipment){
@@ -105,7 +115,7 @@ function Equipments() {
             <div className='mb-4 w-full flex'>
                 <div className="border b-5 rounded border-black p-2">
                     <input type="file" id="inventory_file" placeholder="Import Sheet" onChange={(e) => handleInputFile(e)}/>
-                    <button className="rounded bg-green-300 p-2" onClick={(e) => submitFile(e)}>Submit</button>
+                    <button className="rounded bg-green-400 p-2 hover:bg-green-600 hover:text-gray-100" onClick={(e) => submitFile(e)}>Submit</button>
                 </div>
                 <a
                     className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"

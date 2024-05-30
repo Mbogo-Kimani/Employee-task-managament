@@ -18,6 +18,11 @@ class EquipmentCategory extends Model
 		return $this->hasMany(Equipment::class);
 	}
 
+	public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
+    }
+
 	protected $fillable = [
 		'name',
 	];

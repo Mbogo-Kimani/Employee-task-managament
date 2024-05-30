@@ -19,6 +19,11 @@ class EquipmentType extends Model
 		return $this->belongsTo(EquipmentCategory::class);
 	}
 
+	public function setSpecModelAttribute($value)
+    {
+        $this->attributes['spec_model'] = strtoupper(trim($value));
+    }
+
 	protected $fillable = [
 		'manufacturer_name',
 		'spec_model',

@@ -9,6 +9,7 @@ use App\Enums\DepartmentEnum;
 use App\Enums\EquipmentsStatusEnum;
 use App\Http\Resources\AssignedEquipmentResource;
 use App\Http\Resources\EquipmentResourceCollection;
+use App\Imports\InventoryImport;
 use App\Mail\StockDepleted;
 use App\Models\EquipmentType;
 use App\Models\Task;
@@ -17,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EquipmentController extends Controller
@@ -114,9 +116,18 @@ class EquipmentController extends Controller
 		$file = $request->file('file');
 
 		if($file){
-			$fileName = $file->getClientOriginalName();
-			Storage::disk('public')->put($fileName, file_get_contents($file));
+			try{
+				$fileName = $file->getClientOriginalName();
+				Storage::disk('public')->put($fileName, file_get_contents($file));
+				Excel::import(new InventoryImport, $file);
+			}catch(\Exception $e){
+				abort(400, $e);
+			}			
+		}else{
+			return response()->json(['error' => 'Please upload file']);
 		}
+
+		return response()->json(['message' => 'File uploaded successfully']);
 	}
 
 	private function checkStock($equipment)
