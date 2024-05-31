@@ -82,7 +82,16 @@ const Reports = () => {
                                 scope="row"
                                 className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {report.task_assignee}
+                                {report.task_assignee.map((user) => {
+                                    return (
+                                      <p
+                                      key={user.id}
+                                      >
+                                        {user.name}
+                                      </p>
+                                    )
+                                 })
+                                }
                             </th>
                             <th
                                 scope="row"

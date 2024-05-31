@@ -296,13 +296,13 @@ class TaskController extends Controller
 	if($request->query('p') === "unassigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
 										->where('department_id', $user->department_id)
-										->whereNull('user_id')
+										->whereDoesntHave('users')
 			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}else if($request->query('p') === "assigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
 										->where('department_id', $user->department_id)
-										->whereNotNull('user_id')
+										->whereHas('users')
 			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}else{

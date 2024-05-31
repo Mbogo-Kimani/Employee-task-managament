@@ -78,6 +78,9 @@ class TaskReportController extends Controller
     public function show(Request $request, $id)
     {
         $report = TaskReport::where('task_id',$id)->get();
+        if(!$report){
+            return response()->json(['message' => 'No response found']);
+        }
         return response()->json($report);
     }
 
