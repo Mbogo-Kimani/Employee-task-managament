@@ -32,11 +32,6 @@
         <ul>
             <li><strong>Title:</strong> {{ $task->name }}.</li>
             <li><strong>Description:</strong> {{ $task->description }}.</li>
-            <li><strong>Client:</strong> {{ isset($client) ? $client->name : 'N/A' }}.</li>
-            <li><strong>Address:</strong> {{ isset($client) ? $client->address : 'N/A' }}.</li>
-            <li><strong>Building:</strong> {{ isset($client) ? $client->resident_building : 'N/A' }}.</li>
-            <li><strong>Hse No:</strong> {{ isset($client) ? $client->resident_hse_no : 'N/A' }}.</li>
-            <!-- Add other task details as needed -->
         </ul>
     </p>
         <p>Please review and take appropriate action. </p>

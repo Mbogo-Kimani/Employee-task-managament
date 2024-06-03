@@ -151,12 +151,8 @@ function UnassignedTasks() {
     setShowAssignUserModal(false);
   }
 
-  // function handleChange(e) {
-  //   console.log(e);
-  //   // setNewAssignment({...newAssignment, [e.target.name]: e.target.value})
-  // }
   function handleChange(values) {
-    setNewAssignment({...newAssignment,['user']: values.map((val) => {
+    setNewAssignment({...newAssignment,['users']: values.map((val) => {
       return val.value
     })})
   }
