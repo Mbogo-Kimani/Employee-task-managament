@@ -218,9 +218,9 @@ function AssignedTasks() {
                                     </th>
                                     <td className="px-2 py-4">
                                       {
-                                       task.users?.map((user) => {
+                                       task.users?.map((user, ind) => {
                                         return (
-                                          <p>{user.name}</p>
+                                          <p key={user.id || ind}>{user.name}</p>
                                         )
                                       })}
                                         {/* {task.user && task.user.name} */}

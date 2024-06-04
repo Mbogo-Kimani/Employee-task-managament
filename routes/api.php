@@ -69,7 +69,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::put('/user', [UserController::class, 'update']);
 	Route::delete('/user/{id}', [UserController::class, 'delete']);
   Route::post('/user', [UserController::class, 'store']);
-	Route::get('/user/{id}', [UserController::class, 'show']);
+	Route::get('/user/{user_id}', [UserController::class, 'show']);
 	Route::patch('/user', [UserController::class, 'updateUserDetails']);
   Route::post('/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
   Route::post('/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);

@@ -15,10 +15,11 @@ import DropDown from '../../Components/Common/DropDown';
 import TaskStatusColorCode from '../../Components/Common/TaskStatusColorCode';
 import TaskStatusIndicator from '../../Components/Common/TaskStatusIndicator';
 import i18next from '../../i18n'
-import { Link, router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import {AppContext} from '../../appContext'
 import SortElem from '../../Components/Task/SortElem'
 import clientStatus from '../../data/enums/clientStatus';
+import { handleFormChange } from '../../data/utils';
 
 
 function Tasks() {
@@ -29,8 +30,8 @@ function Tasks() {
     from: 1,
     last_page: 0,
     per_page: 10,
-    prev_page_url: null,
-    next_page_url: null,
+    prev_page_url: '',
+    next_page_url: '',
     to: 0,
     total: 0
   });
@@ -111,13 +112,6 @@ function Tasks() {
     setShowModal(false);
   }
 
-  function handleChange(e){
-    setEditTask({...editTask, [e.target.name]: e.target.value})
-  }
-
-  function handleFilters(e){
-    setFilters({...filters, [e.target.name]: e.target.value})
-  }
   function fetchTaskTypes() {
     requestHandler.get('/api/task_types', setTaskTypes);
   }
@@ -239,9 +233,9 @@ function Tasks() {
                       { (task.department && task.department.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
-                       {task.users?.map((user) => {
+                       {task.users?.map((user, ind) => {
                         return (
-                          <p>{user.name}</p>
+                          <p key={user.id || ind}>{user.name}</p>
                         )
                       })}
                     </td>
@@ -323,7 +317,7 @@ function Tasks() {
               className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               value={editTask.name}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required
             />
             <label
@@ -346,7 +340,7 @@ function Tasks() {
               name="task_type_id"
               id="taskType"
               value={editTask.task_type_id}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             >
@@ -380,7 +374,7 @@ function Tasks() {
               name="department_id"
               id="department"
               value={editTask.department_id}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required={true}
               className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             >
@@ -413,7 +407,7 @@ function Tasks() {
               name="admin_handler_id"
               id="admin_handler_id"
               value={editTask.admin_handler_id}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required={true}
               className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
             >
@@ -446,7 +440,7 @@ function Tasks() {
               name="department_handler_id"
               id="department_handler_id"
               value={editTask.department_handler_id}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required={true}
               className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
             >
@@ -479,7 +473,7 @@ function Tasks() {
               name="paid"
               id="paid"
               value={editTask.paid}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required={true}
               className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
             >
@@ -504,7 +498,7 @@ function Tasks() {
               className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               value={editTask.from_date}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required
             />
             <label
@@ -529,7 +523,7 @@ function Tasks() {
               className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               value={editTask.to_date}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               required
             />
             <label
@@ -557,7 +551,7 @@ function Tasks() {
               name="description"
               rows="4"
               value={editTask.description ?? ''}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e, editTask, setEditTask)}
               className="block p-2.5 w-full text-sm text-gray-900 outline-none bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
               {/* {
