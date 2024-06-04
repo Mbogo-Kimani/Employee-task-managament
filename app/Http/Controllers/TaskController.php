@@ -103,6 +103,7 @@ class TaskController extends Controller
 			'taskType' => 'required',
 			'fromDate' => 'required',
 			'toDate' => 'required',
+			'paid' => 'required',
 		]);
 		$newTask = Task::create([
 			'name' => $request->name,
@@ -111,14 +112,10 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
-      		'admin_handler_id' => $request->adminHandler,
-      		'department_handler_id' => $request->departmentHandler,
+      'admin_handler_id' => $request->adminHandler,
+      'department_handler_id' => $request->departmentHandler,
+			'paid' => $request->paid,
 		]);
-
-    if($request->client){
-      $newTask->client_id = intval($request->client);
-      $newTask->save();
-    }
 
     $currentDate = Carbon::now();
     $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
@@ -147,7 +144,7 @@ class TaskController extends Controller
 	public function allTasks() {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-			$tasks = Task::with(['department', 'user', 'taskType','client','equipments'])->paginate(20);
+			$tasks = Task::with(['department', 'user', 'taskType','equipments'])->paginate(20);
 			return response()->json($tasks);
 		}
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { navItemsDeterminer, pageData as defaultPageData } from '../../data/indexNav';
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import {taskStatusKeys as taskStatus} from '../../data/enums/taskStatus';
@@ -23,7 +22,6 @@ import clientStatus from '../../data/enums/clientStatus';
 
 
 function Tasks() {
-  const [navItems, setNavItems] = useState(defaultPageData);
   const [departments, setDepartments] = useState([]);
   const [taskTypes, setTaskTypes] = useState([]);
   const [tasks, setTasks] = useState({
@@ -45,6 +43,7 @@ function Tasks() {
     from_date: '',
     to_date: '',
     description: '',
+    paid: '',
   })
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
@@ -221,7 +220,7 @@ function Tasks() {
             </button> */}
         {/* </div> */}
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Task Name', 'Task Type', 'Department','Client', 'Handler', 'Status', 'Finished At', 'Action']}>
+          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Payment', 'Status', 'Finished At', 'Action']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
@@ -240,10 +239,10 @@ function Tasks() {
                       { (task.department && task.department.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
-                      { (task.client && task.client.name) || 'None Assigned' }
+                      { (task.user && task.user.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
-                      { (task.user && task.user.name) || 'None Assigned' }
+                      { clientStatus[task.paid] }
                     </td>
                     <td className={`px-2 py-4`}>
                       <TaskStatusIndicator status={task.status} />
@@ -467,6 +466,28 @@ function Tasks() {
               (errors.department_handler_id || errors.errors?.department_handler_id) && 
               <p className="text-red-500 my-2 py-1">
                 { displayErrors(errors, 'department_handler_id') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="paid"
+              id="paid"
+              value={editTask.paid}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
+            >
+              <option value="" className='text-gray-400'>{'Select Paid Status'}</option>
+              <option value={0}>Unpaid</option>
+              <option value={1}>Paid</option>
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.paid || errors.errors?.paid) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'paid') }
               </p>
             }  
           </div>
