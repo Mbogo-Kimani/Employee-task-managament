@@ -9,7 +9,7 @@ function Id({ user }) {
   const [currentTask, setCurrentTask] = useState({
     admin: {},
     department_head: {},
-    handler: {},
+    handler: [],
     task: {},
     client: {},
     can_edit: false,
@@ -86,18 +86,24 @@ function Id({ user }) {
       <div className='w-full'>
           <h1 className="font-bold text-xl text-lg text-center pl-3 mb-10">{currentTask.task?.name}</h1>
           <div className='flex float-right'>
-            <span className='mr-1'>{currentTask.task?.from_date ?? '2024/07/09'}</span> - <span className='ml-1'>{currentTask.task?.from_date ?? '2024/07/09'}</span>
+            <span className='mr-1'>{currentTask.task?.from_date ?? ''}</span> - <span className='ml-1'>{currentTask.task?.from_date ?? ''}</span>
           </div>
           <div className='mb-5 '>
             <h1 className='font-normal text-lg'>Handlers</h1>
             <ol className='border rounded w-[40vw]'>
-              <li className="font-normal text-lg pl-3">- {currentTask.handler?.name ?? 'Gathu'}</li>
+              {
+                (Array.isArray(currentTask.handler) ? currentTask.handler : []).map((taskHandler, ind) => {
+                  return (
+                    <li key={taskHandler.id || ind} className="font-normal text-lg pl-3">- {taskHandler.name ?? ''}</li>
+                  )
+                })
+              }
             </ol>
           </div>
 
           <h1 className='font-normal text-lg'>Description</h1>
           <div className='border h-[30vh] mb-5 rounded'>
-             <h1 className="font-normal text-lg pl-3">{currentTask.task?.description}</h1>
+             <h1 className="font-normal text-lg pl-3">{currentTask.task?.description || ''}</h1>
           </div>
       </div>
       <div>

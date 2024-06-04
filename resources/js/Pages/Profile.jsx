@@ -12,8 +12,8 @@ import {AppContext} from '../appContext'
 const Profile = () => {
     const [navItems, setNavItems] = useState(defaultPageData);
     const {userData} = useContext(AppContext)
-    const [name, setName] = useState(userData.name);
-    const [email, setEmail] = useState(userData.email);
+    const [name, setName] = useState(userData?.name);
+    const [email, setEmail] = useState(userData?.email);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors,setErrors] = useState();

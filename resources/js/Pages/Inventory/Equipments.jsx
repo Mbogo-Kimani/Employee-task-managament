@@ -15,6 +15,7 @@ import Icon from '../../Components/Common/Icon';
 import Modal from "../../Components/Common/Modal";
 import SelectComp from "../../Components/Common/SelectComp";
 import { TailSpin } from "react-loader-spinner";
+import { Link } from '@inertiajs/react';
 
 function Equipments() {
     const [navItems, setNavItems] = useState(defaultPageData);
@@ -112,17 +113,17 @@ function Equipments() {
     }
     return (
         <SideNav >
-            <div className='mb-4 w-full flex'>
+            <div className='mb-4 w-full flex items-center'>
                 <div className="border b-5 rounded border-black p-2">
                     <input type="file" id="inventory_file" placeholder="Import Sheet" onChange={(e) => handleInputFile(e)}/>
                     <button className="rounded bg-green-400 p-2 hover:bg-green-600 hover:text-gray-100" onClick={(e) => submitFile(e)}>Submit</button>
                 </div>
-                <a
+                <Link
                     className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
                     href='/new_equipment'
                 >
                     Add New Equipment
-                </a>
+                </Link>
             </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
