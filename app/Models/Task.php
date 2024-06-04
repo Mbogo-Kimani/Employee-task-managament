@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 class Task extends Model
 {
   use HasFactory;
-  protected $guarded = [];
 
   protected $fillable = [
 		'name',
@@ -32,6 +31,9 @@ class Task extends Model
     'received_by_department_member',
     'admin_handler_id',
     'department_handler_id',
+    'feedback_if_rejected',
+    'client_id',
+    'paid',
   ];
 
   public function users()
@@ -88,11 +90,8 @@ class Task extends Model
       return $query->where('department_id', (int)$type);
   }
 
-  public function clientStatus($query,$type){
-    $operator = $type ? '<' : '>';
-    $query->whereHas('client', function ($query) use($operator){
-      $query->whereRaw(DB::raw("DATE_ADD(payment_date, INTERVAL payment_plan MONTH) $operator NOW()"));
-    });
+  public function clientStatus($query, $type) {
+    return $query->where('paid', $type);
   }
 
   public function taskMessages() {
