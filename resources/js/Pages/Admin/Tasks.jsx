@@ -243,9 +243,11 @@ function Tasks() {
                       { (task.client && task.client.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
-                      {task.users?.map((user) => {
+                      {task.users?.map((user,index) => {
                         return (
-                          <p>{user.name}</p>
+                          <p
+                          key={user.id || index}
+                          >{user.name}</p>
                         )
                       })}
                       {/* { (task.users && task.users.name) || 'None Assigned' } */}

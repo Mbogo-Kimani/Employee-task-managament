@@ -131,7 +131,7 @@ Route::middleware('auth:sanctum')->group( function () {
    * Task Reports Controllers
    */
   Route::post('/task_reports', [TaskReportController::class, 'store']);
-  Route::get('/report/{id}', [TaskReportController::class, 'show']);
+  Route::get('/report/{task_id}', [TaskReportController::class, 'show']);
   Route::patch('/report', [TaskReportController::class, 'update']);
   
   /**
