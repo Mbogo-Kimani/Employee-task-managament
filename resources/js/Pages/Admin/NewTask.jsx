@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { pageData as defaultPageData, navItemsDeterminer } from '../../data/indexNav'
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import departmentsEnum from '../../data/enums/department';
@@ -10,10 +9,8 @@ import Modal from '../../Components/Common/Modal';
 import { toast } from 'react-toastify';
 
 function NewTask() {
-  const [navItems, setNavItems] = useState(defaultPageData);
   const [taskTypes, setTaskTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [clients, setClients] = useState([]);
   const [newTask, setNewTask] = useState({
     name: '',
     department: '',
@@ -23,6 +20,7 @@ function NewTask() {
     description: '',
     toDate: '',
     fromDate: '',
+    paid: '',
   });
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
@@ -37,7 +35,6 @@ function NewTask() {
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
-    fetchClients();
     fetchAdmins();
   }, []);
 
@@ -85,6 +82,7 @@ function NewTask() {
         description: '',
         toDate: '',
         fromDate: '',
+        paid: '',
       });
       setResponse(false);
       router.visit('/admin/tasks');
@@ -115,10 +113,6 @@ function NewTask() {
 
   function fetchDepartments() {
     requestHandler.get('/api/departments', setDepartments);
-  }
-
-  function fetchClients() {
-    requestHandler.get('/api/clients', setClients);
   }
 
   function handleChange(e) {
@@ -331,6 +325,28 @@ function NewTask() {
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="paid"
+              id="paid"
+              value={newTask.paid}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>Select Client Payment Status</option>
+              <option value={0}>Unpaid</option>
+              <option value={1}>Paid</option>
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.paid || errors.errors?.paid) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'paid') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
               name="fromDate"
@@ -379,34 +395,7 @@ function NewTask() {
               </p>
             }  
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <SelectComp
-              name="client"
-              id="client"
-              value={newTask.client}
-              onChange={(e) => handleChange(e)}
-              required={true}
-              className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            >
-              <option value="" className='text-gray-900 dark:text-gray-300'>Select Client</option>
-                      {
-                        (Array.isArray(clients.data) ? clients.data : []).map((individual, index) => {
-                          return (
-                            <option key={individual.id || index} value={individual.id}>
-                              {individual.name}
-                            </option>
-                          )
-                        })
-                      }
-            </SelectComp>
-            <hr className="w-full border-[1px] border-gray-300" />
-            {
-              (errors.department || errors.errors?.department) && 
-              <p className="text-red-500 my-2 py-1">
-                { displayErrors(errors, 'department') }
-              </p>
-            }  
-            </div>
+
           <div className="relative z-0 w-full mb-5 group">
             <label
               htmlFor="description" 
