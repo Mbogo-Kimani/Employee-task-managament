@@ -35,7 +35,7 @@ function AssignedTasks() {
         total: 0,
     });
     const [task, setTask] = useState({});
-    const [currentTask, setCurrentTask] = useState(null);
+    const [showUnassignModal, setShowUnassignModal] = useState(false);
     const [errors, setErrors] = useState({});
     const [users, setUsers] = useState([]);
     const [response, setResponse] = useState(false);
@@ -102,10 +102,6 @@ function AssignedTasks() {
         }
     }
 
-    function closeUserAssignModal() {
-        setShowAssignUserModal(false);
-    }
-
     function getTaskReport(id) {
         requestHandler.get(`/api/report/${id}`, setReport);
         setShowModal(true);
@@ -130,6 +126,11 @@ function AssignedTasks() {
 			setShowModal(false);
 			setShowTaskFeedback(false);
 		}
+
+    function closeUnassignModal(){
+      setTask({});
+      setShowUnassignModal(false);
+    }
 
     function updateReport(e, id, taskId){
 			e.preventDefault();
@@ -163,8 +164,19 @@ function AssignedTasks() {
         requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
     }
 
-    function unassignTask(id){
-        requestHandler.patch(`/api/tasks/${id}`,{}, setResponse, setErrors)
+    function unassignTaskModal(task){
+        setTask(task)
+        setShowUnassignModal(true)
+    }
+
+    function unassignUser(id){
+      const data = {
+        userId: id,
+        taskId: task.id
+      }
+        requestHandler.patch(`/api/tasks/${id}`,data, setResponse, setErrors)
+        const updatedUsers = task.users.filter(user => user.id !== id);
+        setTask({...task,['users']: updatedUsers})
     }
 
 
@@ -205,7 +217,13 @@ function AssignedTasks() {
                                             ""}
                                     </th>
                                     <td className="px-2 py-4">
-                                        {task.user && task.user.name}
+                                      {
+                                       task.users?.map((user) => {
+                                        return (
+                                          <p>{user.name}</p>
+                                        )
+                                      })}
+                                        {/* {task.user && task.user.name} */}
                                     </td>
                                     <td className="px-2 py-4">
                                         <TaskStatusIndicator status={task.status} />
@@ -234,7 +252,7 @@ function AssignedTasks() {
                                               className={`${
                                               active ? 'bg-green-200 text-black' : 'text-gray-900'
                                               } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                                              onClick={() => unassignTask(task.id)}
+                                              onClick={() => unassignTaskModal(task)}
                                             >
                                               <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
                                               <span className='block py-3 px-2'>Unassign</span>   
@@ -382,7 +400,7 @@ function AssignedTasks() {
                 <Modal
                 show={showFeedbackModal}
                 onClose={() => setShowFeedbackModal(false)}
-              >
+                >
                 <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
                   <div className="bg-white rounded-lg shadow dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">
                     <div className="flex items-center justify-between md:p-5 border-b rounded-t dark:border-gray-600 w-full">
@@ -401,38 +419,48 @@ function AssignedTasks() {
                       </button>
                     </div>
                     <div className="p-1 md:p-5 sm:p-3 w-full">
-                      <form className="space-y-4 sm:p-8" action="#">
-                        <div>
-                          <label
-                            htmlFor="feedback-content"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                          >
-                            Feedback
-                          </label>
-                          <textarea
-                            id="feedback-content"
-                            rows="4"
-                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
-                            placeholder="Write your feedback here..."
-                            name='content'
-                            onChange={handleChange}
-                            value={report.content}
-                          />
+                      <ul>
+                        {
+
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
+                <Modal
+                show={showUnassignModal}
+                onClose={() => closeUnassignModal}
+                >
+                <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
+                  <div className="bg-white rounded-lg shadow dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">
+                    <div className="flex items-center justify-between md:p-5  dark:border-gray-600 w-full">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        Unassign users
+                      </h3>
+                      <button
+                        type="button"
+                        className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={() => closeUnassignModal()}
+                      >
+                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span className="sr-only">Close modal</span>
+                      </button>
+                    </div>
+                    <div className="p-1 md:p-5 sm:p-3 w-full">
+                      {
+                         <ul>
                           {
-                            (errors.content || errors.errors?.content) &&
-                            <p className="text-red-500 my-2 py-2">
-                              { displayErrors('content') }
-                            </p>
+                            task?.users?.map((user) => {
+                              return (
+                                <li key={user.id} className="border-b rounded-t mb-5 flex justify-between">{user.name}<button className="rounded bg-gray-200 p-2 mb-2 hover:bg-gray-300" onClick={() => unassignUser(user.id)}>Unassign</button></li>
+                              )
+                            })
                           }
-                        </div>
-                        <button
-                          type="submit"
-                          className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800"
-                          onClick={(e) => submitFeedBack(e)}
-                        >
-                          Submit
-                        </button>
-                      </form>
+                        </ul>
+                      }
                     </div>
                   </div>
                 </div>

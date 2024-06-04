@@ -21,7 +21,12 @@ class ReportResourceCollection extends ResourceCollection
                 'title' => $task->taskReport->title,
                 'content' => $task->taskReport->content,
                 'date' => $task->taskReport->updated_at->format('Y-m-d H:i:s'),
-                'task_assignee' => $task->user->name,
+                'task_assignee' => $task->users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name
+                    ];
+                }),  
                 'task_name' => $task->name,
                 'task_type' => $task->taskType->name,
                 'department' => $task->department->name,

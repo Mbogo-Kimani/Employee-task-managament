@@ -29,7 +29,12 @@ class AssignedEquipmentResource extends JsonResource
             'model' => $this->equipment->equipmentType->spec_model,
             'taskId' => $this->task->id,
             'taskName' => $this->task->name,
-            'user' => $this->task->user->name,
+            'users' =>  $this->task->users->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name
+                ];
+            }),    
             'department' => $this->task->department->name,
             'is_assigned' => $this->equipment->pivot->confirm_assigned,
             'assigned_date' => $this->equipment->pivot->assigned_date,

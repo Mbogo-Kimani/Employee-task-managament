@@ -40,7 +40,7 @@ class TaskMessageController extends Controller
       $task = Task::find($request->taskId);
       $user = auth()->user();
 			if ($task && $user) {
-				if ($task->admin_handler_id == $user->id || $task->department_handler_id == $user->id || $task->user_id == $user->id) {
+				if ($task->admin_handler_id == $user->id || $task->department_handler_id == $user->id || $task->users()->where('user_id', $user->id)->exists()) {
 					$department = $task->department;
 					$new_message = TaskMessage::create([
 						'content' => $request->message,

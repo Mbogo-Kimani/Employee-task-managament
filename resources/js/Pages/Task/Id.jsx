@@ -84,37 +84,32 @@ function Id({ user }) {
   return (
     <SideNav>
       <div className='w-full'>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>Name:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.task?.name}</h1>
+          <h1 className="font-bold text-xl text-lg text-center pl-3 mb-10">{currentTask.task?.name}</h1>
+          <div className='flex float-right'>
+            <span className='mr-1'>{currentTask.task?.from_date ?? '2024/07/09'}</span> - <span className='ml-1'>{currentTask.task?.from_date ?? '2024/07/09'}</span>
+          </div>
+          <div className='mb-5 '>
+            <h1 className='font-normal text-lg'>Handlers</h1>
+            <ol className='border rounded w-[40vw]'>
+              <li className="font-normal text-lg pl-3">- {currentTask.handler?.name ?? 'Gathu'}</li>
+            </ol>
+          </div>
+
+          <h1 className='font-normal text-lg'>Description</h1>
+          <div className='border h-[30vh] mb-5 rounded'>
+             <h1 className="font-normal text-lg pl-3">{currentTask.task?.description}</h1>
+          </div>
+      </div>
+      <div>
+       <h1 className='font-normal text-lg underline'>Reviewers</h1>
+        <div className='flex'>
+            <h1 className='italic text-lg'>Admin:</h1>
+            <h1 className="font-normal text-lg text-center pl-3">{currentTask.admin?.name ?? 'N/A'}</h1>
         </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>Description:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.task?.description}</h1>
-        </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>Handler:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.handler?.name}</h1>
-        </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>Admin:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.admin?.name}</h1>
-        </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>Department Head:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.department_head?.name}</h1>
-        </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>Client:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.client?.name}</h1>
-        </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>From:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.task?.from_date}</h1>
-        </div>
-        <div className="flex justify-start items-center">
-          <h1 className='font-bold text-lg'>To:</h1>
-          <h1 className="font-normal text-lg text-center pl-3">{currentTask.task?.to_date}</h1>
+        <div className='flex'>
+            <h1 className='italic text-lg'>Department Head:</h1>
+            <h1 className="font-normal text-lg text-center pl-3">{currentTask.department_head?.name ?? 'N/A'}</h1>
+
         </div>
       </div>
 

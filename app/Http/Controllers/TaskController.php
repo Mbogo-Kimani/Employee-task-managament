@@ -49,10 +49,11 @@ class TaskController extends Controller
 																	->get()[0];
 			}
 
-			if ($task->user_id) {
-				$handler = User::where('id', $task->user_id)
-												->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
-												->get()[0];
+			if ($task->users) {
+				// $handler = User::where('id', $task->user_id)
+				// 								->select('name', 'department_id', 'role', 'department_id', 'clearance_level', 'id')
+				// 								->get()[0];
+				$handlers = $task->users;
 			}
 
 			if ($task->client_id) {
@@ -63,13 +64,14 @@ class TaskController extends Controller
 			$can_edit = (
 				$task->admin_handler_id == $user->id ||
 				$task->department_handler_id == $user->id ||
-				$task->user_id == $user->id
+				// $task->user_id == $user->id
+				$task->users()->where('user_id', $user->id)->exists()
 			);
 
 			return response()->json([
 				'admin' => $admin_handler,
 				'department_head' => $department_handler,
-				'handler' => $handler,
+				'handler' => $handlers,
 				'task' => $task,
 				'client' => $client,
 				'can_edit' => $can_edit,
@@ -144,6 +146,7 @@ class TaskController extends Controller
 	public function allTasks() {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
+
 			$tasks = Task::with(['department', 'user', 'taskType','equipments'])->paginate(20);
 			return response()->json($tasks);
 		}
@@ -192,7 +195,7 @@ class TaskController extends Controller
 
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
-										->whereNull('user_id')
+										->whereDoesntHave('users')
 										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head')
 										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name'])
 										->paginate(20);
@@ -205,8 +208,8 @@ class TaskController extends Controller
 
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
-										->whereNotNull('user_id')
-										->with(['taskType','user','equipments'])
+										->whereHas('users')
+										->with(['taskType','users','equipments'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -214,39 +217,48 @@ class TaskController extends Controller
 
 	public function update(Request $request) {
 		$request->validate([
-			'user' => 'required',
+			'users' => 'required',
 			'task' => 'required',
 		]);
 
 		$user = auth()->user();
-        
 
 		if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$task = Task::find($request->task);
+
             
 			if ($task) {
-				$task->user_id = $request->user;
-				$task->save();
-                $content = View::make('emails.task_assigned', ['task' => $task, 'user' => $task->user, 'client' => $task->client])->render();
-                $text = (new Transformer)
-                ->keepLinks() 
-                ->keepNewLines()
-                ->toText($content);
-                $mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $task->user, 'client' => $task->client]);
-                $this->sendMessage($text,$task->user->phone_number);
-                $this->sendMail($task->user,$mail);
+				$task->users()->syncWithoutDetaching($request->users);
+
+				foreach($task->users as $user){
+					$content = View::make('emails.task_assigned', ['task' => $task, 'user' => $user])->render();
+					$text = (new Transformer)
+					->keepLinks() 
+					->keepNewLines()
+					->toText($content);
+					$mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $user]);
+					$this->sendMessage($text,$user->phone_number);
+					$this->sendMail($user,$mail);
+				}
+                
 				return response()->json(['message' => 'Task assigning successful']);
 			}
 		}
 	}
 
   public function unassignTask(Request $request, $id) {
+	$request->validate([
+		'userId' => 'required',
+		'taskId' => 'required'
+	]);
+
     $user = auth()->user();
 
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
-      $task = Task::find($id);
+      $task = Task::find($request->taskId);
 			
       if ($task) {
+				$task->users()->detach($request->userId);
 				$task->user_id = NULL;
 				$task->save();
 
@@ -292,21 +304,20 @@ class TaskController extends Controller
 	if($request->query('p') === "unassigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
 										->where('department_id', $user->department_id)
-										->whereNull('user_id')
-			 							->with(['department', 'user', 'taskType','client'])
+										->whereDoesntHave('users')
+			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}else if($request->query('p') === "assigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
 										->where('department_id', $user->department_id)
-										->whereNotNull('user_id')
-			 							->with(['department', 'user', 'taskType','client'])
+										->whereHas('users')
+			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}else{
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
-			 							->with(['department', 'user', 'taskType','client'])
+			 							->with(['department', 'users', 'taskType','client'])
 										->paginate(20);
 	}
-       
        return response()->json($tasks);
   }
 	public function markTaskReceivedByHOD (Request $request) {

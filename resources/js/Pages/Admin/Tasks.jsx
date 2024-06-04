@@ -239,7 +239,11 @@ function Tasks() {
                       { (task.department && task.department.name) || 'None Assigned' }
                     </td>
                     <td className="px-2 py-4">
-                      { (task.user && task.user.name) || 'None Assigned' }
+                       {task.users?.map((user) => {
+                        return (
+                          <p>{user.name}</p>
+                        )
+                      })}
                     </td>
                     <td className="px-2 py-4">
                       { clientStatus[task.paid] }

@@ -78,6 +78,9 @@ class TaskReportController extends Controller
     public function show(Request $request, $id)
     {
         $report = TaskReport::where('task_id',$id)->get();
+        if(!$report){
+            return response()->json(['message' => 'No response found']);
+        }
         return response()->json($report);
     }
 
@@ -155,7 +158,7 @@ class TaskReportController extends Controller
     {
         $report = TaskReport::find($id);
         if (!$report) {
-            // TODO multilingualization
+            // TODO: multilingualization
             throw new NotFoundHttpException('Not found');
         }
         $report->delete();
@@ -163,10 +166,6 @@ class TaskReportController extends Controller
 
 		public function newReportPage()
 		{
-			$user = auth()->user();
-
-			if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
-				return Inertia::render('Reports/NewReport', compact('user'));
-			}
+			return Inertia::render('Reports/NewReport');
 		}
 }

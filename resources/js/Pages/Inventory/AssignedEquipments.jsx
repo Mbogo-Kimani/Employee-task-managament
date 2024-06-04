@@ -124,7 +124,14 @@ function AssignedEquipments({ user }) {
                                         {equipment.taskName}
                                     </th>
                                     <td className="px-2 py-4">
-                                        {equipment.user}
+                                        {
+                                          equipment.users.map((user) => {
+                                            return (
+                                              <p key={user.id}
+                                              >{user.name}</p>
+                                            )
+                                          })
+                                        }
                                     </td>
                                     <td className="px-2 py-4">
                                         {equipment.department}

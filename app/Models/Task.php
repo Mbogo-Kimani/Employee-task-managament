@@ -36,9 +36,9 @@ class Task extends Model
     'paid',
   ];
 
-  public function user()
+  public function users()
   {
-    return $this->belongsTo(User::class);
+    return $this->belongsToMany(User::class);
   }
   public function client()
   {

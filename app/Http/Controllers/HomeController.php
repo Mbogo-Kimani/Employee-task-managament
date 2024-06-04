@@ -37,7 +37,7 @@ class HomeController extends Controller
                     ->count();
 
       $tasksNotAssigned = Task::where('department_id', $user->department_id)
-                              ->whereNull('user_id')
+                              ->whereDoesntHave('users')
                               ->count();
 
 			return Inertia::render('Dashboard', compact('user', 'totalTasks', 'tasksNotAssigned'));
