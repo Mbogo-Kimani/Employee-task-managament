@@ -1,6 +1,5 @@
 export default {
-    MONTHLY: 'monthly',
-    QUARTERLY: 'quarterly',
-    ANNUALLY: 'annually',
+  MONTHLY: 'monthly',
+  QUARTERLY: 'quarterly',
+  ANNUALLY: 'annually',
 };
-  

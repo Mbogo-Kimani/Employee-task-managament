@@ -1,4 +1,4 @@
 export default {
-    MPESA: 'MPESA',
-    VISA: 'VISA'
-}
+  MPESA: 'MPESA',
+  VISA: 'VISA',
+};
