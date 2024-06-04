@@ -1,0 +1,3774 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/user
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '59'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/token
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '"Token exposed"'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '58'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/login
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: senger.anahi@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      password:
+        name: password
+        description: 'Must be at least 6 characters.'
+        required: true
+        example: "O/qo.#l'c"
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      email: senger.anahi@example.com
+      password: "O/qo.#l'c"
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/all_tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[{"id":18,"name":"Installation on block 131A","from_date":null,"to_date":null,"status":3,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-04-23","task_type_id":1,"created_at":"2024-04-17T12:53:28.000000Z","updated_at":"2024-05-16T07:34:42.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":19,"name":"Installation on block 132A","from_date":"2024-04-18","to_date":"2024-04-19","status":3,"description":"Perform installation on the aforementioned task","user_id":6,"department_id":3,"task_finished_at":"2024-04-23","task_type_id":1,"created_at":"2024-04-18T09:24:21.000000Z","updated_at":"2024-05-16T07:34:47.000000Z","received_by_department_head":0,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":6,"name":"Miracle Champlin","email":"barton.eveline@example.org","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":20,"name":"Installation on block 133A","from_date":null,"to_date":null,"status":3,"description":"Installations should be done promptly as client has already paid","user_id":5,"department_id":3,"task_finished_at":"2024-05-16","task_type_id":1,"created_at":"2024-04-19T09:54:58.000000Z","updated_at":"2024-05-16T07:35:11.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":21,"name":"Installation on block 133A","from_date":null,"to_date":null,"status":1,"description":"timely installations","user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-04-22T07:58:24.000000Z","updated_at":"2024-05-13T07:48:00.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":23,"name":"Installation on block 132B","from_date":"2024-04-28","to_date":"2024-04-29","status":2,"description":null,"user_id":6,"department_id":3,"task_finished_at":"2024-04-27","task_type_id":1,"created_at":"2024-04-27T07:06:53.000000Z","updated_at":"2024-04-27T07:15:01.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":"This has not been properly done","client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":6,"name":"Miracle Champlin","email":"barton.eveline@example.org","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":24,"name":"Installation on block 13A","from_date":"2024-05-08","to_date":"2024-05-09","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":1,"created_at":"2024-05-06T04:57:04.000000Z","updated_at":"2024-05-06T07:32:31.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":null,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":null},{"id":25,"name":"Installation on block 13B","from_date":"2024-05-09","to_date":"2024-05-10","status":2,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":1,"created_at":"2024-05-06T05:02:44.000000Z","updated_at":"2024-05-06T07:32:06.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":null,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":null},{"id":26,"name":"Maintenance on block 131A","from_date":"2024-05-10","to_date":"2024-05-13","status":2,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":2,"created_at":"2024-05-06T05:04:32.000000Z","updated_at":"2024-05-06T07:31:41.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":null,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":2,"department_id":3,"name":"Service and Maintenance","description":"Servicing and maintenance of networking equipment","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":null},{"id":27,"name":"Installation on block 132C","from_date":"2024-05-15","to_date":"2024-05-22","status":5,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-04-16","task_type_id":1,"created_at":"2024-04-06T05:08:58.000000Z","updated_at":"2024-04-06T07:31:14.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":28,"name":"Installation on block 14A","from_date":"2024-05-07","to_date":"2024-05-10","status":2,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":1,"created_at":"2024-05-06T06:44:11.000000Z","updated_at":"2024-05-06T07:30:43.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":30,"name":"Maintenance on Fedha towers","from_date":"2024-05-07","to_date":"2024-05-09","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":2,"created_at":"2024-05-06T08:07:16.000000Z","updated_at":"2024-05-06T09:08:19.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":2,"department_id":3,"name":"Service and Maintenance","description":"Servicing and maintenance of networking equipment","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":3,"name":"Mr. Gupta","email":"guptake@mail.com","phone_number":"+254726945514","address":"Nairobi, Westlands","resident_building":"GTC","resident_hse_no":"C28","payment_date":"2024-04-01","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-05T05:36:59.000000Z","updated_at":"2024-05-05T05:36:59.000000Z"}},{"id":31,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:53:11.000000Z","updated_at":"2024-05-07T08:53:11.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":4,"name":"Kevin","email":"kevin@mail.com","phone_number":"+254726945514","address":"Nairobi, Parklands","resident_building":"Eagle Estate","resident_hse_no":"23","payment_date":"2024-05-07","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-06T00:27:11.000000Z","updated_at":"2024-05-06T00:27:11.000000Z"}},{"id":32,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:53:58.000000Z","updated_at":"2024-05-07T08:53:58.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":4,"name":"Kevin","email":"kevin@mail.com","phone_number":"+254726945514","address":"Nairobi, Parklands","resident_building":"Eagle Estate","resident_hse_no":"23","payment_date":"2024-05-07","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-06T00:27:11.000000Z","updated_at":"2024-05-06T00:27:11.000000Z"}},{"id":33,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:54:35.000000Z","updated_at":"2024-05-07T08:54:35.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":4,"name":"Kevin","email":"kevin@mail.com","phone_number":"+254726945514","address":"Nairobi, Parklands","resident_building":"Eagle Estate","resident_hse_no":"23","payment_date":"2024-05-07","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-06T00:27:11.000000Z","updated_at":"2024-05-06T00:27:11.000000Z"}},{"id":34,"name":"Installation on block 16","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:24:21.000000Z","updated_at":"2024-05-07T09:24:21.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":35,"name":"Installation on block 17","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:31:26.000000Z","updated_at":"2024-05-07T12:41:54.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":36,"name":"Installation on block 18","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:39:20.000000Z","updated_at":"2024-05-13T07:24:01.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"}},{"id":37,"name":"Installation on block 19","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:59:07.000000Z","updated_at":"2024-05-13T07:29:11.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":3,"name":"Mr. Gupta","email":"guptake@mail.com","phone_number":"+254726945514","address":"Nairobi, Westlands","resident_building":"GTC","resident_hse_no":"C28","payment_date":"2024-04-01","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-05T05:36:59.000000Z","updated_at":"2024-05-05T05:36:59.000000Z"}},{"id":38,"name":"Installation on block 20","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T10:07:46.000000Z","updated_at":"2024-05-13T07:45:41.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":3,"name":"Mr. Gupta","email":"guptake@mail.com","phone_number":"+254726945514","address":"Nairobi, Westlands","resident_building":"GTC","resident_hse_no":"C28","payment_date":"2024-04-01","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-05T05:36:59.000000Z","updated_at":"2024-05-05T05:36:59.000000Z"}},{"id":39,"name":"Installation on block 21","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":6,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T11:23:07.000000Z","updated_at":"2024-05-07T11:23:40.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null,"department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"user":{"id":6,"name":"Miracle Champlin","email":"barton.eveline@example.org","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},"task_type":{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},"client":{"id":3,"name":"Mr. Gupta","email":"guptake@mail.com","phone_number":"+254726945514","address":"Nairobi, Westlands","resident_building":"GTC","resident_hse_no":"C28","payment_date":"2024-04-01","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-05T05:36:59.000000Z","updated_at":"2024-05-05T05:36:59.000000Z"}}],"first_page_url":"http:\/\/localhost:8000\/api\/all_tasks?page=1","from":1,"last_page":2,"last_page_url":"http:\/\/localhost:8000\/api\/all_tasks?page=2","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/all_tasks?page=1","label":"1","active":true},{"url":"http:\/\/localhost:8000\/api\/all_tasks?page=2","label":"2","active":false},{"url":"http:\/\/localhost:8000\/api\/all_tasks?page=2","label":"Next &raquo;","active":false}],"next_page_url":"http:\/\/localhost:8000\/api\/all_tasks?page=2","path":"http:\/\/localhost:8000\/api\/all_tasks","per_page":20,"prev_page_url":null,"to":20,"total":22}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '57'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/filter/tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: 'api/tasks/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the task.'
+        required: true
+        example: 18
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 18
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[{"id":31,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:53:11.000000Z","updated_at":"2024-05-07T08:53:11.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null},{"id":32,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:53:58.000000Z","updated_at":"2024-05-07T08:53:58.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null},{"id":33,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:54:35.000000Z","updated_at":"2024-05-07T08:54:35.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null},{"id":34,"name":"Installation on block 16","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:24:21.000000Z","updated_at":"2024-05-07T09:24:21.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null}],"first_page_url":"http:\/\/localhost:8000\/api\/tasks?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/tasks?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/tasks?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/tasks","per_page":20,"prev_page_url":null,"to":4,"total":4}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '56'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/pending_tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '4'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '55'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/unassigned_tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[],"first_page_url":"http:\/\/localhost:8000\/api\/unassigned_tasks?page=1","from":null,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/unassigned_tasks?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/unassigned_tasks?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/unassigned_tasks","per_page":20,"prev_page_url":null,"to":null,"total":0}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '54'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/assigned_tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[],"first_page_url":"http:\/\/localhost:8000\/api\/assigned_tasks?page=1","from":null,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/assigned_tasks?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/assigned_tasks?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/assigned_tasks","per_page":20,"prev_page_url":null,"to":null,"total":0}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '53'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/department_users
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"name":"Angela Ledner","id":1},{"name":"Jarret Bednar","id":2}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '52'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: api/tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      user:
+        name: user
+        description: ''
+        required: true
+        example: voluptatem
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      task:
+        name: task
+        description: ''
+        required: true
+        example: itaque
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      user: voluptatem
+      task: itaque
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/task_types
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"id":1,"department_id":3,"name":"Installations","description":"Everything to do with installations","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},{"id":2,"department_id":3,"name":"Service and Maintenance","description":"Servicing and maintenance of networking equipment","created_at":"2024-04-17T10:58:35.000000Z","updated_at":"2024-04-17T10:58:35.000000Z"},{"id":3,"department_id":6,"name":"Tickets","description":"Attending to particular tickets raised by clients","created_at":"2024-04-27T06:36:16.000000Z","updated_at":"2024-04-27T06:36:16.000000Z"}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '51'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/task_types
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a newly created resource in storage.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      task_type_name:
+        name: task_type_name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: rlti
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      task_type_description:
+        name: task_type_description
+        description: 'Must not be greater than 500 characters.'
+        required: false
+        example: rvpfhhhmisgesikstwrdtzm
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      task_type_department:
+        name: task_type_department
+        description: ''
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      task_type_name: rlti
+      task_type_description: rvpfhhhmisgesikstwrdtzm
+      task_type_department: et
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/task/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the task.'
+        required: true
+        example: 18
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 18
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: api/task
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: 'api/task/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the task.'
+        required: true
+        example: 18
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 18
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      feedback:
+        name: feedback
+        description: ''
+        required: true
+        example: debitis
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      feedback: debitis
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/tasks/{user_id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_id:
+        name: user_id
+        description: 'The ID of the user.'
+        required: true
+        example: 18
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      user_id: 18
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[],"first_page_url":"http:\/\/localhost:8000\/api\/tasks\/18?page=1","from":null,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/tasks\/18?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/tasks\/18?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/tasks\/18","per_page":20,"prev_page_url":null,"to":null,"total":0}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '50'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: kbtbgxgkycxkgcwtjnk
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      department:
+        name: department
+        description: ''
+        required: true
+        example: harum
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      taskType:
+        name: taskType
+        description: ''
+        required: true
+        example: veniam
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      fromDate:
+        name: fromDate
+        description: ''
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      toDate:
+        name: toDate
+        description: ''
+        required: true
+        example: quia
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      name: kbtbgxgkycxkgcwtjnk
+      department: harum
+      taskType: veniam
+      fromDate: est
+      toDate: quia
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/employees
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},{"id":2,"name":"Jarret Bednar","email":"aharber@example.org","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":2,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-05-16T07:44:31.000000Z","phone_number":"","verification_token":null},{"id":3,"name":"Mrs. Heath Ward","email":"ondricka.cleve@example.com","role":2,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":2,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},{"id":4,"name":"Aniya Mills","email":"aglae.pagac@example.org","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":3,"clearance_level":2,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-05-16T07:38:46.000000Z","phone_number":"","verification_token":null},{"id":5,"name":"Alexandro Bahringer II","email":"mkub@example.co","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"+254726945514","verification_token":null},{"id":6,"name":"Miracle Champlin","email":"barton.eveline@example.org","role":3,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":3,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":7,"name":"Rhea Nienow","email":"cjohnston@example.net","role":4,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":4,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":8,"name":"Abigale Kertzmann PhD","email":"lillian76@example.net","role":4,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":4,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":9,"name":"Linc Frits","email":"slang@example.com","role":5,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":5,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-29T08:40:27.000000Z","phone_number":"","verification_token":null},{"id":10,"name":"Abbigail Schmitt","email":"dblock@example.com","role":5,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":5,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":11,"name":"Khalid Purdy III","email":"wwilderman@example.org","role":6,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":6,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":12,"name":"Kavon O''Reilly","email":"janice.botsford@example.org","role":6,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":6,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":13,"name":"Dr. Pierce Nitzsche MD","email":"willa.west@example.com","role":7,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":7,"clearance_level":1,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":14,"name":"Kattie Mraz","email":"polly.johnston@example.net","role":7,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:30.000000Z","department_id":7,"clearance_level":2,"created_at":"2024-04-12T12:10:30.000000Z","updated_at":"2024-04-12T12:10:30.000000Z","phone_number":"","verification_token":null},{"id":15,"name":"Michael","email":"mickeymuragz@gmail.com","role":5,"image":null,"email_verified_at":null,"department_id":5,"clearance_level":2,"created_at":"2024-04-16T12:20:38.000000Z","updated_at":"2024-04-16T12:20:38.000000Z","phone_number":"","verification_token":null},{"id":16,"name":"Mike","email":"mickeymurage@gmail.com","role":5,"image":null,"email_verified_at":null,"department_id":5,"clearance_level":2,"created_at":"2024-04-16T14:32:05.000000Z","updated_at":"2024-04-16T14:32:05.000000Z","phone_number":"","verification_token":null},{"id":18,"name":"Jerry","email":"fred@meteor.com","role":3,"image":null,"email_verified_at":null,"department_id":3,"clearance_level":2,"created_at":"2024-05-08T09:46:40.000000Z","updated_at":"2024-05-08T09:46:40.000000Z","phone_number":"+254726945514","verification_token":null},{"id":20,"name":"Peter Kenneth","email":"pete@mail.com","role":3,"image":null,"email_verified_at":null,"department_id":3,"clearance_level":2,"created_at":"2024-05-08T09:50:42.000000Z","updated_at":"2024-05-16T07:20:45.000000Z","phone_number":"+254726945514","verification_token":null},{"id":34,"name":"James","email":"james@mail.com","role":2,"image":null,"email_verified_at":null,"department_id":2,"clearance_level":2,"created_at":"2024-05-13T08:13:17.000000Z","updated_at":"2024-05-16T07:20:03.000000Z","phone_number":"+254726945514","verification_token":"cd69ab3e0895cc993789f445"},{"id":35,"name":"James Karanja","email":"jameas@mail.com","role":4,"image":null,"email_verified_at":null,"department_id":4,"clearance_level":2,"created_at":"2024-05-13T08:14:36.000000Z","updated_at":"2024-05-16T07:23:40.000000Z","phone_number":"+254726945514","verification_token":"54ef2f0ac28b8bb6e150d401"}],"first_page_url":"http:\/\/localhost:8000\/api\/employees?page=1","from":1,"last_page":2,"last_page_url":"http:\/\/localhost:8000\/api\/employees?page=2","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/employees?page=1","label":"1","active":true},{"url":"http:\/\/localhost:8000\/api\/employees?page=2","label":"2","active":false},{"url":"http:\/\/localhost:8000\/api\/employees?page=2","label":"Next &raquo;","active":false}],"next_page_url":"http:\/\/localhost:8000\/api\/employees?page=2","path":"http:\/\/localhost:8000\/api\/employees","per_page":20,"prev_page_url":null,"to":20,"total":21}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '49'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: api/user
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        required: true
+        example: mccullough.gaylord@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: ageez
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      password:
+        name: password
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      email: mccullough.gaylord@example.net
+      name: ageez
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/user/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/user
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      clearance_level:
+        name: clearance_level
+        description: ''
+        required: true
+        example: occaecati
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      email:
+        name: email
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: notdeazhlgbzfkmmwbceaibmz
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      password:
+        name: password
+        description: ''
+        required: true
+        example: autem
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      role:
+        name: role
+        description: ''
+        required: true
+        example: nihil
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      phone_number:
+        name: phone_number
+        description: ''
+        required: true
+        example: officia
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      clearance_level: occaecati
+      name: notdeazhlgbzfkmmwbceaibmz
+      password: autem
+      role: nihil
+      phone_number: officia
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/user/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '48'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: api/user
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      clearance_level:
+        name: clearance_level
+        description: ''
+        required: true
+        example: nihil
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        required: true
+        example: allie.little@example.org
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: ayxhnagc
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      role:
+        name: role
+        description: ''
+        required: true
+        example: ab
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      clearance_level: nihil
+      email: allie.little@example.org
+      name: ayxhnagc
+      role: ab
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/received_by_department_head
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/received_by_department_member
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/clients
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[{"id":1,"name":"Gathu","email":"jery@mail.com","phone_number":"+254726945514","address":"Nairobi, Kilmani, Wood Avenue","resident_building":"Golden Park","resident_hse_no":"B19","payment_date":"2024-04-23","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-04-22T12:55:49.000000Z","updated_at":"2024-04-22T12:55:49.000000Z"},{"id":3,"name":"Mr. Gupta","email":"guptake@mail.com","phone_number":"+254726945514","address":"Nairobi, Westlands","resident_building":"GTC","resident_hse_no":"C28","payment_date":"2024-04-01","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-05T05:36:59.000000Z","updated_at":"2024-05-05T05:36:59.000000Z"},{"id":4,"name":"Kevin","email":"kevin@mail.com","phone_number":"+254726945514","address":"Nairobi, Parklands","resident_building":"Eagle Estate","resident_hse_no":"23","payment_date":"2024-05-07","payment_method":"MPESA","payment_plan":"monthly","created_at":"2024-05-06T00:27:11.000000Z","updated_at":"2024-05-06T00:27:11.000000Z"},{"id":6,"name":"Michael","email":"mike@mail.com","phone_number":"+254726945514","address":"Nairobi, Parklands","resident_building":"Alina Harbour","resident_hse_no":"C34","payment_date":"2024-05-17","payment_method":"MPESA","payment_plan":"quarterly","created_at":"2024-05-16T07:22:54.000000Z","updated_at":"2024-05-16T07:22:54.000000Z"}],"first_page_url":"http:\/\/localhost:8000\/api\/clients?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/clients?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/clients?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/clients","per_page":10,"prev_page_url":null,"to":4,"total":4}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '47'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/client
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: dsugrkb
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: walsh.jaylin@example.org
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      phone_number:
+        name: phone_number
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: zghscadzroxczt
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      address:
+        name: address
+        description: ''
+        required: true
+        example: ex
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      resident_building:
+        name: resident_building
+        description: ''
+        required: true
+        example: ea
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      resident_hse_no:
+        name: resident_hse_no
+        description: ''
+        required: true
+        example: error
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      payment_date:
+        name: payment_date
+        description: 'Must be a valid date.'
+        required: true
+        example: '2024-05-17T12:54:50'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      payment_method:
+        name: payment_method
+        description: ''
+        required: true
+        example: beatae
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      payment_plan:
+        name: payment_plan
+        description: ''
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      name: dsugrkb
+      email: walsh.jaylin@example.org
+      phone_number: zghscadzroxczt
+      address: ex
+      resident_building: ea
+      resident_hse_no: error
+      payment_date: '2024-05-17T12:54:50'
+      payment_method: beatae
+      payment_plan: et
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: api/client
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      id:
+        name: id
+        description: ''
+        required: true
+        example: quaerat
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: tdojxtalde
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: false
+        example: dmcclure@example.org
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      phone_number:
+        name: phone_number
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: iodgvq
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      address:
+        name: address
+        description: ''
+        required: false
+        example: rerum
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      resident_building:
+        name: resident_building
+        description: ''
+        required: false
+        example: qui
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      resident_hse_no:
+        name: resident_hse_no
+        description: ''
+        required: false
+        example: soluta
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      payment_date:
+        name: payment_date
+        description: 'Must be a valid date.'
+        required: false
+        example: '2024-05-17T12:54:50'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      payment_method:
+        name: payment_method
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      payment_plan:
+        name: payment_plan
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      id: quaerat
+      name: tdojxtalde
+      email: dmcclure@example.org
+      phone_number: iodgvq
+      address: rerum
+      resident_building: qui
+      resident_hse_no: soluta
+      payment_date: '2024-05-17T12:54:50'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/client/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the client.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/departments
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"id":1,"name":"Admin","enum_key":"ADMIN","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},{"id":2,"name":"Marketing","enum_key":"MARKETING","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},{"id":4,"name":"Accounting and Finance","enum_key":"ACCOUNTING_AND_FINANCE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},{"id":5,"name":"Inventory","enum_key":"INVENTORY","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},{"id":6,"name":"Customer Service","enum_key":"CUSTOMER_SERVICE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},{"id":7,"name":"Project Management","enum_key":"PROJECT_MANAGEMENT","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '46'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/clearance_levels
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"name":"Department Leader","enum_key":"DEPARTMENT_LEADER","enum_id":1},{"name":"Normal Employee","enum_key":"REGULAR_EMPLOYEE","enum_id":2}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '45'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/admins
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},{"id":2,"name":"Jarret Bednar","email":"aharber@example.org","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":2,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-05-16T07:44:31.000000Z","phone_number":"","verification_token":null}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '44'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/department_heads/{department_id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      department_id:
+        name: department_id
+        description: 'The ID of the department.'
+        required: true
+        example: voluptate
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      department_id: voluptate
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '43'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/admin_department_handlers/{department_id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      department_id:
+        name: department_id
+        description: 'The ID of the department.'
+        required: true
+        example: consequatur
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      department_id: consequatur
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"admins":[{"id":1,"name":"Angela Ledner","email":"jay@mail.com","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":1,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z","phone_number":"","verification_token":null},{"id":2,"name":"Jarret Bednar","email":"aharber@example.org","role":1,"image":"https:\/\/i.ibb.co\/1sspJdY\/Akik-Hossain.jpg","email_verified_at":"2024-04-12T12:10:29.000000Z","department_id":1,"clearance_level":2,"created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-05-16T07:44:31.000000Z","phone_number":"","verification_token":null}],"departmentHeads":[]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '42'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/admin/reports
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":6,"title":"Did finish","content":"ecSNDJSS","date":"2024-04-23 13:07:47","task_assignee":"Alexandro Bahringer II","task_name":"Installation on block 131A","task_type":"Installations","department":"Technicians"},{"id":12,"title":"another report","content":"report content","date":"2024-04-23 16:20:02","task_assignee":"Miracle Champlin","task_name":"Installation on block 132A","task_type":"Installations","department":"Technicians"},{"id":19,"title":"Installation on block 133A","content":"The client was satisfied with the installations done.","date":"2024-05-16 10:26:30","task_assignee":"Alexandro Bahringer II","task_name":"Installation on block 133A","task_type":"Installations","department":"Technicians"}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '41'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/admin/tasks
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"id":1,"user":"Angela Ledner","department":{"id":1,"name":"Admin","enum_key":"ADMIN","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[{"id":31,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:53:11.000000Z","updated_at":"2024-05-07T08:53:11.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null},{"id":32,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:53:58.000000Z","updated_at":"2024-05-07T08:53:58.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null},{"id":33,"name":"Installation on block 15","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T08:54:35.000000Z","updated_at":"2024-05-07T08:54:35.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":4,"admin_handler_id":null,"department_handler_id":null},{"id":34,"name":"Installation on block 16","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":1,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:24:21.000000Z","updated_at":"2024-05-07T09:24:21.000000Z","received_by_department_head":0,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null}]},{"id":2,"user":"Jarret Bednar","department":{"id":1,"name":"Admin","enum_key":"ADMIN","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":3,"user":"Mrs. Heath Ward","department":{"id":2,"name":"Marketing","enum_key":"MARKETING","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":4,"user":"Aniya Mills","department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"tasks":[]},{"id":5,"user":"Alexandro Bahringer II","department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"tasks":[{"id":18,"name":"Installation on block 131A","from_date":null,"to_date":null,"status":3,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-04-23","task_type_id":1,"created_at":"2024-04-17T12:53:28.000000Z","updated_at":"2024-05-16T07:34:42.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":20,"name":"Installation on block 133A","from_date":null,"to_date":null,"status":3,"description":"Installations should be done promptly as client has already paid","user_id":5,"department_id":3,"task_finished_at":"2024-05-16","task_type_id":1,"created_at":"2024-04-19T09:54:58.000000Z","updated_at":"2024-05-16T07:35:11.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":21,"name":"Installation on block 133A","from_date":null,"to_date":null,"status":1,"description":"timely installations","user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-04-22T07:58:24.000000Z","updated_at":"2024-05-13T07:48:00.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":24,"name":"Installation on block 13A","from_date":"2024-05-08","to_date":"2024-05-09","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":1,"created_at":"2024-05-06T04:57:04.000000Z","updated_at":"2024-05-06T07:32:31.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":null,"admin_handler_id":null,"department_handler_id":null},{"id":25,"name":"Installation on block 13B","from_date":"2024-05-09","to_date":"2024-05-10","status":2,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":1,"created_at":"2024-05-06T05:02:44.000000Z","updated_at":"2024-05-06T07:32:06.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":null,"admin_handler_id":null,"department_handler_id":null},{"id":26,"name":"Maintenance on block 131A","from_date":"2024-05-10","to_date":"2024-05-13","status":2,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":2,"created_at":"2024-05-06T05:04:32.000000Z","updated_at":"2024-05-06T07:31:41.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":null,"admin_handler_id":null,"department_handler_id":null},{"id":27,"name":"Installation on block 132C","from_date":"2024-05-15","to_date":"2024-05-22","status":5,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-04-16","task_type_id":1,"created_at":"2024-04-06T05:08:58.000000Z","updated_at":"2024-04-06T07:31:14.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":28,"name":"Installation on block 14A","from_date":"2024-05-07","to_date":"2024-05-10","status":2,"description":null,"user_id":5,"department_id":3,"task_finished_at":"2024-05-06","task_type_id":1,"created_at":"2024-05-06T06:44:11.000000Z","updated_at":"2024-05-06T07:30:43.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":30,"name":"Maintenance on Fedha towers","from_date":"2024-05-07","to_date":"2024-05-09","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":2,"created_at":"2024-05-06T08:07:16.000000Z","updated_at":"2024-05-06T09:08:19.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null},{"id":35,"name":"Installation on block 17","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:31:26.000000Z","updated_at":"2024-05-07T12:41:54.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":36,"name":"Installation on block 18","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:39:20.000000Z","updated_at":"2024-05-13T07:24:01.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":37,"name":"Installation on block 19","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T09:59:07.000000Z","updated_at":"2024-05-13T07:29:11.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null},{"id":38,"name":"Installation on block 20","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":5,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T10:07:46.000000Z","updated_at":"2024-05-13T07:45:41.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null}]},{"id":6,"user":"Miracle Champlin","department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"tasks":[{"id":19,"name":"Installation on block 132A","from_date":"2024-04-18","to_date":"2024-04-19","status":3,"description":"Perform installation on the aforementioned task","user_id":6,"department_id":3,"task_finished_at":"2024-04-23","task_type_id":1,"created_at":"2024-04-18T09:24:21.000000Z","updated_at":"2024-05-16T07:34:47.000000Z","received_by_department_head":0,"received_by_department_member":1,"feedback_if_rejected":null,"client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":23,"name":"Installation on block 132B","from_date":"2024-04-28","to_date":"2024-04-29","status":2,"description":null,"user_id":6,"department_id":3,"task_finished_at":"2024-04-27","task_type_id":1,"created_at":"2024-04-27T07:06:53.000000Z","updated_at":"2024-04-27T07:15:01.000000Z","received_by_department_head":1,"received_by_department_member":1,"feedback_if_rejected":"This has not been properly done","client_id":1,"admin_handler_id":null,"department_handler_id":null},{"id":39,"name":"Installation on block 21","from_date":"2024-05-07","to_date":"2024-05-08","status":1,"description":null,"user_id":6,"department_id":3,"task_finished_at":null,"task_type_id":1,"created_at":"2024-05-07T11:23:07.000000Z","updated_at":"2024-05-07T11:23:40.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":null,"department_handler_id":null},{"id":41,"name":"Maintenance on block 15","from_date":"2024-05-16","to_date":"2024-05-17","status":1,"description":"The cable is faulty.","user_id":6,"department_id":3,"task_finished_at":null,"task_type_id":2,"created_at":"2024-05-16T06:11:51.000000Z","updated_at":"2024-05-16T07:24:57.000000Z","received_by_department_head":1,"received_by_department_member":0,"feedback_if_rejected":null,"client_id":3,"admin_handler_id":1,"department_handler_id":5}]},{"id":7,"user":"Rhea Nienow","department":{"id":4,"name":"Accounting and Finance","enum_key":"ACCOUNTING_AND_FINANCE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":8,"user":"Abigale Kertzmann PhD","department":{"id":4,"name":"Accounting and Finance","enum_key":"ACCOUNTING_AND_FINANCE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":9,"user":"Linc Frits","department":{"id":5,"name":"Inventory","enum_key":"INVENTORY","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":10,"user":"Abbigail Schmitt","department":{"id":5,"name":"Inventory","enum_key":"INVENTORY","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":11,"user":"Khalid Purdy III","department":{"id":6,"name":"Customer Service","enum_key":"CUSTOMER_SERVICE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":12,"user":"Kavon O''Reilly","department":{"id":6,"name":"Customer Service","enum_key":"CUSTOMER_SERVICE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":13,"user":"Dr. Pierce Nitzsche MD","department":{"id":7,"name":"Project Management","enum_key":"PROJECT_MANAGEMENT","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":14,"user":"Kattie Mraz","department":{"id":7,"name":"Project Management","enum_key":"PROJECT_MANAGEMENT","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":15,"user":"Michael","department":{"id":5,"name":"Inventory","enum_key":"INVENTORY","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":16,"user":"Mike","department":{"id":5,"name":"Inventory","enum_key":"INVENTORY","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":18,"user":"Jerry","department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"tasks":[]},{"id":20,"user":"Peter Kenneth","department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"tasks":[]},{"id":34,"user":"James","department":{"id":2,"name":"Marketing","enum_key":"MARKETING","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":35,"user":"James Karanja","department":{"id":4,"name":"Accounting and Finance","enum_key":"ACCOUNTING_AND_FINANCE","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-12T12:10:29.000000Z"},"tasks":[]},{"id":36,"user":"JayGathu","department":{"id":3,"name":"Technicians","enum_key":"TECHNICIANS","created_at":"2024-04-12T12:10:29.000000Z","updated_at":"2024-04-17T11:26:41.000000Z"},"tasks":[]}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '40'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/equipments
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: e
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      department:
+        name: department
+        description: ''
+        required: true
+        example: voluptas
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: true
+        example: dolores
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      quantity:
+        name: quantity
+        description: ''
+        required: true
+        example: 7
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      model:
+        name: model
+        description: ''
+        required: true
+        example: autem
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      purchase_date:
+        name: purchase_date
+        description: ''
+        required: true
+        example: magni
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      name: e
+      department: voluptas
+      status: dolores
+      quantity: 7
+      model: autem
+      purchase_date: magni
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/equipments
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"id":1,"name":"Machine A","department_id":3,"quantity":6,"status":1,"model":"12","purchase_date":"2024-04-30","created_at":"2024-04-29T07:16:17.000000Z","updated_at":"2024-04-29T07:16:17.000000Z"},{"id":2,"name":"Machine A","department_id":3,"quantity":6,"status":1,"model":"12","purchase_date":"2024-04-30","created_at":"2024-04-29T07:16:20.000000Z","updated_at":"2024-04-29T07:16:20.000000Z"},{"id":3,"name":"Tinga","department_id":2,"quantity":3,"status":2,"model":"A3","purchase_date":"2024-04-24","created_at":"2024-04-29T11:47:13.000000Z","updated_at":"2024-04-29T11:47:13.000000Z"},{"id":4,"name":"Rouer","department_id":3,"quantity":5,"status":2,"model":"Tenda","purchase_date":"2024-04-24","created_at":"2024-04-29T11:50:01.000000Z","updated_at":"2024-04-29T11:50:01.000000Z"},{"id":5,"name":"Switch","department_id":4,"quantity":2,"status":2,"model":"Tenda","purchase_date":"2024-04-17","created_at":"2024-04-29T11:51:10.000000Z","updated_at":"2024-04-29T11:51:10.000000Z"},{"id":6,"name":"Router","department_id":5,"quantity":4,"status":2,"model":"Splynx","purchase_date":"2024-04-19","created_at":"2024-04-29T11:51:58.000000Z","updated_at":"2024-04-29T11:51:58.000000Z"}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '39'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/circular
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a newly created resource in storage.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: kutfljwjimkqjgvubegof
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      content:
+        name: content
+        description: 'Must not be greater than 1000 characters.'
+        required: true
+        example: hkwtzojncqkaux
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      title: kutfljwjimkqjgvubegof
+      content: hkwtzojncqkaux
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/circulars
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[{"id":2,"title":"Hello","content":"Hello world","to_whom":"[\"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\"]","created_at":"2024-04-26T12:19:45.000000Z","updated_at":"2024-04-26T12:19:45.000000Z"},{"id":3,"title":"Urgent meeting","content":"Urgent meeting tomorrow morning","to_whom":"[\"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\"]","created_at":"2024-04-27T06:45:18.000000Z","updated_at":"2024-04-27T06:45:18.000000Z"}],"first_page_url":"http:\/\/localhost:8000\/api\/circulars?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/circulars?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/circulars?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/circulars","per_page":20,"prev_page_url":null,"to":2,"total":2}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '38'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/notifications
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"current_page":1,"data":[],"first_page_url":"http:\/\/localhost:8000\/api\/notifications?page=1","from":null,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/notifications?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/localhost:8000\/api\/notifications?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/localhost:8000\/api\/notifications","per_page":20,"prev_page_url":null,"to":null,"total":0}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '37'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/unread_notifications_count
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '0'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '36'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/mark_as_read
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/task_reports
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a newly created resource in storage.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: okurlawmkbedllidocrvyh
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      content:
+        name: content
+        description: ''
+        required: true
+        example: corporis
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      title: okurlawmkbedllidocrvyh
+      content: corporis
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/report/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display the specified resource.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the report.'
+        required: true
+        example: recusandae
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: recusandae
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '35'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: api/report
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update the specified resource in storage.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      id:
+        name: id
+        description: ''
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: true
+        example: aperiam
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      id: est
+      status: aperiam
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/logout
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/get_task/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the get task.'
+        required: true
+        example: a
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: a
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "Attempt to read property \"admin_handler_id\" on null",
+              "exception": "ErrorException",
+              "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\app\\Http\\Controllers\\TaskController.php",
+              "line": 34,
+              "trace": [
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php",
+                      "line": 270,
+                      "function": "handleError",
+                      "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\app\\Http\\Controllers\\TaskController.php",
+                      "line": 34,
+                      "function": "Illuminate\\Foundation\\Bootstrap\\{closure}",
+                      "class": "Illuminate\\Foundation\\Bootstrap\\HandleExceptions",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+                      "line": 54,
+                      "function": "show",
+                      "class": "App\\Http\\Controllers\\TaskController",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+                      "line": 43,
+                      "function": "callAction",
+                      "class": "Illuminate\\Routing\\Controller",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+                      "line": 259,
+                      "function": "dispatch",
+                      "class": "Illuminate\\Routing\\ControllerDispatcher",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+                      "line": 205,
+                      "function": "runController",
+                      "class": "Illuminate\\Routing\\Route",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 798,
+                      "function": "run",
+                      "class": "Illuminate\\Routing\\Route",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 141,
+                      "function": "Illuminate\\Routing\\{closure}",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\inertiajs\\inertia-laravel\\src\\Middleware.php",
+                      "line": 88,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Inertia\\Middleware",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+                      "line": 50,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php",
+                      "line": 78,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php",
+                      "line": 49,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\View\\Middleware\\ShareErrorsFromSession",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php",
+                      "line": 121,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php",
+                      "line": 64,
+                      "function": "handleStatefulRequest",
+                      "class": "Illuminate\\Session\\Middleware\\StartSession",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Session\\Middleware\\StartSession",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php",
+                      "line": 37,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php",
+                      "line": 67,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Cookie\\Middleware\\EncryptCookies",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 116,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 797,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 776,
+                      "function": "runRouteWithinStack",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 740,
+                      "function": "runRoute",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 729,
+                      "function": "dispatchToRoute",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+                      "line": 190,
+                      "function": "dispatch",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 141,
+                      "function": "Illuminate\\Foundation\\Http\\{closure}",
+                      "class": "Illuminate\\Foundation\\Http\\Kernel",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+                      "line": 21,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+                      "line": 31,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+                      "line": 21,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+                      "line": 40,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+                      "line": 27,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+                      "line": 86,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+                      "line": 62,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Http\\Middleware\\HandleCors",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+                      "line": 39,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 116,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+                      "line": 165,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+                      "line": 134,
+                      "function": "sendRequestThroughRouter",
+                      "class": "Illuminate\\Foundation\\Http\\Kernel",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 300,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Kernel",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 288,
+                      "function": "callLaravelOrLumenRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 91,
+                      "function": "makeApiCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 44,
+                      "function": "makeResponseCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 35,
+                      "function": "makeResponseCallIfConditionsPass",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php",
+                      "line": 236,
+                      "function": "__invoke",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php",
+                      "line": 163,
+                      "function": "iterateThroughStrategies",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php",
+                      "line": 95,
+                      "function": "fetchResponses",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php",
+                      "line": 125,
+                      "function": "processRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php",
+                      "line": 72,
+                      "function": "extractEndpointsInfoFromLaravelApp",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php",
+                      "line": 50,
+                      "function": "extractEndpointsInfoAndWriteToDisk",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Commands\\GenerateDocumentation.php",
+                      "line": 53,
+                      "function": "get",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php",
+                      "line": 36,
+                      "function": "handle",
+                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php",
+                      "line": 41,
+                      "function": "Illuminate\\Container\\{closure}",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php",
+                      "line": 93,
+                      "function": "unwrapIfClosure",
+                      "class": "Illuminate\\Container\\Util",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php",
+                      "line": 35,
+                      "function": "callBoundMethod",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php",
+                      "line": 661,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php",
+                      "line": 183,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Command\\Command.php",
+                      "line": 326,
+                      "function": "execute",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php",
+                      "line": 152,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Command\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Application.php",
+                      "line": 1078,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Application.php",
+                      "line": 324,
+                      "function": "doRunCommand",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Application.php",
+                      "line": 175,
+                      "function": "doRun",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php",
+                      "line": 102,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php",
+                      "line": 155,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\artisan",
+                      "line": 35,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Console\\Kernel",
+                      "type": "->"
+                  }
+              ]
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: X-Inertia
+          access-control-allow-origin: '*'
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6InJLajhEK0FUMDYydjQ4enY2Y0VxM3c9PSIsInZhbHVlIjoiZURHck9TckJhYk8yclN2N0gzbEsycWRCZm1CaktQUGJUWnRnT0hpcUl1VUJMclFWUnE0RHFvOXZ2TW9Od09IU0kxblhlRXY1YytDWnUrU3lSZ0xsWTZ1T2thZDlsZHQrQ0dpV3drVHFDYkptL3RaQWlGZ2d3cVBZdkQ1NURtNHIiLCJtYWMiOiJmMmJjNzkzZmY1OTg2ZWUyYmEzZGU3Mzc0Y2ZiYTlmYTk1YzU5ODUzYmY2OTU0NGZkZDAxOWQ1N2JhNjc5NTYyIiwidGFnIjoiIn0%3D; expires=Fri, 17 May 2024 11:54:51 GMT; Max-Age=7200; path=/; samesite=lax; etnet_session=eyJpdiI6ImZnRFl6M1c3UUpIM1NmajFHNGxESXc9PSIsInZhbHVlIjoiK0s3N05pc2JBVThrTjRhaVR5ZE1xeFNmbVhWc1NyclZzWm9lOVVOVDEwdW4yNjljcFd0UWxwNmtzaWJyRTZIeGd0ejhkVWEzOXBkTjIvUUZMNkFmaTVpcUVRN3J0bjhBQnA1Nk1jdjh1bXJsZENTcWU4aUlmNEhmR09kbkI1RGYiLCJtYWMiOiJiN2MwYzdkY2FiZGU5OTM4MTI2OGRjNjFiYzAwMTRlYTU1OTNiZjJhMTk5ZjA3YjZhZDE2MWI3OTY5YjA2Y2ZmIiwidGFnIjoiIn0%3D; expires=Fri, 17 May 2024 11:54:51 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/task_messages/{task_id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      task_id:
+        name: task_id
+        description: 'The ID of the task.'
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      task_id: et
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 500
+        content: |-
+          {
+              "message": "Call to a member function taskMessages() on null",
+              "exception": "Error",
+              "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\app\\Http\\Controllers\\TaskController.php",
+              "line": 64,
+              "trace": [
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php",
+                      "line": 54,
+                      "function": "getTaskMessages",
+                      "class": "App\\Http\\Controllers\\TaskController",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php",
+                      "line": 43,
+                      "function": "callAction",
+                      "class": "Illuminate\\Routing\\Controller",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+                      "line": 259,
+                      "function": "dispatch",
+                      "class": "Illuminate\\Routing\\ControllerDispatcher",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php",
+                      "line": 205,
+                      "function": "runController",
+                      "class": "Illuminate\\Routing\\Route",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 798,
+                      "function": "run",
+                      "class": "Illuminate\\Routing\\Route",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 141,
+                      "function": "Illuminate\\Routing\\{closure}",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\inertiajs\\inertia-laravel\\src\\Middleware.php",
+                      "line": 88,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Inertia\\Middleware",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php",
+                      "line": 50,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php",
+                      "line": 78,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php",
+                      "line": 49,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\View\\Middleware\\ShareErrorsFromSession",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php",
+                      "line": 121,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php",
+                      "line": 64,
+                      "function": "handleStatefulRequest",
+                      "class": "Illuminate\\Session\\Middleware\\StartSession",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Session\\Middleware\\StartSession",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php",
+                      "line": 37,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php",
+                      "line": 67,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Cookie\\Middleware\\EncryptCookies",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 116,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 797,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 776,
+                      "function": "runRouteWithinStack",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 740,
+                      "function": "runRoute",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+                      "line": 729,
+                      "function": "dispatchToRoute",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+                      "line": 190,
+                      "function": "dispatch",
+                      "class": "Illuminate\\Routing\\Router",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 141,
+                      "function": "Illuminate\\Foundation\\Http\\{closure}",
+                      "class": "Illuminate\\Foundation\\Http\\Kernel",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+                      "line": 21,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+                      "line": 31,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+                      "line": 21,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+                      "line": 40,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+                      "line": 27,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+                      "line": 86,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+                      "line": 62,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Http\\Middleware\\HandleCors",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+                      "line": 39,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 180,
+                      "function": "handle",
+                      "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+                      "line": 116,
+                      "function": "Illuminate\\Pipeline\\{closure}",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+                      "line": 165,
+                      "function": "then",
+                      "class": "Illuminate\\Pipeline\\Pipeline",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+                      "line": 134,
+                      "function": "sendRequestThroughRouter",
+                      "class": "Illuminate\\Foundation\\Http\\Kernel",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 300,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Http\\Kernel",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 288,
+                      "function": "callLaravelOrLumenRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 91,
+                      "function": "makeApiCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 44,
+                      "function": "makeResponseCall",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php",
+                      "line": 35,
+                      "function": "makeResponseCallIfConditionsPass",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php",
+                      "line": 236,
+                      "function": "__invoke",
+                      "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php",
+                      "line": 163,
+                      "function": "iterateThroughStrategies",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php",
+                      "line": 95,
+                      "function": "fetchResponses",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php",
+                      "line": 125,
+                      "function": "processRoute",
+                      "class": "Knuckles\\Scribe\\Extracting\\Extractor",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php",
+                      "line": 72,
+                      "function": "extractEndpointsInfoFromLaravelApp",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php",
+                      "line": 50,
+                      "function": "extractEndpointsInfoAndWriteToDisk",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\knuckleswtf\\scribe\\src\\Commands\\GenerateDocumentation.php",
+                      "line": 53,
+                      "function": "get",
+                      "class": "Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php",
+                      "line": 36,
+                      "function": "handle",
+                      "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php",
+                      "line": 41,
+                      "function": "Illuminate\\Container\\{closure}",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php",
+                      "line": 93,
+                      "function": "unwrapIfClosure",
+                      "class": "Illuminate\\Container\\Util",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php",
+                      "line": 35,
+                      "function": "callBoundMethod",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php",
+                      "line": 661,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\BoundMethod",
+                      "type": "::"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php",
+                      "line": 183,
+                      "function": "call",
+                      "class": "Illuminate\\Container\\Container",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Command\\Command.php",
+                      "line": 326,
+                      "function": "execute",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php",
+                      "line": 152,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Command\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Application.php",
+                      "line": 1078,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Command",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Application.php",
+                      "line": 324,
+                      "function": "doRunCommand",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\symfony\\console\\Application.php",
+                      "line": 175,
+                      "function": "doRun",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php",
+                      "line": 102,
+                      "function": "run",
+                      "class": "Symfony\\Component\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php",
+                      "line": 155,
+                      "function": "run",
+                      "class": "Illuminate\\Console\\Application",
+                      "type": "->"
+                  },
+                  {
+                      "file": "C:\\Users\\USER\\Desktop\\Desktop\\Empoloyee-task-management\\artisan",
+                      "line": 35,
+                      "function": "handle",
+                      "class": "Illuminate\\Foundation\\Console\\Kernel",
+                      "type": "->"
+                  }
+              ]
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: X-Inertia
+          access-control-allow-origin: '*'
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6IlRHTEpRQmw4S0xOVjBTWTlsWHhmTkE9PSIsInZhbHVlIjoiTVoybFUxMUZSc3dqb3gxa28wdWtxbW9Ubml6UG9NM2RVK0hNUzZtam5SYU9TaEswSkRFc1NmYUxWdW91dXA3MVY3MkhnbGlyUVdBRklYblZ3K3VqMG5JajBTQzcvQ1FZSmJuVGtBRDBCZ1g2TUVBN2R0YVRiZEljT2VScldnQXIiLCJtYWMiOiJmMWQ5MWMyNzEwMWQ2N2M0NzkxNTdhNmU4MWJkOWRkMGNmZDBkYWViNTlmOGRlNjI4Y2I4OWZmNTY0ODk5NjBmIiwidGFnIjoiIn0%3D; expires=Fri, 17 May 2024 11:54:51 GMT; Max-Age=7200; path=/; samesite=lax; etnet_session=eyJpdiI6IkhMemRzcWlsK2VkdTlXcnp5akZXSXc9PSIsInZhbHVlIjoiOXJvbHNIR3NTVDZSck0xeHowRkJCeFBuV0gwUHN4cW9YYnFReXVPMHFIZXdKVTBoSkxrR3pCL0p6ZjdXd3ZuaDYzaW14cWFxMDJ1ZFlHUDdnUHNxNTBsZXd2RGY5amFIbUY2UkppcWhQV3NsVHNGU0ZoL2NzUmNOSk51eWNKYXEiLCJtYWMiOiJlZTNkYmM1NTc0Yzc5MzY5MmFlMTg4MzcyM2ZiMzNlN2IzYjUzMmFiZTU0ZWYwY2FmNTQ4YjY2OTkxMTMwNjY2IiwidGFnIjoiIn0%3D; expires=Fri, 17 May 2024 11:54:51 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/messages
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a newly created resource in storage.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 246|cUylb3HTiPKWPynUrUQNp41jM5X6SIwwSH7AnwDz8eaa6a82'
+    controller: null
+    method: null
+    route: null
+    custom: []

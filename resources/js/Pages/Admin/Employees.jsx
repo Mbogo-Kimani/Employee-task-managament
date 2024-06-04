@@ -3,16 +3,17 @@ import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../../da
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import departmentEnum from '../../data/enums/department';
-import clearanceLevel from '../../data/enums/clearanceLevel';
 import Modal from '../../Components/Common/Modal';
-import { router } from '@inertiajs/react';
 import { displayErrors } from '../../data/utils';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 import Icon from '../../Components/Common/Icon';
 import { loaderSetter } from '../../Components/Common/Loader';
+import EmployeesTableElem from '../../Components/Admin/EmployeesTableElem';
+import { toast } from 'react-toastify';
+import {router} from "@inertiajs/react"
 
-function Employees({ user }) {
+function Employees() {
   const [pageItems, setPageItems] = useState(defaultPageData);
   const [users, setUsers] = useState({
     data: [],
@@ -38,12 +39,11 @@ function Employees({ user }) {
   const [errors, setErrors] = useState({});
   const [showPasswords, setShowPasswords] = useState(false);
   const [response, setResponse] = useState(false);
+  const [formMode, setFormMode] = useState('');
+  const [deleteUserModal, setDeleteUserModal] = useState(false);
+  const [deletedUser, setDeletedUser] = useState(newUser);
+  const [countryCode, setCountryCode] = useState('+254')
 
-  useEffect(() => {
-    setPageItems(
-      pageAndNavItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -52,9 +52,17 @@ function Employees({ user }) {
   }, []);
 
   useEffect(() => {
-    checkResponse()
+    checkResponse();
   }, [response]);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('new');
+
+  useEffect(() => {
+    if(myParam){
+      setShowNewUserModal(true)
+    }
+  },[])
   function checkResponse () {
     if (response) {
       fetchUsers();
@@ -62,6 +70,7 @@ function Employees({ user }) {
         name: '',
         email: '',
         role: '',
+        phone_number: '',
         clearance_level: 2,
         password: 'Etnet Technologies',
         password_confirmation: 'Etnet Technologies',
@@ -82,12 +91,25 @@ function Employees({ user }) {
     requestHandler.get('/api/clearance_levels', setClearanceLevels);
   }
 
-  function toggleOpenModal() {
+  function toggleOpenModal(mode = '', userId = null) {
+    setFormMode(mode);
+    if (mode && mode === 'edit') {
+      requestHandler.get(`/api/user/${userId}`, setNewUser);
+    }
     setShowNewUserModal(true);
   }
 
   function toggleCloseModal() {
     setShowNewUserModal(false);
+    setNewUser({
+      name: '',
+      email: '',
+      role: '',
+      phone_number: '',
+      clearance_level: 2,
+      password: 'Etnet Technologies',
+      password_confirmation: 'Etnet Technologies',
+    });
   }
 
   function handleChange(e) {
@@ -96,24 +118,90 @@ function Employees({ user }) {
 
   function submitNewUser(e) {
     e.preventDefault();
-    requestHandler.post('/api/user', newUser, setResponse, setErrors);
+    if (formMode === 'edit') {
+      requestHandler.patch('/api/user', newUser, editUserResponse, setErrors, loaderSetter);
+    } else {
+      requestHandler.post('/api/user', newUser, setResponse, setErrors, loaderSetter);
+    }
   }
 
-  function navigateToIndividualTasks(id) {
-    router.visit(`/admin/employees/${id}/tasks`)
+  function openDeleteUserModal(e) {
+    e.preventDefault();
+    setDeleteUserModal(true);
+    setDeletedUser(newUser);
+  }
+
+  function closeDeleteUserModal() {
+    setDeleteUserModal(false);
+    toggleCloseModal();
+  }
+
+  function deleteUser() {
+    requestHandler.delete(`/api/user/${deletedUser.id}`, deleteUserResponse, setErrors, loaderSetter);
+  }
+
+  function deleteUserResponse(resp) {
+    if (resp) {
+      toast.success('Employee Deleted successfully');
+      closeDeleteUserModal();
+      fetchUsers();
+    }
+  }
+
+  function editUserResponse(resp) {
+    if (resp) {
+      toast.success('Employee Edited successfully');
+      closeDeleteUserModal();
+      fetchUsers();
+    }
+  }
+
+  function handlePhoneNumberChange(e){
+    setNewUser({...newUser,[e.target.name]: countryCode + e.target.value})
   }
 
   return (
-    <SideNav navItems={pageItems.navItems} user={user}>
+    <SideNav>
       <div className="">
         <div className='mb-4 w-full flex'>
           <button
+            className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-3 text-gray-800 hover:text-gray-100"
+            onClick={() => router.visit('/admin/employees/stats')}
+          >
+            Employees Statistics
+          </button>
+          <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
-            onClick={toggleOpenModal}
+            onClick={() => toggleOpenModal('new')}
           >
             Add New Employee
           </button>
         </div>
+
+        <Modal
+          show={deleteUserModal}
+          onClose={closeDeleteUserModal}
+        >
+          <div>
+            <h1 className="text-lg text-center mt-5">Are sure you want to delete <span className='font-bold'>{newUser.name}</span>?</h1>
+
+            <div className="flex justify-around items-center">
+              <button
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
+                onClick={closeDeleteUserModal}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="bg-red-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
+                onClick={deleteUser}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </Modal>
 
         <Modal
           show={showNewUserModal}
@@ -122,9 +210,16 @@ function Employees({ user }) {
           <div className="mt-8 px-2 w-full h-screen overflow-y-scroll">
             <div className="bg-white rounded-lg shahiddendow dark:bg-gray-700">
               <div className="flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Add a New Employee
-                </h3>
+                {
+                  formMode === 'edit' ?
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Edit Employee Details
+                  </h3>
+                  :
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Add a New Employee
+                  </h3>
+                }
                 <button
                   type="button"
                   className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -185,7 +280,24 @@ function Employees({ user }) {
                       </p>
                     }  
                   </div>
-
+                  <div className='flex'>
+                    <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                      <option value="" disabled>Select Country Code</option>
+                      <option value="+254">+254 (Kenya)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+91">+91 (India)</option>
+                      {/* Add more country codes as needed */}
+                    </select>
+                    <input
+                      type="tel"
+                      name='phone_number'
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      value={newUser.phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Enter phone number"
+                      required
+                    />
+                  </div>
                   <div>
                     <label
                       htmlFor="title"
@@ -306,14 +418,27 @@ function Employees({ user }) {
                       </p>
                     }  
                   </div>
+                  
+                  <div className='w-full flex justify-between items-center'>
+                    <button
+                      type="submit"
+                      className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
+                      onClick={(e) => submitNewUser(e)}
+                    >
+                      Submit
+                    </button>
 
-                  <button
-                    type="submit"
-                    className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
-                    onClick={(e) => submitNewUser(e)}
-                  >
-                    Submit
-                  </button>
+                    {
+                      formMode && formMode === 'edit' && (
+                        <button
+                          className="bg-red-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
+                          onClick={(e) => openDeleteUserModal(e)}
+                        >
+                          Delete
+                        </button>
+                      )
+                    }
+                  </div>
                 </form>
               </div>
             </div>
@@ -325,26 +450,11 @@ function Employees({ user }) {
             {
               (Array.isArray(users.data) ? users.data : []).map((elem, index) => {
                 return (
-                  <tr key={elem.id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      { elem.name }
-                    </th>
-                    <td
-                      scope="row"
-                      className="px-2 py-4"
-                    >
-                      { departmentEnum[elem.role] }
-                    </td>
-                    <td className="px-2 py-4">
-                      { elem.email }
-                    </td>
-                    <td className="px-2 py-4">
-                      { clearanceLevel[elem.clearance_level] }
-                    </td>
-                    <td className="px-2 py-4 hover:underline dark:hover:text-blue-300 hover:text-blue-500 cursor-pointer" onClick={() => navigateToIndividualTasks(elem.id)}>
-                      View Tasks
-                    </td>
-                  </tr>
+                  <EmployeesTableElem
+                    key={elem.id || index}
+                    elem={elem}
+                    openModal={toggleOpenModal}
+                  />
                 );
               })
             }

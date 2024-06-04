@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { displayErrors } from '../../data/utils';
 import requestHandler from '../../services/requestHandler';
 import { router } from '@inertiajs/react';
 import Icon from '../../Components/Common/Icon';
+import Form from '../../Components/Forms/forms';
 import { TailSpin } from 'react-loader-spinner';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { AppContext } from '../../appContext';
+
 
 function Login() {
   const [newUser, setNewUser] = useState({
@@ -16,25 +18,39 @@ function Login() {
   const [showPasswords, setShowPasswords] = useState(false);
   const [response, setResponse] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user, loginUser } = useContext(AppContext)
+
+
 
   function handleChange(e) {
     setNewUser({...newUser, [e.target.name]: e.target.value})
   }
 
   function submitNewUser(e) {
-    console.log(loading)
     e.preventDefault();
-    requestHandler.post('/login', newUser, setResponse, setErrors, setLoading);
-    console.log(loading)
+    requestHandler.post('/api/login', newUser, setResponse, setErrors, setLoading);
   }
 
   useEffect(() => {
     checkResponse();
   }, [response]);
 
+ 
+
   function checkResponse() {
-    if (response) {
-      router.visit('/dashboard');
+    if (response.token) {
+        const data = {
+          'auth_token': response.token,
+          'user': response.user
+        }
+
+        Object.keys(data).forEach((key) => {
+          const value = typeof data[key] === 'object' ? JSON.stringify(data[key]) : data[key];
+          localStorage.setItem(key,value);
+        })
+
+        loginUser(response.user)
+        router.visit(`/dashboard`)
       notify()
     }
   }
@@ -47,14 +63,14 @@ function Login() {
 
   return (
     <div className='flex justify-center items-center h-screen bg-white dark:bg-gray-900'>
-      <ToastContainer/>
       <div className="w-full h-full md:w-[75%] sm:w-[95%] sm:h-[75%] shadow-md bg-gray-100 dark:bg-gray-700">
         <div className="w-full flex justify-center h-[35%]">
           <Icon src='/images/etnet.png' imgClassName='h-full w-full' className='max-w-[600px] max-h-[400px] md:w-[40%] md:h-full sm:w-[60%] sm:h-full w-full h-full'/>
         </div>
 
         <div className="h-[65%] flex justify-center items-center">
-          <form action="" className="space-y-8 px-4 py-2 w-full max-w-[750px]" onSubmit={(e) => submitNewUser(e)}>
+          {/* <form action="" className="" onSubmit={(e) => submitNewUser(e)}> */}
+           <Form input={newUser} setInput={setNewUser} errors={errors} setErrors={setErrors} className={'space-y-8 px-4 py-2 w-full max-w-[750px]'} onSubmit={submitNewUser}>
             <div>
               <input
                 type="email"
@@ -66,7 +82,7 @@ function Login() {
                 required
               />
               {
-                (errors.email || errors.errors?.email || errors.message || errors.errors?.message) && 
+                (errors.email || errors.errors?.email) && 
                 <p className="text-red-500 my-1 py-1 text-center">
                   { displayErrors(errors, 'email') || displayErrors(errors, 'message') }
                 </p>
@@ -104,7 +120,7 @@ function Login() {
             <button
               type="submit"
               className="hover:bg-gradient-to-r hover:from-[var(--blue)] hover:to-[var(--luminous-green)] w-full text-white font-semibold opacity-80 bg-[var(--blue)] focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 dark:focus:ring-blue-800 my-8 flex justify-center items-center"
-              onClick={(e) => submitNewUser(e)}
+              // onClick={(e) => submitNewUser(e)}
             >
               {
                 !loading ?
@@ -123,7 +139,8 @@ function Login() {
                 </span>
               }
             </button>
-          </form>
+          {/* </form> */}
+          </Form>
         </div>
       </div>
     </div>

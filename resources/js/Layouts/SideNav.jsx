@@ -1,30 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import NavItem from '../Components/NavItem';
 import requestHandler from '../services/requestHandler';
 import { Link, router } from '@inertiajs/react';
 import Icon from '../Components/Common/Icon';
+import Badge from '../Components/Common/Badge';
+import { useTranslation } from 'react-i18next';
+import {changeLanguage} from '../i18n'
+import { AppContext } from '../appContext';
+import { navItemsDeterminer, pageData as defaultPageData } from '../data/indexNav';
 
-function SideNav({ navItems, user, children }) {
+
+function SideNav({ children }) {
   const [collapsed, setCollapsed] = useState(hasLargeWidth());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [response, setResponse] = useState(false);
-
+  const [notificationsCount, setNotificationsCount] = useState(0);
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'en')
+  const [navItems, setNavItems] = useState(defaultPageData);
+  const { userData, logoutUser } = useContext(AppContext);
+  
   useEffect(() => {
     checkLogoutResponse();
-  }, [response])
+  }, [response]);
 
+  useEffect(() => {
+    fetchUnreadNotificationCount();
+  }, []);
+
+  useEffect(() => {
+    changeLanguage(language);
+    localStorage.setItem('language',language)
+  }, [language]);
+
+  useEffect(() => {
+    setNavItems(
+      navItemsDeterminer(userData?.role, userData?.clearance_level)
+    );
+  }, []);
+  
+  const {t} = useTranslation()
+
+  function fetchUnreadNotificationCount() {
+    requestHandler.get('/api/unread_notifications_count', setNotificationsCount);
+  }
+  const switchLanguage = () => {
+    setLanguage(language == 'en' ? 'zh' : 'en')
+    window.location.reload()
+  }
   function checkLogoutResponse() {
     if (response) {
+      logoutUser();
       router.visit('/auth/login');
     }
   }
 
   function navigateToLogout() {
-    requestHandler.post('/logout', null, setResponse);
+    requestHandler.post('/api/logout', null, setResponse);
   }
 
   function navigateToProfile() {
-    console.log('profile page');
+    router.visit('/profile');
   }
 
   function hasLargeWidth() {
@@ -52,12 +87,13 @@ function SideNav({ navItems, user, children }) {
           <Icon src="/images/etnet.png" alt="Dashboard Image"/>
         </Link>
         <div className="flex grow"/>
-        <Link className='w-[40px] h-[auto] block my-auto' href="/notifications">
+        <Link className='w-[40px] h-[auto] block my-auto relative' href="/notifications">
+          <Badge numberToDisplay={notificationsCount} size={'5px'} className='right-[-0.5rem] top-[-0.5rem] z-10' textClassName='text-xs px-1.5'/>
           <Icon src="notification" alt="Dashboard Notiifcations" className='w-[20px] h-[20px] hover:bg-gray-100 hover:text-[var(--purple)] ml-4 cursor-pointer'/>
         </Link>
         <div className="relative">
           <div className="flex items-center cursor-pointer px-3 py-2 mx-6" onClick={toggleDropdown}>
-            <span className="mr-1">{ getFirstName(user) }</span>
+            <span className="mr-3">{ getFirstName(userData) }</span>
             <svg
               className={`w-3 h-3  transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
               xmlns="http://www.w3.org/2000/svg"
@@ -68,15 +104,18 @@ function SideNav({ navItems, user, children }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
             </svg>
           </div>
-          
+         
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-40 bg-white divide-y divide-gray-100 rounded-lg shadow">
               <ul className="py-2 text-sm text-gray-700">
               <li>
-                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToProfile}>Profile</button>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToProfile}>{t('profile')}</button>
                 </li>
                 <li>
-                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToLogout}>Logout</button>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={switchLanguage}>{language == 'en' ? '切换语言' : 'Switch Language'}</button>
+                </li>
+                <li>
+                  <button className='block px-4 py-2 hover:bg-gray-100 w-full text-left' onClick={navigateToLogout}>{t('logout')}</button>
                 </li>
                 
               </ul>
@@ -85,12 +124,13 @@ function SideNav({ navItems, user, children }) {
         </div>
       </nav>
       <div className='flex pt-[50px]'>
-        <nav className={`shadow-sm bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[w-[${collapsed ? '50' : '200'}px] transition-all duration-300 ease-in-out`}>
+        <nav className={`shadow-sm bg-white dark:bg-gray-800 dark:text-gray-100 min-h-screen w-[${collapsed ? '50' : '200'}px] transition-all duration-300 ease-in-out`}>
           <ul>
             <NavItem
               src="home"
               name="Home"
-              href="/dashboard"
+              href={`/dashboard`}
+              collapsed={collapsed}
             />
             {(Array.isArray(navItems) ? navItems : []).map(item => (
               <NavItem

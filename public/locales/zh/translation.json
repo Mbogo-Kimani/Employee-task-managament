@@ -1,0 +1,32 @@
+{
+    "greeting": "你好",
+    "installations": "安装",
+    "clients-onboarded": "已上线客户",
+    "new-task": "新任务",
+    "new-employee": "新员工",
+    "new-client": "新客户",
+
+    "admin-approval": "等待管理员批准",
+    "pending": "待处理",
+    "ongoing":"正在进行",
+    "completed": "已完成",
+    "department-approval": "等待部门批准",
+    "rejected": "已拒绝",
+    "done": "已完成",
+    "add-new-task": "添加新任务",
+    "departments": "部门",
+    "task-types": "任务类型",
+    "task-status": "任务状态",
+    "client-status": "客户端状态",
+    "filters": "筛选",
+    "tasks": "任务",
+    "users": "用户",
+    "clients": "客户",
+    "new-circular": "新的通告",
+    "reports": "报告",
+    "maps": "地图",
+    "profile": "个人资料",
+    "logout": "登出",
+
+    "switch-language": "切换语言"
+}

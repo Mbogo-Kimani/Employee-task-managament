@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { pageData as defaultPageData, navItemsDeterminer } from '../../data/indexNav'
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import departmentsEnum from '../../data/enums/department';
@@ -7,41 +6,36 @@ import { router } from '@inertiajs/react';
 import SelectComp from '../../Components/Common/SelectComp';
 import { displayErrors } from '../../data/utils';
 import Modal from '../../Components/Common/Modal';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
-function NewTask({ user }) {
-  const [navItems, setNavItems] = useState(defaultPageData);
+function NewTask() {
   const [taskTypes, setTaskTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [newTask, setNewTask] = useState({
     name: '',
     department: '',
+    departmentHandler: '',
+    adminHandler: '',
     taskType: '',
     description: '',
     toDate: '',
     fromDate: '',
+    paid: '',
   });
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
   const [taskTypeResponse, setTaskTypeResponse] = useState(false);
   const [newTaskTypeModal, setNewTaskTypeModal] = useState(false);
-  const [newTaskType, setNewTaskType] = useState({
-    task_type_department: '',
-    task_type_name: '',
-    task_type_description: '',
-  });
-  
+  const [newTaskType, setNewTaskType] = useState({});
+  const [admins, setAdmins] = useState([]);
+  const [departmentHeads, setDepartmentHeads] = useState([]);
+  const [departmentHandlerElemText, setDepartmentHandlerElemText] = useState('');
 
-  useEffect(() => {
-    setNavItems(
-      navItemsDeterminer(user?.role, user?.clearance_level)
-    );
-  }, []);
 
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
+    fetchAdmins();
   }, []);
 
   useEffect(() => {
@@ -55,6 +49,10 @@ function NewTask({ user }) {
   useEffect(() => {
     verifyDates();
   }, [newTask.toDate]);
+
+  useEffect(() => {
+    fetchDepartmentHeads();
+  }, [newTask.department]);
 
   function closeNewTaskTypeModal() {
     setNewTaskTypeModal(false);
@@ -78,10 +76,13 @@ function NewTask({ user }) {
       setNewTask({
         name: '',
         department: '',
+        departmentHandler: '',
+        adminHandler: '',
         taskType: '',
         description: '',
         toDate: '',
         fromDate: '',
+        paid: '',
       });
       setResponse(false);
       router.visit('/admin/tasks');
@@ -96,6 +97,14 @@ function NewTask({ user }) {
       closeNewTaskTypeModal();
       fetchTaskTypes();
     }
+  }
+
+  function fetchAdmins() {
+    requestHandler.get('/api/admins', setAdmins);
+  }
+
+  function fetchDepartmentHeads() {
+    if (newTask.department) requestHandler.get(`/api/department_heads/${newTask.department}`, setDepartmentHeads);
   }
 
   function fetchTaskTypes() {
@@ -114,9 +123,19 @@ function NewTask({ user }) {
     setNewTaskType({...newTaskType, [e.target.name]: e.target.value});
   }
 
+  function handleDepartmentHandlerElemText() {
+    if (!newTask.department && !departmentHandlerElemText) {
+      setDepartmentHandlerElemText('Please select a department first');
+      setTimeout(() => {
+      setDepartmentHandlerElemText('');
+      }, 3500);
+    }
+  }
+ 
   function submitNewtask(e) {
     e.preventDefault();
     requestHandler.post('/api/tasks', newTask, setResponse, setErrors);
+
     if(response){
       notify('Task added')
     }
@@ -134,8 +153,7 @@ function NewTask({ user }) {
     })
   }
   return (
-    <SideNav navItems={navItems} user={user}>
-      <ToastContainer/>
+    <SideNav>
       <div>
         <div className='mb-4 w-full flex'>
           <button
@@ -179,9 +197,9 @@ function NewTask({ user }) {
               value={newTask.taskType}
               onChange={(e) => handleChange(e)}
               required={true}
-              className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.taskType ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Select Task Type *</option>
+              <option value="" className='bg-transparent text-gray-400'>Select Task Type *</option>
               {
                 (Array.isArray(taskTypes) ? taskTypes : [red]).map((type, index) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
@@ -213,9 +231,9 @@ function NewTask({ user }) {
               value={newTask.department}
               onChange={(e) => handleChange(e)}
               required={true}
-              className='bg-transparent focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.department ? 'text-gray-500': 'text-gray-900 dark:text-white'}`}
             >
-              <option value="" className='text-gray-900 dark:text-gray-300'>Select Department *</option>
+              <option value="" className='text-gray-400'>Select Department *</option>
               {
                 (Array.isArray(departments) ? departments : []).map((type, index) => {
                   return (
@@ -235,6 +253,95 @@ function NewTask({ user }) {
               (errors.department || errors.errors?.department) && 
               <p className="text-red-500 my-2 py-1">
                 { displayErrors(errors, 'department') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="adminHandler"
+              id="adminHandler"
+              value={newTask.adminHandler}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.adminHandler ? 'text-gray-500': 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>Assign Admin</option>
+              {
+                (Array.isArray(admins) ? admins : []).map((type, index) => {
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ type.id }
+                      className={'text-gray-900'}
+                    >
+                      { type.name }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.adminHandler || errors.errors?.adminHandler) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'adminHandler') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="departmentHandler"
+              id="departmentHandler"
+              value={newTask.departmentHandler}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              onMouseOver={handleDepartmentHandlerElemText}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>{departmentHandlerElemText || 'Assign Department Head'}</option>
+              {
+                (Array.isArray(departmentHeads) ? departmentHeads : []).map((type, index) => {
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ type.id }
+                      className='text-gray-900'
+                    >
+                      { type.name }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.departmentHandler || errors.errors?.departmentHandler) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'departmentHandler') }
+              </p>
+            }  
+          </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="paid"
+              id="paid"
+              value={newTask.paid}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>Select Client Payment Status</option>
+              <option value={0}>Unpaid</option>
+              <option value={1}>Paid</option>
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+            {
+              (errors.paid || errors.errors?.paid) && 
+              <p className="text-red-500 my-2 py-1">
+                { displayErrors(errors, 'paid') }
               </p>
             }  
           </div>
@@ -438,4 +545,4 @@ function NewTask({ user }) {
   )
 }
 
-export default NewTask
+export default NewTask;

@@ -6,15 +6,23 @@ import {
 import SideNav from "../Layouts/SideNav";
 import requestHandler from "../services/requestHandler";
 import Modal from "../Components/Common/Modal";
-import SelectComp from "../Components/Common/SelectComp";
 import { displayErrors } from "../data/utils";
 import PaginatorNav from "../Components/Common/PaginatorNav";
 import TableComp from "../Components/Common/TableComp";
 import taskStatus from "../data/enums/taskStatus";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {taskStatusKeys} from "../data/enums/taskStatus";
+import { toast } from 'react-toastify';
+import DropDown from "../Components/Common/DropDown";
+import { Menu } from "@headlessui/react";
+import Icon from "../Components/Common/Icon";
+import { Link } from "@inertiajs/react";
+import SortElem from "../Components/Task/SortElem"
+import TaskStatusColorCode from "../Components/Common/TaskStatusColorCode";
+import TaskStatusIndicator from "../Components/Common/TaskStatusIndicator";
+import clientStatus from '../data/enums/clientStatus';
 
-function AssignedTasks({ user }) {
+
+function AssignedTasks() {
     const [navItems, setNavItems] = useState(defaultPageData);
     const [tasks, setTasks] = useState({
         data: [],
@@ -27,27 +35,42 @@ function AssignedTasks({ user }) {
         total: 0,
     });
     const [task, setTask] = useState({});
-    const [currentTask, setCurrentTask] = useState(null);
+    const [showUnassignModal, setShowUnassignModal] = useState(false);
     const [errors, setErrors] = useState({});
     const [users, setUsers] = useState([]);
     const [response, setResponse] = useState(false);
     const [report, setReport] = useState({});
-    const [feedBack, setFeedBack] = useState('');
+    const [feedback, setFeedback] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
+		const [feedbackOptional, setFeedbackOptional] = useState(false);
+    const [taskTypes, setTaskTypes] = useState([]);
 
-    useEffect(() => {
-        setNavItems(navItemsDeterminer(user?.role, user?.clearance_level));
-    }, []);
+    const sortParams = {
+      'type': taskTypes,
+      'status': taskStatusKeys,
+      'clientStatus': clientStatus
+    }
 
+    function submitFilters(filters){
+      requestHandler.post('/api/filter/tasks?p=assigned',filters, setTasks, setErrors)
+    }
     useEffect(() => {
         fetchAssignedTasks();
         fetchUsers();
+        fetchTaskTypes();
+
     }, []);
 
     useEffect(() => {
         checkResponse();
     }, [response]);
+
+    function fetchTaskTypes() {
+      requestHandler.get('/api/task_types', setTaskTypes);
+    }
+  
 
     function checkResponse() {
         if (response && response.message) {
@@ -55,8 +78,11 @@ function AssignedTasks({ user }) {
             setShowFeedbackModal(false)
             toast.success(response.message,{
                 position: "top-center"
-            })
+            });
         }
+				if (response) {
+					closeModal();
+				}
     }
 
     function fetchUsers() {
@@ -76,52 +102,93 @@ function AssignedTasks({ user }) {
         }
     }
 
-    function closeUserAssignModal() {
-        setShowAssignUserModal(false);
-    }
-
     function getTaskReport(id) {
         requestHandler.get(`/api/report/${id}`, setReport);
         setShowModal(true);
     }
 
-		function updateReport(string, id){
-			let data = {
-				id: id,
-				status: string
+		function makeFeedbackVisible(status) {
+			if (status === 'approved') {
+				setShowTaskFeedback(true);
+				setFeedbackOptional(true);
+			} else if (status === 'rejected') {
+				setShowTaskFeedback(true);
+				setFeedbackOptional(false);
 			}
-				if(string == 'approved'){
-					requestHandler.patch(`/api/report`,data);
-				}else{
-					requestHandler.patch(`/api/report`,data);
-				}
 		}
 
-        function handleChange(e){
-            setFeedBack(e.target.value)
-        }
+		function makeFeedbackInvisible(e) {
+			e.preventDefault();
+			setShowTaskFeedback(false);
+		}
 
-        function submitFeedBack(e){
-            e.preventDefault()
+		function closeModal() {
+			setShowModal(false);
+			setShowTaskFeedback(false);
+		}
 
-            const text = {
-                feedback: feedBack
-            }
-            requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
+    function closeUnassignModal(){
+      setTask({});
+      setShowUnassignModal(false);
+    }
+
+    function updateReport(e, id, taskId){
+			e.preventDefault();
+
+			if (feedbackOptional) {
+				if (feedback) {
+					requestHandler.patch(`/api/task/${taskId}`, { feedback: feedback }, setResponse, setErrors);
+				}
+				requestHandler.patch('/api/report', {id, status: 'approved'}, setResponse, setErrors);
+			} else {
+				if (feedback) {
+					// TODO: Make the below requests one instead of two
+					requestHandler.patch(`/api/task/${taskId}`, { feedback: feedback }, setResponse, setErrors);
+					requestHandler.patch('/api/report', {id, status: 'rejected'}, setResponse, setErrors);
+				} else {
+					toast.error('Feedback field is required');
+				}
+			}
+    }
+
+    function handleChange(e){
+        setFeedback(e.target.value)
+    }
+
+    function submitFeedBack(e){
+        e.preventDefault()
+
+        const text = {
+            feedback: feedback
         }
-        function openFeedBackModal(task){
-            setShowFeedbackModal(true)
-            setTask(task)
-            console.log(task);
-        }
+        requestHandler.patch(`/api/task/${task.id}`,text, setResponse, setErrors)
+    }
+
+    function unassignTaskModal(task){
+        setTask(task)
+        setShowUnassignModal(true)
+    }
+
+    function unassignUser(id){
+      const data = {
+        userId: id,
+        taskId: task.id
+      }
+        requestHandler.patch(`/api/tasks/${id}`,data, setResponse, setErrors)
+        const updatedUsers = task.users.filter(user => user.id !== id);
+        setTask({...task,['users']: updatedUsers})
+    }
 
 
     return (
-        <SideNav navItems={navItems} user={user}>
-            <ToastContainer/>
+        <SideNav >
+			<div>
+				<TaskStatusColorCode />
+			</div>
+      <SortElem sortParams={sortParams} filterFn={submitFilters}/>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
-                    columns={["Task Name", "Task Type", "From", "To", "Report", "Feedback"]}
+                    columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Action"]}
                 >
                     {(Array.isArray(tasks.data) ? tasks.data : []).map(
                         (task, index) => {
@@ -150,41 +217,74 @@ function AssignedTasks({ user }) {
                                             ""}
                                     </th>
                                     <td className="px-2 py-4">
+                                      {
+                                       task.users?.map((user, ind) => {
+                                        return (
+                                          <p key={user.id || ind}>{user.name}</p>
+                                        )
+                                      })}
+                                        {/* {task.user && task.user.name} */}
+                                    </td>
+                                    <td className="px-2 py-4">
+                                        <TaskStatusIndicator status={task.status} />
+                                    </td>
+                                    <td className="px-2 py-4">
                                         {task.from_date ||
                                             parseDate(task.created_at)}
                                     </td>
                                     <td className="px-2 py-4">
                                         {task.to_date || "Not Specified"}
                                     </td>
-                                    {task.status !== taskStatus.PENDING ? (
-                                        <td
-                                            className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                            onClick={() =>
-                                                getTaskReport(task.id)
-                                            }
-                                        >
-                                            Report
-                                        </td>
-                                    ) : (
-                                        <td
-                                            className="px-2 py-4 cursor-pointer"
-                                            title="Report already submitted"
-                                        >
-                                            -
-                                        </td>
-                                    )}
-                                    {
-                                        task.status == taskStatus.DONE && (
-                                        <td
-                                            className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
-                                            onClick={() =>
-                                                openFeedBackModal(task)
-                                            }
-                                        >
-                                            FeedBack
-                                        </td>
-                                    )
-                                    }
+                                    <td
+                                      className="px-2 py-4 hover:underline hover:text-[var(--purple)] dark:hover:text-gray-100 cursor-pointer"
+                                      onClick={() =>
+                                        getTaskReport(task.id)
+                                      }
+                                    >
+                                      View Report
+                                    </td>
+                                    <td>
+                                      <DropDown>
+                                        <Menu.Item>
+                                          {({ active }) => (
+																						task.status == taskStatus.PENDING || task.status == taskStatus.REJECTED ?
+                                            <button
+                                              className={`${
+                                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                              onClick={() => unassignTaskModal(task)}
+                                            >
+                                              <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                                              <span className='block py-3 px-2'>Unassign</span>   
+                                            </button>
+																						:
+																						<button
+                                              className={`${
+                                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                              disabled
+																							title="Task is ongoing"
+                                            >
+                                              <Icon src='edit' className='w-4 mr-2' fill='var(--gray)'/>
+                                              <span className='block py-3 px-2'>Ongoing</span>   
+                                            </button>
+                                          )}
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                          {({ active }) => (
+                                            <Link
+                                              className={`${
+                                                active ? 'bg-green-200 text-black' : 'text-gray-900'
+                                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                                              href={`/task/${task.id}`}
+                                            >
+                                              <Icon src='eyeOpen' className='w-4 h-4 mr-2' fill='rgb(59 130 246)'/>
+                                              <span className='block py-3 px-2'>View</span>
+                                            </Link>
+                                          )}
+                                        </Menu.Item>
+                                      </DropDown>
+																		</td>
                                 </tr>
                             );
                         }
@@ -192,12 +292,12 @@ function AssignedTasks({ user }) {
                 </TableComp>
                 <PaginatorNav state={tasks} setState={setTasks} />
 
-                <Modal show={showModal} onClose={() => setShowModal(false)}>
+                <Modal show={showModal} onClose={closeModal}>
                     <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
                     <button
                                     type="button"
                                     className="right-0 float-end end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8  inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                    onClick={() => setShowModal(false)}
+                                    onClick={closeModal}
                                 >
                                     <svg
                                         className="w-3 h-3"
@@ -230,24 +330,77 @@ function AssignedTasks({ user }) {
                         </div>
                         <div className="mb-4 w-full flex">
                                 <button
-                                    className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mt-5 text-gray-900 hover:text-gray-100"
-                                    onClick={() => updateReport('approved', report[0]?.id)}
+                                    className="bg-green-600 hover:opacity-80 rounded-md px-5 py-2 mt-5 text-gray-100 disabled:hidden"
+                                    onClick={() => makeFeedbackVisible('approved')}
+																		disabled={showTaskFeedBack}
                                 >
                                     Approve
                                 </button>
                                 <button
-                                    className="bg-red-500 hover:bg-red-600 rounded-md px-4 py-3 ml-auto mt-5 text-gray-900 hover:text-gray-100"
-                                    onClick={() => updateReport('rejected', report[0]?.id)}
+								    className="bg-red-600 hover:opacity-80 rounded-md px-5 py-2 ml-auto mt-5 text-gray-100 disabled:hidden"
+                                    onClick={() => makeFeedbackVisible('rejected', report[0]?.id)}
+																		disabled={showTaskFeedBack}
                                 >
                                     Reject
                                 </button>
                             </div>
+
+														{	
+															showTaskFeedBack &&
+															(
+																<div className="mt-8">
+																	<div>
+																		<label
+																			htmlFor="feedback-content"
+																			className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+																		>
+																			Feedback {feedbackOptional ? '(optional)' : '*'}
+																		</label>
+
+																		<textarea
+																			id="feedback-content"
+																			rows="4"
+																			className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+																			placeholder="Write your feedback here..."
+																			name='feedback'
+																			onChange={handleChange}
+																			value={feedback}
+																		/>
+
+																		{
+																			(errors.feedback || errors.errors?.feedback) &&
+																				<p className="text-red-500 my-2 py-2">
+																					{ displayErrors(errors, 'feedback') }
+																				</p>
+																		}
+																	</div>
+
+																	<div className="flex justify-between mt-4 mb-2">
+																		<button
+                        						  type="submit"
+                        						  className="bg-gradient-to-r from-red-500 to-red-300 text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800"
+                        						  onClick={(e) => makeFeedbackInvisible(e)}
+                        						>
+                        						  Back
+                        						</button>
+
+																		<button
+                        						  type="submit"
+                        						  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800"
+                        						  onClick={(e) => updateReport(e, report[0]?.id, report[0]?.task_id)}
+                        						>
+                        						  Submit
+                        						</button>
+																	</div>
+																</div>
+															)
+														}
                     </div>
                 </Modal>
                 <Modal
                 show={showFeedbackModal}
                 onClose={() => setShowFeedbackModal(false)}
-              >
+                >
                 <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
                   <div className="bg-white rounded-lg shadow dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">
                     <div className="flex items-center justify-between md:p-5 border-b rounded-t dark:border-gray-600 w-full">
@@ -266,38 +419,48 @@ function AssignedTasks({ user }) {
                       </button>
                     </div>
                     <div className="p-1 md:p-5 sm:p-3 w-full">
-                      <form className="space-y-4 sm:p-8" action="#">
-                        <div>
-                          <label
-                            htmlFor="feedback-content"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                          >
-                            Feedback
-                          </label>
-                          <textarea
-                            id="feedback-content"
-                            rows="4"
-                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Write your feedback here..."
-                            name='content'
-                            onChange={handleChange}
-                            value={report.content}
-                          />
+                      <ul>
+                        {
+
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
+                <Modal
+                show={showUnassignModal}
+                onClose={() => closeUnassignModal}
+                >
+                <div className="p-4 mx-auto sm:p-8 w-full overflow-x-scroll">
+                  <div className="bg-white rounded-lg shadow dark:bg-gray-700 p-1 sm:p-8 md:p-8 w-full">
+                    <div className="flex items-center justify-between md:p-5  dark:border-gray-600 w-full">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        Unassign users
+                      </h3>
+                      <button
+                        type="button"
+                        className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={() => closeUnassignModal()}
+                      >
+                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span className="sr-only">Close modal</span>
+                      </button>
+                    </div>
+                    <div className="p-1 md:p-5 sm:p-3 w-full">
+                      {
+                         <ul>
                           {
-                            (errors.content || errors.errors?.content) &&
-                            <p className="text-red-500 my-2 py-2">
-                              { displayErrors('content') }
-                            </p>
+                            task?.users?.map((user) => {
+                              return (
+                                <li key={user.id} className="border-b rounded-t mb-5 flex justify-between">{user.name}<button className="rounded bg-gray-200 p-2 mb-2 hover:bg-gray-300" onClick={() => unassignUser(user.id)}>Unassign</button></li>
+                              )
+                            })
                           }
-                        </div>
-                        <button
-                          type="submit"
-                          className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800"
-                          onClick={(e) => submitFeedBack(e)}
-                        >
-                          Submit
-                        </button>
-                      </form>
+                        </ul>
+                      }
                     </div>
                   </div>
                 </div>

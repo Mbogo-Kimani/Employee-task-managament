@@ -51,6 +51,12 @@ export const leadTechnicianNavItems = [
     hasOptions: false,
   },
   {
+    name: 'Tasks Assigned',
+    href: '/assigned_tasks',
+    icon: 'assignment',
+    hasOptions: false,
+  },
+  {
     name: 'New Report',
     href: '/reports/new',
     icon: 'file',

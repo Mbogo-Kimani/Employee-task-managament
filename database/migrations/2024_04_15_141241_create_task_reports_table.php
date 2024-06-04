@@ -15,7 +15,7 @@ return new class extends Migration
   {
     Schema::create('task_reports', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('task_id');
+      $table->foreignId('task_id')->onDelete('cascade')->constrained();
 			$table->string('title');
 			$table->text('content');
       $table->timestamps();

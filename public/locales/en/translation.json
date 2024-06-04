@@ -1,0 +1,32 @@
+{
+    "greeting": "Hello",
+    "installations": "Installations",
+    "clients-onboarded": "Clients Onboarded",
+    "new-task": "New Task",
+    "new-employee": "New Employee",
+    "new-client": "New Client",
+
+    "admin-approval": "Awaiting Admin Approval",
+    "pending": "Pending",
+    "ongoing": "Ongoing",
+    "completed": "Completed",
+    "department-approval": "Awaiting Department Approval",
+    "rejected": "Rejected",
+    "done": "Done",
+    "add-new-task": "Add New Task",
+    "departments": "Departments",
+    "task-types": "Task Types",
+    "task-status": "Task Status",
+    "client-status": "Client Status",
+    "filters": "Filters",
+    "tasks": "Tasks",
+    "users": "Users",
+    "clients": "Clients",
+    "new-circular": "New Circular",
+    "reports": "Reports",
+    "maps": "Maps",
+    "profile": "Profile",
+    "logout": "Logout",
+
+    "switch-language": "Switch Language"
+}

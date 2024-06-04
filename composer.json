@@ -6,15 +6,27 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-pcntl": "*",
+        "africastalking/africastalking": "^3.0",
+        "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
+        "hashids/hashids": "^5.0",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^9.19",
+        "laravel/horizon": "^5.24",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1.48",
+        "predis/predis": "^2.2",
+        "pusher/pusher-php-server": "^7.2",
+        "stevebauman/hypertext": "^1.1",
+        "symfony/http-client": "^7.0",
+        "symfony/mailgun-mailer": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "knuckleswtf/scribe": "^4.35",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
@@ -60,7 +72,11 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
-        }
+        },
+        "platform": {
+            "ext-pcntl": "8.0",
+            "ext-posix": "8.0"
+          }
     },
     "minimum-stability": "stable",
     "prefer-stable": true
