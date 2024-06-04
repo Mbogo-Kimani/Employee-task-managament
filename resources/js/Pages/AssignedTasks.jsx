@@ -220,7 +220,9 @@ function AssignedTasks() {
                                       {
                                        task.users?.map((user) => {
                                         return (
-                                          <p>{user.name}</p>
+                                          <p
+                                          key={user.id}
+                                          >{user.name}</p>
                                         )
                                       })}
                                         {/* {task.user && task.user.name} */}
