@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const ClientChart = ({clientData}) => {
   const {t} = useTranslation()
   let chartData = {
-    labels: ['Jan', 'Feb', 'Mar','Apr','May'],
+    labels: ['Jan', 'Feb', 'Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
       {
         id: 1,

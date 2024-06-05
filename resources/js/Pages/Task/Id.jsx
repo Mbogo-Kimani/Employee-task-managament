@@ -3,7 +3,6 @@ import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import Icon from '../../Components/Common/Icon';
 import MessageElem from '../../Components/Task/MessageElem';
-import { toast } from 'react-toastify';
 
 function Id({ user }) {
   const [currentTask, setCurrentTask] = useState({
@@ -17,6 +16,8 @@ function Id({ user }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [scrolls, setScrolls] = useState(0);
+  const [textareaHeight, setTextareaHeight] = useState(1);
+
   const messagesEnd = useRef(null);
   const chatContainer = useRef(null);
   
@@ -80,6 +81,29 @@ function Id({ user }) {
       }
     }
   }
+
+  const handleInputChange = (event) => {
+    setNewMessage(event.target.value);
+    const { scrollHeight, clientHeight } = event.target;
+    const newHeight = Math.min(5 * parseInt(getComputedStyle(event.target).lineHeight), scrollHeight);
+    
+    if (newHeight > clientHeight) {
+      if (textareaHeight <= 5) setTextareaHeight((prev) => prev + 1);
+    } else {
+      if (textareaHeight > 1) setTextareaHeight((prev) => prev - 1);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      
+      submitMessage(event);
+    } else if (event.key === 'Enter' && event.shiftKey) {
+      
+      event.preventDefault();
+      setNewMessage((prevValue) => prevValue + '\n');
+    }
+  };
 
   return (
     <SideNav>
@@ -147,16 +171,18 @@ function Id({ user }) {
             className='w-full md:pt-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:w-[calc(100%-.5rem)] juice:w-full shadow-md flex justify-start'
           >
             <textarea
-              name="new-message"
-              rows="2"
-              placeholder='Enter your message'
+              name='new-message'
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder='Enter your message'
+              onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
               className="block p-2.5 w-full text-sm text-gray-900 outline-none bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              rows={textareaHeight}
+              style={{ resize: 'none' }}
             />
             <button
               type="submit"
-              className="text-white focus:scale-90 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white focus:scale-90 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               <Icon src='send' className='h-4 w-4' fill='var(--gray)'/>
             </button>
