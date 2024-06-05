@@ -1,15 +1,15 @@
 import React, {useState,useEffect} from 'react'
-import TableComp from "../../Components/Common/TableComp";
-import PaginatorNav from "../../Components/Common/PaginatorNav";
-import requestHandler from "../../services/requestHandler";
-import SideNav from "../../Layouts/SideNav";
-import { navItemsDeterminer, pageData as defaultPageData } from '../../data/indexNav';
+import TableComp from "../../../Components/Common/TableComp";
+import PaginatorNav from "../../../Components/Common/PaginatorNav";
+import requestHandler from "../../../services/requestHandler";
+import SideNav from "../../../Layouts/SideNav";
+import { navItemsDeterminer, pageData as defaultPageData } from '../../../data/indexNav';
 import {Bar} from 'react-chartjs-2'
 import Chart from 'chart.js/auto';
-import EmployeeChart from '../../Components/Charts/EmployeeChart'
-import { loaderSetter } from '../../Components/Common/Loader';
+import EmployeeChart from '../../../Components/Charts/EmployeeChart'
+import { loaderSetter } from '../../../Components/Common/Loader';
 
-const EmployeeStat = () => {
+const Stats = () => {
 	const [users, setUsers] = useState({});
 	const [response, setResponse] = useState(false);
 	const [userDataSet, setUserDataSet] = useState([])
@@ -48,4 +48,4 @@ const EmployeeStat = () => {
 	)
 }
 
-export default EmployeeStat
+export default Stats;

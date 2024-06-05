@@ -35,27 +35,27 @@ const Maps = () => {
 
   return (
     <SideNav>
-      <div className="flex justify-end">
+      <div className="flex sm:justify-end flex-col sm:flex-row items-end">
         <button
-          className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mx-3 text-gray-900 hover:text-gray-100"
+          className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mx-3 sm:my-0 my-2 text-gray-900 hover:text-gray-100"
           onClick={openNewPointModal}
         >
           Add New Point
         </button>
 
         <button
-          className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mx-3 text-gray-900 hover:text-gray-100"
+          className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 mx-3 sm:my-0 my-2 text-gray-900 hover:text-gray-100"
           onClick={openNewLineModal}
         >
           Add New Line
         </button>
       </div>
 
-      <div className='flex justify-between w-[30vw] mb-5'>
-        <button onClick={() => setView('streets-v9')} className={`w-52 border rounded mr-5 hover:bg-green-200 cursor-pointer ${view == 'streets-v9' ? "bg-green-500" : "bg-transparent"}`}>
+      <div className='flex flex-col sm:flex-row justify-start items-center my-3 ml-10 sm:justify-between w-[30vw] mb-5'>
+        <button onClick={() => setView('streets-v9')} className={`w-52 border rounded mr-5 sm:my-0 my-1 hover:bg-green-200 cursor-pointer ${view == 'streets-v9' ? "bg-green-500" : "bg-transparent"}`}>
           Street view
         </button>
-        <button onClick={() => setView('satellite-streets-v11')} className={`w-52 border rounded mr-5 hover:bg-green-200 cursor-pointer ${view == 'satellite-streets-v11' ? "bg-green-500" : "bg-transparent"}`}>
+        <button onClick={() => setView('satellite-streets-v11')} className={`w-52 border rounded mr-5 sm:my-0 my-1 hover:bg-green-200 cursor-pointer ${view == 'satellite-streets-v11' ? "bg-green-500" : "bg-transparent"}`}>
           Satellite view
         </button>
       </div>

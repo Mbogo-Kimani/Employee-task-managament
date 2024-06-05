@@ -432,7 +432,7 @@ function NewTask() {
           onClose={closeNewTaskTypeModal}
         >
           <div className="my-2 px-2 w-full h-fit overflow-y-auto">
-            <div className="bg-white rounded-lg shahiddendow dark:bg-gray-700">
+            <div className="bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Add a New Task Type
