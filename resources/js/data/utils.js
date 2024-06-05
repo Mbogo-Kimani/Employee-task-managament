@@ -19,7 +19,7 @@ export function handlePage(url, stateSetter = () => {}) {
  * @returns
  */
 export function displayErrors(errors, key) {
-  if (errors[key] ) {
+  if (errors[key]) {
     return Array.isArray(errors[key]) ? errors[key][0] : errors[key];
   } else if (
     errors.errors &&

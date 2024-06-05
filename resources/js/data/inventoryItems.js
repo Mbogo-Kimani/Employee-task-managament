@@ -1,5 +1,3 @@
-import department from "./enums/department";
-
 export const inventoryNavtems = [
   {
     name: 'Maintenance tasks',
