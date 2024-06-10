@@ -81,7 +81,7 @@ export const leadTechnicianPageItems = [
   {
     name: 'Tasks Assigned',
     numberToDisplay: 'tasksAssigned',
-    href: '/assigned_tasks'
+    href: '/assigned_tasks',
   },
   // {
   //   name: 'Register Faulty Product',

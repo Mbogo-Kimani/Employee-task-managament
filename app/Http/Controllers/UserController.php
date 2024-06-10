@@ -261,7 +261,7 @@ class UserController extends Controller
 	}
 
 	public function employeesStatsPage(){
-		return Inertia::render('Admin/EmployeeStat');
+		return Inertia::render('Admin/Employees/Stats');
 	}
 
 

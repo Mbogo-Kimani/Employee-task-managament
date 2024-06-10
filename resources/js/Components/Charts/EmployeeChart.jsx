@@ -47,11 +47,11 @@ const EmployeeChart = ({users,data}) => {
     }
   };
   return (
-    <div className='w-[80vw] h-[100vh]'>
+    <div>
       <Bar 
-       data={chartData}
-       options={options}
-       />
+        data={chartData}
+        options={options}
+      />
     </div>
   )
 };

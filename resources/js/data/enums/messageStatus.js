@@ -1,4 +1,4 @@
 export default {
-	1: 'Pending',
-	2: 'Delivered',
+  1: 'Pending',
+  2: 'Delivered',
 };

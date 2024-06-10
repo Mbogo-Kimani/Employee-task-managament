@@ -1,8 +1,18 @@
-import department from "./enums/department";
-import clearanceLevel from "./enums/clearanceLevel";
-import { inventoryNavtems, inventoryPageItems, storeManagerNavItems, storeManagerPageItems } from "./inventoryItems";
-import adminNavItems, { adminPageItems } from "./adminItems";
-import { leadTechnicianNavItems, leadTechnicianPageItems, technicianNavtems, technicianPageItems } from "./technicianItems";
+import department from './enums/department';
+import clearanceLevel from './enums/clearanceLevel';
+import {
+  inventoryNavtems,
+  inventoryPageItems,
+  storeManagerNavItems,
+  storeManagerPageItems,
+} from './inventoryItems';
+import adminNavItems, { adminPageItems } from './adminItems';
+import {
+  leadTechnicianNavItems,
+  leadTechnicianPageItems,
+  technicianNavtems,
+  technicianPageItems,
+} from './technicianItems';
 
 export const pageData = {
   navItems: [],
@@ -13,7 +23,7 @@ export let pageItems = [];
 
 export let navItems = [];
 
-function pageAndNavItemsDeterminer (role, clearance) {
+function pageAndNavItemsDeterminer(role, clearance) {
   if (role === department.INVENTORY) {
     if (clearance === clearanceLevel.DEPARTMENT_LEADER) {
       pageData.navItems = storeManagerNavItems;
