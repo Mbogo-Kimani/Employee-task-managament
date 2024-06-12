@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::get('/employees', [UserController::class, 'index']);
   Route::put('/user', [UserController::class, 'update']);
-	Route::delete('/user/{id}', [UserController::class, 'delete']);
+	Route::delete('/user/{user_id}', [UserController::class, 'deleteUser']);
   Route::post('/user', [UserController::class, 'store']);
 	Route::get('/user/{user_id}', [UserController::class, 'show']);
 	Route::patch('/user', [UserController::class, 'updateUserDetails']);

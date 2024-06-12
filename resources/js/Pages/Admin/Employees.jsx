@@ -36,7 +36,7 @@ function Employees() {
   const [response, setResponse] = useState(false);
   const [formMode, setFormMode] = useState('');
   const [deleteUserModal, setDeleteUserModal] = useState(false);
-  const [deletedUser, setDeletedUser] = useState(newUser);
+  const [deletedUser, setDeletedUser] = useState({});
   const [countryCode, setCountryCode] = useState('+254')
 
 
@@ -86,9 +86,13 @@ function Employees() {
 
   function toggleOpenModal(mode = '', userId = null) {
     setFormMode(mode);
-    if (mode && mode === 'edit') {
-      requestHandler.get(`/api/user/${userId}`, setNewUser);
+    if (mode) {
+      setDeletedUser({['id']: userId});
+      if( mode === 'edit'){
+        requestHandler.get(`/api/user/${userId}`, setNewUser);
+      }
     }
+
     setShowNewUserModal(true);
   }
 
@@ -119,7 +123,7 @@ function Employees() {
   function openDeleteUserModal(e) {
     e.preventDefault();
     setDeleteUserModal(true);
-    setDeletedUser(newUser);
+    //setDeletedUser(newUser);
   }
 
   function closeDeleteUserModal() {
@@ -128,6 +132,7 @@ function Employees() {
   }
 
   function deleteUser() {
+    console.log(deletedUser);
     requestHandler.delete(`/api/user/${deletedUser.id}`, deleteUserResponse, setErrors, loaderSetter);
   }
 

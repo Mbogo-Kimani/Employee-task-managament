@@ -5,9 +5,11 @@ import requestHandler from "../../services/requestHandler";
 import SideNav from "../../Layouts/SideNav";
 import { navItemsDeterminer, pageData as defaultPageData } from '../../data/indexNav';
 import Modal from "../../Components/Common/Modal";
-import ReportActionTrigger from '../../Components/Admin/ReportActionTrigger';
 import { toast } from 'react-toastify';
 import { loaderSetter } from '../../Components/Common/Loader';
+import DropDown from '../../Components/Common/DropDown';
+import { Menu } from '@headlessui/react';
+import Icon from '../../Components/Common/Icon';
 
 
 const Reports = () => {
@@ -110,11 +112,14 @@ const Reports = () => {
                                 {report.date}
                             </td>
                             <td className="px-2 py-4 cursor-pointer">
-                              <ReportActionTrigger
-                                openViewReportModal={openModal}
-                                report={report}
-                                openReviewReport={openReviewReport}
-                              />
+                              <DropDown>
+                                <Menu.Item as={'button'} className='p-2 hover:bg-green-300 w-full' onClick={() => openReviewReport(report)}>
+                                  <span className='flex justify-start items-center'>
+                                    <Icon src='report' className="w-4 h-4" fill="var(--blue)"/>
+                                    <p className='pl-2'>Review Report</p>
+                                  </span>
+                                </Menu.Item>
+                              </DropDown>
                             </td>
                         </tr>
                     );
