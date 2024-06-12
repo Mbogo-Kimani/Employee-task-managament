@@ -86,7 +86,7 @@ class UserController extends Controller
 		return response()->json(['message' => 'Employee edit successful']);
 	}
 
-	public function delete(Request $request, $id) {
+	public function deleteUser(Request $request, $id) {
 		$user = auth()->user();
 
 		if (!$user || $user->role !== DepartmentEnum::ADMIN) {
