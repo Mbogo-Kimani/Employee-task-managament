@@ -28,6 +28,8 @@ function Employees() {
     email: '',
     role: '',
     clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
+    password: 'Etnet Technologies',
+    password_confirmation: 'Etnet Technologies',
   });
   const [departments, setDepartments] = useState([]);
   const [clearanceLevels, setClearanceLevels] = useState([]);
@@ -67,6 +69,8 @@ function Employees() {
         role: '',
         phone_number: '',
         clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
+	password: 'Etnet Technologies',
+	password_confirmation: 'Etnet Technologies',
       });
       setShowNewUserModal(false);
     }
@@ -104,6 +108,8 @@ function Employees() {
       role: '',
       phone_number: '',
       clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
+      password: 'Etnet Technologies',
+      password_confirmation: 'Etnet Technologies',
     });
   }
 

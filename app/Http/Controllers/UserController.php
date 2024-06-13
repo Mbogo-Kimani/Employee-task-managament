@@ -170,23 +170,26 @@ class UserController extends Controller
 		$request->validate([
 			'email' => 'required|string|email|max:255',
 			'name' => 'required|string|max:255',
-			'password' => ['confirmed', Rules\Password::defaults()],
 		]);
-		$user = auth()->user();
+
+		$auth_user = auth()->user();
 		
-		if ($user) {
-			// Update the user's attributes
-			$user->update([
-				'name' => $request->name,
-				'email' => $request->email,
-				'password' => Hash::make($request->password)
-			]);
-		
-			// Return a response indicating success
+		if ($auth_user) {
+			$user = User::find($auth_user->id);
+			$user->name = $request->name;
+			$user->email = $request->email;
+
+			if ($request->password) {
+				$request->validate(['password' => ['confirmed', Rules\Password::defaults()]]);
+				$user->password = Hash::make($request->password);
+			}
+			$user->save();
+
 			return response()->json(['message' => 'User updated successfully']);
 		}
 		abort(400, 'User not found');
 	}
+
 	public function navigateToAdminUserTasks() {
 		return Inertia::render('Admin/Employees/UserId/Tasks');
 	}

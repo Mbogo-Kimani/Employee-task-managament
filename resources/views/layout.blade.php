@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Bootstrap-->
-    <link rel="stylesheet" href="{{asset('/stylesheet/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{asset('stylesheet/bootstrap.css')}}">
 
     <!-- Template Style-->
     <link rel="stylesheet" href="{{asset('stylesheet/font-awesome.css')}}">
@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{asset('rev-slider/css/navigation.css')}}">
     <link rel="stylesheet" href="{{asset('rev-slider/css/settings.css')}}">
     <link rel="stylesheet" href="{{asset('assets/app.css')}}">
-
+    <link rel="stylesheet" href="{{asset('images/rev-slider/4.jpg')}}">
         <!-- Favicon -->
     <!-- For Android Chrome -->
     <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
@@ -38,12 +38,11 @@
 
     <!-- For Favicons -->
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+   
     <link rel="shortcut icon" href="favicon.ico">
-
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <!-- For Web App Manifest -->
-    <link rel="manifest" href="site.webmanifest">
-
+     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
