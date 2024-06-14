@@ -170,6 +170,7 @@ class UserController extends Controller
 		$request->validate([
 			'email' => 'required|string|email|max:255',
 			'name' => 'required|string|max:255',
+			'password' => ['confirmed', Rules\Password::defaults()]
 		]);
 
 		$auth_user = auth()->user();
@@ -180,7 +181,6 @@ class UserController extends Controller
 			$user->email = $request->email;
 
 			if ($request->password) {
-				$request->validate(['password' => ['confirmed', Rules\Password::defaults()]]);
 				$user->password = Hash::make($request->password);
 			}
 			$user->save();
