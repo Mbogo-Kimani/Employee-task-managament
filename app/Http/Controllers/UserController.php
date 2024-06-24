@@ -81,6 +81,7 @@ class UserController extends Controller
 		$user_to_edit->image = $request->image;
 		$user_to_edit->department_id = $request->role;
 		$user_to_edit->clearance_level = $request->clearance_level;
+		$user_to_edit->phone_number = $request->phone_number;
 		$user_to_edit->save();
 
 		return response()->json(['message' => 'Employee edit successful']);
