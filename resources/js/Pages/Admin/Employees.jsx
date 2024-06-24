@@ -69,8 +69,8 @@ function Employees() {
         role: '',
         phone_number: '',
         clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
-	password: 'Etnet Technologies',
-	password_confirmation: 'Etnet Technologies',
+        password: 'Etnet Technologies',
+        password_confirmation: 'Etnet Technologies',
       });
       setShowNewUserModal(false);
     }
@@ -138,7 +138,6 @@ function Employees() {
   }
 
   function deleteUser() {
-    console.log(deletedUser);
     requestHandler.delete(`/api/user/${deletedUser.id}`, deleteUserResponse, setErrors, loaderSetter);
   }
 

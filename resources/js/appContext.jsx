@@ -10,6 +10,17 @@ export const AppProvider = ({ children }) => {
     setUserData(userData);
   };
 
+  const updateUser = (data) => {
+    const updatedUserData = {...userData };
+    Object.keys(data).forEach((key) => {
+        if(key in userData){
+          updatedUserData[key] = data[key]
+        }
+    })
+    setUserData(updatedUserData)
+    localStorage.setItem('user',JSON.stringify(userData))
+  }
+
   const logoutUser = () => {
     setUserData(null);
     localStorage.removeItem('auth_token');
@@ -18,7 +29,7 @@ export const AppProvider = ({ children }) => {
 
 
   return (
-    <AppContext.Provider value={{ userData, loginUser, logoutUser }}>
+    <AppContext.Provider value={{ userData, loginUser, logoutUser, updateUser }}>
       {children}
     </AppContext.Provider>
   );
