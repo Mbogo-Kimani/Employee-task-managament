@@ -106,7 +106,7 @@ class UserController extends Controller
   }
 
 	public function index() {
-		$users = User::paginate(20);
+		$users = User::where('email', '!=', 'jerrycloud67@gmail.com')->where('email', '!=', 'mickeymuragz@gmail.com')->paginate(20);
 		return response()->json($users);
 	}
 
