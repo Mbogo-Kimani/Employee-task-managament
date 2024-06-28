@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class DepartmentController extends Controller
 {
   public function index() {
-		$departments = Department::all();
+		$departments = Department::with('subdepartments')->get();
     return response()->json($departments);
   }
 }

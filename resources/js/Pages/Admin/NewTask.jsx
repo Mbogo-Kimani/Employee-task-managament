@@ -17,6 +17,7 @@ function NewTask() {
   const [newTask, setNewTask] = useState({
     name: '',
     department: '',
+    subDepartment: '',
     departmentHandler: '',
     adminHandler: '',
     taskType: '',
@@ -123,6 +124,7 @@ function NewTask() {
 
   function handleChange(e) {
     setNewTask({...newTask, [e.target.name]: e.target.value})
+    console.log(newTask);
   }
 
   function handleTaskTypeChange (e) {
@@ -145,6 +147,10 @@ function NewTask() {
     if(response){
       notify('Task added')
     }
+  }
+
+  function getSubDepartments(){
+    if (newTask.department) return departments.find(dept => dept.id === Number(newTask.department)).subdepartments
   }
 
   function submitNewTaskType (e) {
@@ -262,6 +268,35 @@ function NewTask() {
               </p>
             }  
           </div>
+  { 
+    getSubDepartments()?.length > 0  &&
+      <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="subDepartment"
+              id="subDepartment"
+              value={newTask.subDepartment}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.department ? 'text-gray-500': 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='text-gray-400'>Select Subdepartment *</option>
+              {
+                getSubDepartments().map((type, index) => {
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ type.name }
+                      className='text-gray-900'
+                    >
+                      { type.name }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+          </div>
+          }
 
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
