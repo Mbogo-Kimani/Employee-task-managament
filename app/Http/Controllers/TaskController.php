@@ -136,9 +136,9 @@ class TaskController extends Controller
 	}
 
 	public function index(Request $request) {
-		$currentUser = auth()->user();
-		$tasks = Task::where('user_id', $currentUser->id)
-					->paginate(20);
+		$loggedInuser = auth()->user();
+		$currentUser = User::find($loggedInuser->id);
+		$tasks = $currentUser->tasks()->paginate(20);
 		
 		return response()->json($tasks);
 	}
