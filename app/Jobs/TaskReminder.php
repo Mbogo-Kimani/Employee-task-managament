@@ -47,9 +47,14 @@ class TaskReminder implements ShouldQueue
         $handler = null;
         $department = Department::find($this->task->department_id);
 
-        if($this->task->user_id){
-            $handler = User::find($this->task->user_id);
-            Mail::to($handler->email)->send(new \App\Mail\TaskReminder($this->task,$this->admin,$handler, $department));
+        // if($this->task->user_id){
+        //     $handler = User::find($this->task->user_id);
+        //     Mail::to($handler->email)->send(new \App\Mail\TaskReminder($this->task,$this->admin,$handler, $department));
+        // }
+        if($this->task->users){
+            foreach($this->task->users as $user){
+               Mail::to($user->email)->send(new \App\Mail\TaskReminder($this->task,$this->admin,$handler, $department));
+            }
         }
         $department_leader = User::where('department_id', $this->task->department_id)->where('clearance_level',1)->first();
         Mail::to($this->admin->email)->send(new \App\Mail\TaskReminder($this->task,$this->admin,$handler, $department));

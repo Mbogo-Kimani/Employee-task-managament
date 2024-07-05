@@ -9,6 +9,7 @@ import clientStatus from '../../data/enums/clientStatus';
 
 const SortElem = ({sortParams,filterFn}) => {
   const [filters, setFilters] = useState({});
+  const [showSort, setShowSort] = useState(false);
 
   function handleFilters(e){
     setFilters({...filters, [e.target.name]: e.target.value})
@@ -22,29 +23,42 @@ const SortElem = ({sortParams,filterFn}) => {
 
   return (
     <div>
-        <div className="flex space-x-4 w-[100vw]">
-        { Object.keys(sortParams).includes('departmentId') && <SelectComp
-        name="departmentId"
-        id="departmentId"
-        className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('departmentId') ? "bg-green-400" : "bg-transparent"}`}
-        onChange={(e) => handleFilters(e)}
+      <div>
+        <button
+          className='bg-green-500 font-medium py-2 px-4 rounded block sm:hidden'
+          onClick={() => setShowSort(!showSort)}
         >
-            <option value="" className={`bg-transparent text-gray-900 dark:text-red-300 `}>{i18next.t('departments')}</option>
-            {
-            (Array.isArray(sortParams.departmentId) ? sortParams.departmentId : []).map((type, index) => {
-                return (
-                <option
-                    key={ type.id || index }
-                    value={ departmentsEnum[type.enum_key] }
-                    className='text-gray-900'
-                >
-                    { type.name }
-                </option>
-                )
-            })
-            }
-        </SelectComp>}
-           { Object.keys(sortParams).includes('type') && <SelectComp
+          { showSort ? 'Hide' : 'Show' } Sort Parameters
+        </button>
+      </div>
+      <div className={`sm:flex space-x-4 sm:flex-wrap sm:justify-start ${showSort ? '' : 'hidden'}`}>
+        { 
+          Object.keys(sortParams).includes('departmentId') &&
+            <SelectComp
+              name="departmentId"
+              id="departmentId"
+              className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('departmentId') ? "bg-green-400" : "bg-transparent"}`}
+              onChange={(e) => handleFilters(e)}
+            >
+              <option value="" className={`bg-transparent text-gray-900 dark:text-red-300 `}>{i18next.t('departments')}</option>
+              {
+                (Array.isArray(sortParams.departmentId) ? sortParams.departmentId : []).map((type, index) => {
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ departmentsEnum[type.enum_key] }
+                      className='text-gray-900'
+                    >
+                      { type.name }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+        }
+        {
+          Object.keys(sortParams).includes('type') &&
+            <SelectComp
               name="type"
               id="taskType"
               // value={newTask.taskType}
@@ -67,8 +81,11 @@ const SortElem = ({sortParams,filterFn}) => {
                   )
                 })
               }
-            </SelectComp>}
-           { Object.keys(sortParams).includes('status') && <SelectComp
+            </SelectComp>
+        }
+        {
+          Object.keys(sortParams).includes('status') &&
+            <SelectComp
               name="status"
               id="status"
               // value={newTask.taskType}
@@ -91,8 +108,11 @@ const SortElem = ({sortParams,filterFn}) => {
                   )
                 })
               }
-            </SelectComp>}
-           { Object.keys(sortParams).includes('clientStatus') && <SelectComp
+            </SelectComp>
+        }
+        {
+          Object.keys(sortParams).includes('clientStatus') &&
+            <SelectComp
               name="clientStatus"
               id="clientStatus"
               // value={newTask.taskType}
@@ -110,19 +130,20 @@ const SortElem = ({sortParams,filterFn}) => {
                       title={ key }
                       className='bg-transparent text-gray-900 dark:text-gray-300'
                     >
-                      { clientStatus[key]}
+                      { clientStatus[key] }
                     </option>
                   )
                 })
               }
-            </SelectComp>}
-            <button
-              className={`bg-green-400 to-green-300 hover:from-green-500 hover:to-green-600 px-4 py-2 rounded-md `}
-              onClick={(e) => submitSort(e)}
-            >
-              {i18next.t('filters')}({Object.keys(filters).length})
-            </button>
-        </div>
+            </SelectComp>
+        }
+        <button
+          className={`bg-green-400 to-green-300 hover:from-green-500 hover:to-green-600 px-4 py-2 rounded-md `}
+          onClick={(e) => submitSort(e)}
+        >
+          {i18next.t('filters')}({Object.keys(filters).length})
+        </button>
+      </div>
     </div>
   )
 }

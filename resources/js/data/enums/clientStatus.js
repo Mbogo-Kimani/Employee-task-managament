@@ -1,4 +1,4 @@
 export default {
-   0: 'PAID',
-   1: 'UNPAID'
-}
+  0: 'UNPAID',
+  1: 'PAID',
+};

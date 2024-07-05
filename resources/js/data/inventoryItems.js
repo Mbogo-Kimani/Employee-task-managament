@@ -1,16 +1,14 @@
-import department from "./enums/department";
-
 export const inventoryNavtems = [
-  {
-    name: 'Maintenance tasks',
-    icon: '/icons/screwdriver.svg',
-    hasOptions: false,
-  },
-  {
-    name: 'Replacement Requests',
-    icon: '/icons/hammer.svg',
-    hasOptions: false,
-  },
+  // {
+  //   name: 'Maintenance tasks',
+  //   icon: '/icons/screwdriver.svg',
+  //   hasOptions: false,
+  // },
+  // {
+  //   name: 'Replacement Requests',
+  //   icon: '/icons/hammer.svg',
+  //   hasOptions: false,
+  // },
 ];
 
 export const inventoryPageItems = [
@@ -40,16 +38,16 @@ export const inventoryPageItems = [
 ];
 
 export const storeManagerNavItems = [
-  {
-    name: 'Maintenance tasks',
-    icon: '/icons/screwdriver.svg',
-    hasOptions: false,
-  },
-  {
-    name: 'Replacement Requests',
-    icon: '/icons/hammer.svg',
-    hasOptions: false,
-  },
+  // {
+  //   name: 'Maintenance tasks',
+  //   icon: '/icons/screwdriver.svg',
+  //   hasOptions: false,
+  // },
+  // {
+  //   name: 'Replacement Requests',
+  //   icon: '/icons/hammer.svg',
+  //   hasOptions: false,
+  // },
   {
     name: 'Equipments',
     href: '/equipments',

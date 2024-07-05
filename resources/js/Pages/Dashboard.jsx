@@ -153,19 +153,19 @@ function Home() {
             }
           </div>
         </section>
-        <section className='flex'>
+        <section className='flex w-full'>
           {
             userData?.role == departmentsEnum.ADMIN && (
-              <>
-                <div className='w-[40vw] mt-5 mr-5'>
+              <div className='w-full'>
+                <div className='w-full mt-5 sm:w-[40vw] md:w-[40vw] lg:w-[40vw] xl:w-[40vw]'>
                   <h2 className='font-medium text-xl'>{t('installations')}</h2>
                   <BarChart pendingData={pendingDataSet} ongoingData={ongoingDataSet} finishedData={finishedDataSet}/>
                 </div>
-                <div className='w-[40vw] mt-5'>
+                <div className='w-full mt-5 sm:w-[40vw] md:w-[40vw] lg:w-[40vw] xl:w-[40vw]'>
                   <h2 className='font-medium text-xl'>{t('clients-onboarded')}</h2>
                   <ClientChart clientData={clientDataSet}/>
                 </div>
-              </>
+              </div>
 
             )
           }  

@@ -1,4 +1,4 @@
-import i18next from '../../i18n'
+import i18next from '../../i18n';
 
 export default {
   PENDING: 1,
@@ -14,7 +14,7 @@ export const taskStatusKeys = {
   3: 'Awaiting Admin Approval',
   4: 'Rejected',
   5: 'Done',
-}
+};
 
 export const taskStatusRender = [
   {

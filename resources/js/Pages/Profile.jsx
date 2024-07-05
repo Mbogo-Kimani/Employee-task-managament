@@ -1,24 +1,18 @@
 import React, {useState,useEffect,useContext} from 'react'
 import requestHandler from "../services/requestHandler";
 import SideNav from "../Layouts/SideNav";
-import {
-    navItemsDeterminer,
-    pageData as defaultPageData,
-} from "../data/indexNav";
 import { toast } from 'react-toastify';
 import {AppContext} from '../appContext'
 
 
 const Profile = () => {
-    const [navItems, setNavItems] = useState(defaultPageData);
-    const {userData} = useContext(AppContext)
-    const [name, setName] = useState(userData.name);
-    const [email, setEmail] = useState(userData.email);
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [errors,setErrors] = useState();
+    const {userData, updateUser} = useContext(AppContext)
+    const [userDetails, setUserDetails] = useState({
+      name: userData?.name,
+      email: userData?.email,
+    })
     const [response, setResponse] = useState();
-
+    const [errors, setErrors] = useState()
 
     useEffect(() => {
         checkResponse();
@@ -26,24 +20,21 @@ const Profile = () => {
 
     function checkResponse() {
         if (response && response.message) {
+            updateUser(userDetails)
             toast.success(response.message,{
                 position: "top-center"
             });
-            window.location.reload()
         }
     }
 
     const handleSubmit = (e) => {
-      e.preventDefault();
-      const data = {
-        name,
-        email,
-        password: password.length  ? password : undefined,
-        password_confirmation: confirmPassword
-      }
-
-      requestHandler.put('/api/user',data, setResponse, setErrors )
+      e.preventDefault();     
+      requestHandler.put('/api/user',userDetails, setResponse, setErrors )
     };
+
+    const handleUpdate = (e) => {
+      setUserDetails({...userDetails, [e.target.name]: e.target.value})
+    }
   
     return (
     <SideNav>
@@ -55,9 +46,10 @@ const Profile = () => {
             <input
               type="text"
               id="name"
+              name='name'
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={userDetails.name}
+              onChange={(e) => handleUpdate(e)}
               required
             />
           </div>
@@ -66,9 +58,10 @@ const Profile = () => {
             <input
               type="email"
               id="email"
+              name='email'
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userDetails.email}
+              onChange={(e) => handleUpdate(e)}
               required
             />
           </div>
@@ -78,10 +71,11 @@ const Profile = () => {
                 <input
                 type="password"
                 id="password"
+                name='password'
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-                value={password}
+                value={userDetails.password}
                 placeholder="*********"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handleUpdate(e)}
                 // required
                 />
             </div>
@@ -90,10 +84,11 @@ const Profile = () => {
                 <input
                 type="password"
                 id="confirm-password"
+                name='password_confirmation'
                 placeholder="*********"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={userDetails.password_confirmation}
+                onChange={(e) => handleUpdate(e)}
                 // required
                 />
             </div>

@@ -81,12 +81,13 @@ class UserController extends Controller
 		$user_to_edit->image = $request->image;
 		$user_to_edit->department_id = $request->role;
 		$user_to_edit->clearance_level = $request->clearance_level;
+		$user_to_edit->phone_number = $request->phone_number;
 		$user_to_edit->save();
 
 		return response()->json(['message' => 'Employee edit successful']);
 	}
 
-	public function delete(Request $request, $id) {
+	public function deleteUser(Request $request, $id) {
 		$user = auth()->user();
 
 		if (!$user || $user->role !== DepartmentEnum::ADMIN) {
@@ -105,7 +106,7 @@ class UserController extends Controller
   }
 
 	public function index() {
-		$users = User::paginate(20);
+		$users = User::where('email', '!=', 'jerrycloud67@gmail.com')->where('email', '!=', 'mickeymuragz@gmail.com')->paginate(20);
 		return response()->json($users);
 	}
 
@@ -170,23 +171,26 @@ class UserController extends Controller
 		$request->validate([
 			'email' => 'required|string|email|max:255',
 			'name' => 'required|string|max:255',
-			'password' => ['confirmed', Rules\Password::defaults()],
+			'password' => ['confirmed', Rules\Password::defaults()]
 		]);
-		$user = auth()->user();
+
+		$auth_user = auth()->user();
 		
-		if ($user) {
-			// Update the user's attributes
-			$user->update([
-				'name' => $request->name,
-				'email' => $request->email,
-				'password' => Hash::make($request->password)
-			]);
-		
-			// Return a response indicating success
+		if ($auth_user) {
+			$user = User::find($auth_user->id);
+			$user->name = $request->name;
+			$user->email = $request->email;
+
+			if ($request->password) {
+				$user->password = Hash::make($request->password);
+			}
+			$user->save();
+
 			return response()->json(['message' => 'User updated successfully']);
 		}
 		abort(400, 'User not found');
 	}
+
 	public function navigateToAdminUserTasks() {
 		return Inertia::render('Admin/Employees/UserId/Tasks');
 	}
@@ -261,7 +265,7 @@ class UserController extends Controller
 	}
 
 	public function employeesStatsPage(){
-		return Inertia::render('Admin/EmployeeStat');
+		return Inertia::render('Admin/Employees/Stats');
 	}
 
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../../data/indexNav';
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import departmentEnum from '../../data/enums/department';
@@ -7,14 +6,13 @@ import Modal from '../../Components/Common/Modal';
 import { displayErrors } from '../../data/utils';
 import TableComp from '../../Components/Common/TableComp';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
-import Icon from '../../Components/Common/Icon';
 import { loaderSetter } from '../../Components/Common/Loader';
 import EmployeesTableElem from '../../Components/Admin/EmployeesTableElem';
 import { toast } from 'react-toastify';
 import {router} from "@inertiajs/react"
+import clearanceLevel from '../../data/enums/clearanceLevel';
 
 function Employees() {
-  const [pageItems, setPageItems] = useState(defaultPageData);
   const [users, setUsers] = useState({
     data: [],
     from: 1,
@@ -29,7 +27,7 @@ function Employees() {
     name: '',
     email: '',
     role: '',
-    clearance_level: 2,
+    clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
     password: 'Etnet Technologies',
     password_confirmation: 'Etnet Technologies',
   });
@@ -37,11 +35,10 @@ function Employees() {
   const [clearanceLevels, setClearanceLevels] = useState([]);
   const [showNewUserModal, setShowNewUserModal] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showPasswords, setShowPasswords] = useState(false);
   const [response, setResponse] = useState(false);
   const [formMode, setFormMode] = useState('');
   const [deleteUserModal, setDeleteUserModal] = useState(false);
-  const [deletedUser, setDeletedUser] = useState(newUser);
+  const [deletedUser, setDeletedUser] = useState({});
   const [countryCode, setCountryCode] = useState('+254')
 
 
@@ -71,7 +68,7 @@ function Employees() {
         email: '',
         role: '',
         phone_number: '',
-        clearance_level: 2,
+        clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
         password: 'Etnet Technologies',
         password_confirmation: 'Etnet Technologies',
       });
@@ -93,9 +90,13 @@ function Employees() {
 
   function toggleOpenModal(mode = '', userId = null) {
     setFormMode(mode);
-    if (mode && mode === 'edit') {
-      requestHandler.get(`/api/user/${userId}`, setNewUser);
+    if (mode) {
+      setDeletedUser({['id']: userId});
+      if( mode === 'edit'){
+        requestHandler.get(`/api/user/${userId}`, setNewUser);
+      }
     }
+
     setShowNewUserModal(true);
   }
 
@@ -106,7 +107,7 @@ function Employees() {
       email: '',
       role: '',
       phone_number: '',
-      clearance_level: 2,
+      clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
       password: 'Etnet Technologies',
       password_confirmation: 'Etnet Technologies',
     });
@@ -128,7 +129,7 @@ function Employees() {
   function openDeleteUserModal(e) {
     e.preventDefault();
     setDeleteUserModal(true);
-    setDeletedUser(newUser);
+    //setDeletedUser(newUser);
   }
 
   function closeDeleteUserModal() {
@@ -163,15 +164,15 @@ function Employees() {
   return (
     <SideNav>
       <div className="">
-        <div className='mb-4 w-full flex'>
+        <div className='mb-4 w-full flex flex-col sm:flex-row sm:justify-between items-end'>
           <button
-            className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-3 text-gray-800 hover:text-gray-100"
+            className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-3 text-gray-800 hover:text-gray-100 my-2 sm:my-0"
             onClick={() => router.visit('/admin/employees/stats')}
           >
             Employees Statistics
           </button>
           <button
-            className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
+            className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 text-gray-900 hover:text-gray-100 my-2 sm:my-0"
             onClick={() => toggleOpenModal('new')}
           >
             Add New Employee
@@ -357,64 +358,6 @@ function Employees() {
                       (errors.clearance_level || errors.errors?.clearance_level) && 
                       <p className="text-red-500 my-1 py-1">
                         { displayErrors(errors, 'clearance_level') }
-                      </p>
-                    }  
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Password
-                    </label>
-                    <div
-                     className='flex items-center pr-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-                    >
-                      <input
-                        type={showPasswords ? 'text' : 'password'}
-                        name="password"
-                        className="bg-gray-50 border-transparent focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Enter default password"
-                        value={newUser.password}
-                        onChange={handleChange}
-                        required
-                      />
-                      {
-                        showPasswords ?
-                        <Icon src='eyeOpen' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
-                        :
-                        <Icon src='eyeClose' className='w-[30px] h-[30px] mr-4 cursor-pointer' onClick={() => setShowPasswords(!showPasswords)}/>
-                      }
-                    </div>
-                    {
-                      (errors.password || errors.errors?.password) && 
-                      <p className="text-red-500 my-1 py-1">
-                        { displayErrors(errors, 'password') }
-                      </p>
-                    }  
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="title"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Confirm Password
-                    </label>
-                    <input
-                      type={showPasswords ? 'text' : 'password'}
-                      name="password_confirmation"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter Password again"
-                      value={newUser.password_confirmation}
-                      onChange={handleChange}
-                      required
-                    />
-                    {
-                      (errors.password_confirmation || errors.errors?.password_confirmation) && 
-                      <p className="text-red-500 my-1 py-1">
-                        { displayErrors(errors, 'password_confirmation') }
                       </p>
                     }  
                   </div>

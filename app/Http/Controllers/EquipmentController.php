@@ -59,7 +59,7 @@ class EquipmentController extends Controller
 
 	public function getAssignedEquipments(Request $request)
 	{
-		$tasksWithEquipments = Task::whereNotNull('user_id')->whereHas('equipments')->get();
+		$tasksWithEquipments = Task::whereHas('users')->whereHas('equipments')->get();
 		
 		$result = [];
 		foreach ($tasksWithEquipments as $task){

@@ -21,7 +21,7 @@ use App\Http\Controllers\TaskReportController;
 
 // Website or Frontend
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/auth/login');
 });
 
 Route::get('/products', function () {

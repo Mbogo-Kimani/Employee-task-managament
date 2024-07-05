@@ -1,4 +1,5 @@
-import i18next from '../i18n'
+import i18next from '../i18n';
+
 export const adminNavItems = [
   {
     name: i18next.t('tasks'),
@@ -28,13 +29,13 @@ export const adminNavItems = [
     name: i18next.t('reports'),
     icon: 'report',
     hasOptions: false,
-    href: '/admin/reports'
+    href: '/admin/reports',
   },
   {
     name: i18next.t('maps'),
     icon: 'map',
     hasOptions: false,
-    href: '/admin/maps'
+    href: '/admin/maps',
   },
 ];
 
