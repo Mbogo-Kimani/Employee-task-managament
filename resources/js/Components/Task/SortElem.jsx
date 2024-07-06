@@ -28,7 +28,7 @@ const SortElem = ({sortParams,filterFn}) => {
           className='bg-green-500 font-medium py-2 px-4 rounded block sm:hidden'
           onClick={() => setShowSort(!showSort)}
         >
-          { showSort ? 'Hide' : 'Show' } Sort Parameters
+          Filters
         </button>
       </div>
       <div className={`sm:flex space-x-4 sm:flex-wrap sm:justify-start ${showSort ? '' : 'hidden'}`}>

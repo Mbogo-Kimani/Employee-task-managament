@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->foreignId('sub_department_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('sub_department_id')->after('department_id')->nullable()->constrained()->onDelete('cascade');
         });
     }
 

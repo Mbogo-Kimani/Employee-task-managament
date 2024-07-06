@@ -168,10 +168,18 @@ function UnassignedTasks() {
   }
 
   function getEquipments(id){
+    let taskEquipments = {};
     const filteredTask = tasks?.data.filter((task) => {
       return task.id === id
     })
-    return filteredTask[0].equipments;
+    for(let equipment of filteredTask[0]?.equipments){
+      if(!taskEquipments[`${equipment.equipment_category.name}(${equipment.equipment_type.spec_model})`]){
+        taskEquipments[`${equipment.equipment_category.name}(${equipment.equipment_type.spec_model})`] = 1;
+      }else{
+        taskEquipments[`${equipment.equipment_category.name}(${equipment.equipment_type.spec_model})`] += 1;
+      }
+    }
+    return taskEquipments;
   }
 
   function submitNewEquipmentAssignment(e) {
@@ -212,11 +220,11 @@ function UnassignedTasks() {
                   </td>
                   <td className="px-2 py-4 w-[30vw] flex flex-wrap">
                     { 
-                      (getEquipments(task.id) || []).map((equipment) => {
+                      (Object.keys(getEquipments(task.id)).map((key) => {
                         return (
-                          <span className='rounded bg-gray-200 m-2 p-1'>{equipment.equipment_category?.name} ({ equipment.equipment_type?.spec_model || ''})</span>
+                          <span className='rounded bg-gray-200 m-2 p-1' key={key}>{key}, ({getEquipments(task.id)[key]})</span>
                         )
-                      })
+                      }))
                     }
                   </td>
                   <td>

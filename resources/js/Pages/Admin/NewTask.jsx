@@ -279,7 +279,7 @@ function NewTask() {
                   return (
                     <option
                       key={ type.id || index }
-                      value={ type.name }
+                      value={ type.id }
                       className='text-gray-900'
                     >
                       { type.name }
