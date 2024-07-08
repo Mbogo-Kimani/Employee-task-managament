@@ -20,6 +20,7 @@ import {AppContext} from '../../appContext'
 import SortElem from '../../Components/Task/SortElem'
 import clientStatus from '../../data/enums/clientStatus';
 import { handleFormChange } from '../../data/utils';
+import ApartmentCodes from '../../Components/Modal/ApartmentCodes'
 
 
 function Tasks() {
@@ -135,7 +136,9 @@ function Tasks() {
     <SideNav>
       <div>
         <TaskStatusColorCode />
+        
         <div className='mb-4 w-full flex'>
+        <ApartmentCodes />
           <Link
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
             href='/admin/new_task'

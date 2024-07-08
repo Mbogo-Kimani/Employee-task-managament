@@ -13,6 +13,7 @@ import DropDown from '../Components/Common/DropDown';
 import { Menu } from '@headlessui/react';
 import Icon from '../Components/Common/Icon';
 import { router } from '@inertiajs/react';
+import ApartmentCodes from '../Components/Modal/ApartmentCodes';
 
 function Tasks() {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -116,6 +117,7 @@ function Tasks() {
       <SideNav>
         <div className="">
           <TaskStatusColorCode />
+          <ApartmentCodes />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback', 'Action']}>
               {
