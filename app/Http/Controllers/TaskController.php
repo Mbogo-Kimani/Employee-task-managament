@@ -114,10 +114,15 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
-      'admin_handler_id' => $request->adminHandler,
-      'department_handler_id' => $request->departmentHandler,
+      		'admin_handler_id' => $request->adminHandler,
+      		'department_handler_id' => $request->departmentHandler,
 			'paid' => $request->paid,
 		]);
+
+		if($request->subDepartment){
+			$newTask->sub_department_id = $request->subDepartment;
+			$newTask->save();
+		}
 
     $currentDate = Carbon::now();
     $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
