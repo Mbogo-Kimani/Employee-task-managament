@@ -14,16 +14,7 @@ function ClientsTableElem({ elem, openModal, openDeleteModal }) {
   function navigateToIndividualTasks(id) {
     router.visit(`/admin/employees/${id}/tasks`)
   }
-  const closeActionModal = () => {
-    setShowActionModal(false)
-  }
-  const openActionModal = () => {
-    setShowActionModal(false)
-  }
 
-  function deleteClient(id){
-
-  }
   function getStatus(date,plan){
     let startDate = new Date(date)
     let endDate = new Date(startDate.setMonth(startDate.getMonth() + plan));
@@ -35,6 +26,7 @@ function ClientsTableElem({ elem, openModal, openDeleteModal }) {
       <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
         { elem.name }
       </th>
+
       <td className="px-2 py-4">
         { elem.email }
       </td>

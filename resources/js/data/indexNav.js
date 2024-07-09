@@ -13,6 +13,7 @@ import {
   technicianNavtems,
   technicianPageItems,
 } from './technicianItems';
+import { financeNavItems,financePageItems } from './financeItems';
 
 export const pageData = {
   navItems: [],
@@ -43,6 +44,9 @@ function pageAndNavItemsDeterminer(role, clearance) {
       pageData.navItems = technicianNavtems;
       pageData.pageItems = technicianPageItems;
     }
+  } else if (role === department.ACCOUNTING_AND_FINANCE){
+      pageData.navItems = financeNavItems;
+      pageData.pageItems = financePageItems;
   }
 
   return pageData;
@@ -83,6 +87,8 @@ function navItemsDeterminer(role, clearance) {
     } else {
       navItems = technicianNavtems;
     }
+  } else if ( role === department.ACCOUNTING_AND_FINANCE){
+      navItems = financeNavItems;
   }
 
   return navItems;
