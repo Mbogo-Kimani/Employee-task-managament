@@ -32,17 +32,17 @@ function Id({ user }) {
     handleScrollToBottom()
   }, [messages])
 
-  useEffect(() => {
-    const channel = window.Echo.channel('private.taskmessagechat.1');
+  // useEffect(() => {
+  //   const channel = window.Echo.channel('private.taskmessagechat.1');
 
-    channel.subscribed().listen('.chat', (event) => {
-      if (event.message && typeof(event.message) === 'string') {
-        setMessages((prev) => [...prev, JSON.parse(event.message)]);
-        scrollToLastMessage();
-      }
-    })
-    return () => channel.unsubscribe('.chat');
-  }, []);
+  //   channel.subscribed().listen('.chat', (event) => {
+  //     if (event.message && typeof(event.message) === 'string') {
+  //       setMessages((prev) => [...prev, JSON.parse(event.message)]);
+  //       scrollToLastMessage();
+  //     }
+  //   })
+  //   return () => channel.unsubscribe('.chat');
+  // }, []);
 
   function handleScrollToBottom() {
     if (messages.length && !scrolls) {
