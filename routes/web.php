@@ -21,7 +21,7 @@ use App\Http\Controllers\TaskReportController;
 
 // Website or Frontend
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/auth/login');
 });
 
 Route::get('/products', function () {
@@ -69,7 +69,6 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   Route::get('/admin/reports', [UserController::class, 'showReports']);
   // Route::get('/api/admin/reports', [TaskReportController::class, 'getReports']);
   Route::get('/admin/employees/stats', [UserController::class, 'employeesStatsPage']);
-  Route::post('/api/admin/approve_report', [TaskReportController::class, 'adminApprove']);
 
   // Route::get('/api/tasks/{user_id}', [TaskController::class, 'tasksByUser']);
   // Route::post('/api/tasks', [TaskController::class, 'store']);

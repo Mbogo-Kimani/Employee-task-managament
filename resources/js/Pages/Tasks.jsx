@@ -13,6 +13,7 @@ import DropDown from '../Components/Common/DropDown';
 import { Menu } from '@headlessui/react';
 import Icon from '../Components/Common/Icon';
 import { router } from '@inertiajs/react';
+import ApartmentCodes from '../Components/Modal/ApartmentCodes';
 
 function Tasks() {
   const [pageItems, setPageItems] = useState(defaultPageData);
@@ -116,6 +117,7 @@ function Tasks() {
       <SideNav>
         <div className="">
           <TaskStatusColorCode />
+          <ApartmentCodes />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Feedback', 'Action']}>
               {
@@ -255,7 +257,7 @@ function Tasks() {
                   <textarea
                     id="report-content"
                     rows="4"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+                    className="block h-[200px] p-2.5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                     placeholder="Write your report here..."
                     name='content'
                     onChange={handleChange}

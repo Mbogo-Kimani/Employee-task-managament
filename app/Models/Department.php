@@ -36,4 +36,8 @@ class Department extends Model
   {
     return $this->hasMany(TaskMessage::class);
   }
+  public function subDepartments()
+  {
+    return $this->hasMany(SubDepartment::class);
+  }
 }

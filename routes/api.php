@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::get('/employees', [UserController::class, 'index']);
   Route::put('/user', [UserController::class, 'update']);
-	Route::delete('/user/{id}', [UserController::class, 'delete']);
+	Route::delete('/user/{user_id}', [UserController::class, 'deleteUser']);
   Route::post('/user', [UserController::class, 'store']);
 	Route::get('/user/{user_id}', [UserController::class, 'show']);
 	Route::patch('/user', [UserController::class, 'updateUserDetails']);
@@ -80,7 +80,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/clients',[ClientController::class, 'index']);
   Route::post('/client',[ClientController::class, 'store']);
   Route::patch('/client',[ClientController::class, 'update']);
-  Route::delete('/client/{id}',[ClientController::class, 'deleteClient']);
+  Route::delete('/client/{client_id}',[ClientController::class, 'deleteClient']);
   
   /**
    * Enums Controllers
@@ -133,6 +133,8 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/task_reports', [TaskReportController::class, 'store']);
   Route::get('/report/{task_id}', [TaskReportController::class, 'show']);
   Route::patch('/report', [TaskReportController::class, 'update']);
+  // Route::post('/api/admin/approve_report', [TaskReportController::class, 'adminApprove']);
+
   
   /**
    * Messages
