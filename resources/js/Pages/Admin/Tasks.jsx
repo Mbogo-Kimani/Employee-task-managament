@@ -229,7 +229,7 @@ function Tasks() {
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
-                  <tr key={task.id || index} className="overflow-hidden h-[30px] bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 py-1">
+                  <tr key={task.id || index} className="overflow-auto h-[30px] bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 py-1">
                     <th scope="row" className="px-4 py-4 overflow-auto font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       { task.name }
                     </th>
