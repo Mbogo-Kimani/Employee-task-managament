@@ -201,8 +201,8 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereDoesntHave('users')
-										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head')
-										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name'])
+										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head','tasks.department_id')
+										->with(['department.subDepartments','taskType','equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -305,12 +305,12 @@ class TaskController extends Controller
   public function filterTasks(Request $request)
   {
 	$user = auth()->user();
-
+	
 	if($request->query('p') === "unassigned"){
-		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
+		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus','subDepartment']))
 										->where('department_id', $user->department_id)
 										->whereDoesntHave('users')
-			 							->with(['department', 'users', 'taskType','client'])
+			 							->with(['equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name','department.subDepartments', 'users', 'taskType','client'])
 										->paginate(20);
 	}else if($request->query('p') === "assigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
