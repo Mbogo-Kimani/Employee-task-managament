@@ -132,7 +132,7 @@ class TaskReportController extends Controller
 			}
 
 			if ($request->status == 'approved') {
-        $task->status = TaskStatusEnum::DONE;
+            $task->status = TaskStatusEnum::DONE;
 				$task->save();
 				return response()->json(['message' => 'Status updated successfully']);
             }
