@@ -229,37 +229,37 @@ function Tasks() {
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
-                  <tr key={task.id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <tr key={task.id || index} className="overflow-auto h-[30px] bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 py-1">
+                    <th scope="row" className="px-4 py-4 overflow-auto font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       { task.name }
                     </th>
                     <th
                       scope="row"
                       title={ (task.task_type && task.task_type.description) || '' }
-                      className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       { (task.task_type && task.task_type.name) || '' }
                     </th>
-                    <td className="px-2 py-4">
+                    <td className="px-2 ">
                       { (task.department && task.department.name) || 'None Assigned' }
                     </td>
-                    <td className="px-2 py-4">
+                    <td className="px-2 ">
                        {task.users?.map((user, ind) => {
                         return (
-                          <p key={user.id || ind}>{user.name}</p>
+                          <p key={user.id || ind}>{user.name.split(' ')[0]},</p>
                         )
                       })}
                     </td>
-                    <td className="px-2 py-4">
+                    <td className="px-2 ">
                       { clientStatus[task.paid] }
                     </td>
-                    <td className={`px-2 py-4`}>
+                    <td className={`px-2 `}>
                       <TaskStatusIndicator status={task.status} />
                     </td>
-                    <td className="px-2 py-4">
+                    <td className="px-2 ">
                       { task.task_finished_at || '' }
                     </td>
-                    <td className="px-2 py-4 relative">
+                    <td className="px-2  relative">
                       <DropDown>
                         <Menu.Item>
                           {({ active }) => (
