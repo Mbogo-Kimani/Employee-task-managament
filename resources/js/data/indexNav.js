@@ -45,6 +45,12 @@ function pageAndNavItemsDeterminer(role, clearance) {
       pageData.navItems = technicianNavtems;
       pageData.pageItems = technicianPageItems;
     }
+  } else if (role === department.ACCOUNTING_AND_FINANCE){
+      pageData.navItems = financeNavItems;
+      pageData.pageItems = financePageItems;
+  } else if (role === department.MARKETING) {
+    pageData.navItems = salesNavItems;
+    pageData.pageItems = salesPageItems;
   }
 
   return pageData;
@@ -87,6 +93,10 @@ function navItemsDeterminer(role, clearance) {
     } else {
       navItems = technicianNavtems;
     }
+  } else if ( role === department.ACCOUNTING_AND_FINANCE){
+      navItems = financeNavItems;
+  } else if (role === department.MARKETING) {
+    navItems = salesNavItems;
   }
 
   return navItems;

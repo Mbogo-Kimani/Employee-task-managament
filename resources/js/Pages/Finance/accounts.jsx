@@ -1,8 +1,18 @@
-import React from 'react'
+import React,{useState} from 'react'
 import SideNav from '../../Layouts/SideNav'
 import TableComp from '../../Components/Common/TableComp';
+import Modal from '../../Components/Common/Modal';
+import PaginatorNav from '../../Components/Common/PaginatorNav';
 
 const Accounts = () => {
+  const [formMode,setFormMode] = useState();
+  const [clients, setClients] = useState({
+    current_page: 1,
+    last_page: 1,
+    prev_page_url: '',
+    next_page_url: '',
+    total: 1
+});
   return (
     <SideNav>
       <div className="">
@@ -106,8 +116,8 @@ const Accounts = () => {
                       name="email"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's email"
-                      value={newClient.email}
-                      onChange={handleChange}
+                      // value={newClient.email}
+                      // onChange={handleChange}
                       required
                     />
                     {/* {
@@ -284,15 +294,15 @@ const Accounts = () => {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Account No.','Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Duration (months)', 'Action']}>
+          <TableComp columns={['Account No.','Name', 'Email', 'Phone Number', 'Address', 'Hse No', 'Status', 'Billing Day', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (
                   <AccountsTableElem
                     key={elem.id || index}
                     elem={elem}
-                    openModal={toggleOpenModal}
-                    openDeleteModal={openDeleteUserModal}
+                    // openModal={toggleOpenModal}
+                    // openDeleteModal={openDeleteUserModal}
                   />
                 );
               })
