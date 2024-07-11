@@ -182,6 +182,8 @@ class TaskController extends Controller
 		return response()->json($tasks);
 	}
 
+
+
     public function getTasksByUsers(Request $request)
     {
         $user = auth()->user();
@@ -235,9 +237,10 @@ class TaskController extends Controller
 		if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$task = Task::find($request->task);
 
-            
 			if ($task) {
+				$task->task_started_at = now();
 				$task->users()->syncWithoutDetaching($request->users);
+				$task->save();
 
 				foreach($task->users as $user){
 					$content = View::make('emails.task_assigned', ['task' => $task, 'user' => $user])->render();
@@ -246,6 +249,7 @@ class TaskController extends Controller
 					->keepNewLines()
 					->toText($content);
 					$mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $user]);
+
 					$this->sendMessage($text,$user->phone_number);
 					$this->sendMail($user,$mail);
 				}
