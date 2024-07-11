@@ -13,13 +13,24 @@ const Accounts = () => {
     next_page_url: '',
     total: 1
 });
+const [client, setClient] = useState({});
+const [showNewClientModal, setShowNewClientModal] = useState(false);
+
+function toggleOpenModal(){
+  setClient({})
+  setShowNewClientModal(true);
+}
+
+function handleChange(e) {
+  setClient({...client, [e.target.name]: e.target.value});
+}
   return (
     <SideNav>
       <div className="">
         <div className='mb-4 w-full flex'>
           <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
-            // onClick={toggleOpenModal}
+            onClick={toggleOpenModal}
           >
             Add New Client
           </button>
@@ -51,8 +62,8 @@ const Accounts = () => {
         </Modal>
 
         <Modal
-          // show={showNewClientModal}
-          // onClose={toggleCloseModal}
+          show={showNewClientModal}
+          onClose={() =>  setShowNewClientModal(false)}
         >
           <div className="mt-8 px-2 w-full h-screen overflow-y-scroll">
             <div className="bg-white rounded-lg shahiddendow dark:bg-gray-700">
@@ -85,6 +96,29 @@ const Accounts = () => {
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
+                     Account Name
+                    </label>
+                    <input
+                      type="text"
+                      name="account_name"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's name"
+                      value={client.name}
+                      onChange={handleChange}
+                      required
+                    />
+                    {/* {
+                      (errors.name || errors.errors?.name) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'name') }
+                      </p>
+                    }   */}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
                       Name
                     </label>
                     <input
@@ -92,8 +126,8 @@ const Accounts = () => {
                       name="name"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's name"
-                      // value={newClient.name}
-                      // onChange={handleChange}
+                      value={client.name}
+                      onChange={handleChange}
                       required
                     />
                     {/* {
@@ -116,8 +150,8 @@ const Accounts = () => {
                       name="email"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's email"
-                      // value={newClient.email}
-                      // onChange={handleChange}
+                      value={client.email}
+                      onChange={handleChange}
                       required
                     />
                     {/* {
@@ -140,9 +174,9 @@ const Accounts = () => {
                       name="phone_number"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's phone number"
-                      // value={newClient.phone_number}
-                      // onChange={handleChange}
-                      // required
+                      value={client.phone_number}
+                      onChange={handleChange}
+                      required
                     />
                     {/* {
                       (errors.name || errors.errors?.name) && 
@@ -157,15 +191,15 @@ const Accounts = () => {
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Address
+                      Location
                     </label>
                     <input
                       type="text"
                       name="address"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's address"
-                      // value={newClient.address}
-                      // onChange={handleChange}
+                      value={client.address}
+                      onChange={handleChange}
                       required
                     />
                     {/* {

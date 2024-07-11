@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             $table->string('acc_no')->after('name'); 
-            $table->string('IP');
-            $table->integer('billing_day');
+            $table->string('IP')->nullable();
+            $table->integer('billing_day')->nullable();
+            $table->string('employee_id')->nullable();
         });
     }
 
@@ -31,6 +32,7 @@ return new class extends Migration
            $table->dropColumn('acc_no');
            $table->dropColumn('IP');
            $table->dropColumn('billing_day');
+           $table->dropColumn('employee_id');
         });
     }
 };

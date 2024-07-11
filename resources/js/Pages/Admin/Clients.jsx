@@ -82,7 +82,6 @@ function Clients() {
 
   function handleChange(e) {
     setNewClient({...newClient, [e.target.name]: e.target.value});
-    console.log(newClient);
   }
 
   function submitNewClient(e) {
