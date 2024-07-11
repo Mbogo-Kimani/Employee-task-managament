@@ -3,9 +3,11 @@ import SideNav from '../../Layouts/SideNav'
 import TableComp from '../../Components/Common/TableComp';
 import Modal from '../../Components/Common/Modal';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
+import SelectComp from '../../Components/Common/SelectComp';
+import { loaderSetter } from '../../Components/Common/Loader';
 
 const Accounts = () => {
-  const [formMode,setFormMode] = useState();
+  const [formMode,setFormMode] = useState('');
   const [clients, setClients] = useState({
     current_page: 1,
     last_page: 1,
@@ -15,6 +17,8 @@ const Accounts = () => {
 });
 const [client, setClient] = useState({});
 const [showNewClientModal, setShowNewClientModal] = useState(false);
+const [response, setResponse] = useState(false);
+const [errors, setErrors] = useState(false);
 
 function toggleOpenModal(){
   setClient({})
@@ -23,6 +27,16 @@ function toggleOpenModal(){
 
 function handleChange(e) {
   setClient({...client, [e.target.name]: e.target.value});
+}
+
+function submitClient(e){
+  e.preventDefault();
+  console.log(client);
+    // if (formMode === 'edit') {
+    //   requestHandler.patch('/api/client', client, setResponse, setErrors, loaderSetter);
+    // } else {
+    //   requestHandler.post('/api/client', client, setResponse, setErrors, loaderSetter);
+    // }
 }
   return (
     <SideNav>
@@ -81,7 +95,7 @@ function handleChange(e) {
                 <button
                   type="button"
                   className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  // onClick={toggleCloseModal}
+                  onClick={() =>  setShowNewClientModal(false)}
                 >
                   <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -90,8 +104,8 @@ function handleChange(e) {
                 </button>
               </div>
               <div className="p-3 md:p-4">
-                <form className="space-y-5 px-4 py-2" action="#">
-                  <div>
+                <form className="px-4 py-2" action="#">
+                  <div className='mb-5'>
                     <label
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -114,7 +128,7 @@ function handleChange(e) {
                       </p>
                     }   */}
                   </div>
-                  <div>
+                  <div className='mb-5'>
                     <label
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -138,7 +152,7 @@ function handleChange(e) {
                     }   */}
                   </div>
 
-                  <div>
+                  <div className='mb-5'>
                     <label
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -162,7 +176,7 @@ function handleChange(e) {
                     }   */}
                   </div>
 
-                  <div>
+                  <div className='mb-5'>
                     <label
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -186,7 +200,7 @@ function handleChange(e) {
                     }   */}
                   </div>
 
-                  <div>
+                  <div className='mb-5'>
                     <label
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -210,35 +224,7 @@ function handleChange(e) {
                     }   */}
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="resident_building"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Building
-                    </label>
-                    <div
-                     className='flex items-center pr-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-                    >
-                      <input
-                        type='text'
-                        name="resident_building"
-                        className="bg-gray-50 border-transparent focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Enter resident building"
-                        // value={newClient.resident_building}
-                        // onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    {/* {
-                      (errors.password || errors.errors?.password) && 
-                      <p className="text-red-500 my-1 py-1">
-                        { displayErrors(errors, 'password') }
-                      </p>
-                    }   */}
-                  </div>
-
-                  <div>
+                  <div className='mb-5'>
                     <label
                       htmlFor="resident_hse_no"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -250,8 +236,8 @@ function handleChange(e) {
                       name="resident_hse_no"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter house number"
-                      // value={newClient.resident_hse_no}
-                      // onChange={handleChange}
+                      value={client.hse_no}
+                      onChange={(e) => handleChange(e)}
                       required
                     />
                     {/* {
@@ -261,45 +247,36 @@ function handleChange(e) {
                       </p>
                     }   */}
                   </div>
-                  <div>
-                    <label
-                      htmlFor="title"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Payment Duration (months)
-                    </label>
-                    <input
-                      type="integer"
-                      name="payment_plan"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-10"
-                      placeholder="Enter payment duration"
-                      // value={newClient.payment_plan}
-                      // onChange={handleChange}
-                      required
-                    />
-                    {/* {
-                      (errors.payment_plan || errors.errors?.payment_plan) && 
-                      <p className="text-red-500 my-1 py-1">
-                        { displayErrors(errors, 'clearance_level') }
-                      </p>
-                    }   */}
-                  </div>
-          <div className="relative z-0 w-full mb-5 mt-5 group">
+                  <div className="relative z-0 w-full group mb-5">
+                  <SelectComp
+                    name="status"
+                    id="status"
+                    value={client.status}
+                    onChange={(e) => handleChange(e)}
+                    required={true}
+                    className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
+                  >
+                    <option value="" className='text-gray-400'>Select Internet Status</option>
+                    <option value={0}>Active</option>
+                    <option value={1}>Inactive</option>
+                  </SelectComp>
+                </div>
+          <div className="relative z-0 w-full mb-5 mt-5">
             <input
               type="date"
-              name="payment_date"
-              id="payment_date"
+              name="billing_day"
+              id="billing_day"
               className="mt-5 block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              // value={newClient.payment_date}
-              // onChange={(e) => handleChange(e)}
+              value={client.billing_day}
+              onChange={(e) => handleChange(e)}
               required
             />
             <label
-              htmlFor="payment_date" 
+              htmlFor="billing_day" 
               className="z-0 peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Payment Date
+              Billing Day
             </label>
             {/* {
               (errors.toDate || errors.errors?.toDate) && 
@@ -307,16 +284,12 @@ function handleChange(e) {
                 { displayErrors(errors, 'toDate') }
               </p>
             }   */}
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-  
-            <hr className="w-full border-[1px] border-gray-300" />
-          </div>         
+          </div>       
                   <div className='w-full flex justify-between items-center'>
                     <button
                       type="submit"
                       className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
-                      // onClick={(e) => submitNewClient(e)}
+                      onClick={(e) => submitClient(e)}
                     >
                       Submit
                     </button>
