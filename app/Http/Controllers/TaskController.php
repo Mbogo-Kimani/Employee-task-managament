@@ -124,6 +124,10 @@ class TaskController extends Controller
 			$newTask->save();
 		}
 
+		$phone_number = User::where('id',$request->departmentHandler)->pluck('phone_number')->first();
+		$text = "New Task has been created: ".$newTask->name. ", ".$newTask->description;
+		$this->sendmessage($text,$phone_number);
+
     $currentDate = Carbon::now();
     $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
 
