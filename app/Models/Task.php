@@ -89,6 +89,10 @@ class Task extends Model
   {
       return $query->where('department_id', (int)$type);
   }
+  public function subDepartment($query, $type)
+  {
+      return $query->where('sub_department_id', (int)$type);
+  }
 
   public function clientStatus($query, $type) {
     return $query->where('paid', $type);

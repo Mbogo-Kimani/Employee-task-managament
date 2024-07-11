@@ -116,7 +116,7 @@ const Reports = () => {
                                 <Menu.Item as={'button'} className='p-2 hover:bg-green-300 w-full' onClick={() => openReviewReport(report)}>
                                   <span className='flex justify-start items-center'>
                                     <Icon src='report' className="w-4 h-4" fill="var(--blue)"/>
-                                    <p className='pl-2'>Review Report</p>
+                                    <p className='pl-2'>View Report</p>
                                   </span>
                                 </Menu.Item>
                               </DropDown>
@@ -202,22 +202,6 @@ const Reports = () => {
             </div>
   
           </div>
-
-          <div className="flex justify-around">
-            <button
-              className="bg-red-500 text-gray-100 hover:bg-red-600 px-5 py-2 rounded-md"
-              onClick={() => submitAdminAprroval('reject')}
-            >
-              Reject
-            </button>
-            <button
-              className="bg-green-500 text-gray-100 hover:bg-green-600 px-5 py-2 rounded-md"
-              onClick={() => submitAdminAprroval('approve')}
-            >
-              Approve
-            </button>
-          </div>
-
         </div>
       </Modal>
     </SideNav>

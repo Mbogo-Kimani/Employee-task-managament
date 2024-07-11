@@ -124,6 +124,10 @@ class TaskController extends Controller
 			$newTask->save();
 		}
 
+		$phone_number = User::where('id',$request->departmentHandler)->pluck('phone_number')->first();
+		$text = "New Task has been created: ".$newTask->name. ", ".$newTask->description;
+		$this->sendmessage($text,$phone_number);
+
     $currentDate = Carbon::now();
     $endDate = Carbon::createFromFormat('Y-m-d', $newTask->to_date);
 
@@ -178,6 +182,8 @@ class TaskController extends Controller
 		return response()->json($tasks);
 	}
 
+
+
     public function getTasksByUsers(Request $request)
     {
         $user = auth()->user();
@@ -201,8 +207,8 @@ class TaskController extends Controller
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereDoesntHave('users')
-										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head')
-										->with(['taskType','equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name'])
+										->select('tasks.from_date', 'tasks.to_date', 'tasks.id', 'tasks.name', 'tasks.task_type_id', 'tasks.received_by_department_head','tasks.department_id')
+										->with(['department.subDepartments','taskType','equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name'])
 										->paginate(20);
 			return response()->json($tasks);
 		}
@@ -231,9 +237,10 @@ class TaskController extends Controller
 		if ($user && $user->clearance_level == ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$task = Task::find($request->task);
 
-            
 			if ($task) {
+				$task->task_started_at = now();
 				$task->users()->syncWithoutDetaching($request->users);
+				$task->save();
 
 				foreach($task->users as $user){
 					$content = View::make('emails.task_assigned', ['task' => $task, 'user' => $user])->render();
@@ -242,6 +249,7 @@ class TaskController extends Controller
 					->keepNewLines()
 					->toText($content);
 					$mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $user]);
+
 					$this->sendMessage($text,$user->phone_number);
 					$this->sendMail($user,$mail);
 				}
@@ -305,12 +313,12 @@ class TaskController extends Controller
   public function filterTasks(Request $request)
   {
 	$user = auth()->user();
-
+	
 	if($request->query('p') === "unassigned"){
-		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
+		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus','subDepartment']))
 										->where('department_id', $user->department_id)
 										->whereDoesntHave('users')
-			 							->with(['department', 'users', 'taskType','client'])
+			 							->with(['equipments.equipmentType:id,manufacturer_name,spec_model','equipments.equipmentCategory:id,name','department.subDepartments', 'users', 'taskType','client'])
 										->paginate(20);
 	}else if($request->query('p') === "assigned"){
 		$tasks = Task::filter(request(['type', 'status','departmentId','clientStatus']))
