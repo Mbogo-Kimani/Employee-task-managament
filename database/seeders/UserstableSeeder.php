@@ -19,7 +19,7 @@ class UserstableSeeder extends Seeder
 		$departments = \App\Models\Department::all();
 		$keys = [
 			'ADMIN' => \App\Enums\DepartmentEnum::ADMIN,
-			'MARKETING' => \App\Enums\DepartmentEnum::MARKETING,
+			'SALES' => \App\Enums\DepartmentEnum::SALES,
 			'TECHNICIANS' => \App\Enums\DepartmentEnum::TECHNICIANS,
 			'ACCOUNTING_AND_FINANCE' => \App\Enums\DepartmentEnum::ACCOUNTING_AND_FINANCE,
 			'INVENTORY' => \App\Enums\DepartmentEnum::INVENTORY,

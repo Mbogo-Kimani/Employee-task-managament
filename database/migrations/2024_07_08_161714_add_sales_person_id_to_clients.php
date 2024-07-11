@@ -17,9 +17,9 @@ return new class extends Migration
       $table->string('location');
 			$table->string('wifi_name');
 			$table->string('wifi_password');
-			$table->foreignId('internet_package_id');
+			$table->foreignId('internet_package_id')->nullable();
 			$table->string('apartment_no');
-			$table->bigInteger('sales_person_id');
+			$table->bigInteger('sales_person_id')->nullable();
 			
 			$table->dropColumn('address');
 			$table->dropColumn('resident_building');

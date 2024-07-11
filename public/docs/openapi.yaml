@@ -4832,8 +4832,8 @@ paths:
                     updated_at: '2024-04-12T12:10:29.000000Z'
                   -
                     id: 2
-                    name: Marketing
-                    enum_key: MARKETING
+                    name: Sales
+                    enum_key: SALES
                     created_at: '2024-04-12T12:10:29.000000Z'
                     updated_at: '2024-04-12T12:10:29.000000Z'
                   -
@@ -5309,8 +5309,8 @@ paths:
                     user: 'Mrs. Heath Ward'
                     department:
                       id: 2
-                      name: Marketing
-                      enum_key: MARKETING
+                      name: Sales
+                      enum_key: SALES
                       created_at: '2024-04-12T12:10:29.000000Z'
                       updated_at: '2024-04-12T12:10:29.000000Z'
                     tasks: []
@@ -5792,8 +5792,8 @@ paths:
                     user: James
                     department:
                       id: 2
-                      name: Marketing
-                      enum_key: MARKETING
+                      name: Sales
+                      enum_key: SALES
                       created_at: '2024-04-12T12:10:29.000000Z'
                       updated_at: '2024-04-12T12:10:29.000000Z'
                     tasks: []
