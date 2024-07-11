@@ -145,19 +145,19 @@ const SortElem = ({sortParams,filterFn}) => {
               // value={newTask.taskType}
               onChange={(e) => handleFilters(e)}
               required={true}
-              className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('clientStatus') ? "bg-green-400" : "bg-transparent"}`}
+              className={`focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${Object.keys(filters).includes('subDepartment') ? "bg-green-400" : "bg-transparent"}`}
             >
-              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>{i18next.t('client-status')}</option>
+              <option value="" className='bg-transparent text-gray-900 dark:text-red-300'>Sub Department</option>
               {
-                Object.keys(sortParams.subDepartment).map((key) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                sortParams.subDepartment && sortParams.subDepartment.map((val) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   return (
                     <option
-                      key={ key }
-                      value={ key }
-                      title={ key }
+                      key={ val.id }
+                      value={ val.id }
+                      title={ val.name }
                       className='bg-transparent text-gray-900 dark:text-gray-300'
                     >
-                      { clientStatus[key] }
+                      { val.name }
                     </option>
                   )
                 })

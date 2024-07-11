@@ -49,9 +49,10 @@ function UnassignedTasks() {
 
   const sortParams = {
     'type': taskTypes,
-    'clientStatus': clientStatus
+    'clientStatus': clientStatus,
+    'subDepartment': tasks.data[0]?.department.sub_departments
   }
-
+  
   function submitFilters(filters){
     requestHandler.post('/api/filter/tasks?p=unassigned',filters, setTasks, setErrors)
   }
