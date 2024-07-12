@@ -60,7 +60,7 @@ class TaskReportController extends Controller
 			]);
 
 			if ($taskReport && $currentTask) {
-				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL_BY_DEPARTMENT_HEAD;
+				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL;
 				$currentTask->task_finished_at = now();
 				$currentTask->save();
 				return response()->json(['message' => 'Report saved successfully']);

@@ -2,7 +2,7 @@ import i18next from '../../i18n';
 
 export default {
   PENDING: 1,
-  AWAITING_APPROVAL_BY_DEPARTMENT_HEAD: 2,
+  AWAITING_APPROVAL: 2,
   REJECTED: 3,
   DONE: 4,
 };
@@ -26,7 +26,7 @@ export const taskStatusRender = [
   {
     id: 2,
     name: i18next.t('department-approval'),
-    key: 'AWAITING_APPROVAL_BY_DEPARTMENT_HEAD',
+    key: 'AWAITING_APPROVAL',
     description: 'Task awaits approval from the head of department',
     color: 'rgb(59 130 246)',
     icon: 'hourglass',
