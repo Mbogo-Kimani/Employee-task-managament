@@ -15,8 +15,17 @@ class ClientController extends Controller
         if($user->department_id !== DepartmentEnum::ADMIN){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
-        $clients = Client::paginate(10);;
+        $clients = Client::paginate(10);
         return response()->json($clients);
+    }
+
+    public function salesClients() {
+        $user = auth()->user();
+
+        if ($user->department_id == DepartmentEnum::SALES) {
+            $clients = Client::where('sales_person_id', $user->id)->paginate(10);
+            return response()->json($clients);
+        }
     }
 
     public function clientsPage(Request $request)
@@ -92,6 +101,10 @@ class ClientController extends Controller
         }catch( \Exception $e){
             abort(400, $e);
         }
+    }
+
+    public function salesClientsPage() {
+        return Inertia::render('Clients');
     }
 }
 

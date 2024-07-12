@@ -16,7 +16,7 @@ class DepartmentsTableSeeder extends Seeder
   {
 		$departments = [
 			['name' => 'Admin', 'enum_key' => 'ADMIN'],
-			['name' => 'Marketing', 'enum_key' => 'MARKETING'],
+			['name' => 'Sales', 'enum_key' => 'SALES'],
 			['name' => 'Technicians', 'enum_key' => 'TECHNICIANS'],
 			['name' => 'Accounting and Finance', 'enum_key' => 'ACCOUNTING_AND_FINANCE'],
 			['name' => 'Inventory', 'enum_key' => 'INVENTORY'],
