@@ -40,7 +40,11 @@ function Employees() {
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedUser, setDeletedUser] = useState({});
   const [countryCode, setCountryCode] = useState('+254')
+  const [searchValue, setSearchValue] = useState('');
+  const [debouncedValue, setDebouncedValue] = useState('');
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('new');
 
   useEffect(() => {
     fetchUsers();
@@ -52,14 +56,28 @@ function Employees() {
     checkResponse();
   }, [response]);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get('new');
-
   useEffect(() => {
     if(myParam){
       setShowNewUserModal(true)
     }
   },[])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (debouncedValue) {
+      requestHandler.get(`/api/employees?search=${debouncedValue}`, setUsers, null, loaderSetter);
+    }
+  }, [debouncedValue]);
+
   function checkResponse () {
     if (response) {
       fetchUsers();
@@ -129,7 +147,6 @@ function Employees() {
   function openDeleteUserModal(e) {
     e.preventDefault();
     setDeleteUserModal(true);
-    //setDeletedUser(newUser);
   }
 
   function closeDeleteUserModal() {
@@ -161,16 +178,29 @@ function Employees() {
     setNewUser({...newUser,[e.target.name]: countryCode + e.target.value})
   }
 
+  function handleSearchChange(e) {
+    setSearchValue(e.target.value);
+  }
+
   return (
     <SideNav>
       <div className="">
-        <div className='mb-4 w-full flex flex-col sm:flex-row sm:justify-between items-end'>
+        <div className='mb-4 w-full flex flex-col sm:flex-row sm:justify-between items-start'>
           <button
             className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-3 text-gray-800 hover:text-gray-100 my-2 sm:my-0"
             onClick={() => router.visit('/admin/employees/stats')}
           >
             Employees Statistics
           </button>
+          <input
+            type="search"
+            value={searchValue}
+            onChange={(e) => handleSearchChange(e)}
+            name="search"
+            id=""
+            className='py-2 rounded px-3 w-[250px] outline-none'
+            placeholder='🔍 Search by Work Number'
+          />
           <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 text-gray-900 hover:text-gray-100 my-2 sm:my-0"
             onClick={() => toggleOpenModal('new')}
@@ -389,7 +419,7 @@ function Employees() {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Name', 'Department', 'Email', 'Leader', 'Action']}>
+          <TableComp columns={['Name', 'Department', 'Email', 'Leader', 'Work Number', 'Action']}>
             {
               (Array.isArray(users.data) ? users.data : []).map((elem, index) => {
                 return (

@@ -8,19 +8,25 @@ import { AppContext } from '../appContext'
 
 function Clients() {
   const [clients, setClients] = useState([]);
+  const [packages, setPackages] = useState([]);
 
   const { userData } = useContext(AppContext);
 
   useEffect(() => {
     getClients();
+    getPackages();
   }, []);
+
+  function getPackages() {
+    requestHandler.get('/api/internet_packages', setPackages);
+  }
 
   function getClients() {
     requestHandler.get('/api/sales_clients', setClients);
   }
 
   function toggleOpenModal() {
-    
+
   }
 
   function openDeleteUserModal() {
@@ -50,6 +56,7 @@ function Clients() {
                     openModal={toggleOpenModal}
                     openDeleteModal={openDeleteUserModal}
                     currentUser={userData}
+                    packages={packages}
                   />
                 );
               })
