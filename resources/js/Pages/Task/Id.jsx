@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import Icon from '../../Components/Common/Icon';
 import MessageElem from '../../Components/Task/MessageElem';
+import { AppContext } from '../../appContext';
+import department from '../../data/enums/department';
 
 function Id({ user }) {
   const [currentTask, setCurrentTask] = useState({
@@ -17,6 +19,8 @@ function Id({ user }) {
   const [newMessage, setNewMessage] = useState('');
   const [scrolls, setScrolls] = useState(0);
   const [textareaHeight, setTextareaHeight] = useState(1);
+
+  const { userData } = useContext(AppContext);
 
   const messagesEnd = useRef(null);
   const chatContainer = useRef(null);
@@ -106,7 +110,7 @@ function Id({ user }) {
   };
 
   return (
-    <SideNav>
+    <SideNav link={userData.role === department.ADMIN ? '/admin/tasks' : '/tasks'}>
       <div className='w-full'>
           <h1 className="font-bold text-xl text-lg text-center pl-3 mb-10">{currentTask.task?.name}</h1>
           <div className='flex float-right'>
@@ -126,8 +130,14 @@ function Id({ user }) {
           </div>
 
           <h1 className='font-normal text-lg'>Description</h1>
-          <div className='border h-[30vh] mb-5 rounded'>
-             <h1 className="font-normal text-lg pl-3">{currentTask.task?.description || ''}</h1>
+          <div className='h-[30vh] mb-5'>
+            <textarea
+              value={currentTask.task?.description || ''}
+              className="block p-2.5 w-full text-sm text-gray-900 outline-none bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              rows="9"
+              style={{ resize: 'none' }}
+              disabled
+            />
           </div>
       </div>
       <div>
