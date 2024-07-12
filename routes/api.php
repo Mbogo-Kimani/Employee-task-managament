@@ -81,7 +81,8 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/client',[ClientController::class, 'store']);
   Route::patch('/client',[ClientController::class, 'update']);
   Route::delete('/client/{client_id}',[ClientController::class, 'deleteClient']);
-  
+  Route::get('/sales_clients',[ClientController::class, 'salesClients']);
+
   /**
    * Enums Controllers
    */
@@ -133,8 +134,6 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/task_reports', [TaskReportController::class, 'store']);
   Route::get('/report/{task_id}', [TaskReportController::class, 'show']);
   Route::patch('/report', [TaskReportController::class, 'update']);
-  // Route::post('/api/admin/approve_report', [TaskReportController::class, 'adminApprove']);
-
   
   /**
    * Messages

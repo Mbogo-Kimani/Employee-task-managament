@@ -32,8 +32,8 @@ function NewCircular({ user }) {
       text: department[1],
     },
     {
-      id: department.MARKETING,
-      enumKey: 'MARKETING',
+      id: department.SALES,
+      enumKey: 'SALES',
       text: department[2],
     },
     {

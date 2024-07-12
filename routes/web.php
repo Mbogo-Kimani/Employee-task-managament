@@ -93,6 +93,7 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 	Route::get('/notifications', [CircularController::class, 'notificationsPage']);
 
   Route::get('/admin/clients',[ClientController::class, 'clientsPage']);
+  Route::get('/clients', [ClientController::class, 'salesClientsPage']);
 
   Route::get('/admin/maps',[UserController::class, 'mapsPage']);
 
