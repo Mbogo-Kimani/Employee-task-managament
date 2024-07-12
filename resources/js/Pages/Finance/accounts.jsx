@@ -5,6 +5,7 @@ import Modal from '../../Components/Common/Modal';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 import SelectComp from '../../Components/Common/SelectComp';
 import { loaderSetter } from '../../Components/Common/Loader';
+import requestHandler from '../../services/requestHandler';
 
 const Accounts = () => {
   const [formMode,setFormMode] = useState('');
@@ -32,11 +33,11 @@ function handleChange(e) {
 function submitClient(e){
   e.preventDefault();
   console.log(client);
-    // if (formMode === 'edit') {
-    //   requestHandler.patch('/api/client', client, setResponse, setErrors, loaderSetter);
-    // } else {
-    //   requestHandler.post('/api/client', client, setResponse, setErrors, loaderSetter);
-    // }
+    if (formMode === 'edit') {
+      requestHandler.patch('/api/client', client, setResponse, setErrors, loaderSetter);
+    } else {
+      requestHandler.post('/api/client', client, setResponse, setErrors, loaderSetter);
+    }
 }
   return (
     <SideNav>
@@ -114,9 +115,9 @@ function submitClient(e){
                     </label>
                     <input
                       type="text"
-                      name="account_name"
+                      name="acc_no"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter client's name"
+                      placeholder="Enter Account name"
                       value={client.name}
                       onChange={handleChange}
                       required
@@ -209,7 +210,7 @@ function submitClient(e){
                     </label>
                     <input
                       type="text"
-                      name="address"
+                      name="location"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's address"
                       value={client.address}
@@ -226,14 +227,14 @@ function submitClient(e){
 
                   <div className='mb-5'>
                     <label
-                      htmlFor="resident_hse_no"
+                      htmlFor="apartment_no"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Hse No
                     </label>
                     <input
                       type='text'
-                      name="resident_hse_no"
+                      name="apartment_no"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter house number"
                       value={client.hse_no}
@@ -247,7 +248,7 @@ function submitClient(e){
                       </p>
                     }   */}
                   </div>
-                  <div className="relative z-0 w-full group mb-5">
+                  <div className="mt-5 relative z-0 w-full group mb-5">
                   <SelectComp
                     name="status"
                     id="status"
@@ -261,7 +262,7 @@ function submitClient(e){
                     <option value={1}>Inactive</option>
                   </SelectComp>
                 </div>
-          <div className="relative z-0 w-full mb-5 mt-5">
+          <div className="mt-8 relative z-0 w-full group">
             <input
               type="date"
               name="billing_day"

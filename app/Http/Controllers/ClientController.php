@@ -27,20 +27,20 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
 
         $request->validate([
+            'acc_no' => 'required',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:clients',
             'phone_number' => 'required|string|max:255',
             'address' => 'required|string',
-            'resident_building' => 'required|string',
-            'resident_hse_no' => 'required|string',
-            'payment_date' => 'required|date',
-            'payment_method' => 'required|required_if_accepted:payment_date',
-            'payment_plan' => 'required|required_if_accepted:payment_date',
+            'apartment_no' => 'required|string',
+            'status' => 'required',
+            'billing_day' => 'required|required_if_accepted:status',
+            'employee_id' => 'required|string',
 		]);
 
 		$client = Client::create($request->all());
