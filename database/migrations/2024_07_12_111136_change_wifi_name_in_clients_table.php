@@ -14,10 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('acc_no')->after('name'); 
-            $table->string('IP')->nullable();
-            $table->date('billing_day')->nullable();
-            $table->string('employee_id')->nullable();
+            $table->string('wifi_name')->nullable()->change();
+			$table->string('wifi_password')->nullable()->change();
         });
     }
 
@@ -29,10 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-           $table->dropColumn('acc_no');
-           $table->dropColumn('IP');
-           $table->dropColumn('billing_day');
-           $table->dropColumn('employee_id');
+            $table->string('wifi_name')->change();
+            $table->string('wifi_password')->change();
         });
     }
 };

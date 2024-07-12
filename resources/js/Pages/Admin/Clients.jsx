@@ -33,8 +33,8 @@ function Clients() {
 
   useEffect(() => {
     fetchClients();
-    fetchDepartments();
-    fetchClearanceLevels();
+    // fetchDepartments();
+    // fetchClearanceLevels();
   }, []);
 
   useEffect(() => {

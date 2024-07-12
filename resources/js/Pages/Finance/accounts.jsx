@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import SideNav from '../../Layouts/SideNav'
 import TableComp from '../../Components/Common/TableComp';
 import Modal from '../../Components/Common/Modal';
@@ -6,6 +6,7 @@ import PaginatorNav from '../../Components/Common/PaginatorNav';
 import SelectComp from '../../Components/Common/SelectComp';
 import { loaderSetter } from '../../Components/Common/Loader';
 import requestHandler from '../../services/requestHandler';
+import AccountsTableElem from '../../Components/Admin/AccountsTableElem';
 
 const Accounts = () => {
   const [formMode,setFormMode] = useState('');
@@ -16,18 +17,32 @@ const Accounts = () => {
     next_page_url: '',
     total: 1
 });
-const [client, setClient] = useState({});
+const [client, setClient] = useState({
+  package_id: 0,
+});
 const [showNewClientModal, setShowNewClientModal] = useState(false);
 const [response, setResponse] = useState(false);
 const [errors, setErrors] = useState(false);
+const [internetPackages, setInternetPackages] = useState(false);
+
+useEffect(() => {
+  fetchClients();
+}, []);
 
 function toggleOpenModal(){
-  setClient({})
+  setClient({
+    package_id: 0,
+    user_id: 0,
+  })
   setShowNewClientModal(true);
 }
 
 function handleChange(e) {
   setClient({...client, [e.target.name]: e.target.value});
+}
+
+function fetchClients(){
+  requestHandler.get('/api/clients', setClients, null, loaderSetter);
 }
 
 function submitClient(e){
@@ -118,7 +133,7 @@ function submitClient(e){
                       name="acc_no"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter Account name"
-                      value={client.name}
+                      value={client.acc_no}
                       onChange={handleChange}
                       required
                     />
@@ -210,7 +225,7 @@ function submitClient(e){
                     </label>
                     <input
                       type="text"
-                      name="location"
+                      name="address"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter client's address"
                       value={client.address}
@@ -248,11 +263,98 @@ function submitClient(e){
                       </p>
                     }   */}
                   </div>
+                  <div className='mb-5'>
+                    <label
+                      htmlFor="employee_id"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Work Number
+                    </label>
+                    <input
+                      type='text'
+                      name="employee_id"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter Work number"
+                      value={client.employee_id}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                    {/* {
+                      (errors.password_confirmation || errors.errors?.password_confirmation) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'password_confirmation') }
+                      </p>
+                    }   */}
+                  </div>
+                  
+                <div className='mb-5 flex justify-between'>
+                  <div className='w-[20vw]'>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      WIFI Name
+                    </label>
+                    <input
+                      type="text"
+                      name="wifi_name"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's wifi name"
+                      value={client.wifi_name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className='w-[30vw]'>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      WIFI Password
+                    </label>
+                    <input
+                      type="text"
+                      name="wifi_password"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's wifi password"
+                      value={client.wifi_password}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  
+                  </div>
+                  <div className="relative z-0 w-full mb-5 group">
+                  <SelectComp
+                    name="package"
+                    id="package"
+                    value={client.package_id}
+                    onChange={handleChange}
+                    required={true}
+                    className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
+                  >
+                    <option value="" className='text-gray-400'>Select Internet Package</option>
+                    {
+                      (Array.isArray(internetPackages) ? internetPackages : []).map((type, index) => {
+                        return (
+                          <option
+                            key={ type.id || index }
+                            value={ type.id }
+                            className='text-gray-900'
+                          >
+                            { type.name }
+                          </option>
+                        )
+                      })
+                    }
+                  </SelectComp>
+                  
+                </div> 
                   <div className="mt-5 relative z-0 w-full group mb-5">
                   <SelectComp
-                    name="status"
+                    name="connection_status"
                     id="status"
-                    value={client.status}
+                    value={client.connection_status}
                     onChange={(e) => handleChange(e)}
                     required={true}
                     className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white`}
@@ -262,6 +364,7 @@ function submitClient(e){
                     <option value={1}>Inactive</option>
                   </SelectComp>
                 </div>
+                
           <div className="mt-8 relative z-0 w-full group">
             <input
               type="date"

@@ -12,7 +12,7 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
         $clients = Client::paginate(10);
@@ -47,7 +47,7 @@ class ClientController extends Controller
             'phone_number' => 'required|string|max:255',
             'address' => 'required|string',
             'apartment_no' => 'required|string',
-            'status' => 'required',
+            'connection_status' => 'required',
             'billing_day' => 'required|required_if_accepted:status',
             'employee_id' => 'required|string',
 		]);
