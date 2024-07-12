@@ -323,9 +323,12 @@ function AssignedTasks() {
                                 </h3>
                                 
                             </div>
-                            <div className="p-1 md:p-5 sm:p-3 w-full">
-                                {report[0]?.content}
-                            </div>
+                            <textarea
+                              className="block p-2.5 w-full text-sm text-gray-900 outline-none bg-transparent rounded-lg border focus:ring-blue-500 focus:border-blue-50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
+                              rows={12}
+                              value={report[0]?.content}
+                              disabled
+                            />
   
                         </div>
                         <div className="mb-4 w-full flex">
