@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import SideNav from '../../Layouts/SideNav'
 import TableComp from '../../Components/Common/TableComp';
 import Modal from '../../Components/Common/Modal';
@@ -7,6 +7,8 @@ import SelectComp from '../../Components/Common/SelectComp';
 import { loaderSetter } from '../../Components/Common/Loader';
 import requestHandler from '../../services/requestHandler';
 import AccountsTableElem from '../../Components/Admin/AccountsTableElem';
+import ClientsTableElem from '../../Components/Admin/ClientsTableElem';
+import {AppContext} from '../../appContext';
 
 const Accounts = () => {
   const [formMode,setFormMode] = useState('');
@@ -24,17 +26,38 @@ const [showNewClientModal, setShowNewClientModal] = useState(false);
 const [response, setResponse] = useState(false);
 const [errors, setErrors] = useState(false);
 const [internetPackages, setInternetPackages] = useState(false);
+const { userData } = useContext(AppContext);
+const [inputFile, setInputFile] = useState()
+
 
 useEffect(() => {
   fetchClients();
 }, []);
 
-function toggleOpenModal(){
-  setClient({
+useEffect(() => {
+  checkResponse();
+}, [response]);
+
+function toggleOpenModal(mode,elem){
+  if(mode === 'edit'){
+    setFormMode(mode)
+    setClient(elem);
+  }else{
+    setClient({
     package_id: 0,
     user_id: 0,
-  })
+    })
+  }
+  
   setShowNewClientModal(true);
+}
+
+function checkResponse () {
+  if (response) {
+    fetchClients();
+    setClient({});
+    setShowNewClientModal(false);
+  }
 }
 
 function handleChange(e) {
@@ -43,6 +66,11 @@ function handleChange(e) {
 
 function fetchClients(){
   requestHandler.get('/api/clients', setClients, null, loaderSetter);
+}
+
+function deleteUser(id) {
+  requestHandler.delete(`/api/client/${id}`, setResponse, setErrors, loaderSetter);
+  
 }
 
 function submitClient(e){
@@ -54,10 +82,44 @@ function submitClient(e){
       requestHandler.post('/api/client', client, setResponse, setErrors, loaderSetter);
     }
 }
+
+function handleInputFile(e){
+  const formData = new FormData();
+  setInputFile(e.target.files[0])
+}
+
+async function submitFile(e){
+  e.preventDefault()
+ 
+  const formData = new FormData();
+  formData.append("file",inputFile)
+
+  await fetch('/api/clients/upload', {
+      method: 'POST',
+      headers: {
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+      },
+      body: formData
+  }).then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+  .then(data => {
+      setResponse(data); 
+  }).catch(error => {
+      setErrors(error);
+  }); 
+
+  }
   return (
     <SideNav>
       <div className="">
         <div className='mb-4 w-full flex'>
+        <div className="border b-5 rounded border-grey p-2">
+                    <input type="file" id="inventory_file" placeholder="Import Sheet" onChange={(e) => handleInputFile(e)}/>
+                    <button className="rounded bg-green-400 p-2 hover:bg-green-600 hover:text-gray-100" onClick={(e) => submitFile(e)}>Submit</button>
+            </div>
           <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
             onClick={toggleOpenModal}
@@ -65,31 +127,6 @@ function submitClient(e){
             Add New Client
           </button>
         </div>
-
-        <Modal
-          // show={deleteUserModal}
-          // onClose={closeDeleteUserModal}
-        >
-          <div>
-            <h1 className="text-lg text-center mt-5">Are sure you want to delete <span className='font-bold'>{}</span>?</h1>
-
-            <div className="flex justify-around items-center">
-              <button
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
-                // onClick={closeDeleteUserModal}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="bg-red-500 w-fit text-white hover:opacity-80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800 my-8"
-                // onClick={deleteUser}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </Modal>
 
         <Modal
           show={showNewClientModal}
@@ -252,7 +289,7 @@ function submitClient(e){
                       name="apartment_no"
                       className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter house number"
-                      value={client.hse_no}
+                      value={client.apartment_no}
                       onChange={(e) => handleChange(e)}
                       required
                     />
@@ -405,15 +442,16 @@ function submitClient(e){
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Account No.','Name', 'Email', 'Phone Number', 'Address', 'Hse No', 'Status', 'Billing Day', 'Action']}>
+          <TableComp columns={['Account No.','Name', 'Email', 'Phone Number', 'Address', 'Hse No', 'Status', 'Billing Day','Internet Package', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (
-                  <AccountsTableElem
+                  <ClientsTableElem
                     key={elem.id || index}
                     elem={elem}
-                    // openModal={toggleOpenModal}
-                    // openDeleteModal={openDeleteUserModal}
+                    currentUser={userData}
+                    openModal={toggleOpenModal}
+                    openDeleteModal={() => deleteUser(elem.id)}
                   />
                 );
               })

@@ -82,7 +82,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::patch('/client',[ClientController::class, 'update']);
   Route::delete('/client/{client_id}',[ClientController::class, 'deleteClient']);
   Route::get('/sales_clients',[ClientController::class, 'salesClients']);
-
+  Route::post('clients/upload',[ClientController::class, 'uploadClients']);
   /**
    * Enums Controllers
    */

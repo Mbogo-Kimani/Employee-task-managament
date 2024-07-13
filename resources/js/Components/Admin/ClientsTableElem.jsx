@@ -25,6 +25,9 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser }) {
   return (
     <tr  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        { elem.acc_no }
+      </th>
+      <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
         { elem.name }
       </th>
 
@@ -38,7 +41,7 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser }) {
         { elem.phone_number }
       </td>
       <td className="px-2 py-4">
-        { elem.location }
+        { elem.address }
       </td>
       <td className="px-2 py-4">    
         {elem.apartment_no}
@@ -47,10 +50,13 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser }) {
         {elem.connection_status}
       </td>
       <td className="px-2 py-4">    
+        {elem.billing_day}
+      </td>
+      <td className="px-2 py-4">    
         {elem.internet_package_id}
       </td>
       {
-        currentUser?.role === department.ADMIN &&
+        (currentUser?.role === department.ADMIN || currentUser?.role === department.ACCOUNTING_AND_FINANCE)  &&
         <td className="px-2 py-4 relative">
             <DropDown>
                   <Menu.Item>
