@@ -29,7 +29,7 @@ function Tasks() {
   }
 
   return (
-    <SideNav>
+    <SideNav link='/admin/employees'>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <TableComp columns={['Name', 'Description', 'From Date', 'To Date', 'Status', 'Finished At', 'Action']}>
           {
