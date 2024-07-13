@@ -30,7 +30,10 @@ function EmployeesTableElem({ elem, openModal }) {
       <td className="px-2 py-4">
         { clearanceLevel[elem.clearance_level] }
       </td>
-      
+      <td className="px-2 py-4">
+        { elem.employee_id }
+      </td>
+
       <td className="px-2 py-4 relative">
            <DropDown>
                 <Menu.Item>

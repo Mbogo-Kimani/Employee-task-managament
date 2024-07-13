@@ -18,7 +18,7 @@ class InternetPackage extends Model
 	protected $fillable = [
 		'capacity',
 		'validity',
-		'bandwidth_capacity',
+		'other_properties',
 		'installation_cost',
 		'router_cost',
 	];

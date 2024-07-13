@@ -6,9 +6,10 @@ import { router } from '@inertiajs/react';
 import { Menu, Transition } from '@headlessui/react'
 import DropDown from '../Common/DropDown';
 import department from '../../data/enums/department';
+import connectionStatus from '../../data/enums/connectionStatus';
 
 
-function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser }) {
+function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser, packages = [] }) {
   const [viewMenu, setViewMenu] = useState(false);
   const [showActionModal, setShowActionModal] = useState(false);
 
@@ -31,6 +32,12 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser }) {
     
     return endDate >= new Date()
   }
+
+  function connectionColor(status) {
+    if (status === connectionStatus.ONLINE) return 'text-green-500';
+    else if (status === connectionStatus.ACTIVE) return 'text-blue-500';
+    else if (status === connectionStatus.BLOCKED) return 'text-red-500';
+  }
   return (
     <tr  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -51,11 +58,11 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser }) {
       <td className="px-2 py-4">    
         {elem.apartment_no}
       </td>
-      <td className="px-2 py-4">    
-        {elem.connection_status}
+      <td className={`px-2 py-4 ${connectionColor(elem.connection_status)}`}>    
+        {connectionStatus[elem.connection_status] || ''}
       </td>
-      <td className="px-2 py-4">    
-        {elem.internet_package_id}
+      <td className="px-2 py-4 uppercase">    
+        {packages.find(item => item.id === elem.internet_package_id)?.capacity || ''}
       </td>
       {
         currentUser?.role === department.ADMIN &&
