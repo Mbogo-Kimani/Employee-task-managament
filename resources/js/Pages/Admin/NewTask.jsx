@@ -159,7 +159,7 @@ function NewTask() {
     })
   }
   return (
-    <SideNav>
+    <SideNav link='/admin/tasks'>
       <div>
         <div className='mb-4 w-full flex'>
           <button

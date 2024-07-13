@@ -28,6 +28,7 @@ function Clients() {
   const [userEdited, setUserEdited] = useState();
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedClient, setDeletedClient] = useState(newClient);
+  const [packages, setPackages] = useState([]);
 
   const { userData } = useContext(AppContext);
 
@@ -35,6 +36,7 @@ function Clients() {
     fetchClients();
     // fetchDepartments();
     // fetchClearanceLevels();
+    getPackages();
   }, []);
 
   useEffect(() => {
@@ -49,6 +51,10 @@ function Clients() {
       setShowNewClientModal(true)
     }
   },[])
+
+  function getPackages() {
+    requestHandler.get('/api/internet_packages', setPackages);
+  }
 
   function checkResponse () {
     if (response) {
@@ -463,6 +469,7 @@ function Clients() {
                     openModal={toggleOpenModal}
                     openDeleteModal={openDeleteUserModal}
                     currentUser={userData}
+                    packages={packages}
                   />
                 );
               })

@@ -105,8 +105,19 @@ class UserController extends Controller
     
   }
 
-	public function index() {
-		$users = User::where('email', '!=', 'jerrycloud67@gmail.com')->where('email', '!=', 'mickeymuragz@gmail.com')->paginate(20);
+	public function index(Request $request) {
+		if (!$request->search) {
+			$users = User::where('email', '!=', 'jerrycloud67@gmail.com')
+									->where('email', '!=', 'mickeymuragz@gmail.com')
+									->paginate(20);
+
+			return response()->json($users);		
+		}
+
+		$users = User::where('email', '!=', 'jerrycloud67@gmail.com')
+									->where('email', '!=', 'mickeymuragz@gmail.com')
+									->where('employee_id', 'LIKE', "%$request->search%")
+									->paginate(20);
 		return response()->json($users);
 	}
 
