@@ -118,7 +118,6 @@ function NewTask() {
 
   function handleChange(e) {
     setNewTask({...newTask, [e.target.name]: e.target.value})
-    console.log(newTask);
   }
 
   function handleTaskTypeChange (e) {
