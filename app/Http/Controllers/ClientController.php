@@ -119,7 +119,6 @@ class ClientController extends Controller
 				$fileName = $file->getClientOriginalName();
 				Storage::disk('public')->put($fileName, file_get_contents($file));
                 Excel::import(new ClientImport, $file);
-        dd($file);
 
 			}catch(\Exception $e){
 				abort(400, $e);

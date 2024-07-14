@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Client;
 use App\Models\InternetPackage;
+use DateTime;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -21,11 +22,12 @@ class ClientImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
 
             foreach ($collection as $row){
                 $data[] = [
-                    'id' => $row['id'],
-                    'status' => $row['status'],
+                    'splynx_id' => $row['id'],
+                    'connection_status' => $row['status'],
                     'phone_number' => $row['phone_number'],
-                    'package' => $row['internet_plans'],
-                    'ips' => $row['ips'],
+                    'package_id' => $row['internet_plans'],
+                    'IP' => $row['ips'],
+                    'acc_no' => $row['portal_login'],
                     'billing_day' => $row['billing_day_automatic_document_date'],
                 ];
             }
@@ -35,16 +37,40 @@ class ClientImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
     public function processData($data)
     {
         foreach($data as $client){
-            $client['status'] = $client['status'] = "Online" ? 1 : 0;
-            // $client['package'] = InternetPackage::where('capacity' ,strtolower(str_replace(' ', '', $client['package'])))->get();
-            dd(strtolower(str_replace(' ', '', $client['package'])));
-            Client::updateOrCreate(['splynx_id' => $client['id']], [
-                'IP' => $client['ips'],
-                'phone_number' => $client['phone_number'],
-                'connection_status' => $client['status'],
-                'billing_day' => $client['billing_day'],
-            ]);
+            $client['connection_status'] = $client['connection_status'] = "Online" ? 1 : 3;
+            $client['package_id'] = InternetPackage::where('capacity' ,strtolower(str_replace(' ', '', $client['package_id'])))->pluck('id')->first();
+            $client['billing_day'] = $this->convertDate($client['billing_day']);
+
+            $existingClient = Client::where('splynx_id',$client['splynx_id'])->first();
+            
+            if(!$existingClient){
+                Client::create([
+                    'name' => $client['full_name'],
+                    'splynx_id' => $client['splynx_id'],
+                    'phone_number' => $client['phone_number'],
+                    'connection_status' => $client['connection_status'],
+                    'billing_day' => $client['billing_day'],
+                    'package_id' => $client['package_id'],
+                    'IP' => $client['IP'],
+                    'acc_no' => $client['acc_no'],
+                ]);
+            } else {
+                $existingClient->update([
+                    'IP' => $client['IP'],
+                    'connection_status' => $client['connection_status'],
+                    'billing_day' => $client['billing_day'],
+                    'package_id' => $client['package_id'],
+                ]);
+            }
 
         }
+    }
+
+    function convertDate($date) {
+        $inputDate = new DateTime();
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+        $inputDate->setDate($currentYear, $currentMonth, $date);
+        return $inputDate->format('Y-m-d');
     }
 }
