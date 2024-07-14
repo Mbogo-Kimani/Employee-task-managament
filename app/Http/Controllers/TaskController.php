@@ -156,7 +156,9 @@ class TaskController extends Controller
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
 
-			$tasks = Task::with(['department', 'users', 'taskType','equipments'])->paginate(20);
+			$tasks = Task::with(['department', 'users', 'taskType','equipments'])
+										->orderBy('created_at', 'DESC')
+										->paginate(20);
 			return response()->json($tasks);
 		}
 
