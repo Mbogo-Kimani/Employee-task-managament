@@ -27,6 +27,7 @@ class ClientImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
                     'phone_number' => $row['phone_number'],
                     'package_id' => $row['internet_plans'],
                     'IP' => $row['ips'],
+                    'full_name' => $row['full_name'],
                     'acc_no' => $row['portal_login'],
                     'billing_day' => $row['billing_day_automatic_document_date'],
                 ];
@@ -47,19 +48,23 @@ class ClientImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
                 Client::create([
                     'name' => $client['full_name'],
                     'splynx_id' => $client['splynx_id'],
-                    'phone_number' => $client['phone_number'],
+                    'phone_number' => $client['phone_number'] || '+254',
                     'connection_status' => $client['connection_status'],
                     'billing_day' => $client['billing_day'],
-                    'package_id' => $client['package_id'],
+                    'package_id' => $client['package_id'] || 1,
                     'IP' => $client['IP'],
                     'acc_no' => $client['acc_no'],
+                    'email' => $client['full_name'] . '@mail.net',
+                    'address' => $client['acc_no'],
+                    'apartment_no' => $client['acc_no'],
                 ]);
             } else {
                 $existingClient->update([
                     'IP' => $client['IP'],
                     'connection_status' => $client['connection_status'],
                     'billing_day' => $client['billing_day'],
-                    'package_id' => $client['package_id'],
+                    'package_id' => $client['package_id'] || 1,
+                    'phone_number' => $client['phone_number'] ?? '+254',
                 ]);
             }
 
