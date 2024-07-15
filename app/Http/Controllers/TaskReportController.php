@@ -60,7 +60,7 @@ class TaskReportController extends Controller
 			]);
 
 			if ($taskReport && $currentTask) {
-				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL_BY_DEPARTMENT_HEAD;
+				$currentTask->status = TaskStatusEnum::AWAITING_APPROVAL;
 				$currentTask->task_finished_at = now();
 				$currentTask->save();
 				return response()->json(['message' => 'Report saved successfully']);
@@ -132,7 +132,7 @@ class TaskReportController extends Controller
 			}
 
 			if ($request->status == 'approved') {
-        $task->status = TaskStatusEnum::AWAITING_APPROVAL_BY_ADMIN;
+            $task->status = TaskStatusEnum::DONE;
 				$task->save();
 				return response()->json(['message' => 'Status updated successfully']);
             }
@@ -144,7 +144,7 @@ class TaskReportController extends Controller
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
 
-        $tasks = Task::where('status', TaskStatusEnum::AWAITING_APPROVAL_BY_ADMIN)->get();
+        $tasks = Task::where('status', TaskStatusEnum::DONE)->get();
 
         return new ReportResourceCollection($tasks );
     }

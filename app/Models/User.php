@@ -44,6 +44,10 @@ class User extends Authenticatable
     return $this->hasMany(TaskMessage::class);
   }
 
+  public function clients(): HasMany {
+    return $this->hasMany(Client::class, 'sales_person_id');
+  }
+
   protected $hidden = [
     'password',
     'remember_token',

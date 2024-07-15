@@ -8,6 +8,7 @@ use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentStockController;
 use App\Http\Controllers\EquipmentTaskController;
 use App\Http\Controllers\EquipmentTypeController;
+use App\Http\Controllers\InternetPackageController;
 use App\Http\Controllers\MapLineController;
 use App\Http\Controllers\MapPointController;
 use App\Http\Controllers\NotificationController;
@@ -81,7 +82,8 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/client',[ClientController::class, 'store']);
   Route::patch('/client',[ClientController::class, 'update']);
   Route::delete('/client/{client_id}',[ClientController::class, 'deleteClient']);
-  
+  Route::get('/sales_clients',[ClientController::class, 'salesClients']);
+
   /**
    * Enums Controllers
    */
@@ -155,4 +157,9 @@ Route::middleware('auth:sanctum')->group( function () {
 
   Route::get('/map_lines', [MapLineController::class, 'index']);
   Route::post('/map_lines', [MapLineController::class, 'store']);
+
+  /**
+   * 
+   */
+  Route::get('/internet_packages', [InternetPackageController::class, 'index']);
 });

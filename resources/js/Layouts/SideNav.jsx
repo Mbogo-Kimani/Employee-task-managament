@@ -10,7 +10,7 @@ import { AppContext } from '../appContext';
 import { navItemsDeterminer, pageData as defaultPageData } from '../data/indexNav';
 
 
-function SideNav({ children }) {
+function SideNav({ link = '/dashboard', children }) {
   const [collapsed, setCollapsed] = useState(hasLargeWidth());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [response, setResponse] = useState(false);
@@ -146,6 +146,14 @@ function SideNav({ children }) {
           </ul>
         </nav>
         <div className='pt-8 px-8 w-full bg-gray-100 dark:bg-gray-800 overflow-x-hidden'>
+          {
+            location.pathname !== '/dashboard' &&
+            <div className='hover:scale:105 hover:text-green-500 cursor-pointer mb-5'>
+              <Link className='hover:underline' href={link}>
+                {'<'} Back
+              </Link>
+            </div>
+          }
           { children }
         </div>
       </div>

@@ -39,7 +39,7 @@ const Stats = () => {
 	}
 
 	return (
-		<SideNav>
+		<SideNav link='/admin/employees'>
 			<div>
 				<h2 className='text-center text-xl font-bold'>Employee Statistics</h2>
 				<EmployeeChart users={users} data={userDataSet}/>

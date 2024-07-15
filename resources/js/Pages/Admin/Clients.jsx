@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../../data/indexNav';
+import React, { useContext, useEffect, useState } from 'react'
 import SideNav from '../../Layouts/SideNav';
 import requestHandler from '../../services/requestHandler';
 import paymentPlanEnum from '../../data/enums/PaymentPlan';
@@ -13,9 +12,9 @@ import { loaderSetter } from '../../Components/Common/Loader';
 import ClientsTableElem from '../../Components/Admin/ClientsTableElem';
 import { toast } from 'react-toastify';
 import SelectComp from '../../Components/Common/SelectComp';
+import { AppContext } from '../../appContext';
 
 function Clients() {
-  const [pageItems, setPageItems] = useState(defaultPageData);
   const [clients, setClients] = useState([]);
   const [client, setClient] = useState({});
   const [newClient, setNewClient] = useState({});
@@ -29,12 +28,15 @@ function Clients() {
   const [userEdited, setUserEdited] = useState();
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedClient, setDeletedClient] = useState(newClient);
+  const [packages, setPackages] = useState([]);
 
+  const { userData } = useContext(AppContext);
 
   useEffect(() => {
     fetchClients();
     fetchDepartments();
     fetchClearanceLevels();
+    getPackages();
   }, []);
 
   useEffect(() => {
@@ -49,6 +51,10 @@ function Clients() {
       setShowNewClientModal(true)
     }
   },[])
+
+  function getPackages() {
+    requestHandler.get('/api/internet_packages', setPackages);
+  }
 
   function checkResponse () {
     if (response) {
@@ -82,7 +88,6 @@ function Clients() {
 
   function handleChange(e) {
     setNewClient({...newClient, [e.target.name]: e.target.value});
-    console.log(newClient);
   }
 
   function submitNewClient(e) {
@@ -454,7 +459,7 @@ function Clients() {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Name', 'Email', 'Phone Number', 'Address', 'Building', 'Hse No', 'status','Payment Method','Payment Duration (months)', 'Action']}>
+          <TableComp columns={['Name', 'Email', 'Phone Number', 'Location', 'Hse No', 'Status', 'Package', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (
@@ -463,6 +468,8 @@ function Clients() {
                     elem={elem}
                     openModal={toggleOpenModal}
                     openDeleteModal={openDeleteUserModal}
+                    currentUser={userData}
+                    packages={packages}
                   />
                 );
               })
