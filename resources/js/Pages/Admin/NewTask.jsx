@@ -31,7 +31,7 @@ function NewTask() {
   const [admins, setAdmins] = useState([]);
   const [departmentHeads, setDepartmentHeads] = useState([]);
   const [departmentHandlerElemText, setDepartmentHandlerElemText] = useState('');
-
+  const [internetPackages, setInternetPackages] = useState([]);
 
   useEffect(() => {
     fetchTaskTypes();
@@ -143,6 +143,10 @@ function NewTask() {
     }
   }
 
+  function fetchInternetPackages(){
+    requestHandler.get('/api/internet_packages', setInternetPackages);
+  }
+
   function getSubDepartments(){
     if (newTask.department) return departments.find(dept => dept.id === Number(newTask.department)).subdepartments
   }
@@ -170,7 +174,8 @@ function NewTask() {
           </button>
         </div>
         <form className="max-w-md mx-auto">
-          <div className="relative z-0 w-full mb-5 group">
+          <div className="relative z-0 w-full mb-5 flex justify-between">
+            <div>
             <input
               type="text"
               name="name"
@@ -185,15 +190,29 @@ function NewTask() {
               htmlFor="name" 
               className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Task Name
+              Apartment Code
               <span className='text-gray-900'> *</span>
             </label>
-            {
-              (errors.name || errors.errors?.name) && 
-              <p className="text-red-500 my-2 py-1">
-                { displayErrors(errors, 'name') }
-              </p>
-            }  
+            </div>  
+            <div>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={newTask.name}
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <label
+              htmlFor="name" 
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Hse No.
+              <span className='text-gray-900'> *</span>
+            </label>
+            </div>  
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
