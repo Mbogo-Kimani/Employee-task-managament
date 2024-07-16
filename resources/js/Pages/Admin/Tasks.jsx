@@ -80,7 +80,10 @@ function Tasks() {
   }, [editTask])
 
   function fetchAllTasks() {
-    requestHandler.get('/api/all_tasks', setTasks, null, loaderSetter);
+    const searchParam = location.search.split('=')[1];
+
+    if (searchParam) requestHandler.get(`/api/all_tasks?page=${searchParam}`, setTasks, null, loaderSetter);
+    else requestHandler.get('/api/all_tasks', setTasks, null, loaderSetter);
   }
   function fetchHandlers() {
     if (Object.keys(editTask).length > 0) requestHandler.get(`/api/admin_department_handlers/${editTask.department?.id}`, setHandlers);
