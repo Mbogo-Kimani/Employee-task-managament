@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import SideNav from '../Layouts/SideNav'
-import pageAndNavItemsDeterminer, { pageData as defaultPageData } from '../data/indexNav';
 import taskStatus from '../data/enums/taskStatus';
 import requestHandler from '../services/requestHandler';
 import Modal from '../Components/Common/Modal';
@@ -16,7 +15,6 @@ import { router } from '@inertiajs/react';
 import ApartmentCodes from '../Components/Modal/ApartmentCodes';
 
 function Tasks() {
-  const [pageItems, setPageItems] = useState(defaultPageData);
   const [tasks, setTasks] = useState({
     data: [],
     from: 1,
@@ -47,7 +45,10 @@ function Tasks() {
   }, [response]);
 
   function fetchTasks () {
-    requestHandler.get('/api/tasks', setTasks);
+    const searchParam = location.search.split('=')[1];
+
+    if (searchParam) requestHandler.get(`/api/tasks?page=${searchParam}`, setTasks);
+    else requestHandler.get(`/api/tasks`, setTasks);
   }
 
   function getReport(id){
