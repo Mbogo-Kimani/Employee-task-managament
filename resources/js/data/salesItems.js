@@ -11,5 +11,11 @@ export const salesPageItems = [
   {
     name: 'View Clients',
     href: '/clients',
+    pictureSrc: 'circleUser',
   },
+  // {
+  //   name: 'Client Feedback',
+  //   href: '/feedback/new',
+  //   pictureSrc: 'report',
+  // },
 ];
