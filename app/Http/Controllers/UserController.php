@@ -223,6 +223,10 @@ class UserController extends Controller
 
 		return Inertia::render('Admin/NewTask');
 	}
+	public function accountsPage() {
+
+		return Inertia::render('Finance/accounts');
+	}
 
 	public function newEquipmentsPage() 
   	{

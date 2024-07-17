@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DepartmentEnum;
+use App\Imports\ClientImport;
+use App\Imports\InventoryImport;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller
 {
     public function index(Request $request)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
         $clients = Client::paginate(10);
@@ -36,20 +40,20 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
 
         $request->validate([
+            'acc_no' => 'required',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:clients',
             'phone_number' => 'required|string|max:255',
             'address' => 'required|string',
-            'resident_building' => 'required|string',
-            'resident_hse_no' => 'required|string',
-            'payment_date' => 'required|date',
-            'payment_method' => 'required|required_if_accepted:payment_date',
-            'payment_plan' => 'required|required_if_accepted:payment_date',
+            'apartment_no' => 'required|string',
+            'connection_status' => 'required',
+            'billing_day' => 'required|required_if_accepted:status',
+            'employee_id' => 'required|string',
 		]);
 
 		$client = Client::create($request->all());
@@ -60,21 +64,21 @@ class ClientController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
 
         $request->validate([
             'id' =>' required|exists:clients',
-            'name' => 'string|max:255',
-            'email' => 'email',
-            'phone_number' => 'string|max:255',
-            'address' => 'string',
-            'resident_building' => 'string',
-            'resident_hse_no' => 'string',
-            'payment_date' => 'date',
-            'payment_method' => 'required_if_accepted:payment_date',
-            'payment_plan' => 'required_if_accepted:payment_date',
+            'acc_no' => 'required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone_number' => 'required|string|max:255',
+            'address' => 'required|string',
+            'apartment_no' => 'required|string',
+            'connection_status' => 'required',
+            'billing_day' => 'required|required_if_accepted:status',
+            'employee_id' => 'required|string',
         ]);
 
         try{
@@ -90,7 +94,7 @@ class ClientController extends Controller
     public function deleteClient(Request $request, $id)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
 
@@ -106,5 +110,24 @@ class ClientController extends Controller
     public function salesClientsPage() {
         return Inertia::render('Clients');
     }
+
+    public function uploadClients(Request $request)
+	{
+		$file = $request->file('file');
+		if($file){
+			try{
+				$fileName = $file->getClientOriginalName();
+				Storage::disk('public')->put($fileName, file_get_contents($file));
+                Excel::import(new ClientImport, $file);
+
+			}catch(\Exception $e){
+				abort(400, $e);
+			}			
+		}else{
+			return response()->json(['error' => 'Please upload file']);
+		}
+
+		return response()->json(['message' => 'File uploaded successfully']);
+	}
 }
 

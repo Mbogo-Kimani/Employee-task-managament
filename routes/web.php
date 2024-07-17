@@ -97,4 +97,6 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 
   Route::get('/admin/maps',[UserController::class, 'mapsPage']);
 
+  Route::get('/finance/accounts',[UserController::class, 'accountsPage']);
+
 
