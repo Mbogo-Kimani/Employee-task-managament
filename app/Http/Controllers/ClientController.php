@@ -13,6 +13,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller
 {
+    public function clientFeedbackPage() {
+		return Inertia::render('Feedback/New');
+    }
+
     public function index(Request $request)
     {
         $user = auth()->user();
