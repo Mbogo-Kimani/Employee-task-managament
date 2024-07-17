@@ -19,7 +19,7 @@ class ClientController extends Controller
         if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
         }
-        $clients = Client::paginate(10);
+        $clients = Client::latest()->paginate(10);
         return response()->json($clients);
     }
 

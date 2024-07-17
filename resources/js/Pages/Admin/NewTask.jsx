@@ -31,12 +31,15 @@ function NewTask() {
   const [admins, setAdmins] = useState([]);
   const [departmentHeads, setDepartmentHeads] = useState([]);
   const [departmentHandlerElemText, setDepartmentHandlerElemText] = useState('');
+  const [internetPackages, setInternetPackages] = useState([]);
+  const [countryCode, setCountryCode] = useState('+254')
 
 
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
     fetchAdmins();
+    fetchInternetPackages();
   }, []);
 
   useEffect(() => {
@@ -142,14 +145,22 @@ function NewTask() {
     }
   }
 
+  function fetchInternetPackages(){
+    requestHandler.get('/api/internet_packages', setInternetPackages);
+  }
+
   function getSubDepartments(){
-    if (newTask.department) return departments.find(dept => dept.id === Number(newTask.department)).subdepartments
+    if (newTask.department) return departments?.find(dept => dept.id === Number(newTask.department)).subdepartments
   }
 
   function submitNewTaskType (e) {
     e.preventDefault();
     requestHandler.post('/api/task_types', newTaskType, setTaskTypeResponse, setErrors);
    
+  }
+
+  function handlePhoneNumberChange(e){
+    setNewTask({...newTask,[e.target.name]: countryCode + e.target.value})
   }
 
   const notify = (string) => {
@@ -169,30 +180,45 @@ function NewTask() {
           </button>
         </div>
         <form className="max-w-md mx-auto">
-          <div className="relative z-0 w-full mb-5 group">
+          <div className="relative z-0 w-full mb-5 flex justify-between">
+            <div>
             <input
               type="text"
-              name="name"
-              id="name"
+              name="apartment_code"
+              id="apartment_code"
               className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              value={newTask.name}
+              value={newTask.apartment_code}
               onChange={(e) => handleChange(e)}
               required
             />
             <label
               htmlFor="name" 
-              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform translate-y-6 scale-75 -top-9 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-10 peer-focus:scale-75 peer-focus:-translate-y-0"
             >
-              Task Name
+              Apartment Code
               <span className='text-gray-900'> *</span>
             </label>
-            {
-              (errors.name || errors.errors?.name) && 
-              <p className="text-red-500 my-2 py-1">
-                { displayErrors(errors, 'name') }
-              </p>
-            }  
+            </div>  
+            <div>
+            <input
+              type="text"
+              name="hse_no"
+              id="hse_no"
+              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={newTask.hse_no}
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <label
+              htmlFor="name" 
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform translate-y-6 scale-75 -top-9 -z-10 origin-[0]  rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-10 peer-focus:scale-75 peer-focus:-translate-y-0"
+            >
+              Hse No.
+              <span className='text-gray-900'> *</span>
+            </label>
+            </div>  
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
@@ -324,6 +350,7 @@ function NewTask() {
             }  
           </div>
 
+
           <div className="relative z-0 w-full mb-5 group">
             <SelectComp
               name="departmentHandler"
@@ -357,8 +384,128 @@ function NewTask() {
               </p>
             }  
           </div>
-
           <div className="relative z-0 w-full mb-5 group">
+            <SelectComp
+              name="package_id"
+              id="package_id"
+              value={newTask.package_id}
+              onChange={(e) => handleChange(e)}
+              required={true}
+              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.taskType ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+            >
+              <option value="" className='bg-transparent text-gray-400'>Select Internet Package *</option>
+              {
+                (Array.isArray(internetPackages) ? internetPackages : []).map((type, index) => {"block py-2.5 px-0 w-full text-sm border-0 bg-transparent border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  return (
+                    <option
+                      key={ type.id || index }
+                      value={ type.id }
+                      title={ type.description || '' }
+                      className='bg-transparent text-gray-900 dark:text-gray-300'
+                    >
+                      { type.capacity }
+                    </option>
+                  )
+                })
+              }
+            </SelectComp>
+            <hr className="w-full border-[1px] border-gray-300" />
+          </div>
+          <div className="relative z-0 w-full mb-5 flex justify-between">
+            <input
+              type="text"
+              name="client_name"
+              id="client_name"
+              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={newTask.client_name}
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <label
+              htmlFor="name" 
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Client Name
+              <span className='text-gray-900'> *</span>
+            </label>
+            </div>
+          <div className="relative z-0 w-full mb-5 flex justify-between">
+            <input
+              type="text"
+              name="client_email"
+              id="client_email"
+              className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={newTask.client_email}
+              onChange={(e) => handleChange(e)}
+              required
+            />
+            <label
+              htmlFor="name" 
+              className="peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Client Email
+              <span className='text-gray-900'> *</span>
+            </label>
+            </div>
+            <div className='flex mb-5'>
+                    <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                      <option value="" disabled>Select Country Code</option>
+                      <option value="+254">+254 (Kenya)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+91">+91 (India)</option>
+                      {/* Add more country codes as needed */}
+                    </select>
+                    <input
+                      type="tel"
+                      name='phone_number'
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      // value={newTask.phone_number}
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Enter Client's Phone Number"
+                      required
+                    />
+                  </div>
+          
+          <div className='mb-5 flex justify-between'>
+                  <div className='w-[20vw]'>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center"
+                    >
+                      WIFI Name
+                    </label>
+                    <input
+                      type="text"
+                      name="wifi_name"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's wifi name"
+                      value={newTask.wifi_name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className='w-[30vw] ml-2 mb-2'>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center"
+                    >
+                      WIFI Password
+                    </label>
+                    <input
+                      type="text"
+                      name="wifi_password"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter client's wifi password"
+                      value={newTask.wifi_password}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  </div>
+                  <div className="relative z-0 w-full mb-10 group">
             <SelectComp
               name="paid"
               id="paid"
@@ -379,7 +526,6 @@ function NewTask() {
               </p>
             }  
           </div>
-
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"

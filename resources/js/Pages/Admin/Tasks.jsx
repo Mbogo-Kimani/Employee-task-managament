@@ -151,11 +151,14 @@ function Tasks() {
         </div>
         <SortElem sortParams={sortParams} filterFn={submitFilters}/>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Task Name', 'Task Type', 'Department', 'Handler', 'Payment', 'Status','Started At', 'Finished At', 'Action']}>
+          <TableComp columns={['No','Task Name', 'Task Type', 'Department', 'Handler', 'Payment', 'Status','Started At', 'Finished At', 'Action']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
                   <tr key={task.id || index} className="overflow-auto h-[30px] bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 py-1">
+                    <th scope="row" className="px-4 overflow-auto font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {index + 1 }
+                    </th>
                     <th scope="row" className="px-4 overflow-auto font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       { task.name }
                     </th>
@@ -259,6 +262,7 @@ function Tasks() {
         
               <form className="max-w-md mx-auto h-auto p-3 overflow-y-scroll">
                 <div className="relative z-0 w-full mb-5 group mt-10">
+                  <div>
                   <input
                     type="text"
                     name="name"
@@ -273,15 +277,29 @@ function Tasks() {
                     htmlFor="name" 
                     className=" peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
-                    Task Name
+                    Apartment Code
                     <span className='text-gray-900'> *</span>
                   </label>
-                  {/* {
-                    (errors.name || errors.errors?.name) && 
-                    <p className="text-red-500 my-2 py-1">
-                      { displayErrors(errors, 'name') }
-                    </p>
-                  }   */}
+                  </div>
+                  <div>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    value={editTask.name}
+                    onChange={(e) => handleFormChange(e, editTask, setEditTask)}
+                    required
+                  />
+                  <label
+                    htmlFor="name" 
+                    className=" peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Apartment Code
+                    <span className='text-gray-900'> *</span>
+                  </label>
+                  </div>
                 </div>
                 
                 <div className="relative z-0 w-full mb-5 group">
