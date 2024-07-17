@@ -56,11 +56,11 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser, packa
       <td className={`px-2 py-4 ${connectionColor(elem.connection_status)}`}>    
         {connectionStatus[elem.connection_status] || ''}
       </td>
-      <td className="px-2 py-4">    
+      <td className="px-2 py-4 whitespace-nowrap">    
         {elem.billing_day}
       </td>
       <td className="px-2 py-4 uppercase">    
-        {packages.find(item => item.id === elem.internet_package_id)?.capacity || ''}
+        {packages.find(item => item.id === elem.package_id)?.capacity || ''}
       </td>
       {
         (currentUser?.role === department.ADMIN || currentUser?.role === department.ACCOUNTING_AND_FINANCE)  &&
