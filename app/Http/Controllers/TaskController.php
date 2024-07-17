@@ -123,7 +123,8 @@ class TaskController extends Controller
             'package_id' => $request->package_id,
 			'address' => $request->apartment_code,
 			'connection_status' => $request->paid,
-			'phone_number' => $request->phone_number
+			'phone_number' => $request->phone_number,
+			'billing_day' => now()->format('Y-m-d'),
         	]);
 		}else{
 			$client->update([
