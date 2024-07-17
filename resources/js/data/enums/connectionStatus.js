@@ -1,8 +1,8 @@
 export default {
   ONLINE: 1,
   ACTIVE: 2,
-  BLOCKED: 3,
+  BLOCKED: 0,
   '1': 'Online',
   '2': 'Active',
-  '3': 'Blocked',
+  '0': 'Blocked',
 };
