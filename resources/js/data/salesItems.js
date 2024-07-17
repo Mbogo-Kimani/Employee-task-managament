@@ -14,8 +14,12 @@ export const salesPageItems = [
     pictureSrc: 'circleUser',
   },
   // {
-  //   name: 'Client Feedback',
-  //   href: '/feedback/new',
+  //   name: 'Assign Clients',
+  //   href: '/assign/clients',
   //   pictureSrc: 'report',
   // },
 ];
+
+export const salesLeaderNavItems = [
+
+]

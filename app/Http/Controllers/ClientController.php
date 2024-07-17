@@ -20,18 +20,41 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE){
+        if($user->department_id !== DepartmentEnum::ADMIN && $user->department_id !== DepartmentEnum::ACCOUNTING_AND_FINANCE && $user->department_id !== DepartmentEnum::SALES){
             return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+        if($user->department_id == DepartmentEnum::SALES){
+            return response()->json(Client::latest()->get());
         }
         $clients = Client::latest()->paginate(10);
         return response()->json($clients);
     }
 
+    public function assignClients(Request $request)
+    {
+        $request->validate([
+            'user' => 'required',
+        ]);
+
+        foreach ($request->clients as $client) {
+            Client::where('id', $client)->update(['employee_id' => $request->user]);
+        }
+		return response()->json(['message' => 'Clients assigned successfuly']);
+    }
+
+    public function getUnassignedClients() {
+        $user = auth()->user();
+        if($user->department_id !== DepartmentEnum::SALES){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+        $clients = Client::where('employee_id', null)->get();
+        return response()->json($clients);
+    }
+
     public function salesClients() {
         $user = auth()->user();
-
         if ($user->department_id == DepartmentEnum::SALES) {
-            $clients = Client::where('sales_person_id', $user->id)->paginate(10);
+            $clients = Client::where('employee_id', $user->employee_id)->paginate(10);
             return response()->json($clients);
         }
     }

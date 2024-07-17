@@ -261,7 +261,7 @@ class UserController extends Controller
 
 		if ($user && $user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$users = User::where('department_id', $user->department_id)
-										->select('name', 'id')
+										->select('name', 'id','employee_id')
 										->get();
 
 			return response()->json($users);
