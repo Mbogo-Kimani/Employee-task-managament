@@ -391,7 +391,29 @@ function Employees() {
                       </p>
                     }  
                   </div>
-                  
+                  <div>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Work Number
+                    </label>
+                    <input
+                      type="text"
+                      name="employee_id"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter employee's work number"
+                      value={newUser.employee_id}
+                      onChange={handleChange}
+                      required
+                    />
+                    {
+                      (errors.name || errors.errors?.name) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'name') }
+                      </p>
+                    }  
+                  </div>
                   <div className='w-full flex justify-between items-center'>
                     <button
                       type="submit"
