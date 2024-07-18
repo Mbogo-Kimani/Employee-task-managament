@@ -239,7 +239,7 @@ function Tasks() {
               })
             }
           </TableComp>
-          <PaginatorNav state={tasks} setState={setTasks}/>
+          <PaginatorNav state={tasks} setState={setTasks} navigateByParams />
         </div>
         <Modal show={showModal} onClose={closeModal}>
           <div className="my-2 px-3 w-full min-h-[90vh] overflow-y-auto">

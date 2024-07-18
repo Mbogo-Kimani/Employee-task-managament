@@ -2,7 +2,7 @@ import React from 'react';
 import { handlePage } from '../../data/utils';
 import { router } from '@inertiajs/react';
 
-function PaginatorNav({ state, setState }) {
+function PaginatorNav({ state, setState, navigateByParams = false }) {
   function handlePageNavigation (navigation) {
     const nextPageNavigate = navigation !== 'prev';
     const searchParam = location.search.split('=')[1];
@@ -14,10 +14,18 @@ function PaginatorNav({ state, setState }) {
       else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}`);
       else return;
     } else {
-      if (nextPageNavigate) router.visit(`${location.pathname}?page=2`);
+      if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2`);
+      else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState);
+      else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState);
       else return;
     }
   }
+
+  function handleSpecificPageNav(page) {
+    if (navigateByParams) router.visit(`${location.pathname}?page=${page}`);
+    else handlePage(`${state.path}?page=${page}`, setState);
+  }
+
   return (
     <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-2" aria-label="Table navigation">
        <span className="text-sm font-normal text-gray-500 dark:text-gray-400 pl-3 mb-4 md:mb-0 block w-full md:inline md:w-auto">
@@ -36,13 +44,13 @@ function PaginatorNav({ state, setState }) {
         </li>
         {
           state.current_page - 2 > 0 &&
-          <li className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+          <li onClick={() => handleSpecificPageNav(state.current_page - 2)} className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white cursor-pointer">
             { state.current_page - 2 }
           </li>
         }
         {
           state.current_page - 1 > 0 &&
-          <li className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+          <li onClick={() => handleSpecificPageNav(state.current_page - 1)} className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white cursor-pointer">
             { state.current_page - 1 }
           </li>
         }
@@ -53,13 +61,13 @@ function PaginatorNav({ state, setState }) {
       
         {
           state.current_page + 1 <= state.last_page &&
-          <li className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+          <li onClick={() => handleSpecificPageNav(state.current_page + 1)} className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white cursor-pointer">
             { state.current_page + 1 }
           </li>
         }
         {
           state.current_page + 2 <= state.last_page &&
-          <li className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+          <li onClick={() => handleSpecificPageNav(state.current_page + 2)} className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white cursor-pointer">
             { state.current_page + 2 }
           </li>
         }

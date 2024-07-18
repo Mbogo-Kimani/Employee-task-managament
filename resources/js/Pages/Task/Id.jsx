@@ -110,7 +110,7 @@ function Id({ user }) {
   };
 
   return (
-    <SideNav link={userData.role === department.ADMIN ? '/admin/tasks' : '/tasks'}>
+    <SideNav>
       <div className='w-full'>
           <h1 className="font-bold text-xl text-lg text-center pl-3 mb-10">{currentTask.task?.name}</h1>
           <div className='flex float-right'>
