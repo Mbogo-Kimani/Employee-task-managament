@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('equipment_task', function (Blueprint $table) {
-            $table->foreignId('task_id')->constrained()->onDelete('cascade');;
-            $table->foreignId('equipment_id')->constrained('equipment', 'id')->onDelete('cascade');;
-            $table->timestamps();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->renameColumn('location', 'address');
+            $table->renameColumn('internet_package_id', 'package_id');
         });
     }
 
@@ -27,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('equipment_task');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->renameColumn('location', 'address');
+            $table->renameColumn('package_id', 'internet_package_id');
+        });
     }
 };
