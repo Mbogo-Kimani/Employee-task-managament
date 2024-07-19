@@ -115,7 +115,7 @@ class TaskController extends Controller
 		$client = Client::where('acc_no', 'like', '%' . $request->apartment_code . $request->hse_no . '%')->orWhere('email', $request->client_email)->first();
 
 		if($request->taskType != TaskTypeEnum::SERVICE_MAINTENANCE){
-			if(!$client && $request->taskType === TaskTypeEnum::INSTALLATION){
+			if(!$client && $request->taskType == TaskTypeEnum::INSTALLATION){
 				$client = Client::create([
 				'acc_no' => $request->apartment_code . $request->hse_no,
 				'apartment_no' => $request->hse_no,
