@@ -385,7 +385,7 @@ function NewTask() {
               </p>
             }  
           </div>
-          { newTask.taskType == taskTypes.INSTALLATION &&
+          { newTask.taskType == taskTypesEnum.INSTALLATION &&
             <div>
             <div className="relative z-0 w-full mb-5 group">
             <SelectComp
