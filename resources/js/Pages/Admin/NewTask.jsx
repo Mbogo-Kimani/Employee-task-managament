@@ -7,6 +7,7 @@ import SelectComp from '../../Components/Common/SelectComp';
 import { displayErrors } from '../../data/utils';
 import Modal from '../../Components/Common/Modal';
 import { toast } from 'react-toastify';
+import taskTypesEnum from '../../data/enums/taskTypes'
 
 function NewTask() {
   const [taskTypes, setTaskTypes] = useState([]);
@@ -384,7 +385,9 @@ function NewTask() {
               </p>
             }  
           </div>
-          <div className="relative z-0 w-full mb-5 group">
+          { newTask.taskType == taskTypes.INSTALLATION &&
+            <div>
+            <div className="relative z-0 w-full mb-5 group">
             <SelectComp
               name="package_id"
               id="package_id"
@@ -410,8 +413,8 @@ function NewTask() {
               }
             </SelectComp>
             <hr className="w-full border-[1px] border-gray-300" />
-          </div>
-          <div className="relative z-0 w-full mb-5 flex justify-between">
+           </div>
+            <div className="relative z-0 w-full mb-5 flex justify-between">
             <input
               type="text"
               name="client_name"
@@ -449,83 +452,92 @@ function NewTask() {
               <span className='text-gray-900'> *</span>
             </label>
             </div>
-            <div className='flex mb-5'>
-                    <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
-                      <option value="" disabled>Select Country Code</option>
-                      <option value="+254">+254 (Kenya)</option>
-                      <option value="+44">+44 (UK)</option>
-                      <option value="+91">+91 (India)</option>
-                      {/* Add more country codes as needed */}
-                    </select>
-                    <input
-                      type="tel"
-                      name='phone_number'
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      // value={newTask.phone_number}
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Enter Client's Phone Number"
-                      required
-                    />
-                  </div>
+            </div>
+          }
           
+          { newTask.taskType != taskTypesEnum.SERVICE_MAINTENANCE &&
+              <div className='flex mb-5'>
+              <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                <option value="" disabled>Select Country Code</option>
+                <option value="+254">+254 (Kenya)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="+91">+91 (India)</option>
+                {/* Add more country codes as needed */}
+              </select>
+              <input
+                type="tel"
+                name='phone_number'
+                className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                // value={newTask.phone_number}
+                onChange={handlePhoneNumberChange}
+                placeholder="Enter Client's Phone Number"
+                required
+              />
+              </div>
+            }
+            { newTask.taskType == taskTypesEnum.INSTALLATION &&
+          <div>
           <div className='mb-5 flex justify-between'>
-                  <div className='w-[20vw]'>
-                    <label
-                      htmlFor="title"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center"
-                    >
-                      WIFI Name
-                    </label>
-                    <input
-                      type="text"
-                      name="wifi_name"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter client's wifi name"
-                      value={newTask.wifi_name}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className='w-[30vw] ml-2 mb-2'>
-                    <label
-                      htmlFor="title"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center"
-                    >
-                      WIFI Password
-                    </label>
-                    <input
-                      type="text"
-                      name="wifi_password"
-                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter client's wifi password"
-                      value={newTask.wifi_password}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  </div>
-                  <div className="relative z-0 w-full mb-10 group">
-            <SelectComp
-              name="paid"
-              id="paid"
-              value={newTask.paid}
-              onChange={(e) => handleChange(e)}
-              required={true}
-              className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+          <div className='w-[20vw]'>
+            <label
+              htmlFor="title"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center"
             >
-              <option value="" className='text-gray-400'>Select Client Payment Status</option>
-              <option value={0}>Unpaid</option>
-              <option value={1}>Paid</option>
-            </SelectComp>
-            <hr className="w-full border-[1px] border-gray-300" />
-            {
-              (errors.paid || errors.errors?.paid) && 
-              <p className="text-red-500 my-2 py-1">
-                { displayErrors(errors, 'paid') }
-              </p>
-            }  
+              WIFI Name
+            </label>
+            <input
+              type="text"
+              name="wifi_name"
+              className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              placeholder="Enter client's wifi name"
+              value={newTask.wifi_name}
+              onChange={handleChange}
+              required
+            />
           </div>
+          <div className='w-[30vw] ml-2 mb-2'>
+            <label
+              htmlFor="title"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center"
+            >
+              WIFI Password
+            </label>
+            <input
+              type="text"
+              name="wifi_password"
+              className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              placeholder="Enter client's wifi password"
+              value={newTask.wifi_password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          </div>
+           <div className="relative z-0 w-full mb-10 group">
+           <SelectComp
+             name="paid"
+             id="paid"
+             value={newTask.paid}
+             onChange={(e) => handleChange(e)}
+             required={true}
+             className={`bg-transparent focus:outline-none border-hidden border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!newTask.departmentHandler ? 'text-gray-500' : 'text-gray-900 dark:text-white'}`}
+           >
+             <option value="" className='text-gray-400'>Select Client Payment Status</option>
+             <option value={0}>Unpaid</option>
+             <option value={1}>Paid</option>
+           </SelectComp>
+           <hr className="w-full border-[1px] border-gray-300" />
+           {
+             (errors.paid || errors.errors?.paid) && 
+             <p className="text-red-500 my-2 py-1">
+               { displayErrors(errors, 'paid') }
+             </p>
+           }  
+         </div>
+         </div>
+            }
+           
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
