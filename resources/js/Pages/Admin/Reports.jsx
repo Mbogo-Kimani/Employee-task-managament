@@ -78,7 +78,7 @@ const Reports = () => {
                                 scope="row"
                                 className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                                {report.title}
+                                {report.title.length > 25 ? report.title.substr(0,25) + '...' : report.title}
                             </th>
                             <th
                                 scope="row"
@@ -108,7 +108,7 @@ const Reports = () => {
                             <td className="px-2 py-4">
                                 {report.task_type}
                             </td>
-                            <td className="px-2 py-4">
+                            <td className="px-2 py-4 whitespace-nowrap">
                                 {report.date}
                             </td>
                             <td className="px-2 py-4 cursor-pointer">

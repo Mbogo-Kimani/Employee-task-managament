@@ -22,10 +22,10 @@ class InventoryImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
         $data = [];
         $category = '';
         foreach ($collection as $row){
-            if($row['items']){
-                $category = $row['items'];
+            if($row['item']){
+                $category = $row['item'];
             }else{
-                $row['items'] = $category;
+                $row['item'] = $category;
             }
             if(empty($row['description'])){
                 $row['description'] = $category;
@@ -48,7 +48,7 @@ class InventoryImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
     {
         foreach ($data as $stock)
         {
-            $category = strtoupper(trim($stock['items']));
+            $category = strtoupper(trim($stock['item']));
             $type = empty($stock['description']) ? $category : strtoupper(trim($stock['description']));
             $equipmentCategory = EquipmentCategory::where('name', $category)->first();
 
