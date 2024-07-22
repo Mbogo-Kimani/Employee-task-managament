@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->renameColumn('location', 'address');
-            $table->renameColumn('internet_package_id', 'package_id');
+        Schema::create('apartment_codes', function (Blueprint $table) {
+            $table->id();
+            $table->string('code')->unique()->nullable();
+            $table->string('name');
+            $table->string('location')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -26,9 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->renameColumn('location', 'address');
-            $table->renameColumn('package_id', 'internet_package_id');
-        });
+        Schema::dropIfExists('apartment_codes');
     }
 };

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\CircularController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
@@ -165,4 +166,5 @@ Route::middleware('auth:sanctum')->group( function () {
    * 
    */
   Route::get('/internet_packages', [InternetPackageController::class, 'index']);
+  Route::get('/apartment_codes', [ApartmentController::class, 'index']);
 });
