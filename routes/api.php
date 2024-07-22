@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/received_by_department_head', [TaskController::class, 'markTaskReceivedByHOD']);
   Route::post('/received_by_department_member', [TaskController::class, 'markTaskReceivedByUser']);
   Route::get('/user_info', [UserController::class, 'fetchUserNumbers']);
+  Route::get('/work_numbers', [UserController::class, 'salesPersonWorkNumbers']);
   /**
    * Clients Controllers
   */

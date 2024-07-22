@@ -111,29 +111,32 @@ class TaskController extends Controller
 			'hse_no' => 'string',
 			'package_id' => 'required|exists:internet_packages,id',
 		]);
+
 		$client = Client::where('acc_no', 'like', '%' . $request->apartment_code . $request->hse_no . '%')->orWhere('email', $request->client_email)->first();
-		if(!$client){
+		if (!$client) {
 			$client = Client::create([
-            'acc_no' => $request->apartment_code . $request->hse_no,
-            'apartment_no' => $request->hse_no,
-			'email' => $request->client_email,
-			'name' => $request->client_name,
-			'wifi_name' => $request->wifi_name,
-			'wifi_password' => $request->wifi_password,
-            'package_id' => $request->package_id,
-			'address' => $request->apartment_code,
-			'connection_status' => $request->paid,
-			'phone_number' => $request->phone_number,
-			'billing_day' => now()->format('Y-m-d'),
-        	]);
-		}else{
+        'acc_no' => $request->apartment_code . $request->hse_no,
+        'apartment_no' => $request->hse_no,
+				'email' => $request->client_email,
+				'name' => $request->client_name,
+				'wifi_name' => $request->wifi_name,
+				'wifi_password' => $request->wifi_password,
+        'package_id' => $request->package_id,
+				'address' => $request->apartment_code,
+				'connection_status' => $request->paid,
+				'phone_number' => $request->phone_number,
+				'billing_day' => now()->format('Y-m-d'),
+				'employee_id' => $request->work_number,
+      ]);
+		} else {
 			$client->update([
 				'email' => $request->client_email,
 				'wifi_name' => $request->wifi_name,
 				'wifi_password' => $request->wifi_password,
-                'connection_status' => $request->paid,
+        'connection_status' => $request->paid,
 				'package_id' => $request->package_id,
-				'phone_number' => $request->phone_number
+				'phone_number' => $request->phone_number,
+				'employee_id' => $request->work_number,
 			]);
 		}
 
@@ -144,8 +147,8 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
-      		'admin_handler_id' => $request->adminHandler,
-      		'department_handler_id' => $request->departmentHandler,
+      'admin_handler_id' => $request->adminHandler,
+      'department_handler_id' => $request->departmentHandler,
 			'paid' => $request->paid,
 			'client_id' => $client->id
 		]);

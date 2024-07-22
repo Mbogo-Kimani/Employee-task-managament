@@ -7,21 +7,29 @@ import SelectComp from '../../Components/Common/SelectComp';
 import { displayErrors } from '../../data/utils';
 import Modal from '../../Components/Common/Modal';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 
 function NewTask() {
   const [taskTypes, setTaskTypes] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [newTask, setNewTask] = useState({
+    apartment_code: '',
+    hse_no: '',
     name: '',
     department: '',
     subDepartment: '',
     departmentHandler: '',
     adminHandler: '',
     taskType: '',
+    client_name: '',
+    client_email: '',
+    wifi_name: '',
+    wifi_password: '',
     description: '',
     toDate: '',
     fromDate: '',
     paid: '',
+    work_number: '',
   });
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
@@ -33,6 +41,18 @@ function NewTask() {
   const [departmentHandlerElemText, setDepartmentHandlerElemText] = useState('');
   const [internetPackages, setInternetPackages] = useState([]);
   const [countryCode, setCountryCode] = useState('+254')
+  const [workNumbers, setWorkNumbers] = useState({
+    data: [],
+    from: 1,
+    last_page: 0,
+    per_page: 10,
+    prev_page_url: null,
+    next_page_url: null,
+    to: 0,
+    total: 0,
+  });
+  const [debouncedValue, setDebouncedValue] = useState('');
+  const [workNumber, setWorkNumber] = useState('');
 
 
   useEffect(() => {
@@ -40,6 +60,7 @@ function NewTask() {
     fetchDepartments();
     fetchAdmins();
     fetchInternetPackages();
+    fetchWorkNumbers();
   }, []);
 
   useEffect(() => {
@@ -57,6 +78,22 @@ function NewTask() {
   useEffect(() => {
     fetchDepartmentHeads();
   }, [newTask.department]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(workNumber);
+    }, 800);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [workNumber]);
+
+  useEffect(() => {
+    if (debouncedValue) {
+      requestHandler.get(`/api/work_numbers?search=${debouncedValue}`, setWorkNumbers, null, null);
+    }
+  }, [debouncedValue]);
 
   function closeNewTaskTypeModal() {
     setNewTaskTypeModal(false);
@@ -78,15 +115,23 @@ function NewTask() {
   function checkResponse () {
     if (response) {
       setNewTask({
+        apartment_code: '',
+        hse_no: '',
         name: '',
         department: '',
+        subDepartment: '',
         departmentHandler: '',
         adminHandler: '',
         taskType: '',
+        client_name: '',
+        client_email: '',
+        wifi_name: '',
+        wifi_password: '',
         description: '',
         toDate: '',
         fromDate: '',
         paid: '',
+        work_number: '',
       });
       setResponse(false);
       router.visit('/admin/tasks');
@@ -101,6 +146,10 @@ function NewTask() {
       closeNewTaskTypeModal();
       fetchTaskTypes();
     }
+  }
+
+  function fetchWorkNumbers() {
+    requestHandler.get('/api/work_numbers', setWorkNumbers);
   }
 
   function fetchAdmins() {
@@ -121,6 +170,16 @@ function NewTask() {
 
   function handleChange(e) {
     setNewTask({...newTask, [e.target.name]: e.target.value})
+  }
+
+  function handleWorkNumberValue (val) {
+    setNewTask({...newTask, work_number: val.value});
+  }
+
+  function handleWorkNumberInput (val) {
+    if (val) {
+      setWorkNumber(val);
+    }
   }
 
   function handleTaskTypeChange (e) {
@@ -505,7 +564,7 @@ function NewTask() {
                   </div>
 
                   </div>
-                  <div className="relative z-0 w-full mb-10 group">
+          <div className="relative z-0 w-full mb-10 group">
             <SelectComp
               name="paid"
               id="paid"
@@ -526,6 +585,30 @@ function NewTask() {
               </p>
             }  
           </div>
+
+          {
+            newTask.taskType == taskTypes.find(elem => elem.name === 'Installations')?.id &&
+            <div className='mb-10'>
+              <Select
+                defaultValue={newTask.work_number}
+                onInputChange={(val) => handleWorkNumberInput(val)}
+                onChange={(val) => handleWorkNumberValue(val)}
+                name='work_number'
+                placeholder='Enter Work Number'
+                options={
+                  (Array.isArray(workNumbers.data) ? workNumbers.data : []).map((item) => {
+                    return (
+                      {
+                        value: item.employee_id || '', label: `${item.employee_id || ''} - ${item.name || ''}`
+                      }
+                    )
+                  })
+                }
+                isSearchable
+                maxMenuHeight={220}
+              />
+            </div>
+          }
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"

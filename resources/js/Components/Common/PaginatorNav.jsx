@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { handlePage } from '../../data/utils';
 import { router } from '@inertiajs/react';
+import Modal from './Modal';
 
 function PaginatorNav({ state, setState, navigateByParams = false }) {
+  const [seeAllPages, setSeeAllPages] = useState(false);
+  
   function handlePageNavigation (navigation) {
     const nextPageNavigate = navigation !== 'prev';
     const searchParam = location.search.split('=')[1];
@@ -24,7 +27,11 @@ function PaginatorNav({ state, setState, navigateByParams = false }) {
   function handleSpecificPageNav(page) {
     if (navigateByParams) router.visit(`${location.pathname}?page=${page}`);
     else handlePage(`${state.path}?page=${page}`, setState);
+    hideAllPages();
   }
+
+  const displayAllPages = () => setSeeAllPages(true);
+  const hideAllPages = () => seeAllPages ? setSeeAllPages(false) : () => {};
 
   return (
     <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-2" aria-label="Table navigation">
@@ -34,9 +41,19 @@ function PaginatorNav({ state, setState, navigateByParams = false }) {
       <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
         <li
           className={
-            state.prev_page_url ?
+            state.current_page !== 1 ?
             "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
             "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-300 bg-white border border-gray-300 rounded-l-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
+          }
+          onClick={() => state.current_page !== 1 ? handleSpecificPageNav(1) : () => {}}
+        >
+          First Page
+        </li>
+        <li
+          className={
+            state.prev_page_url ?
+            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
+            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-300 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
           }
           onClick={() => handlePageNavigation('prev')}
         >
@@ -71,17 +88,68 @@ function PaginatorNav({ state, setState, navigateByParams = false }) {
             { state.current_page + 2 }
           </li>
         }
-       <li
+        <li
           className={
             state.next_page_url ?
-            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
-            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-300 bg-white border border-gray-300 rounded-r-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
+            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
+            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-300 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
           }
           onClick={() => handlePageNavigation('next')}
         >
           Next
         </li>
-      </ul> 
+        <li
+          className={
+            state.current_page !== state.last_page ?
+            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer" :
+            "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-300 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-default"
+          }
+          onClick={() => state.current_page !== state.last_page ? handleSpecificPageNav(state.last_page) : () => {}}
+        >
+          Last Page
+        </li>
+
+        <li
+          className='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer'
+          onClick={displayAllPages}
+        >
+          {'>>'}
+        </li>
+      </ul>
+
+      <Modal show={seeAllPages} onClose={hideAllPages} maxWidth='sm'>
+        <div className="px-1 overflow-y-auto w-full">
+          <div className="bg-white rounded-lg dark:bg-gray-700">
+            <div className="flex items-center justify-between p-2 md:p-3 rounded-t dark:border-gray-600">
+              <button
+                type="button"
+                className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={hideAllPages}
+              >
+                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+            </div>
+
+            <ul>
+              {
+                (Array.from({length: state.last_page || 1}, (_, ind) => {
+                  return (
+                    <li
+                      className={`shadow py-1 px-1 ${state.current_page === ind + 1 ? 'text-gray-400' : 'hover:bg-green-200 hover:text-gray-900'}`}
+                      onClick={() => state.current_page === ind + 1 ? () => {} : handleSpecificPageNav(ind + 1)}
+                    >
+                      {ind + 1}
+                    </li>
+                  )
+                }))
+              }
+            </ul>
+          </div>
+        </div>
+      </Modal>
     </nav>
   )
 }

@@ -19,6 +19,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
+	public function salesPersonWorkNumbers(Request $request) {
+		$users = User::where('department_id', DepartmentEnum::SALES)
+									->where('employee_id', 'LIKE', "%$request->search%")
+									->select('employee_id', 'id', 'name')
+									->paginate(10);
+		return response()->json($users);
+	}
+
 	public function fetchUserNumbers() {
 		$user = auth()->user();
 		$totalTasks = 0;
