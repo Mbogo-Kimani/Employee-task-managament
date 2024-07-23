@@ -77,7 +77,8 @@ class InventoryImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
             
 
             foreach (range(1, $stock['stock_out']) as $count){
-                $equipment = Equipment::where('status', EquipmentsStatusEnum::IN_STORAGE)->whereNull('serial_no')->first();
+                $equipment = Equipment::where('equipment_type_id', $equipmentType->id)->where('status', EquipmentsStatusEnum::IN_STORAGE)->whereNull('serial_no')->first();
+
                 if($equipment){
                     $equipment->status = EquipmentsStatusEnum::IN_USE;
                     $equipment->save();
