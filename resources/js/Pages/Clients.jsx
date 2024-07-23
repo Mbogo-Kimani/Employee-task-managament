@@ -8,7 +8,7 @@ import { AppContext } from '../appContext'
 import Modal from '../Components/Common/Modal'
 import Select from 'react-select';
 import { loaderSetter } from '../Components/Common/Loader'
-
+import ApartmentCodes from '../Components/Modal/ApartmentCodes'
 
 function Clients() {
   const [clients, setClients] = useState([]);
@@ -77,6 +77,7 @@ function Clients() {
       <div className="pt-2">
         { userData?.clearance_level === 1 &&
          <div className='mb-4 w-full flex'>
+            <ApartmentCodes/>
             <button
             className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
             onClick={() => setShowAssignClientsModal(true)}
