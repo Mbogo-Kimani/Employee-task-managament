@@ -2,31 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
-    public function getAccessToken()
+    public function get_token()
     {
-        $url = env('MPESA_ENV') == 0
-        ? 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
-        : 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
-        $curl = curl_init($url);
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf8'],
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HEADER => false,
-                CURLOPT_USERPWD => env('MPESA_CONSUMER_KEY') . ':' . env('MPESA_CONSUMER_SECRET')
-            )
-        );
-        $response = json_decode(curl_exec($curl));
-        curl_close($curl);
-
-        // return $response;
-        return $response->access_token;
+        $token_object = Http::withOptions(['verify' => false])->withBasicAuth(config("mpesa.consumer_key"), config("mpesa.consumer_secret"))->get($url);
+                                                         
+        return $token_object['access_token'];
     }
 
     public function b2cRequest(Request $request)
@@ -68,30 +57,56 @@ class PaymentController extends Controller
         return $response;
     }
 
-    public function stkPush(Request $request)
+    public function store(Request $request)
     {
-        $timestamp = date('YmdHis');
-        $password = env('MPESA_STK_SHORTCODE').env('MPESA_PASSKEY').$timestamp;
+        $request->validate([
+            "amount" => 'required',
+            'customer_name' => 'required|string|max:255',
+            "customer_email" => "required|email|max:255",
+            "country_code" => "required|integer",
+            "phone_number" => "required|integer"
+        ]);
+     
+        if ($request->country_code && $request->phone_number) {
+            $phone_number = intval($request->country_code.$request->phone_number);
+        }
 
-        $curl_post_data = array(
-            'BusinessShortCode' => env('MPESA_STK_SHORTCODE'),
+        /* Mpesa functionality */
+
+        $access_token = $this->get_token();
+        $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $pass_key = config('mpesa.passkey');
+        $business_short_code = 174379;
+        $timestamp = Carbon::now()->format('YmdHis');
+        $password = base64_encode($business_short_code.$pass_key.$timestamp);
+        $transaction_type = 'CustomerPayBillOnline';
+        $callback_url = 'https://331b-105-27-125-18.ngrok-free.app/api/payment-callback'; // has to be a https kind
+        $account_reference = 'Elephant Technologies';
+        $transaction_desc = 'Test';
+
+        if ($request->brief_description) {
+            $transaction_desc = $request->brief_description;
+        }
+
+        $res = Http::withOptions(['verify' => false])->withToken($access_token)->post($url, [
+            'BusinessShortCode' => $business_short_code,
             'Password' => $password,
             'Timestamp' => $timestamp,
-            'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => $request->amount,
-            'PartyA' => $request->phone,
-            'PartyB' => env('MPESA_STK_SHORTCODE'),
-            'PhoneNumber' => $request->phone,
-            'CallBackURL' => env('MPESA_TEST_URL'). '/api/stkpush',
-            'AccountReference' => $request->account,
-            'TransactionDesc' => $request->account
-          );
+            'TransactionType' => $transaction_type,
+            'Amount' => "1",
+            'PartyA' => $phone_number,
+            'PartyB' => $business_short_code,
+            'PhoneNumber' => $phone_number,
+            'CallBackURL' => $callback_url,
+            'AccountReference' => $account_reference,
+            'TransactionDesc' => $transaction_desc
+        ]);
+        return response()->json($res);
+    }
 
-        $url = '/stkpush/v1/processrequest';
-
-        $response = $this->makeHttp($url, $curl_post_data);
-
-        return $response;
+    public function paymentCallback(Request $request){
+        Log::info('Payment Callback Request:', $request->all());
+        return response()->json(['success' => 'Transaction successful','data' => $request]);
     }
 
     /**
@@ -181,4 +196,4 @@ class PaymentController extends Controller
     }
 }
 
-}
+
