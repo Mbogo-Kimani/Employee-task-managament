@@ -75,19 +75,19 @@ class PaymentController extends Controller
 
         $access_token = $this->get_token();
         $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $pass_key = config('mpesa.passkey');
+        $pass_key = config("mpesa.passkey");
         $business_short_code = 174379;
         $timestamp = Carbon::now()->format('YmdHis');
         $password = base64_encode($business_short_code.$pass_key.$timestamp);
         $transaction_type = 'CustomerPayBillOnline';
-        $callback_url = 'https://331b-105-27-125-18.ngrok-free.app/api/payment-callback'; // has to be a https kind
+        $callback_url = 'https://73ce-105-27-125-18.ngrok-free.app/api/payment-callback'; // has to be a https kind
         $account_reference = 'Elephant Technologies';
         $transaction_desc = 'Test';
 
         if ($request->brief_description) {
             $transaction_desc = $request->brief_description;
         }
-
+        
         $res = Http::withOptions(['verify' => false])->withToken($access_token)->post($url, [
             'BusinessShortCode' => $business_short_code,
             'Password' => $password,
@@ -106,7 +106,29 @@ class PaymentController extends Controller
 
     public function paymentCallback(Request $request){
         Log::info('Payment Callback Request:', $request->all());
-        return response()->json(['success' => 'Transaction successful','data' => $request]);
+        $data = json_decode($request, true);
+        $items = [];
+        $amount = 0;
+        $phone_number = 0;
+        $transaction_date = '';
+        if(isset($data['Body']['stkCallback']['CallbackMetadata']['Item'])){
+            $items =  $data['Body']['stkCallback']['CallbackMetadata']['Item'];
+            foreach($items as $item){
+                if($item->Name == 'Amount'){
+                    $amount = $item->Value;
+                } else if ($item->Name == 'MpesaReceiptNumber'){
+                    $confirmation_code = $item->Value;
+                } else if ($item->Name == 'PhoneNumber'){
+                    $phone_number = $item->Value;
+                } else if ($item->Name == 'TransactionDate'){
+                    $transaction_date = Carbon::createFromFormat('YmdHis', $item->Value)->format('Y-m-d');
+                }
+            }
+
+        }
+        Log::info('Params:', [$amount,$phone_number,$transaction_date,$confirmation_code]);
+        
+        return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
     }
 
     /**
