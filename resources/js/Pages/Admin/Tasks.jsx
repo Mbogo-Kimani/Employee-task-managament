@@ -21,6 +21,7 @@ import SortElem from '../../Components/Task/SortElem'
 import clientStatus from '../../data/enums/clientStatus';
 import { handleFormChange } from '../../data/utils';
 import ApartmentCodes from '../../Components/Modal/ApartmentCodes'
+import ReactSelect from 'react-select';
 
 
 function Tasks() {
@@ -46,6 +47,7 @@ function Tasks() {
     to_date: '',
     description: '',
     paid: '',
+    client: {employee_id: ''},
   })
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
@@ -55,6 +57,19 @@ function Tasks() {
     admins: [],
     departmentHeads: []
   });
+  const [workNumber, setWorkNumber] = useState('');
+  const [workNumbers, setWorkNumbers] = useState({
+    data: [],
+    from: 1,
+    last_page: 0,
+    per_page: 10,
+    prev_page_url: null,
+    next_page_url: null,
+    to: 0,
+    total: 0,
+  });
+  const [debouncedValue, setDebouncedValue] = useState('');
+
   const {userData} = useContext(AppContext);  
   const sortParams = {
     'departmentId' : departments,
@@ -62,6 +77,22 @@ function Tasks() {
     'status': taskStatus,
     'clientStatus': clientStatus
   }
+
+  useEffect(() => {
+    if (debouncedValue) {
+      requestHandler.get(`/api/work_numbers?search=${debouncedValue}`, setWorkNumbers, null, null);
+    }
+  }, [debouncedValue]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(workNumber);
+    }, 800);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [workNumber]);
 
   useEffect(() => {
     if(response){
@@ -73,6 +104,7 @@ function Tasks() {
     fetchTaskTypes();
     fetchDepartments();
     fetchAllTasks();
+    fetchWorkNumbers();
   }, []);
 
   useEffect(() => {
@@ -132,9 +164,23 @@ function Tasks() {
     requestHandler.get('/api/departments', setDepartments);
   }
 
+  function fetchWorkNumbers() {
+    requestHandler.get('/api/work_numbers', setWorkNumbers);
+  }
+
   function submitFilters(filters){
     requestHandler.post('/api/filter/tasks',filters, setTasks, setErrors)
-  }                           
+  }
+
+  function handleWorkNumberValue (val) {
+    setEditTask({...editTask, work_number: val.value});
+  }
+
+  function handleWorkNumberInput (val) {
+    if (val) {
+      setWorkNumber(val);
+    }
+  }
   return (
     <SideNav>
       <div>
@@ -262,25 +308,6 @@ function Tasks() {
         
               <form className="max-w-md mx-auto h-auto p-3 overflow-y-scroll">
                 <div className="relative z-0 w-full mb-5 group mt-10">
-                  <div>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    value={editTask.name}
-                    onChange={(e) => handleFormChange(e, editTask, setEditTask)}
-                    required
-                  />
-                  <label
-                    htmlFor="name" 
-                    className=" peer-focus:font-medium px-3 absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Apartment Code
-                    <span className='text-gray-900'> *</span>
-                  </label>
-                  </div>
                   <div>
                   <input
                     type="text"
@@ -455,6 +482,27 @@ function Tasks() {
                       { displayErrors(errors, 'paid') }
                     </p>
                   }  
+                </div>
+
+                <div className='my-10'>
+                  <ReactSelect
+                    defaultValue={editTask.client?.employee_id}
+                    onInputChange={(val) => handleWorkNumberInput(val)}
+                    onChange={(val) => handleWorkNumberValue(val)}
+                    name='work_number'
+                    placeholder={editTask.client?.employee_id || 'Enter Work Number'}
+                    options={
+                      (Array.isArray(workNumbers.data) ? workNumbers.data : []).map((item) => {
+                        return (
+                          {
+                            value: item.employee_id || '', label: `${item.employee_id || ''} - ${item.name || ''}`
+                          }
+                        )
+                      })
+                    }
+                    isSearchable
+                    maxMenuHeight={220}
+                  />
                 </div>
                 
                 <div className="relative z-0 w-full mb-5 group">

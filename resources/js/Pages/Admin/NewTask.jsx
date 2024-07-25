@@ -599,6 +599,30 @@ function NewTask() {
               </div>
             </div>
           }
+
+          {
+            newTask.taskType == taskTypes.find(elem => elem.name === 'Installations')?.id &&
+            <div className='mb-10'>
+              <Select
+                defaultValue={newTask.work_number}
+                onInputChange={(val) => handleWorkNumberInput(val)}
+                onChange={(val) => handleWorkNumberValue(val)}
+                name='work_number'
+                placeholder='Enter Work Number'
+                options={
+                  (Array.isArray(workNumbers.data) ? workNumbers.data : []).map((item) => {
+                    return (
+                      {
+                        value: item.employee_id || '', label: `${item.employee_id || ''} - ${item.name || ''}`
+                      }
+                    )
+                  })
+                }
+                isSearchable
+                maxMenuHeight={220}
+              />
+            </div>
+          }
            
           <div className="relative z-0 w-full mb-5 group">
             <input
