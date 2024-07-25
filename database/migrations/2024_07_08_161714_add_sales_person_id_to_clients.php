@@ -17,7 +17,7 @@ return new class extends Migration
       $table->string('location');
 			$table->string('wifi_name');
 			$table->string('wifi_password');
-			$table->foreignId('internet_package_id')->nullable();
+			$table->foreignId('package_id')->nullable();
 			$table->string('apartment_no');
 			$table->bigInteger('user_id')->nullable();
 			
@@ -40,8 +40,8 @@ return new class extends Migration
       $table->dropColumn('location');
 			$table->dropColumn('wifi_name');
 			$table->dropColumn('wifi_password');
-			$table->dropColumn('internet_package_id');
-      $table->dropForeign('internet_package_id');
+			$table->dropColumn('package_id');
+      $table->dropForeign('package_id');
 			$table->dropColumn('apartment_no');
 			$table->dropColumn('user_id');
 			

@@ -105,12 +105,17 @@ class PaymentController extends Controller
     }
 
     public function paymentCallback(Request $request){
-        Log::info('Payment Callback Request:', $request->all());
-        $data = json_decode($request, true);
+        $data = json_decode((string)$request->all(), true);
         $items = [];
         $amount = 0;
         $phone_number = 0;
         $transaction_date = '';
+        $confirmation_code = '';
+        Log::info('Payment Callback Request:', ['data' => $data]);
+        Log::info('Payment Callback Request:', ['data' => $request['Body']]);
+
+        Log::info('Payment Callback Request:', isset($data['Body']['stkCallback']['CallbackMetadata']['Item']));
+
         if(isset($data['Body']['stkCallback']['CallbackMetadata']['Item'])){
             $items =  $data['Body']['stkCallback']['CallbackMetadata']['Item'];
             foreach($items as $item){

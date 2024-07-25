@@ -30,6 +30,7 @@ Route::get('/products', function () {
 Route::get('/blogs', function () {
     return view('blog');
 });
+Route::get('/client/signup', [UserController::class, 'clientSignupPage'])->name('signup');
 Route::get('/about-us', function () {
     return view('aboutus');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DepartmentEnum;
+use App\Helpers\ApiLib;
 use App\Imports\ClientImport;
 use App\Imports\InventoryImport;
 use App\Models\Client;
@@ -13,6 +14,65 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller
 {
+    public function clientSignup(Request $request)
+    {
+        $user = auth()->user();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients',
+            'phone_number' => 'required|string|max:15',
+		]);
+        $client = Client::where('phone_number',$request->phone_number)->first();
+        if($client){
+            return response()->json(['success' => false, 'message' => 'User already exists.']);
+        }
+        try{
+             Client::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'verification_code' => ApiLib::createOTPVerificationCode(4)
+            ]);
+        } catch(\Exception $e){
+            abort(400, $e->getMessage());
+        }
+        return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
+
+    }
+
+    public function clientLogin(Request $request)
+    {
+        $request->validate([
+            'phone_number' => 'required|string|max:15',
+		]);
+        $client = Client::where('phone_number',$request->phone_number)->first();
+        if(!$client){
+            return response()->json(['success' => false, 'message' => 'User does not exist.']);
+        }
+
+        $client->update([
+            'verification_code' => ApiLib::createOTPVerificationCode(4)
+        ]);
+        
+        return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
+
+    }
+
+    public function verifyPhoneNumber(Request $request)
+    {
+        $request->validate([
+            'phone_number' => 'required|string|max:15',
+            'otp' => 'required|string'
+        ]);
+
+        $client = Client::where('phone_number', $request->phone_number)->first();
+        if(!$client || $client->verification_code != $request->otp){
+            return response()->json(['error' => 'Invalid verification code'], 400);
+        }
+        $client->verified = true;
+        $client->save();
+        return response()->json(['success' => 'Phone number verified successfully'], 200);
+    }
     public function clientFeedbackPage() {
 		return Inertia::render('Feedback/New');
     }

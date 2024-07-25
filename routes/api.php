@@ -169,12 +169,13 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::get('/internet_packages', [InternetPackageController::class, 'index']);
   Route::get('/apartment_codes', [ApartmentController::class, 'index']);
+  Route::post('/apartment_codes', [ApartmentController::class, 'store']);
 
   /**
    * Payment Controller
    */
   Route::post('/payments', [PaymentController::class, 'store']);
-    Route::get('/generate_token', [PaymentController::class, 'get_token']);
+  Route::get('/generate_token', [PaymentController::class, 'get_token']);
     
     // Route::get('/confirm-mpesa', [EventController::class, 'confirm']);
 });
