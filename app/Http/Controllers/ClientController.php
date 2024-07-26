@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use AfricasTalking\SDK\AfricasTalking;
 use App\Enums\DepartmentEnum;
 use App\Helpers\ApiLib;
 use App\Imports\ClientImport;
@@ -9,8 +10,10 @@ use App\Imports\InventoryImport;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
+use Stevebauman\Hypertext\Transformer;
 
 class ClientController extends Controller
 {
@@ -26,16 +29,19 @@ class ClientController extends Controller
         if($client){
             return response()->json(['success' => false, 'message' => 'User already exists.']);
         }
+        $verification_code = ApiLib::createOTPVerificationCode(4);
         try{
-             Client::create([
+            Client::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
-                'verification_code' => ApiLib::createOTPVerificationCode(4)
+                'verification_code' => $verification_code
             ]);
+            $this->sendOTP($request->phone_number,$verification_code);
         } catch(\Exception $e){
             abort(400, $e->getMessage());
         }
+
         return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
 
     }
@@ -49,11 +55,12 @@ class ClientController extends Controller
         if(!$client){
             return response()->json(['success' => false, 'message' => 'User does not exist.']);
         }
-
+        $verification_code = ApiLib::createOTPVerificationCode(4);
         $client->update([
-            'verification_code' => ApiLib::createOTPVerificationCode(4)
+            'verification_code' => $verification_code
         ]);
-        
+        $this->sendOTP($request->phone_number,$verification_code);
+
         return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
 
     }
@@ -72,6 +79,30 @@ class ClientController extends Controller
         $client->verified = true;
         $client->save();
         return response()->json(['success' => 'Phone number verified successfully'], 200);
+    }
+    private function sendOTP($phone_number,$verification_code)
+    {
+        $content = View::make('emails.otp_verification', ['otp' => $verification_code])->render();
+        $text = (new Transformer)
+        ->keepLinks() 
+        ->keepNewLines()
+        ->toText($content);
+
+        $username = config('sms.username'); // use 'sandbox' for development in the test environment
+        $apiKey   = config('sms.api_key'); // use your sandbox app API key for development in the test environment
+        $AT       = new AfricasTalking($username, $apiKey);
+
+        // Get one of the services
+        $sms      = $AT->sms();
+
+        // Use the service
+        $result   = $sms->send([
+            'to'      => $phone_number,
+            'message' => $text,
+            'from' => env('AT_SHORTCODE')
+        ]);
+        return $result;
+
     }
     public function clientFeedbackPage() {
 		return Inertia::render('Feedback/New');
