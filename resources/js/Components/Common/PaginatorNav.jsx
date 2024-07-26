@@ -138,6 +138,7 @@ function PaginatorNav({ state, setState, navigateByParams = false }) {
                 (Array.from({length: state.last_page || 1}, (_, ind) => {
                   return (
                     <li
+                      key={ind}
                       className={`shadow py-1 px-1 ${state.current_page === ind + 1 ? 'text-gray-400' : 'hover:bg-green-200 hover:text-gray-900'}`}
                       onClick={() => state.current_page === ind + 1 ? () => {} : handleSpecificPageNav(ind + 1)}
                     >
