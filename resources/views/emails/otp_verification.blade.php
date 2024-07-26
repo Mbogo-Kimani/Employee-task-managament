@@ -21,7 +21,6 @@
     <img src="images/rev-slider/1.jpg" alt="" data-bgposition="center center" data-no-retina>
                     <div class="container">
         
-        <!-- <p>Hello {{ $user }},</p> -->
         <p>{{$otp}} is your verification code to login to ETNET.</p>
     </div>
 </body>

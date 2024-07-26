@@ -90,6 +90,9 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/unassigned_clients',[ClientController::class, 'getUnassignedClients']);
   Route::patch('/assign_clients',[ClientController::class, 'assignClients']);
   Route::post('clients/upload',[ClientController::class, 'uploadClients']);
+  Route::post('clients/signup',[ClientController::class, 'clientSignup']);
+  Route::post('clients/login',[ClientController::class, 'clientLogin']);
+  Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
   /**
    * Enums Controllers
    */

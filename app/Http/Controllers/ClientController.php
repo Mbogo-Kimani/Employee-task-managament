@@ -51,7 +51,8 @@ class ClientController extends Controller
         $request->validate([
             'phone_number' => 'required|string|max:15',
 		]);
-        $client = Client::where('phone_number',$request->phone_number)->first();
+        $phone_number = '+254' . $request->phone_number;
+        $client = Client::where('phone_number','+254' . $request->phone_number)->first();
         if(!$client){
             return response()->json(['success' => false, 'message' => 'User does not exist.']);
         }
@@ -59,7 +60,7 @@ class ClientController extends Controller
         $client->update([
             'verification_code' => $verification_code
         ]);
-        $this->sendOTP($request->phone_number,$verification_code);
+        $this->sendOTP($phone_number,$verification_code);
 
         return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
 
@@ -68,15 +69,15 @@ class ClientController extends Controller
     public function verifyPhoneNumber(Request $request)
     {
         $request->validate([
-            'phone_number' => 'required|string|max:15',
+            'phoneNumber' => 'required|string|max:15',
             'otp' => 'required|string'
         ]);
 
-        $client = Client::where('phone_number', $request->phone_number)->first();
+        $client = Client::where('phone_number', $request->phoneNumber)->first();
         if(!$client || $client->verification_code != $request->otp){
             return response()->json(['error' => 'Invalid verification code'], 400);
         }
-        $client->verified = true;
+        $client->is_verified = true;
         $client->save();
         return response()->json(['success' => 'Phone number verified successfully'], 200);
     }
