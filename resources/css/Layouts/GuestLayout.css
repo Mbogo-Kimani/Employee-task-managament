@@ -1,0 +1,130 @@
+.footer-bg-3 {
+  background-image: url(../images/footer/05.jpg);
+  background-size: cover;
+  position: relative;
+}
+
+#footer-widget {
+  padding: 117px 0 120px 0;
+}
+
+@media (min-width: 1200px) {
+  .container {
+      max-width: 1140px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+      max-width: 960px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+      max-width: 720px;
+  }
+}
+@media (min-width: 576px) {
+  .container {
+      max-width: 540px;
+  }
+}
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1200px;
+}
+
+
+@media (min-width: 992px) {
+  .col-lg-4 {
+      -ms-flex: 0 0 33.333333%;
+      flex: 0 0 33.333333%;
+      max-width: 33.333333%;
+  }
+}
+@media (min-width: 768px) {
+  .col-md-6 {
+      -ms-flex: 0 0 50%;
+      flex: 0 0 50%;
+      max-width: 50%;
+  }
+}
+.col-12 {
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+#footer-widget .widget.widget-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+
+@media (min-width: 576px) {
+  .d-sm-flex {
+      display: -ms-flexbox !important;
+      display: flex !important;
+  }
+}
+
+
+
+
+#footer-widget .widget-services .one-half li a {
+  font-size: 14px;
+  line-height: 38px;
+}
+.footer-widget-type2 .widget-services .one-half li a, .footer-widget-type2 .widget-latest-news .thumb-content .thumb-day {
+  color: #b8c4d0;
+}
+
+
+.bottom-type2 {
+  background-color: #0d2235;
+}
+
+
+#scroll-top.show {
+  right: 24px;
+  opacity: 1;
+  visibility: visible;
+}
+#scroll-top {
+  position: fixed;
+  display: block;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  z-index: 1;
+  right: 14px;
+  bottom: 23px;
+  opacity: 0;
+  visibility: hidden;
+  cursor: pointer;
+  overflow: hidden;
+  background: rgb(0, 92, 234);
+  background: linear-gradient(90deg, rgba(0, 92, 234, 1) 0%, rgba(0, 197, 251, 1) 100%);
+}
+#scroll-top {
+  margin-right: 5em;
+}
+
+#bottom .bottom-wrap {
+  padding: 20px 0 20px 0;
+}
+.bottom-type2 .bottom-wrap #copyright span {
+  color: #b8c4d0;
+}
+
+#bottom .bottom-wrap #copyright a {
+  color: #006aec;
+}
+#bottom .bottom-wrap #copyright a, #bottom .bottom-wrap #copyright span {
+  font-size: 13px;
+}
