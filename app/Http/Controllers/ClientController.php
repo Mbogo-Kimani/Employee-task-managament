@@ -2,17 +2,109 @@
 
 namespace App\Http\Controllers;
 
+use AfricasTalking\SDK\AfricasTalking;
 use App\Enums\DepartmentEnum;
+use App\Helpers\ApiLib;
 use App\Imports\ClientImport;
 use App\Imports\InventoryImport;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
+use Stevebauman\Hypertext\Transformer;
 
 class ClientController extends Controller
 {
+    public function clientSignup(Request $request)
+    {
+        $user = auth()->user();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients',
+            'phone_number' => 'required|string|max:15',
+		]);
+        $client = Client::where('phone_number',$request->phone_number)->first();
+        if($client){
+            return response()->json(['success' => false, 'message' => 'User already exists.']);
+        }
+        $verification_code = ApiLib::createOTPVerificationCode(4);
+        try{
+            Client::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'verification_code' => $verification_code
+            ]);
+            $this->sendOTP($request->phone_number,$verification_code);
+        } catch(\Exception $e){
+            abort(400, $e->getMessage());
+        }
+
+        return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
+
+    }
+
+    public function clientLogin(Request $request)
+    {
+        $request->validate([
+            'phone_number' => 'required|string|max:15',
+		]);
+        $phone_number = '+254' . $request->phone_number;
+        $client = Client::where('phone_number','+254' . $request->phone_number)->first();
+        if(!$client){
+            return response()->json(['success' => false, 'message' => 'User does not exist.']);
+        }
+        $verification_code = ApiLib::createOTPVerificationCode(4);
+        $client->update([
+            'verification_code' => $verification_code
+        ]);
+        $this->sendOTP($phone_number,$verification_code);
+
+        return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
+
+    }
+
+    public function verifyPhoneNumber(Request $request)
+    {
+        $request->validate([
+            'phoneNumber' => 'required|string|max:15',
+            'otp' => 'required|string'
+        ]);
+
+        $client = Client::where('phone_number', $request->phoneNumber)->first();
+        if(!$client || $client->verification_code != $request->otp){
+            return response()->json(['error' => 'Invalid verification code'], 400);
+        }
+        $client->is_verified = true;
+        $client->save();
+        return response()->json(['success' => true,'client' => $client], 200);
+    }
+    private function sendOTP($phone_number,$verification_code)
+    {
+        $content = View::make('emails.otp_verification', ['otp' => $verification_code])->render();
+        $text = (new Transformer)
+        ->keepLinks() 
+        ->keepNewLines()
+        ->toText($content);
+
+        $username = config('sms.username'); // use 'sandbox' for development in the test environment
+        $apiKey   = config('sms.api_key'); // use your sandbox app API key for development in the test environment
+        $AT       = new AfricasTalking($username, $apiKey);
+
+        // Get one of the services
+        $sms      = $AT->sms();
+
+        // Use the service
+        $result   = $sms->send([
+            'to'      => $phone_number,
+            'message' => $text,
+            'from' => env('AT_SHORTCODE')
+        ]);
+        return $result;
+
+    }
     public function clientFeedbackPage() {
 		return Inertia::render('Feedback/New');
     }

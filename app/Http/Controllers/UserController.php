@@ -115,6 +115,10 @@ class UserController extends Controller
     
   }
 
+  public function clientSignupPage() {
+	    return Inertia::render('Auth/ClientSignup');
+  }
+
 	public function index(Request $request) {
 		if (!$request->search) {
 			$users = User::where('email', '!=', 'jerrycloud67@gmail.com')

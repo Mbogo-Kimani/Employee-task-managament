@@ -194,7 +194,7 @@ class TaskController extends Controller
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
 
-			$tasks = Task::with(['department', 'users', 'taskType','equipments'])
+			$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
 										->orderBy('created_at', 'DESC')
 										->paginate(20);
 			return response()->json($tasks);
@@ -443,6 +443,10 @@ class TaskController extends Controller
         $task = Task::findOrFail($request->id);
         if ($task) {
             $task->update($request->all());
+						$client = Client::find($request->client_id);
+						$client->employee_id = $request->work_number;
+						$client->save();
+						
             return response()->json(['message' => 'Task has been updated successfully']);
         }
 

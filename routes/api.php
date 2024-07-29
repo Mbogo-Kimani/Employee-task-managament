@@ -13,6 +13,7 @@ use App\Http\Controllers\InternetPackageController;
 use App\Http\Controllers\MapLineController;
 use App\Http\Controllers\MapPointController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
@@ -40,6 +41,7 @@ Route::get('/token', function () {
   return response()->json('Token exposed'); 
 });
 Route::post('/login', [UserController::class, 'login'])->name('admin.login.post');
+Route::post('/payment-callback', [PaymentController::class, 'paymentCallback']);
 
 // Route::post('/tasks', [TaskController::class, '']);
 Route::middleware('auth:sanctum')->group( function () {
@@ -88,6 +90,9 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/unassigned_clients',[ClientController::class, 'getUnassignedClients']);
   Route::patch('/assign_clients',[ClientController::class, 'assignClients']);
   Route::post('clients/upload',[ClientController::class, 'uploadClients']);
+  Route::post('clients/signup',[ClientController::class, 'clientSignup']);
+  Route::post('clients/login',[ClientController::class, 'clientLogin']);
+  Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
   /**
    * Enums Controllers
    */
@@ -154,7 +159,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/logout', [UserController::class, 'logout'])->name('admin.logout');
   
   /**
-   * 
+   * Maps Controller
    */
   Route::get('/map_points', [MapPointController::class, 'index']);
   Route::post('/map_points', [MapPointController::class, 'store']);
@@ -167,4 +172,13 @@ Route::middleware('auth:sanctum')->group( function () {
    */
   Route::get('/internet_packages', [InternetPackageController::class, 'index']);
   Route::get('/apartment_codes', [ApartmentController::class, 'index']);
+  Route::post('/apartment_codes', [ApartmentController::class, 'store']);
+
+  /**
+   * Payment Controller
+   */
+  Route::post('/mpesa/payment', [PaymentController::class, 'store']);
+  Route::get('/generate_token', [PaymentController::class, 'get_token']);
+    
+    // Route::get('/confirm-mpesa', [EventController::class, 'confirm']);
 });

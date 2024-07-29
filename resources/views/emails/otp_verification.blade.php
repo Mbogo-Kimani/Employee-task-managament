@@ -19,19 +19,9 @@
     <!-- Main Image -->
 
     <img src="images/rev-slider/1.jpg" alt="" data-bgposition="center center" data-no-retina>
-                    <div class="banner-text">
-                        <h5>ET~NET</h5>
-                    </div>
                     <div class="container">
-        <h2>Invite.</h2>
         
-        <!-- <p>Hello {{ $user }},</p> -->
-        <p>Hello {{$user->email}},</p>
-
-        <p>You have been invited to the ETNET workflow system</p>
-        <p>Click <a href="{{ env('APP_URL') . '/change_password?token=' . $user->verification_token}}">here</a> to login.</p>
-
-        <p class="footer">Thank you,<br>ETNET</p>
+        <p>{{$otp}} is your verification code to login to ETNET.</p>
     </div>
 </body>
 </html>

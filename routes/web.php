@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskReportController;
-
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +25,12 @@ Route::get('/', function () {
 });
 
 Route::get('/products', function () {
-    return view('products');
+    return Inertia::render('home/Products');
 });
 Route::get('/blogs', function () {
     return view('blog');
 });
+Route::get('/client/signup', [UserController::class, 'clientSignupPage'])->name('signup');
 Route::get('/about-us', function () {
     return view('aboutus');
 });
@@ -94,6 +95,12 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 
   Route::get('/admin/clients',[ClientController::class, 'clientsPage']);
   Route::get('/clients', [ClientController::class, 'salesClientsPage']);
+  Route::get('/clients/verify', function () {
+    return Inertia::render('Auth/ClientOTP');
+  });
+  Route::get('/client/checkout', function () {
+    return Inertia::render('home/Checkout');
+  });
   Route::get('/feedback/new', [ClientController::class, 'clientFeedbackPage']);
 
   Route::get('/admin/maps',[UserController::class, 'mapsPage']);
