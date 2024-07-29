@@ -1,132 +1,149 @@
 import React, { useState } from 'react';
 import '../../../css/Pages/home/Products.css';
 import GuestLayout from '../../Layouts/GuestLayout';
+import Service from '../../Components/Products/Service';
 
+export const packages = [
+  {
+    "id": 1,
+    "name": "Kumi Konnect",
+    // "description": "40-Minute Unlimited Access",
+    "duration": "40 minutes",
+    "access": "unlimited",
+    "cost": 10,
+    "devices": 1,
+},
+{
+    "id": 2,
+    "name": "Mbao Konnect",
+    // "description": "2-Hour Unlimited Access",
+    "duration": "2 hour",
+    "access": "unlimited",
+    "cost": 20,
+    "devices": 1,
+},
+{
+    "id": 3,
+    "name": "8-Hour Konnect",
+    // "description": "8-Hour Unlimited Access",
+    "duration": "8 hour",
+    "access": "unlimited",
+    "cost": 50,
+    "devices": 1,
+},
+{
+    "id": 4,
+    "name": "Daily Konnect",
+    // "description": "24-Hour Unlimited Access",
+    "duration": "24 hour",
+    "access": "unlimited",
+    "cost": 80,
+    "devices": 1,
+},
+{
+    "id": 5,
+    "name": "Daily Konnect x2",
+    // "description": "24-Hour Unlimited Access, 2 Devices",
+    "duration": "24 hour",
+    "access": "unlimited",
+    "cost": 140,
+    "devices": 2,
+},
+{
+    "id": 6,
+    "name": "Weekly Konnect",
+    // "description": "7-Day Unlimited Access, 2 Devices",
+    "duration": "7 day",
+    "access": "unlimited",
+    "cost": 380,
+    "devices": 2,
+},
+{
+    "id": 7,
+    "name": "Monthly Konnect",
+    // "description": "30-Day Unlimited Access, 2 Devices",
+    "duration": "30 day",
+    "access": "unlimited",
+    "cost": 1000,
+    "devices": 2,
+},
+{
+    "id": 8,
+    "name": "Family Konnect x3",
+    "description": "30-Day Unlimited Access, 3 Devices",
+    "duration": "30 day",
+    "access": "unlimited",
+    "cost": 1300,
+    "devices": 3,
+},
+{
+    "id": 9,
+    "name": "Family Konnect x4",
+    // "description": "30-Day Unlimited Access, 4 Devices",
+    "duration": "30 day",
+    "access": "unlimited",
+    "cost": 1600,
+    "devices": 4,
+},
+{
+    "id": 10,
+    "name": "Family Konnect x5",
+    // "description": "30-Day Unlimited Access, 5 Devices",
+    "duration": "30 Day",
+    "cost": 1800,
+    "access": "unlimited",
+    "devices": 5,
+},
+{
+    "id": 11,
+    "name": "Family Konnect x6",
+    // "description": "30-Day Unlimited Access, 6 Devices",
+    "duration": "30 Day",
+    "access": "unlimited",
+    "cost": 2000,
+    "devices": 6,
+},
+{
+    "id": 12,
+    "name": "Family Konnect x3 (Quarterly)",
+    // "description": "90-Day Unlimited Access, 3 Devices",
+    "duration": "90 Day",
+    "cost": 3500,
+    "access": "unlimited",
+    "devices": 3,
+},
+{
+    "id": 13,
+    "name": "Family Konnect x4 (Quarterly)",
+    // "description": "90-Day Unlimited Access, 4 Devices",
+    "duration": "90 Day",
+    "cost": 4200,
+    "access": "unlimited",
+    "devices": 4,
+},
+{
+    "id": 14,
+    "name": "Family Konnect x5 (Quarterly)",
+    // "description": "90-Day Unlimited Access, 5 Devices",
+    "duration": "90 Day",
+    "access": "unlimited",
+    "cost": 4800,
+    "devices": 5,
+},
+{
+    "id": 15,
+    "name": "Family Konnect x6 (Quarterly)",
+    // "description": "90-Day Unlimited Access",
+    "devices": "6 Devices",
+    "duration": "90 Day",
+    "access": "unlimited",
+    "cost": 5300,
+    "devices": 6,
+}
+]
 function Products() {
   const [packageType, setPackageType] = useState('street');
-  const [streetPackages, setSreetPackages] = useState(
-  [
-    {
-      "id": 1,
-      "name": "Kumi Konnect",
-      "description": "40-Minute Unlimited Access",
-      "durationInSeconds": "2400",
-      "cost": 10,
-      "noOfUsers": 1,
-    },
-    {
-      "id": 2,
-      "name": "Mbao Konnect",
-      "description": "2-Hour Unlimited Access",
-      "durationInSeconds": "7200",
-      "cost": 20,
-      "noOfUsers": 1,
-    },
-    {
-      "id": 3,
-      "name": "8-Hour Konnect",
-      "description": "8-Hour Unlimited Access",
-      "durationInSeconds": "28800",
-      "cost": 50,
-      "noOfUsers": 1,
-    },
-    {
-      "id": 4,
-      "name": "Daily Konnect",
-      "description": "24-Hour Unlimited Access",
-      "durationInSeconds": "86400",
-      "cost": 80,
-      "noOfUsers": 1,
-    },
-    {
-      "id": 5,
-      "name": "Daily Konnect x2",
-      "description": "24-Hour Unlimited Access, 2 Devices",
-      "durationInSeconds": "86400",
-      "cost": 140,
-      "noOfUsers": 2,
-    },
-    {
-      "id": 6,
-      "name": "Weekly Konnect",
-      "description": "7-Day Unlimited Access, 2 Devices",
-      "durationInSeconds": "604800",
-      "cost": 380,
-      "noOfUsers": 2,
-    },
-    {
-      "id": 7,
-      "name": "Monthly Konnect",
-      "description": "30-Day Unlimited Access, 2 Devices",
-      "durationInSeconds": "2592000",
-      "cost": 1000,
-      "noOfUsers": 2,
-    },
-    {
-      "id": 8,
-      "name": "Family Konnect x3",
-      "description": "30-Day Unlimited Access, 3 Devices",
-      "durationInSeconds": "2592000",
-      "cost": 1300,
-      "noOfUsers": 3,
-    },
-    {
-      "id": 9,
-      "name": "Family Konnect x4",
-      "description": "30-Day Unlimited Access, 4 Devices",
-      "durationInSeconds": "2592000",
-      "cost": 1600,
-      "noOfUsers": 4,
-    },
-    {
-      "id": 10,
-      "name": "Family Konnect x5",
-      "description": "30-Day Unlimited Access, 5 Devices",
-      "durationInSeconds": "2592000",
-      "cost": 1800,
-      "noOfUsers": 5,
-    },
-    {
-      "id": 11,
-      "name": "Family Konnect x6",
-      "description": "30-Day Unlimited Access, 6 Devices",
-      "durationInSeconds": "2592000",
-      "cost": 2000,
-      "noOfUsers": 6,
-    },
-    {
-      "id": 12,
-      "name": "Family Konnect x3 (Quarterly)",
-      "description": "90-Day Unlimited Access, 3 Devices",
-      "durationInSeconds": "7776000",
-      "cost": 3500,
-      "noOfUsers": 3,
-    },
-    {
-      "id": 13,
-      "name": "Family Konnect x4 (Quarterly)",
-      "description": "90-Day Unlimited Access, 4 Devices",
-      "durationInSeconds": "7776000",
-      "cost": 4200,
-      "noOfUsers": 4,
-    },
-    {
-      "id": 14,
-      "name": "Family Konnect x5 (Quarterly)",
-      "description": "90-Day Unlimited Access, 5 Devices",
-      "durationInSeconds": "7776000",
-      "cost": 4800,
-      "noOfUsers": 5,
-    },
-    {
-      "id": 15,
-      "name": "Family Konnect x6 (Quarterly)",
-      "description": "90-Day Unlimited Access, 6 Devices",
-      "durationInSeconds": "7776000",
-      "cost": 5300,
-      "noOfUsers": 6,
-    }
-  ]);
+  const [streetPackages, setSreetPackages] = useState(packages);
 
   function handlePackagesChange (val) {
     if (packageType !== val) setPackageType(val);
@@ -175,7 +192,7 @@ function Products() {
 
                     <div className="w-[20rem] hover:scale-105">
                         <div className="card service-image-box2 hv-background-before w-[20rem] hover:bg-gradient-to-r hover:from-purple-500 hover:to-orange-500">
-                            <img src="images/basic.jpg" alt="basic Package" className="card-img-top" />
+                          <img src="images/basic.jpg" alt="basic Package" className="card-img-top" />
                             <div className="card-body">
                                 <h5 className="card-title text-center"><strong>ETNET</strong></h5>
                                 <p className="card-text">BASIC Package</p>
@@ -241,25 +258,17 @@ function Products() {
             </div>
         </div>
         :
-        <div className="flex justify-around items-center flex-wrap px-6">
-          {
-            (Array.isArray(streetPackages) ? streetPackages : []).map((item, ind) => {
-              return (
-                <div className='flex flex-col min-w-[380px] p-4 mx-2 my-4 justify-center items-center shadow hover:scale-105 hover:bg-gradient-to-r hover:from-indigo-700 hover:to-[var(--orange)] hover:to-[var(--light-purple)] hover:shadow-lg rounded-md' key={item.id || ind}>
-                  <p className='font-bold text-[24px] py-1'>{item.name}</p>
-                  <p className='font-[400] text-[18px] text-gray-400 py-1'>{item.description}</p>
-                  <p className='text-[26px] font-bold text-[var(--orange)]'>KSH {item.cost}</p>
+        // <div className="flex justify-around items-center flex-wrap px-6">
+        <div className='flex flex-wrap '>
 
-                  <button
-                    className='text-[var(--light-purple)] bg-[var(--orange)] px-8 py-2 rounded-full mt-6 hover:text-gray-100 hover:scale-105 font-bold'
-                  >
-                    Select
-                  </button>
-                </div>
-              )
-            })
-          }
-        </div>
+              {streetPackages.map((streetPackage, index) => (
+                  <div key={index} className='mx-auto w-fit md:w-1/3'>
+                      <Service streetPackage={streetPackage} />
+                  </div>
+              ))
+              }
+          </div>
+        // </div>
       }
 
       <div className="bill">

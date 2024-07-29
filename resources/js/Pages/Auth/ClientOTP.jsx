@@ -37,10 +37,11 @@ const ClientOTP = () => {
    },[]) 
     
     function checkResponse() {
-    // if (response && response.message) {
-    //   toast.success(response.message);
-    //   response.success && router.visit('/Auth/ClientOTP')
-    // }
+    if (response && response.success) {
+      toast.success('Success');
+      localStorage.setItem('client',response.client)
+      router.visit('/client/checkout')
+    }
     }
     function handleSubmit(e,text){
         e.preventDefault();

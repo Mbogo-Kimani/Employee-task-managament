@@ -79,7 +79,7 @@ class ClientController extends Controller
         }
         $client->is_verified = true;
         $client->save();
-        return response()->json(['success' => 'Phone number verified successfully'], 200);
+        return response()->json(['success' => true,'client' => $client], 200);
     }
     private function sendOTP($phone_number,$verification_code)
     {

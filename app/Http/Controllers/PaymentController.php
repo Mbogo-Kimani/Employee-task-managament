@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -105,16 +106,20 @@ class PaymentController extends Controller
     }
 
     public function paymentCallback(Request $request){
-        $data = json_decode((string)$request->all(), true);
+        $data = json_decode($request, true);
+        $json = $request->all();
         $items = [];
         $amount = 0;
         $phone_number = 0;
         $transaction_date = '';
         $confirmation_code = '';
+        Log::info('Payment Callback Request:', ['data' => $request]);
+        Log::info('Payment Callback Request:', ['data' => $json['Body'] | gettype($json)]);
+        Log::info('Payment Callback Request:', ['data' => gettype($request)]);
         Log::info('Payment Callback Request:', ['data' => $data]);
-        Log::info('Payment Callback Request:', ['data' => $request['Body']]);
+        Log::info('Payment Callback Request:', ['data' => $request['data'] || $request]);
 
-        Log::info('Payment Callback Request:', isset($data['Body']['stkCallback']['CallbackMetadata']['Item']));
+        // Log::info('Payment Callback Request:', isset($data['Body']['stkCallback']['CallbackMetadata']['Item']));
 
         if(isset($data['Body']['stkCallback']['CallbackMetadata']['Item'])){
             $items =  $data['Body']['stkCallback']['CallbackMetadata']['Item'];
@@ -132,7 +137,16 @@ class PaymentController extends Controller
 
         }
         Log::info('Params:', [$amount,$phone_number,$transaction_date,$confirmation_code]);
-        
+        $client = Client::where('phone_number', $request->phoneNumber)->first();
+        if($client){
+            $client->update(['amount' => $client->amount + $amount]);
+            $client->transactions()->create([
+                'amount' => $amount,
+                'phone_number' => $phone_number,
+                'transaction_date' => $transaction_date,
+                'confirmation_code' => $confirmation_code
+            ]);
+        }
         return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
     }
 

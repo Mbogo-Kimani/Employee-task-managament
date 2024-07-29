@@ -98,6 +98,9 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   Route::get('/clients/verify', function () {
     return Inertia::render('Auth/ClientOTP');
   });
+  Route::get('/client/checkout', function () {
+    return Inertia::render('home/Checkout');
+  });
   Route::get('/feedback/new', [ClientController::class, 'clientFeedbackPage']);
 
   Route::get('/admin/maps',[UserController::class, 'mapsPage']);
