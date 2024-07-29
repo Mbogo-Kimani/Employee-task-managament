@@ -10,7 +10,7 @@ function GuestLayout({ children }) {
             <div className="flex-header flex">
                 <div id="logo" className="logo d-flex align-items-center justify-content-start">
                     <a href="index.html" title="Logo">
-                      <img src="images/logo/logo.png" alt="images" data-retina="images/logo/logo.png"/>
+                      <img src="/images/logo/logo.png" alt="images" data-retina="images/logo/logo.png"/>
                     </a>
                 </div>
                 <div className="content-menu d-flex align-items-center justify-content-end">

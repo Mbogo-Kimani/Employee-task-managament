@@ -11,4 +11,25 @@ class ApartmentController extends Controller
     {
         return response()->json(ApartmentCode::all());
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'apartment_code' => 'required|unique:apartment_codes,code',
+            'apartment_name' => 'required',
+            'location' => 'required'
+        ]);
+
+        try{
+            ApartmentCode::create([
+            'code' => $request->apartment_code,
+            'name' => $request->apartment_name,
+            'location' => $request->location
+            ]);
+        } catch (\Exception $e) {
+            abort(400, $e);
+        }
+        return response()->json(['message' => 'Apartment code created successfully']);
+        
+    }
 }
