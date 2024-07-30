@@ -39,7 +39,7 @@ const ClientOTP = () => {
     function checkResponse() {
     if (response && response.success) {
       toast.success('Success');
-      localStorage.setItem('client',response.client)
+      localStorage.setItem('client', JSON.stringify(response.client))
       router.visit('/client/checkout')
     }
     }
