@@ -5,9 +5,8 @@ import requestHandler from '../../services/requestHandler';
 import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
 
-const ClientOTP = () => {
+const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
-  const [phoneNumber, setPhoneNumber] = useState('') // Initialize with empty strings
   const inputRefs = useRef([]);
   const [response, setResponse] = useState([])
 
@@ -30,29 +29,14 @@ const ClientOTP = () => {
     return () => clearInterval(interval);
    },[])
 
-   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('otp');     
-    setPhoneNumber('+254' + myParam);
-   },[]) 
-    
     function checkResponse() {
     if (response && response.success) {
       toast.success('Success');
       localStorage.setItem('client', JSON.stringify(response.client))
-      router.visit('/client/checkout')
+      router.visit(`/client/checkout?productId=${productKey}`)
     }
     }
-    function handleSubmit(e,text){
-        e.preventDefault();
-       
-        // if(text == 'login'){
-        //    requestHandler.post('/api/clients/login',client,setResponse)
-        // }else{
-        //    requestHandler.post('/api/clients/signup',client,setResponse)
-        // }
-        
-    }
+
     const handleInputChange = (index, value) => {
         const newOtp = [...otp];
         newOtp[index] = value;
@@ -64,16 +48,15 @@ const ClientOTP = () => {
         } else{
             const data = {
                 otp: newOtp.join(''),
-                phoneNumber
+                phoneNumber: '+254' + phoneNumber
             };
-            console.log(data);
           requestHandler.post('/api/clients/verify',data,setResponse)
 
         }
     }
 
   return (
-    <GuestLayout>
+    // <GuestLayout>
          <div className="card-3d-wrap mx-auto mb-14">
             <div className="card-3d-wrapper">
             <div className="card-front">
@@ -112,7 +95,7 @@ const ClientOTP = () => {
           <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500 mt-4">
             <p>Edit phone number?</p>{" "}
             <span
-              onClick={() => window.history.back()}
+              onClick={toggleOtpVerify}
               className="flex flex-row items-center text-blue-600 cursor-pointer"
               href="http://"
               target="_blank"
@@ -127,7 +110,7 @@ const ClientOTP = () => {
     </div>
     </div>
     </div>
-    </GuestLayout>
+    // </GuestLayout>
   )
 }
 

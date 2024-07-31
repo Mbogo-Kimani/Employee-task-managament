@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../css/Pages/home/Products.css';
 import GuestLayout from '../../Layouts/GuestLayout';
 import Service from '../../Components/Products/Service';
+import requestHandler from '../../services/requestHandler';
 
 export const packages = [
   {
@@ -144,6 +145,14 @@ export const packages = [
 function Products() {
   const [packageType, setPackageType] = useState('street');
   const [streetPackages, setSreetPackages] = useState(packages);
+  const [client, setClient] = useState();
+    useEffect(() => {
+        getClient()
+    },[])
+
+    function getClient() {
+       requestHandler.get('/api/get-client',setClient);
+    }
 
   function handlePackagesChange (val) {
     if (packageType !== val) setPackageType(val);
@@ -263,7 +272,7 @@ function Products() {
 
               {streetPackages.map((streetPackage, index) => (
                   <div key={index} className='mx-auto w-fit md:w-1/3'>
-                      <Service streetPackage={streetPackage} />
+                      <Service streetPackage={streetPackage} client={client}/>
                   </div>
               ))
               }

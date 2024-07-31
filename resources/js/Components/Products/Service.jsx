@@ -1,7 +1,8 @@
-import { Link } from '@inertiajs/react'
-import React from 'react'
+import { Link, router } from '@inertiajs/react'
+import React, { useEffect, useState } from 'react'
 
-function Service({ streetPackage }) {
+
+function Service({ streetPackage,client }) {
     return (
       // <div class="bg-white p-1 rounded-3xl ring-1 ring-gray-200 w-fit m-4 ">
         <div class="m-4 p-2 lg:mt-0 lg:flex-shrink-0 min-w-fit">
@@ -12,12 +13,14 @@ function Service({ streetPackage }) {
                 <span class="text-5xl font-bold tracking-tight text-gray-900">@{streetPackage.cost}</span>
                 <span class="text-sm font-semibold leading-6 tracking-wide text-gray-600">Ksh</span>
               </p>
-              <Link
-              className='mt-10 block w-full rounded-md bg-[var(--orange)] px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'
-              href={`/client/checkout?productId=${streetPackage.id}`}
-              >
-                Get Access
-              </Link>
+              {
+                <Link
+                className='mt-10 block w-full rounded-md bg-[var(--orange)] px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'
+                href={`/client/${client?.client ? 'checkout' : 'signup'}?productId=${streetPackage.id}`}
+                >
+                  Get Access
+                </Link>
+              }
               {/* <a href="#" class="mt-10 block w-full rounded-md bg-[var(--orange)] px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Get access</a> */}
               {/* <p class="mt-6 text-xs leading-5 text-gray-600">Invoices and receipts available for easy company reimbursement</p> */}
               <ul className='mx-auto'>

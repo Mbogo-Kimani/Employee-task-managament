@@ -26,7 +26,7 @@ const Checkout = () => {
             phone_number: "726945514"
         }
         // send payment request to server
-        requestHandler.post('/api/mpesa/payment',product,setResponse)
+        requestHandler.post('/api/mpesa/payment',data,setResponse)
     }
   return (
     <GuestLayout>
