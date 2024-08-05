@@ -163,7 +163,7 @@ class TaskController extends Controller
 		}
 
 		$phone_number = User::where('id',$request->departmentHandler)->pluck('phone_number')->first();
-		$text = "New Task has been created: ".$newTask->name. ", ".$newTask->description;
+		$text = "New Task has been created: ".$newTask->name. ", ".$newTask->description . " \nWifi name: ". $request->wifi_name . "\nWifi password: " . $request->wifi_password;
 		$this->sendmessage($text,$phone_number);
 
     $currentDate = Carbon::now();
