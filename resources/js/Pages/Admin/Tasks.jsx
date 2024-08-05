@@ -197,13 +197,13 @@ function Tasks() {
         </div>
         <SortElem sortParams={sortParams} filterFn={submitFilters}/>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['No','Task Name', 'Task Type', 'Department', 'Handler', 'Payment', 'Status','Started At', 'Finished At', 'Action']}>
+          <TableComp columns={['No', 'Task Name', 'Task Type', 'Department', 'Handler', 'Payment', 'Status','Started At', 'Finished At', 'Action']}>
             {
               (Array.isArray(tasks.data) ? tasks.data : []).map((task, index) => {
                 return (
                   <tr key={task.id || index} className="overflow-auto h-[30px] bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 py-1">
                     <th scope="row" className="px-4 overflow-auto font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {index + 1 }
+                      { `#${task.id}` }
                     </th>
                     <th scope="row" className="px-4 overflow-auto font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       { task.name }
