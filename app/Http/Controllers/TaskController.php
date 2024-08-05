@@ -163,7 +163,7 @@ class TaskController extends Controller
 		}
 
 		$phone_number = User::where('id',$request->departmentHandler)->pluck('phone_number')->first();
-		$text = "New Task has been created: ".$newTask->name. ", ".$newTask->description . " \nWifi name: ". $request->wifi_name . "\nWifi password: " . $request->wifi_password;
+		$text = "New Task has been created: ".$newTask->name. ", ".$newTask->description;
 		$this->sendmessage($text,$phone_number);
 
     $currentDate = Carbon::now();
@@ -286,12 +286,12 @@ class TaskController extends Controller
 				$task->save();
 
 				foreach($task->users as $user){
-					$content = View::make('emails.task_assigned', ['task' => $task, 'user' => $user])->render();
+					$content = View::make('emails.task_assigned', ['task' => $task, 'user' => $user, 'client' => $task->client ?? []])->render();
 					$text = (new Transformer)
 					->keepLinks() 
 					->keepNewLines()
 					->toText($content);
-					$mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $user]);
+					$mail = new \App\Mail\TaskAssigned(['task' => $task, 'user' => $user, 'client' => $task->client ?? []]);
 
 					$this->sendMessage($text,$user->phone_number);
 					$this->sendMail($user,$mail);
