@@ -25,6 +25,6 @@ class Client extends Model
 
 	public function internetPackage(): BelongsTo
 	{
-		return $this->belongsTo(InternetPackage::class);
+		return $this->belongsTo(InternetPackage::class, 'package_id');
 	}
 }

@@ -32,6 +32,13 @@
         <ul>
             <li><strong>Title:</strong> {{ $task->name }}.</li>
             <li><strong>Description:</strong> {{ $task->description }}.</li>
+            @if(!empty($client))
+                <li><strong>Client Name:</strong> {{ $client->name }}.</li>
+                <li><strong>Client Phone Number:</strong> {{ $client->phone_number }}.</li>
+                <li><strong>Internet Package:</strong> {{ $client->internetPackage->capacity }}.</li>
+                <li><strong>Wifi Name:</strong> {{ $client->wifi_name }}.</li>
+                <li><strong>Wifi Password:</strong> {{ $client->wifi_password }}.</li>
+            @endif
         </ul>
     </p>
         <p>Please review and take appropriate action. </p>

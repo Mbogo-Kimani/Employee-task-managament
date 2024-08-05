@@ -15,6 +15,7 @@ class TaskAssigned extends Mailable
     public $content;
     public $task;
     public $user;
+    public $client;
     /**
      * Create a new message instance.
      *
@@ -25,7 +26,8 @@ class TaskAssigned extends Mailable
         $this->content = (object)$content;
         $this->task = $this->content->task;
         $this->user = $this->content->user;
-        // $this->client = $this->content->client;
+        $this->client = $this->content->client;
+        
     }
 
     /**

@@ -30,6 +30,7 @@ class ClientImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
                     'full_name' => $row['full_name'],
                     'acc_no' => $row['portal_login'],
                     'billing_day' => $row['billing_day_automatic_document_date'],
+                    'work_number' => $row['work_number'],
                 ];
             }
         $this->processData($data);
@@ -57,6 +58,7 @@ class ClientImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
                     'email' => $client['full_name'] . '@mail.net',
                     'address' => $client['acc_no'],
                     'apartment_no' => $client['acc_no'],
+                    'employee_id' => $client['work_number'],
                 ]);
             } else {
                 $existingClient->update([
