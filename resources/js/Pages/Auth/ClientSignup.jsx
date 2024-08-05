@@ -4,26 +4,36 @@ import '../../../css/Pages/home/auth.css'
 import requestHandler from '../../services/requestHandler';
 import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
+import OTPVerification from './ClientOTP'
 
 const ClientSignup = () => {
     const [client, setClient] = useState({
         phone_number: '',
     });
     const [response, setResponse] = useState([])
+    const [otpVerify, setOtpVerify] = useState(false);
+    const [productId, setProductId] = useState('');
 
     useEffect(() => {
         checkResponse();
       }, [response]);
     
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const param = urlParams.get('productId');
+      param && setProductId(param);
+    },[])
       function checkResponse() {
         if (response && response.message) {
           toast.success(response.message);
-          response.success && router.visit(`/clients/verify?otp=${client.phone_number}`)
+          // response.success && router.visit(`/clients/verify?otp=${client.phone_number}`)
+          setOtpVerify(true)
         }
       }
+
     function handleSubmit(e,text){
         e.preventDefault();
-        console.log(client);
+       
         if(text == 'login'){
            requestHandler.post('/api/clients/login',client,setResponse)
         }else{
@@ -32,10 +42,19 @@ const ClientSignup = () => {
         
     }
 
+
+    function toggleOtpVerify() {
+      setOtpVerify(!otpVerify);
+    }
   return (
     <GuestLayout>
         <div className='flex px-6 m-auto w-[50vw]'>
+        { otpVerify ? 
         <div className="section pb-5 pt-5 pt-sm-2 text-center">
+        <OTPVerification phoneNumber={client?.phone_number}  toggleOtpVerify={toggleOtpVerify} productKey={productId}/>
+        </div>
+        :
+          <div className="section pb-5 pt-5 pt-sm-2 text-center">
 						<h6 className="mb-0 pb-3"><span className='mr-4'>Log In </span><span className='ml-4'>Sign Up</span></h6>
 			          	<input className="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
 			          	<label htmlFor="reg-log">
@@ -136,6 +155,7 @@ const ClientSignup = () => {
         </div>
         </div>
     </div>
+    }
 </div>
     </GuestLayout>
   )

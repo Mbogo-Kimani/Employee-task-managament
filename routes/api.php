@@ -180,5 +180,5 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/mpesa/payment', [PaymentController::class, 'store']);
   Route::get('/generate_token', [PaymentController::class, 'get_token']);
     
-    // Route::get('/confirm-mpesa', [EventController::class, 'confirm']);
+  Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 });

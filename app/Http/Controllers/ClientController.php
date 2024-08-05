@@ -38,10 +38,11 @@ class ClientController extends Controller
                 'verification_code' => $verification_code
             ]);
             $this->sendOTP($request->phone_number,$verification_code);
+            
         } catch(\Exception $e){
             abort(400, $e->getMessage());
         }
-
+        
         return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
 
     }
@@ -79,7 +80,20 @@ class ClientController extends Controller
         }
         $client->is_verified = true;
         $client->save();
-        return response()->json(['success' => true,'client' => $client], 200);
+
+        $clientDetails = [
+                'name' => $client->name,
+                'email' => $client->email,
+                'phone_number' => $client->phone_number,
+        ];
+        $cookie = cookie('client_details', json_encode($clientDetails), 60);
+
+        return response()->json(['success' => true,'client' => $client], 200)->cookie($cookie);
+    }
+
+    public function getClientCookie(Request $request)
+    {
+        return response()->json(['client' => json_decode(request()->cookie('client_details'))]);
     }
     private function sendOTP($phone_number,$verification_code)
     {
