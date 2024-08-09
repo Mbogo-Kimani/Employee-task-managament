@@ -190,11 +190,12 @@ class TaskController extends Controller
 		return response()->json($tasks);
 	}
 
-	public function allTasks() {
+	public function allTasks(Request $request) {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
 
 			$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
+										->where('name', 'LIKE', "%$request->search%")
 										->orderBy('created_at', 'DESC')
 										->paginate(20);
 			return response()->json($tasks);

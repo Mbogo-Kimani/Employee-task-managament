@@ -69,13 +69,26 @@ function Tasks() {
     total: 0,
   });
   const [debouncedValue, setDebouncedValue] = useState('');
+  const allParams = location.search.split('&');
+  let searchValFromParams = '';
 
-  const {userData} = useContext(AppContext);  
+  if (allParams[1]) {
+    searchValFromParams = allParams[1].split('=')[1];
+  }
+
+  const [searchValue, setSearchValue] = useState(searchValFromParams);
+
+  const {userData} = useContext(AppContext);
   const sortParams = {
     'departmentId' : departments,
     'type': taskTypes,
     'status': taskStatus,
     'clientStatus': clientStatus
+  }
+
+  function handleSearch(e) {
+    e.preventDefault();
+    fetchAllTasks();
   }
 
   useEffect(() => {
@@ -103,22 +116,45 @@ function Tasks() {
   useEffect(() => {
     fetchTaskTypes();
     fetchDepartments();
+    setInitialSearchValue();
     fetchAllTasks();
     fetchWorkNumbers();
   }, []);
 
   useEffect(() => {
     fetchHandlers();
-  }, [editTask])
+  }, [editTask]);
+
+  function setInitialSearchValue() {
+    const allParams = location.search.split('&');
+    let searchValFromParams = '';
+
+    if (allParams[1]) {
+      searchValFromParams = allParams[1].split('=')[1];
+    }
+    setSearchValue(searchValFromParams);
+  }
 
   function fetchAllTasks() {
-    const searchParam = location.search.split('=')[1];
+    const allParams = location.search.split('&');
+    let pageParam = 1;
+    let searchValFromParams = '';
 
-    if (searchParam) requestHandler.get(`/api/all_tasks?page=${searchParam}`, setTasks, null, loaderSetter);
-    else requestHandler.get('/api/all_tasks', setTasks, null, loaderSetter);
+    if (allParams[0]) {
+      pageParam = allParams[0].split('=')[1];
+    }
+    if (allParams[1]) {
+      searchValFromParams = allParams[1].split('=')[1];
+    }
+
+    requestHandler.get(`/api/all_tasks?page=${pageParam}&search=${searchValue}`, handleTasksFetched, null, loaderSetter);
   }
   function fetchHandlers() {
     if (Object.keys(editTask).length > 0) requestHandler.get(`/api/admin_department_handlers/${editTask.department?.id}`, setHandlers);
+  }
+
+  function handleTasksFetched(fetchedTasks) {
+    setTasks(fetchedTasks);
   }
 
   function toggleEditTask (task) {
@@ -186,14 +222,31 @@ function Tasks() {
       <div>
         <TaskStatusColorCode />
         
-        <div className='mb-4 w-full flex'>
-        <ApartmentCodes />
+        <div className='w-full flex justify-between items-center'>
+          <ApartmentCodes />
           <Link
-            className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
+            className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 text-gray-900 hover:text-gray-100"
             href='/admin/new_task'
           >
             {i18next.t('add-new-task')}
           </Link>
+        </div>
+
+        <div className="mb-4 w-full">
+          <div className='flex justify-center items-center'>
+            <input
+              type="search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              name="search"
+              id=""
+              className='py-2 rounded px-3 w-[250px] outline-none'
+              placeholder={'🔍 Search'}
+            />
+            <button className='hover:bg-white p-2' onClick={(e) => handleSearch(e)}>
+              <Icon src='search' fill='#333' className='w-5 h-5'/>
+            </button>
+          </div>
         </div>
         <SortElem sortParams={sortParams} filterFn={submitFilters}/>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
@@ -285,7 +338,7 @@ function Tasks() {
               })
             }
           </TableComp>
-          <PaginatorNav state={tasks} setState={setTasks} navigateByParams />
+          <PaginatorNav state={tasks} setState={setTasks} navigateByParams searchParam={searchValue} />
         </div>
         <Modal show={showModal} onClose={closeModal}>
           <div className="my-2 px-3 w-full min-h-[90vh] overflow-y-auto">

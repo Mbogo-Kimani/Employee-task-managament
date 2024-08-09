@@ -3,21 +3,26 @@ import { handlePage } from '../../data/utils';
 import { router } from '@inertiajs/react';
 import Modal from './Modal';
 
-function PaginatorNav({ state, setState, navigateByParams = false }) {
+function PaginatorNav({ state, setState, navigateByParams = false, searchParam='' }) {
   const [seeAllPages, setSeeAllPages] = useState(false);
-  
+
   function handlePageNavigation (navigation) {
     const nextPageNavigate = navigation !== 'prev';
-    const searchParam = location.search.split('=')[1];
+    const allSearchParams = location.search.split('&');
+    let pageParam = 1;
+
+    if (allSearchParams[0]) {
+      pageParam = allSearchParams[0].split('=')[1];
+    }
 
     if (searchParam) {
-      const currentPage = parseInt(searchParam);
+      const currentPage = parseInt(pageParam);
       
-      if (nextPageNavigate && state.next_page_url) router.visit(`${location.pathname}?page=${currentPage + 1}`);
-      else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}`);
+      if (nextPageNavigate && state.next_page_url) router.visit(`${location.pathname}?page=${currentPage + 1}&search=${searchParam}`);
+      else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}&search=${searchParam}`);
       else return;
     } else {
-      if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2`);
+      if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2${evaluateOtherParams()}`);
       else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState);
       else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState);
       else return;
@@ -25,8 +30,8 @@ function PaginatorNav({ state, setState, navigateByParams = false }) {
   }
 
   function handleSpecificPageNav(page) {
-    if (navigateByParams) router.visit(`${location.pathname}?page=${page}`);
-    else handlePage(`${state.path}?page=${page}`, setState);
+    if (navigateByParams) router.visit(`${location.pathname}?page=${page}&search=${searchParam}`);
+    else handlePage(`${state.path}?page=${page}&search=${searchParam}`, setState);
     hideAllPages();
   }
 
