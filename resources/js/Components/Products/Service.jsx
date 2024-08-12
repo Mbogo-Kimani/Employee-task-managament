@@ -2,7 +2,7 @@ import { Link, router } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
 
 
-function Service({ streetPackage,client }) {
+function Service({ streetPackage, client = null, showAccessLink = true }) {
     return (
       // <div class="bg-white p-1 rounded-3xl ring-1 ring-gray-200 w-fit m-4 ">
         <div class="m-4 p-2 lg:mt-0 lg:flex-shrink-0 min-w-fit">
@@ -14,9 +14,10 @@ function Service({ streetPackage,client }) {
                 <span class="text-sm font-semibold leading-6 tracking-wide text-gray-600">Ksh</span>
               </p>
               {
+                showAccessLink &&
                 <Link
-                className='mt-10 block w-full rounded-md bg-[var(--orange)] px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'
-                href={`/client/${client?.client ? 'checkout' : 'signup'}?productId=${streetPackage.id}`}
+                  className='mt-10 block w-full rounded-md bg-[var(--orange)] px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'
+                  href={`/client/${client?.client ? 'checkout' : 'signup'}?productId=${streetPackage.id}`}
                 >
                   Get Access
                 </Link>

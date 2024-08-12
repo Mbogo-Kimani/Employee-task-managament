@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Service from '../../Components/Products/Service'
-import {packages} from './Products'
+import {packages} from '../home/Products'
 import GuestLayout from '../../Layouts/GuestLayout';
 import requestHandler from '../../services/requestHandler';
 const Checkout = () => {
     // const [productId, setProductId] = useState();
     const [product, setProduct] = useState({});
     const [response, setResponse] = useState([]);
+    const [currentClient, setCurrentClient] = useState(JSON.parse(localStorage.getItem('client')));
+    const [phoneNumber, setPhoneNumber] = useState('');
+
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const param = urlParams.get('productId');
@@ -20,10 +23,10 @@ const Checkout = () => {
         e.preventDefault();
         const data = {
             amount: product.cost,
-            customer_name: "jerry",
-            customer_email: "jay@mail.com",
+            customer_name: currentClient.name,
+            customer_email: currentClient.email,
             country_code: 254,
-            phone_number: "726945514"
+            phone_number: phoneNumber,
         }
         // send payment request to server
         requestHandler.post('/api/mpesa/payment',data,setResponse)
@@ -39,11 +42,19 @@ const Checkout = () => {
             </div>
             <div className="w-full flex items-center border-2 mb-3 py-2 px-2 rounded-2xl">
               <p className=" text-gray-400">+254</p>
-              <input id="phonenumber" className=" pl-2 w-full outline-none border-none bg-blue-200/0" type="text" name="phonenumber" placeholder="Phone Number" />
+              <input
+                id="phonenumber"
+                className=" pl-2 w-full outline-none border-none bg-blue-200/0"
+                type="text"
+                name="phonenumber"
+                placeholder="Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
             </div>
             <button type="submit" onClick={handleSubmit} className="block w-full bg-green-500 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2">Pay Now</button>
           </div>
-          <Service streetPackage={product} />
+          <Service streetPackage={product} showAccessLink={false} />
         </div>
     </div>
     </GuestLayout>

@@ -4,7 +4,7 @@ import '../../../css/Pages/home/auth.css'
 import requestHandler from '../../services/requestHandler';
 import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
-import OTPVerification from './ClientOTP'
+import OTPVerification from '../Auth/ClientOTP'
 
 const ClientSignup = () => {
     const [client, setClient] = useState({
@@ -25,23 +25,25 @@ const ClientSignup = () => {
     },[])
       function checkResponse() {
         if (response && response.message) {
-          toast.success(response.message);
+          if (response.success) {
+            toast.success(response.message);
+            setOtpVerify(true)
+          } else {
+            toast.error(response.message);
+          }
           // response.success && router.visit(`/clients/verify?otp=${client.phone_number}`)
-          setOtpVerify(true)
         }
       }
 
-    function handleSubmit(e,text){
-        e.preventDefault();
+    function handleSubmit(e, text){
+      e.preventDefault();
        
-        if(text == 'login'){
-           requestHandler.post('/api/clients/login',client,setResponse)
-        }else{
-           requestHandler.post('/api/clients/signup',client,setResponse)
-        }
-        
+      if (text === 'login') {
+        requestHandler.post('/api/clients/login', client, setResponse);
+      } else if (text === 'signup') {
+        requestHandler.post('/api/clients/signup', client, setResponse);
+      }
     }
-
 
     function toggleOtpVerify() {
       setOtpVerify(!otpVerify);

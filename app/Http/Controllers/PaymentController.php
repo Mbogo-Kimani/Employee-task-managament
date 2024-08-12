@@ -15,7 +15,7 @@ class PaymentController extends Controller
     {
         $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
-        $token_object = Http::withOptions(['verify' => false])->withBasicAuth(config("mpesa.consumer_key"), config("mpesa.consumer_secret"))->get($url);
+        $token_object = Http::withBasicAuth(config("mpesa.consumer_key"), config("mpesa.consumer_secret"))->get($url);
                                                          
         return $token_object['access_token'];
     }
@@ -82,7 +82,7 @@ class PaymentController extends Controller
         $timestamp = Carbon::now()->format('YmdHis');
         $password = base64_encode($business_short_code.$pass_key.$timestamp);
         $transaction_type = 'CustomerPayBillOnline';
-        $callback_url = 'https://4fed-105-27-125-18.ngrok-free.app/api/payment-callback'; // has to be a https kind
+        $callback_url = config('app.url').'/api/payment-callback'; // has to be a https kind
         $account_reference = 'Elephant Technologies';
         $transaction_desc = 'Test';
 
@@ -95,7 +95,8 @@ class PaymentController extends Controller
             'Password' => $password,
             'Timestamp' => $timestamp,
             'TransactionType' => $transaction_type,
-            'Amount' => "1",
+            'Amount' => $request->amount,
+            // 'Amount' => 1,
             'PartyA' => $phone_number,
             'PartyB' => $business_short_code,
             'PhoneNumber' => $phone_number,
@@ -103,7 +104,12 @@ class PaymentController extends Controller
             'AccountReference' => $account_reference,
             'TransactionDesc' => $transaction_desc
         ]);
-        return response()->json($res);
+
+        if ($res->ok()) {
+            return response()->json($res);
+        } else {
+            abort(400, 'Payment did not go through');
+        }
     }
 
     public function paymentCallback(Request $request){
@@ -114,32 +120,49 @@ class PaymentController extends Controller
         $transaction_date = '';
         $confirmation_code = '';
        
+        $data = request()->json()->all();
+        // $data = ["Body" => [
+        //     "stkCallback" => [
+        //         "MerchantRequestID" => "f1e2-4b95-a71d-b30d3cdbb7a71224224",
+        //         "CheckoutRequestID" => "ws_CO_12082024103757041726945514",
+        //         "ResultCode" => 0,
+        //         "ResultDesc" => "The service request is processed successfully.",
+        //         "CallbackMetadata" => [
+        //             "Item" => [
+        //                 ["Name" => "Amount","Value" => 1.0],
+        //                 ["Name" => "MpesaReceiptNumber", "Value" => "SHC7S6SHXP"],
+        //                 ["Name" => "Balance"],
+        //                 ["Name" => "TransactionDate","Value" => 20240812103801],
+        //                 ["Name" => "PhoneNumber","Value" => 2547...]
+        //             ]
+        //         ]]]];
 
-        // Log::info('Payment Callback Request:', $request->Body['stkCallback']['CallbackMetadata']['Item']));
+        // Log::info('Payment Callback Request:', $data['Body']);
 
-        if(isset($request->Body['stkCallback']['CallbackMetadata']['Item'])){
-            $items =  $$request->Body['stkCallback']['CallbackMetadata']['Item'];
-            foreach($items as $item){
-                if($item->Name == 'Amount'){
-                    $amount = $item->Value;
-                } else if ($item->Name == 'MpesaReceiptNumber'){
-                    $confirmation_code = $item->Value;
-                } else if ($item->Name == 'PhoneNumber'){
-                    $phone_number = $item->Value;
-                } else if ($item->Name == 'TransactionDate'){
-                    $transaction_date = Carbon::createFromFormat('YmdHis', $item->Value)->format('Y-m-d');
+        if(isset($data['Body']['stkCallback']['CallbackMetadata']['Item'])){
+            $items =  $data['Body']['stkCallback']['CallbackMetadata']['Item'];
+            foreach ($items as $item) {
+                if ($item['Name'] == 'Amount') {
+                    $amount = $item['Value'];
+                } else if ($item['Name'] == 'MpesaReceiptNumber'){
+                    $confirmation_code = $item['Value'];
+                } else if ($item['Name'] == 'PhoneNumber'){
+                    $phone_number = $item['Value'];
+                } else if ($item['Name'] == 'TransactionDate'){
+                    $transaction_date = Carbon::createFromFormat('YmdHis', $item['Value'])->format('Y-m-d');
                 }
             }
         }
-        $client = Client::where('phone_number', $request->phoneNumber)->first();
+        $client = Client::where('phone_number', 'LIKE', "%$phone_number%")->first();
         if(!empty($confirmation_code)){
-            Transaction::create([
+            $transaction = Transaction::create([
                 'client_id' => $client->id ?? null,
                 'amount' => $amount,
                 'paid_date' => $transaction_date,
                 'payment_confirmation' => $confirmation_code,
                 'phone_number' => $phone_number
             ]);
+            // Log::info('Transaction:', $transaction);
         }
         return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
     }

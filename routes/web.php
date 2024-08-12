@@ -99,7 +99,7 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
     return Inertia::render('Auth/ClientOTP');
   });
   Route::get('/client/checkout', function () {
-    return Inertia::render('home/Checkout');
+    return Inertia::render('Client/Checkout');
   });
   Route::get('/feedback/new', [ClientController::class, 'clientFeedbackPage']);
 
