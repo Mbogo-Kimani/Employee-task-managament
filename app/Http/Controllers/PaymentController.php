@@ -15,7 +15,7 @@ class PaymentController extends Controller
     {
         $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
-        $token_object = Http::withOptions(['verify' => false])->withBasicAuth(config("mpesa.consumer_key"), config("mpesa.consumer_secret"))->get($url);
+        $token_object = Http::withBasicAuth(config("mpesa.consumer_key"), config("mpesa.consumer_secret"))->get($url);
                                                          
         return $token_object['access_token'];
     }
@@ -82,7 +82,7 @@ class PaymentController extends Controller
         $timestamp = Carbon::now()->format('YmdHis');
         $password = base64_encode($business_short_code.$pass_key.$timestamp);
         $transaction_type = 'CustomerPayBillOnline';
-        $callback_url = 'https://4fed-105-27-125-18.ngrok-free.app/api/payment-callback'; // has to be a https kind
+        $callback_url = config('mpesa.callback_url').'/api/payment-callback'; // has to be a https kind
         $account_reference = 'Elephant Technologies';
         $transaction_desc = 'Test';
 
@@ -95,7 +95,7 @@ class PaymentController extends Controller
             'Password' => $password,
             'Timestamp' => $timestamp,
             'TransactionType' => $transaction_type,
-            'Amount' => "1",
+            'Amount' => $request->amount,
             'PartyA' => $phone_number,
             'PartyB' => $business_short_code,
             'PhoneNumber' => $phone_number,
@@ -103,7 +103,12 @@ class PaymentController extends Controller
             'AccountReference' => $account_reference,
             'TransactionDesc' => $transaction_desc
         ]);
-        return response()->json($res);
+
+        if ($res->ok()) {
+            return response()->json($res);
+        } else {
+            abort(400, 'Payment did not go through');
+        }
     }
 
     public function paymentCallback(Request $request){

@@ -90,9 +90,6 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/unassigned_clients',[ClientController::class, 'getUnassignedClients']);
   Route::patch('/assign_clients',[ClientController::class, 'assignClients']);
   Route::post('clients/upload',[ClientController::class, 'uploadClients']);
-  Route::post('clients/signup',[ClientController::class, 'clientSignup']);
-  Route::post('clients/login',[ClientController::class, 'clientLogin']);
-  Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
   /**
    * Enums Controllers
    */
@@ -174,11 +171,14 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/apartment_codes', [ApartmentController::class, 'index']);
   Route::post('/apartment_codes', [ApartmentController::class, 'store']);
 
-  /**
-   * Payment Controller
-   */
-  Route::post('/mpesa/payment', [PaymentController::class, 'store']);
-  Route::get('/generate_token', [PaymentController::class, 'get_token']);
-    
-  Route::get('/get-client', [ClientController::class, 'getClientCookie']);
+  
 });
+Route::get('/get-client', [ClientController::class, 'getClientCookie']);
+Route::post('clients/signup',[ClientController::class, 'clientSignup']);
+Route::post('clients/login',[ClientController::class, 'clientLogin']);
+Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
+/**
+ * Payment Controller
+ */
+Route::post('/mpesa/payment', [PaymentController::class, 'store']);
+Route::get('/generate_token', [PaymentController::class, 'get_token']);

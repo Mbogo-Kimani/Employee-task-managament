@@ -116,7 +116,7 @@ class UserController extends Controller
   }
 
   public function clientSignupPage() {
-	    return Inertia::render('Auth/ClientSignup');
+	    return Inertia::render('Client/Signup');
   }
 
 	public function index(Request $request) {
