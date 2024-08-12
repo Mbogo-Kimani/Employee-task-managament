@@ -82,7 +82,7 @@ class PaymentController extends Controller
         $timestamp = Carbon::now()->format('YmdHis');
         $password = base64_encode($business_short_code.$pass_key.$timestamp);
         $transaction_type = 'CustomerPayBillOnline';
-        $callback_url = config('mpesa.callback_url').'/api/payment-callback'; // has to be a https kind
+        $callback_url = config('app.url').'/api/payment-callback'; // has to be a https kind
         $account_reference = 'Elephant Technologies';
         $transaction_desc = 'Test';
 
