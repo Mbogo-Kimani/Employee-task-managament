@@ -22,7 +22,7 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
       else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}&search=${searchParam}`);
       else return;
     } else {
-      if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2${evaluateOtherParams()}`);
+      if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2`);
       else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState);
       else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState);
       else return;
