@@ -3,7 +3,7 @@
   padding: 128px 0 142px 0;
 }
 .parallax1 {
-  background-image: url(../images/parallax/01.jpg);
+  background-image: url(/images/parallax/01.jpg);
 }
 .parallax {
   width: 100%;
