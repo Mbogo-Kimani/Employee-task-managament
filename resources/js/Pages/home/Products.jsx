@@ -135,7 +135,6 @@ export const packages = [
     "id": 15,
     "name": "Family Konnect x6 (Quarterly)",
     // "description": "90-Day Unlimited Access",
-    "devices": "6 Devices",
     "duration": "90 Day",
     "access": "unlimited",
     "cost": 5300,
@@ -267,17 +266,13 @@ function Products() {
             </div>
         </div>
         :
-        // <div className="flex justify-around items-center flex-wrap px-6">
         <div className='flex flex-wrap '>
-
-              {streetPackages.map((streetPackage, index) => (
-                  <div key={index} className='mx-auto w-fit md:w-1/3'>
-                      <Service streetPackage={streetPackage} client={client}/>
-                  </div>
-              ))
-              }
-          </div>
-        // </div>
+          {streetPackages.map((streetPackage, index) => (
+              <div key={index} className='mx-auto w-fit md:w-1/3'>
+                  <Service streetPackage={streetPackage} client={client}/>
+              </div>
+          ))}
+        </div>
       }
 
       <div className="bill">
@@ -291,7 +286,7 @@ function Products() {
         <div className="flat-it-services flat-it-services-style4">
             <div className="container">
                 <div className="flex flex-wrap justify-between">
-                        <div className="service-image-box2 hv-background-before w-[30%] h-[550px]">
+                        <div className="service-image-box2 hv-background-before w-full md:w-[30%] h-[550px]">
                             <div className="order-number"></div>
                             <div className="featured-post">
                                 <div className="flex justify-center items-center">
@@ -310,7 +305,7 @@ function Products() {
                                 </span>
                             </div>
                         </div>
-                        <div className="service-image-box2 hv-background-before w-[30%] h-[550px]">
+                        <div className="service-image-box2 hv-background-before w-full md:w-[30%] h-[550px]">
                             <div className="order-number"></div>
                             <div className="featured-post">
                                 <div className="flex justify-center items-center">
@@ -329,7 +324,7 @@ function Products() {
                               </span>
                             </div>
                         </div>
-                        <div className="service-image-box2 hv-background-before w-[30%] h-[550px]">
+                        <div className="service-image-box2 hv-background-before w-full md:w-[30%] h-[550px]">
                             <div className="order-number"></div>
                             <div className="featured-post">
                                 <div className="flex justify-center items-center">
@@ -349,7 +344,6 @@ function Products() {
                                 </span>
                            </div>
                         </div>
-
                 </div>
             </div>
         </div>
