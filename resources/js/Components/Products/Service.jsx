@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 function Service({ streetPackage, client = null, showAccessLink = true }) {
     return (
       <div className="m-4 p-2 lg:mt-0 lg:flex-shrink-0 min-w-fit">
-        <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
+        <div className="rounded-2xl bg-gray-50 py-8 px-14 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
           <div className="mx-auto max-w-xs px-8">
             <p className="text-base font-semibold text-gray-600">{streetPackage.name}</p>
             <p className="mt-6 flex items-baseline justify-center gap-x-2">

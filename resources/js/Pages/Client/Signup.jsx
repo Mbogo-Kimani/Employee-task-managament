@@ -50,7 +50,7 @@ const ClientSignup = () => {
     }
   return (
     <GuestLayout>
-        <div className='flex px-6 m-auto w-[50vw]'>
+        <div className='flex px-6 m-auto md:w-[50vw]'>
         { otpVerify ? 
         <div className="section pb-5 pt-5 pt-sm-2 text-center">
         <OTPVerification phoneNumber={client?.phone_number}  toggleOtpVerify={toggleOtpVerify} productKey={productId}/>
