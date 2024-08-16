@@ -168,9 +168,11 @@ function GuestLayout({ children }) {
                     </div>
                 </div>
             </div>
-            <a id="scroll-top" className="show text-xl font-bold flex justify-center items-center text-white text-[20px] font-bold" href='#header'>
-              <span className='mb-0'>^</span>
-            </a>
+            <div id="scrollButton" className="fixed bottom-6 right-6 z-50 transition-opacity duration-300 transform translate-y-2 mb-0">
+              <button onClick={() => window.scrollTo({top: 0, left: 0, behavior: 'smooth'})} className='flex justify-center items-center bg-[var(--orange)] py-2 px-5 rounded-full hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500'>
+                <Icon src='arrowTop' className='w-4 h-4' fill='#222'/>
+              </button>
+            </div>
         </footer>
     </div>
   )
