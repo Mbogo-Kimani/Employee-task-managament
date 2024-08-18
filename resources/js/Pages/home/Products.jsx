@@ -1,157 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '../../../css/Pages/home/Products.css';
 import GuestLayout from '../../Layouts/GuestLayout';
 import Service from '../../Components/Products/Service';
 import requestHandler from '../../services/requestHandler';
+import { AppContext } from '../appContext';
 
-export const packages = [
-  {
-    "id": 1,
-    "name": "Kumi Konnect",
-    // "description": "40-Minute Unlimited Access",
-    "duration": "40 minutes",
-    "access": "unlimited",
-    "cost": 10,
-    "devices": 1,
-},
-{
-    "id": 2,
-    "name": "Mbao Konnect",
-    // "description": "2-Hour Unlimited Access",
-    "duration": "2 hour",
-    "access": "unlimited",
-    "cost": 20,
-    "devices": 1,
-},
-{
-    "id": 3,
-    "name": "8-Hour Konnect",
-    // "description": "8-Hour Unlimited Access",
-    "duration": "8 hour",
-    "access": "unlimited",
-    "cost": 50,
-    "devices": 1,
-},
-{
-    "id": 4,
-    "name": "Daily Konnect",
-    // "description": "24-Hour Unlimited Access",
-    "duration": "24 hour",
-    "access": "unlimited",
-    "cost": 80,
-    "devices": 1,
-},
-{
-    "id": 5,
-    "name": "Daily Konnect x2",
-    // "description": "24-Hour Unlimited Access, 2 Devices",
-    "duration": "24 hour",
-    "access": "unlimited",
-    "cost": 140,
-    "devices": 2,
-},
-{
-    "id": 6,
-    "name": "Weekly Konnect",
-    // "description": "7-Day Unlimited Access, 2 Devices",
-    "duration": "7 day",
-    "access": "unlimited",
-    "cost": 380,
-    "devices": 2,
-},
-{
-    "id": 7,
-    "name": "Monthly Konnect",
-    // "description": "30-Day Unlimited Access, 2 Devices",
-    "duration": "30 day",
-    "access": "unlimited",
-    "cost": 1000,
-    "devices": 2,
-},
-{
-    "id": 8,
-    "name": "Family Konnect x3",
-    "description": "30-Day Unlimited Access, 3 Devices",
-    "duration": "30 day",
-    "access": "unlimited",
-    "cost": 1300,
-    "devices": 3,
-},
-{
-    "id": 9,
-    "name": "Family Konnect x4",
-    // "description": "30-Day Unlimited Access, 4 Devices",
-    "duration": "30 day",
-    "access": "unlimited",
-    "cost": 1600,
-    "devices": 4,
-},
-{
-    "id": 10,
-    "name": "Family Konnect x5",
-    // "description": "30-Day Unlimited Access, 5 Devices",
-    "duration": "30 Day",
-    "cost": 1800,
-    "access": "unlimited",
-    "devices": 5,
-},
-{
-    "id": 11,
-    "name": "Family Konnect x6",
-    // "description": "30-Day Unlimited Access, 6 Devices",
-    "duration": "30 Day",
-    "access": "unlimited",
-    "cost": 2000,
-    "devices": 6,
-},
-{
-    "id": 12,
-    "name": "Family Konnect x3 (Quarterly)",
-    // "description": "90-Day Unlimited Access, 3 Devices",
-    "duration": "90 Day",
-    "cost": 3500,
-    "access": "unlimited",
-    "devices": 3,
-},
-{
-    "id": 13,
-    "name": "Family Konnect x4 (Quarterly)",
-    // "description": "90-Day Unlimited Access, 4 Devices",
-    "duration": "90 Day",
-    "cost": 4200,
-    "access": "unlimited",
-    "devices": 4,
-},
-{
-    "id": 14,
-    "name": "Family Konnect x5 (Quarterly)",
-    // "description": "90-Day Unlimited Access, 5 Devices",
-    "duration": "90 Day",
-    "access": "unlimited",
-    "cost": 4800,
-    "devices": 5,
-},
-{
-    "id": 15,
-    "name": "Family Konnect x6 (Quarterly)",
-    // "description": "90-Day Unlimited Access",
-    "duration": "90 Day",
-    "access": "unlimited",
-    "cost": 5300,
-    "devices": 6,
-}
-]
 function Products() {
   const [packageType, setPackageType] = useState('street');
-  const [streetPackages, setSreetPackages] = useState(packages);
-  const [client, setClient] = useState();
-    useEffect(() => {
-        getClient()
-    },[])
+  const [streetPackages, setStreetPackages] = useState([]);
+  const { client } = useContext(AppContext);
 
-    function getClient() {
-       requestHandler.get('/api/get-client',setClient);
-    }
+  useEffect(() => {
+    getStreetPackages();
+  },[]);
+
+  function getStreetPackages() {
+    requestHandler.get('/api/street_packages', setStreetPackages);
+  }
 
   function handlePackagesChange (val) {
     if (packageType !== val) setPackageType(val);

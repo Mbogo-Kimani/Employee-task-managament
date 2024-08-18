@@ -14,6 +14,8 @@ use App\Http\Controllers\MapLineController;
 use App\Http\Controllers\MapPointController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StreetPackageController;
+use App\Http\Controllers\StreetPlanController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
@@ -182,3 +184,7 @@ Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
  */
 Route::post('/mpesa/payment', [PaymentController::class, 'store']);
 Route::get('/generate_token', [PaymentController::class, 'get_token']);
+
+Route::post('/get_active_packages', [StreetPlanController::class, 'getActivePackages']);
+
+Route::get('/street_packages', [StreetPackageController::class, 'index']);

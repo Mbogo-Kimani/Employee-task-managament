@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\StreetPackage;
+use App\Models\StreetPlan;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -66,7 +68,8 @@ class PaymentController extends Controller
             'customer_name' => 'required|string|max:255',
             "customer_email" => "required|email|max:255",
             "country_code" => "required|integer",
-            "phone_number" => "required|integer"
+            "phone_number" => "required|integer",
+            "product" => 'required',
         ]);
      
         if ($request->country_code && $request->phone_number) {
@@ -89,7 +92,7 @@ class PaymentController extends Controller
         if ($request->brief_description) {
             $transaction_desc = $request->brief_description;
         }
-        
+
         $res = Http::withOptions(['verify' => false])->withToken($access_token)->post($url, [
             'BusinessShortCode' => $business_short_code,
             'Password' => $password,
@@ -106,6 +109,14 @@ class PaymentController extends Controller
         ]);
 
         if ($res->ok()) {
+						$street_package = StreetPackage::find($request->product);
+            $pending_plan = StreetPlan::create([
+                'street_package_id' => $request->product,
+                'client_id' => $request->clientId,
+								'validity' => $street_package->duration,
+								'validity_unit' => $street_package->duration_unit,
+            ]);
+    
             return response()->json($res);
         } else {
             abort(400, 'Payment did not go through');
@@ -155,14 +166,29 @@ class PaymentController extends Controller
         }
         $client = Client::where('phone_number', 'LIKE', "%$phone_number%")->first();
         if(!empty($confirmation_code)){
-            $transaction = Transaction::create([
-                'client_id' => $client->id ?? null,
-                'amount' => $amount,
-                'paid_date' => $transaction_date,
-                'payment_confirmation' => $confirmation_code,
-                'phone_number' => $phone_number
-            ]);
-            // Log::info('Transaction:', $transaction);
+          $transaction = Transaction::create([
+            'client_id' => $client->id ?? null,
+            'amount' => $amount,
+            'paid_date' => $transaction_date,
+            'payment_confirmation' => $confirmation_code,
+            'phone_number' => $phone_number
+          ]);
+          
+					$unpaid_plans = StreetPlan::where('client_id', $client->id)
+																		->whereNull('transaction_id')
+																		->get();
+
+					for ($i = 0; $i < count($unpaid_plans); $i++) {
+						$plan = $unpaid_plans[$i];
+						$street_package = $plan->streetPackage()->first();
+
+						if ($street_package->cost == $transaction->amount) {
+							$plan->transaction_id = $transaction->id;
+							$transaction->taken = true;
+							$plan->save();
+							$transaction->save();
+						}
+					}
         }
         return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
     }
