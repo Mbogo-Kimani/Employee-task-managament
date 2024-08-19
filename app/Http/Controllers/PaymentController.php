@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends Controller
 {
@@ -59,33 +61,38 @@ class PaymentController extends Controller
         return $response;
     }
 
-    public function store(Request $request)
+    public function stkPush(Request $request)
     {
         $request->validate([
             "amount" => 'required',
-            'customer_name' => 'required|string|max:255',
-            "customer_email" => "required|email|max:255",
+            "package_id" => 'required',
+            "client_id" => 'required',
             "country_code" => "required|integer",
             "phone_number" => "required|integer"
         ]);
-     
+       
         if ($request->country_code && $request->phone_number) {
             $phone_number = intval($request->country_code.$request->phone_number);
         }
 
+        $client = Client::find($request->client_id);
+        if(!$client){
+            throw new NotFoundHttpException('User not found');
+        }
+        
         /* Mpesa functionality */
 
         $access_token = $this->get_token();
         $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
         $pass_key = config("mpesa.passkey");
-        $business_short_code = 174379;
+        $business_short_code = config("mpesa.shortcode");
         $timestamp = Carbon::now()->format('YmdHis');
         $password = base64_encode($business_short_code.$pass_key.$timestamp);
         $transaction_type = 'CustomerPayBillOnline';
         $callback_url = config('app.url').'/api/payment-callback'; // has to be a https kind
         $account_reference = 'Elephant Technologies';
         $transaction_desc = 'Test';
-
+        
         if ($request->brief_description) {
             $transaction_desc = $request->brief_description;
         }
@@ -106,6 +113,9 @@ class PaymentController extends Controller
         ]);
 
         if ($res->ok()) {
+            $client->mpesa_number = $phone_number;
+            $client->street_package_id = $request->package_id;
+            $client->save();
             return response()->json($res);
         } else {
             abort(400, 'Payment did not go through');
@@ -113,7 +123,6 @@ class PaymentController extends Controller
     }
 
     public function paymentCallback(Request $request){
-        // $data = json_decode($request, true);
         $items = [];
         $amount = 0;
         $phone_number = 0;
@@ -121,23 +130,9 @@ class PaymentController extends Controller
         $confirmation_code = '';
        
         $data = request()->json()->all();
-        // $data = ["Body" => [
-        //     "stkCallback" => [
-        //         "MerchantRequestID" => "f1e2-4b95-a71d-b30d3cdbb7a71224224",
-        //         "CheckoutRequestID" => "ws_CO_12082024103757041726945514",
-        //         "ResultCode" => 0,
-        //         "ResultDesc" => "The service request is processed successfully.",
-        //         "CallbackMetadata" => [
-        //             "Item" => [
-        //                 ["Name" => "Amount","Value" => 1.0],
-        //                 ["Name" => "MpesaReceiptNumber", "Value" => "SHC7S6SHXP"],
-        //                 ["Name" => "Balance"],
-        //                 ["Name" => "TransactionDate","Value" => 20240812103801],
-        //                 ["Name" => "PhoneNumber","Value" => 2547...]
-        //             ]
-        //         ]]]];
+        
 
-        // Log::info('Payment Callback Request:', $data['Body']);
+        // Log::info('Payment Callback Request:', [request()->cookie('client_details')]);
 
         if(isset($data['Body']['stkCallback']['CallbackMetadata']['Item'])){
             $items =  $data['Body']['stkCallback']['CallbackMetadata']['Item'];
@@ -153,7 +148,7 @@ class PaymentController extends Controller
                 }
             }
         }
-        $client = Client::where('phone_number', 'LIKE', "%$phone_number%")->first();
+        $client = Client::where('mpesa_number', 'LIKE', "%$phone_number%")->orderBy('mpesa_number', 'desc')->first();
         if(!empty($confirmation_code)){
             $transaction = Transaction::create([
                 'client_id' => $client->id ?? null,
@@ -163,8 +158,10 @@ class PaymentController extends Controller
                 'phone_number' => $phone_number
             ]);
             // Log::info('Transaction:', $transaction);
+		    return Inertia::render('Client/Checkout',compact('transaction'));
         }
-        return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
+        // return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
+		return redirect('/products')->with(['success' => false]);
     }
 
     /**
