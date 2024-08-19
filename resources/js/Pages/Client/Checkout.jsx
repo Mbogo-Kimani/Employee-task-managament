@@ -5,13 +5,14 @@ import ClientLayout from '../../Layouts/ClientLayout';
 import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
 
-const Checkout = () => {
-  // const [productId, setProductId] = useState();
-  const [product, setProduct] = useState({});
-  const [response, setResponse] = useState([]);
-  const [currentClient, setCurrentClient] = useState(JSON.parse(localStorage.getItem('client')));
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [streetPackages, setStreetPackages] = useState([]);
+const Checkout = ({transaction}) => {
+    // const [productId, setProductId] = useState();
+    const [product, setProduct] = useState({});
+    const [response, setResponse] = useState([]);
+    const [client, setClient] = useState();
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [streetPackages, setStreetPackages] = useState([]);
+
 
     useEffect(() => {
       getStreetPackages();
@@ -30,14 +31,36 @@ const Checkout = () => {
             const foundProduct = data.find(p => p.id == param);
             setProduct(foundProduct);
         }
+
+    },[])
+
+    useEffect(() => {
+      getClient()
+    },[])
+
+    useEffect(() => {
+        if(client?.client && !client?.client.is_registered_hotspot){
+          // requestHandler.post('/api/register/client', { client_id: client.client.id }, setClient);
+        }
+    },[client])
+
+    useEffect(() => {
+      if(transaction){
+          requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
+      }
+    },[])
+
+    function getClient() {
+      requestHandler.get('/api/get-client',setClient);
+
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
             amount: product.cost,
-            customer_name: currentClient.name,
-            customer_email: currentClient.email,
+            client_id: client.client.id,
+            package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
             product: product.id,
@@ -55,6 +78,8 @@ const Checkout = () => {
       }, 1000);
     }
   }
+
+
   return (
     <ClientLayout>
         <div className='w-full flex flex-col justify-center min-h-full'>

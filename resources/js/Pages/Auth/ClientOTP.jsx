@@ -32,10 +32,14 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
     function checkResponse() {
     if (response && response.success) {
       toast.success('Success');
-      localStorage.setItem('client', JSON.stringify(response.client))
+//       localStorage.setItem('client', JSON.stringify(response.client))
 
-      if (productKey) router.visit(`/client/checkout?productId=${productKey}`);
-      else router.visit('/client/connected');
+//       if (productKey) router.visit(`/client/checkout?productId=${productKey}`);
+//       else router.visit('/client/connected');
+
+      // localStorage.setItem('client', JSON.stringify(response.client))
+      router.visit(`/client/checkout?productId=${productKey}`)
+
     }
     }
 
