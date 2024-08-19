@@ -30,7 +30,6 @@ function Connected() {
 
   function handlePackages(data) {
     setActivePlans(data);
-    console.log(data);
   }
   return (
     <ClientLayout>

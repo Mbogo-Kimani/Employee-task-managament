@@ -32,7 +32,7 @@ const Checkout = ({transaction}) => {
             setProduct(foundProduct);
         }
 
-    },[])
+    }
 
     useEffect(() => {
       getClient()
