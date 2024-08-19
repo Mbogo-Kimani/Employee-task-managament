@@ -82,9 +82,11 @@ class ClientController extends Controller
         $client->save();
 
         $clientDetails = [
+                'id' => $client->id,
                 'name' => $client->name,
                 'email' => $client->email,
                 'phone_number' => $client->phone_number,
+                'is_registered_hotspot' => $client->is_registered_hotspot
         ];
         $cookie = cookie('client_details', json_encode($clientDetails), 60);
 

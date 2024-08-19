@@ -3,11 +3,11 @@ import Service from '../../Components/Products/Service'
 import {packages} from '../home/Products'
 import GuestLayout from '../../Layouts/GuestLayout';
 import requestHandler from '../../services/requestHandler';
-const Checkout = () => {
+const Checkout = ({transaction}) => {
     // const [productId, setProductId] = useState();
     const [product, setProduct] = useState({});
     const [response, setResponse] = useState([]);
-    const [currentClient, setCurrentClient] = useState(JSON.parse(localStorage.getItem('client')));
+    const [client, setClient] = useState();
     const [phoneNumber, setPhoneNumber] = useState('');
 
     useEffect(() => {
@@ -19,18 +19,41 @@ const Checkout = () => {
             setProduct(foundProduct);
         }
     },[])
+
+    useEffect(() => {
+      getClient()
+    },[])
+
+    useEffect(() => {
+        if(client?.client && !client?.client.is_registered_hotspot){
+          // requestHandler.post('/api/register/client', { client_id: client.client.id }, setClient);
+        }
+    },[client])
+
+    useEffect(() => {
+      if(transaction){
+          requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
+      }
+    },[])
+
+    function getClient() {
+      requestHandler.get('/api/get-client',setClient);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
             amount: product.cost,
-            customer_name: currentClient.name,
-            customer_email: currentClient.email,
+            client_id: client.client.id,
+            package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
         }
         // send payment request to server
         requestHandler.post('/api/mpesa/payment',data,setResponse)
     }
+
+    
   return (
     <GuestLayout>
         <div className='w-full flex flex-col justify-center min-h-full'>
