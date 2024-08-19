@@ -32,7 +32,7 @@ const Checkout = ({transaction}) => {
             setProduct(foundProduct);
         }
 
-    },[])
+    }
 
     useEffect(() => {
       getClient()
@@ -47,6 +47,7 @@ const Checkout = ({transaction}) => {
     useEffect(() => {
       if(transaction){
           requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
+          router.visit('/Client/Connected')
       }
     },[])
 

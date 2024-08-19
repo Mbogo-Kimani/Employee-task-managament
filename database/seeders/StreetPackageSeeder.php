@@ -20,6 +20,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 1,
                 "name"=> "Kumi Net",
+                "profile_name" => "10SH",
                 "description"=> "40-Minute Unlimited Access",
                 "duration"=> 2400,
                 "access"=> "unlimited",
@@ -29,6 +30,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 2,
                 "name"=> "Mbao Net",
+                "profile_name" => "20SH",
                 "description"=> "2-Hour Unlimited Access",
                 "duration"=> 7200,
                 "access"=> "unlimited",
@@ -38,6 +40,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 3,
                 "name"=> "8-Hour Net",
+                "profile_name" => "50SH",
                 "description"=> "8-Hour Unlimited Access",
                 "duration"=> 28800,
                 "access"=> "unlimited",
@@ -47,6 +50,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 4,
                 "name"=> "Daily Net",
+                "profile_name" => "80SH",
                 "description"=> "24-Hour Unlimited Access",
                 "duration"=> 86400,
                 "access"=> "unlimited",
@@ -56,6 +60,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 5,
                 "name"=> "Daily Net x2",
+                "profile_name" => "140SH",
                 "description"=> "24-Hour Unlimited Access, 2 Devices",
                 "duration"=> 86400,
                 "access"=> "unlimited",
@@ -65,6 +70,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 6,
                 "name"=> "Weekly Net",
+                "profile_name" => "380SH",
                 "description"=> "7-Day Unlimited Access, 2 Devices",
                 "duration"=> 604800,
                 "access"=> "unlimited",
@@ -74,6 +80,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 7,
                 "name"=> "Monthly Net",
+                "profile_name" => "1000SH",
                 "description"=> "30-Day Unlimited Access, 2 Devices",
                 "duration"=> 2592000,
                 "access"=> "unlimited",
@@ -83,7 +90,8 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 8,
                 "name"=> "Family Net x3",
-    "description"=> "30-Day Unlimited Access, 3 Devices",
+                "profile_name" => "1300SH",
+                "description"=> "30-Day Unlimited Access, 3 Devices",
                 "duration"=> 2592000,
                 "access"=> "unlimited",
                 "cost"=> 1300,
@@ -92,6 +100,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 9,
                 "name"=> "Family Net x4",
+                "profile_name" => "1600SH",
                 "description"=> "30-Day Unlimited Access, 4 Devices",
                 "duration"=> 2592000,
                 "access"=> "unlimited",
@@ -101,6 +110,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 10,
                 "name"=> "Family Net x5",
+                "profile_name" => "1800SH",
                 "description"=> "30-Day Unlimited Access, 5 Devices",
                 "duration"=> 2592000,
                 "cost"=> 1800,
@@ -110,6 +120,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 11,
                 "name"=> "Family Net x6",
+                "profile_name" => "2000SH",
                 "description"=> "30-Day Unlimited Access, 6 Devices",
                 "duration"=> 2592000,
                 "access"=> "unlimited",
@@ -119,6 +130,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 12,
                 "name"=> "Family Net x3 (Quarterly)",
+                "profile_name" => "3500SH",
                 "description"=> "90-Day Unlimited Access, 3 Devices",
                 "duration"=> 7776000,
                 "cost"=> 3500,
@@ -128,6 +140,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 13,
                 "name"=> "Family Net x4 (Quarterly)",
+                "profile_name" => "4200SH",
                 "description"=> "90-Day Unlimited Access, 4 Devices",
                 "duration"=> 7776000,
                 "cost"=> 4200,
@@ -137,6 +150,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 14,
                 "name"=> "Family Net x5 (Quarterly)",
+                "profile_name" => "4800SH",
                 "description"=> "90-Day Unlimited Access, 5 Devices",
                 "duration"=> 7776000,
                 "access"=> "unlimited",
@@ -146,6 +160,7 @@ class StreetPackageSeeder extends Seeder
             [
                 "id"=> 15,
                 "name"=> "Family Net x6 (Quarterly)",
+                "profile_name" => "5300SH",
                 "description"=> "90-Day Unlimited Access",
                 "duration"=> 7776000,
                 "access"=> "unlimited",

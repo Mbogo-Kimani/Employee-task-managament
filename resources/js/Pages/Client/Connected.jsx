@@ -21,11 +21,11 @@ function Connected() {
 });
 
   useEffect(() => {
-    checkActivePackages();
+    getSubscriptions();
   }, []);
 
-  function checkActivePackages() {
-    requestHandler.post('/api/get_active_packages', { clientId: client.id }, handlePackages, null, loaderSetter);
+  function getSubscriptions() {
+    requestHandler.get(`/api/client/subscriptions?clientId=${client.id}`, setPackages, null, loaderSetter);
   }
 
   function handlePackages(data) {
@@ -42,7 +42,7 @@ function Connected() {
               <p className="text-[#0e141b] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">You're connected to the internet and your current plan is</p>
               
               {
-                (Array.isArray(activePlans.data) ? activePlans.data : []).map((plan, idx) => {
+                (Array.isArray(packages.data) ? packages.data : []).map((plan, idx) => {
                   return (
                     <div key={plan.id || idx} className="flex items-center gap-4 bg-slate-50 hover:bg-slate-200 rounded-lg px-4 min-h-[72px] py-2">
                       <div className="text-[#0e141b] flex items-center justify-center rounded-lg bg-[#e7edf3] shrink-0 size-12" data-icon="WifiHigh" data-size="24px" data-weight="regular">
@@ -64,11 +64,20 @@ function Connected() {
                   >
                     <span className="truncate">View details</span>
                   </button> */}
+                  {/* <Link href='/products'> */}
+                    <button
+                      className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-green-600 hover:bg-green-700 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+                      onClick={() => window.location.href = "http://etnet.com/login"}
+                    >
+                      <span className="truncate">Login to the Hotspot</span>
+                    </button>
+                  {/* </Link> */}
                   <Link href='/products'>
                     <button
                       className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#1979e6] hover:bg-blue-600 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+                      onClick={() => window.location.href = "http://etnet.com/login"}
                     >
-                      <span className="truncate">Buy Another</span>
+                      <span className="truncate">Buy another bundle</span>
                     </button>
                   </Link>
                 </div>

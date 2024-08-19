@@ -3,7 +3,7 @@ import '../../../css/Pages/home/Products.css';
 import GuestLayout from '../../Layouts/GuestLayout';
 import Service from '../../Components/Products/Service';
 import requestHandler from '../../services/requestHandler';
-import { AppContext } from '../appContext';
+import { AppContext } from '../../appContext';
 
 function Products() {
   const [packageType, setPackageType] = useState('street');
