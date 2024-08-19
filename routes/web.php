@@ -107,4 +107,6 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
 
   Route::get('/finance/accounts',[UserController::class, 'accountsPage']);
 
-
+  Route::get('/client/connected', function () {
+    return Inertia::render('Client/Connected');
+  });

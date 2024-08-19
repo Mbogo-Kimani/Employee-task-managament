@@ -28,12 +28,12 @@ class UserstableSeeder extends Seeder
 		];
 
 		\App\Models\User::create([
-				'name' => 'Hyben Langat',
-				'role' => \App\Enums\DepartmentEnum::INVENTORY,
-				'email' => 'hyben@mail.com',
-				'password' => bcrypt('kip2582'),
+				'name' => 'Test User',
+				'role' => \App\Enums\DepartmentEnum::ADMIN,
+				'email' => 'test@mail.com',
+				'password' => bcrypt('12345678'),
 				'image' => '',
-				'department_id'=> 5
+				'department_id'=> \App\Enums\DepartmentEnum::ADMIN
 		]);
 
 		for ($i=0; $i < count($departments); $i++) { 

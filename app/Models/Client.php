@@ -23,8 +23,12 @@ class Client extends Model
 		return $this->belongsTo(User::class, 'sales_person_id');
 	}
 
-	public function internetPackage(): BelongsTo
-	{
-		return $this->belongsTo(InternetPackage::class, 'package_id');
+	// public function internetPackage(): BelongsTo
+	// {
+	// 	return $this->belongsTo(InternetPackage::class, 'package_id');
+	// }
+
+	public function streetPlans(): HasMany {
+		return $this->hasMany(StreetPlan::class);
 	}
 }

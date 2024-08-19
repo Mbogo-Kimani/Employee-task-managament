@@ -4,29 +4,6 @@
   position: relative;
 }
 
-#scroll-top.show {
-  right: 24px;
-  opacity: 1;
-  visibility: visible;
-}
-#scroll-top {
-  position: fixed;
-  display: block;
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  z-index: 1;
-  right: 14px;
-  bottom: 23px;
-  opacity: 0;
-  visibility: hidden;
-  cursor: pointer;
-  overflow: hidden;
-  background: rgb(0, 92, 234);
-  background: linear-gradient(90deg, rgba(0, 92, 234, 1) 0%, rgba(0, 197, 251, 1) 100%);
-}
-
 #bottom .bottom-wrap {
   padding: 20px 0 20px 0;
 }

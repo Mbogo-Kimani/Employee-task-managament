@@ -14,6 +14,8 @@ use App\Http\Controllers\MapLineController;
 use App\Http\Controllers\MapPointController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StreetPackageController;
+use App\Http\Controllers\StreetPlanController;
 use App\Http\Controllers\RouterController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskMessageController;
@@ -184,6 +186,11 @@ Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
 Route::post('/mpesa/payment', [PaymentController::class, 'stkPush']);
 Route::get('/generate_token', [PaymentController::class, 'get_token']);
 
+
+Route::post('/get_active_packages', [StreetPlanController::class, 'getActivePackages']);
+
+Route::get('/street_packages', [StreetPackageController::class, 'index']);
+
 /**
  * Router
  */
@@ -191,3 +198,4 @@ Route::get('/connect', [RouterController::class, 'connect']);
 Route::get('/subscribe', [RouterController::class, 'subscribe']);
 Route::get('/hotspot/users', [RouterController::class, 'subscribe']);
 Route::post('/register/client',[RouterController::class, 'registerUser']);
+

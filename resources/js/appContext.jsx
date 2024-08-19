@@ -1,10 +1,13 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import requestHandler from './services/requestHandler';
 
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
+  // TODO: Should fetch the info below from a cache store or relative place instead of localstorage
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('user')));
+  const [client, setClient] = useState(JSON.parse(localStorage.getItem('client')));
 
   const loginUser = (userData) => {
     setUserData(userData);
@@ -29,7 +32,7 @@ export const AppProvider = ({ children }) => {
 
 
   return (
-    <AppContext.Provider value={{ userData, loginUser, logoutUser, updateUser }}>
+    <AppContext.Provider value={{ userData, loginUser, logoutUser, updateUser, client }}>
       {children}
     </AppContext.Provider>
   );

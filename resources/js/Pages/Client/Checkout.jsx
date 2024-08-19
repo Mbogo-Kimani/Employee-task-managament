@@ -1,23 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import Service from '../../Components/Products/Service'
-import {packages} from '../home/Products'
-import GuestLayout from '../../Layouts/GuestLayout';
 import requestHandler from '../../services/requestHandler';
+import ClientLayout from '../../Layouts/ClientLayout';
+import { toast } from 'react-toastify';
+import { router } from '@inertiajs/react';
+
 const Checkout = ({transaction}) => {
     // const [productId, setProductId] = useState();
     const [product, setProduct] = useState({});
     const [response, setResponse] = useState([]);
     const [client, setClient] = useState();
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [streetPackages, setStreetPackages] = useState([]);
+
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
+      getStreetPackages();
+    },[]);
+
+    function getStreetPackages() {
+      requestHandler.get('/api/street_packages', handleStreetPackages);
+    }
+
+    function handleStreetPackages(data) {
+      setStreetPackages(data);
+      const urlParams = new URLSearchParams(window.location.search);
         const param = urlParams.get('productId');
 
         if(param){
-            const foundProduct = packages.find(p => p.id == param);
+            const foundProduct = data.find(p => p.id == param);
             setProduct(foundProduct);
         }
+
     },[])
 
     useEffect(() => {
@@ -38,6 +52,7 @@ const Checkout = ({transaction}) => {
 
     function getClient() {
       requestHandler.get('/api/get-client',setClient);
+
     }
 
     const handleSubmit = (e) => {
@@ -48,14 +63,25 @@ const Checkout = ({transaction}) => {
             package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
+            product: product.id,
+            clientId: currentClient.id,
         }
         // send payment request to server
-        requestHandler.post('/api/mpesa/payment',data,setResponse)
+        requestHandler.post('/api/mpesa/payment', data, handleResponse)
     }
 
-    
+  function handleResponse(resp) {
+    if (resp) {
+      toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
+      setTimeout(() => {
+        router.visit('/client/connected');
+      }, 1000);
+    }
+  }
+
+
   return (
-    <GuestLayout>
+    <ClientLayout>
         <div className='w-full flex flex-col justify-center min-h-full'>
           <h1 className='my-4 text-3xl text-center font-bold'>Checkout</h1>
         <div className='md:flex mx-auto lg:w-4/5 md:justify-around my-auto'>
@@ -82,7 +108,7 @@ const Checkout = ({transaction}) => {
           </div>
         </div>
     </div>
-    </GuestLayout>
+    </ClientLayout>
   )
 }
 
