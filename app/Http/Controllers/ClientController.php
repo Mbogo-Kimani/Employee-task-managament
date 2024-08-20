@@ -8,6 +8,7 @@ use App\Helpers\ApiLib;
 use App\Imports\ClientImport;
 use App\Imports\InventoryImport;
 use App\Models\Client;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -148,6 +149,16 @@ class ClientController extends Controller
             Client::where('id', $client)->update(['employee_id' => $request->user]);
         }
 		return response()->json(['message' => 'Clients assigned successfuly']);
+    }
+
+    public function getClientSubscriptions(Request $request)
+    {
+        $subscriptions = Subscription::where('client_id', $request->clientId)
+                                ->where('status', true)
+                                ->orderBy('updated_at', 'desc')
+                                ->get();
+
+      return response()->json($subscriptions);
     }
 
     public function getUnassignedClients() {

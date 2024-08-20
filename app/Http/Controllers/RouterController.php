@@ -63,13 +63,7 @@ class RouterController extends Controller
             ->setArgument('user', $customer->name);
             $client->sendSync($activate_profile);
             
-            //Create subscription in table
-            Subscription::create([
-                'client_id' => $customer->id,
-                'package_id' => $request->package_id,
-                'username' => $customer->name,
-                'password' => $customer->mpesa_number,
-            ]);
+            
         
         }catch (\Exception $e){
             abort(400,$e);

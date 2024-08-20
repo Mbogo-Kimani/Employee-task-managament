@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\StreetPackage;
 use App\Models\StreetPlan;
+use App\Models\Subscription;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -67,17 +68,16 @@ class PaymentController extends Controller
     {
         $request->validate([
             "amount" => 'required',
-            "package_id" => 'required',
+            "street_package_id" => 'required',
             "client_id" => 'required',
             "country_code" => "required|integer",
             "phone_number" => "required|integer",
-            "product" => 'required',
         ]);
        
         if ($request->country_code && $request->phone_number) {
             $phone_number = intval($request->country_code.$request->phone_number);
         }
-
+       
         $client = Client::find($request->client_id);
         if(!$client){
             throw new NotFoundHttpException('User not found');
@@ -116,18 +116,9 @@ class PaymentController extends Controller
         ]);
 
         if ($res->ok()) {
-// <<<<<<< fix_payment_remaining_features
-// 						$street_package = StreetPackage::find($request->product);
-//             $pending_plan = StreetPlan::create([
-//                 'street_package_id' => $request->product,
-//                 'client_id' => $request->clientId,
-// 								'validity' => $street_package->duration,
-// 								'validity_unit' => $street_package->duration_unit,
-//             ]);
-    
 
             $client->mpesa_number = $phone_number;
-            $client->street_package_id = $request->package_id;
+            $client->street_package_id = $request->street_package_id;
             $client->save();
 
             return response()->json($res);
@@ -142,10 +133,9 @@ class PaymentController extends Controller
         $phone_number = 0;
         $transaction_date = '';
         $confirmation_code = '';
-       
+        
         $data = request()->json()->all();
         
-
         // Log::info('Payment Callback Request:', [request()->cookie('client_details')]);
 
         if(isset($data['Body']['stkCallback']['CallbackMetadata']['Item'])){
@@ -163,31 +153,8 @@ class PaymentController extends Controller
             }
         }
         $client = Client::where('mpesa_number', 'LIKE', "%$phone_number%")->orderBy('mpesa_number', 'desc')->first();
+        
         if(!empty($confirmation_code)){
-//           $transaction = Transaction::create([
-//             'client_id' => $client->id ?? null,
-//             'amount' => $amount,
-//             'paid_date' => $transaction_date,
-//             'payment_confirmation' => $confirmation_code,
-//             'phone_number' => $phone_number
-//           ]);
-          
-// 					$unpaid_plans = StreetPlan::where('client_id', $client->id)
-// 																		->whereNull('transaction_id')
-// 																		->get();
-
-// 					for ($i = 0; $i < count($unpaid_plans); $i++) {
-// 						$plan = $unpaid_plans[$i];
-// 						$street_package = $plan->streetPackage()->first();
-
-// 						if ($street_package->cost == $transaction->amount) {
-// 							$plan->transaction_id = $transaction->id;
-// 							$transaction->taken = true;
-// 							$plan->save();
-// 							$transaction->save();
-// 						}
-// 					}
-
             $transaction = Transaction::create([
                 'client_id' => $client->id ?? null,
                 'amount' => $amount,
@@ -195,8 +162,21 @@ class PaymentController extends Controller
                 'payment_confirmation' => $confirmation_code,
                 'phone_number' => $phone_number
             ]);
-            // Log::info('Transaction:', $transaction);
-		    return Inertia::render('Client/Checkout',compact('transaction'));
+           if($client){
+                $streetPackage = StreetPackage::find($client->street_package_id);
+                $password = str_replace('+254', '0', $client->phone_number);
+                $password = str_replace(' ', '', $password);
+                Subscription::create([
+                    'client_id' => $client->id,
+                    'package_id' => $client->street_package_id,
+                    'transaction_id' => $transaction->id,
+                    'username' => $client->name,
+                    'password' => $password,
+                    'status' => 1,
+                    'expires_at' => Carbon::now()->addSeconds($streetPackage->duration)
+                ]);
+           }
+		return redirect('/client/connected')->with(['success' => true]);
 
         }
         // return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);

@@ -3,7 +3,7 @@ import Service from '../../Components/Products/Service'
 import requestHandler from '../../services/requestHandler';
 import ClientLayout from '../../Layouts/ClientLayout';
 import { toast } from 'react-toastify';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 
 const Checkout = ({transaction}) => {
     // const [productId, setProductId] = useState();
@@ -32,7 +32,7 @@ const Checkout = ({transaction}) => {
             setProduct(foundProduct);
         }
 
-    },[])
+    }
 
     useEffect(() => {
       getClient()
@@ -44,11 +44,17 @@ const Checkout = ({transaction}) => {
         }
     },[client])
 
-    useEffect(() => {
-      if(transaction){
-          requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
-      }
-    },[])
+    // useEffect(() => {
+    //   const { props } = usePage();
+    // const transaction = props.transaction;
+
+    //   if(transaction){
+    //     console.log(transaction);
+        
+    //       // requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
+    //       // router.visit('/Client/Connected')
+    //   }
+    // },[])
 
     function getClient() {
       requestHandler.get('/api/get-client',setClient);
@@ -63,8 +69,6 @@ const Checkout = ({transaction}) => {
             package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
-            product: product.id,
-            clientId: currentClient.id,
         }
         // send payment request to server
         requestHandler.post('/api/mpesa/payment', data, handleResponse)
