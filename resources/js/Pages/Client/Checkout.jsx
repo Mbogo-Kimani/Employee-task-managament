@@ -69,7 +69,6 @@ const Checkout = ({transaction}) => {
             package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
-            product: product.id,
         }
         // send payment request to server
         requestHandler.post('/api/mpesa/payment', data, handleResponse)
