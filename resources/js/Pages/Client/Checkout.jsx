@@ -5,12 +5,13 @@ import ClientLayout from '../../Layouts/ClientLayout';
 import { toast } from 'react-toastify';
 import { router, usePage } from '@inertiajs/react';
 
-const Checkout = ({transaction}) => {
+const Checkout = () => {
     // const [productId, setProductId] = useState();
     const [product, setProduct] = useState({});
     const [response, setResponse] = useState([]);
     const [client, setClient] = useState();
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [transaction, setTransaction] = useState([]);
     const [streetPackages, setStreetPackages] = useState([]);
 
 
@@ -78,11 +79,19 @@ const Checkout = ({transaction}) => {
     if (resp) {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTimeout(() => {
-        router.visit('/client/connected');
-      }, 1000);
+        getTransaction(resp.transaction_id).then((transaction) =>{
+          if(transaction?.payment_confirmation){
+            router.visit('/client/connected');
+          }
+        });
+      }, 5000);
     }
   }
 
+  function getTransaction(transactionId){
+    requestHandler.get(`/api/transaction?id=${transactionId}`,setTransaction)
+    return transaction;
+  }
 
   return (
     <ClientLayout>

@@ -194,6 +194,14 @@ class PaymentController extends Controller
 		return redirect('/products')->with(['success' => false]);
     }
 
+    public function getTransaction(Request $request)
+    {
+       
+        $transaction = Transaction::find($request->id);
+
+        return response()->json($transaction);
+    }
+
     /**
      * Simulate Transaction
      */

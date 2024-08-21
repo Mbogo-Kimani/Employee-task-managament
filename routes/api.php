@@ -186,7 +186,7 @@ Route::get('client/subscriptions',[ClientController::class, 'getClientSubscripti
  */
 Route::post('/mpesa/payment', [PaymentController::class, 'stkPush']);
 Route::get('/generate_token', [PaymentController::class, 'get_token']);
-
+Route::get('transaction',[PaymentController::class, 'getTransaction']);
 
 Route::post('/get_active_packages', [StreetPlanController::class, 'getActivePackages']);
 
