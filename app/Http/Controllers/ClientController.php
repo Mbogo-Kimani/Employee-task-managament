@@ -156,6 +156,7 @@ class ClientController extends Controller
         $subscriptions = Subscription::where('client_id', $request->clientId)
                                 ->where('status', true)
                                 ->orderBy('updated_at', 'desc')
+                                ->with('streetPackage') 
                                 ->get();
 
       return response()->json($subscriptions);

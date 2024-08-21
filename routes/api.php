@@ -196,7 +196,7 @@ Route::get('/street_packages', [StreetPackageController::class, 'index']);
  * Router Controller
  */
 Route::get('/connect', [RouterController::class, 'connect']);
-Route::get('/subscribe', [RouterController::class, 'subscribe']);
+Route::post('/subscribe', [RouterController::class, 'subscribe']);
 Route::get('/hotspot/users', [RouterController::class, 'subscribe']);
 Route::post('/register/client',[RouterController::class, 'registerUser']);
 

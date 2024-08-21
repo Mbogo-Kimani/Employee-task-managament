@@ -40,7 +40,7 @@ const Checkout = ({transaction}) => {
 
     useEffect(() => {
         if(client?.client && !client?.client.is_registered_hotspot){
-          // requestHandler.post('/api/register/client', { client_id: client.client.id }, setClient);
+          requestHandler.post('/api/register/client', { client_id: client.client.id, devices: product.devices }, setClient);
         }
     },[client])
 
@@ -66,7 +66,7 @@ const Checkout = ({transaction}) => {
         const data = {
             amount: product.cost,
             client_id: client.client.id,
-            package_id: product.id,
+            street_package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
         }
