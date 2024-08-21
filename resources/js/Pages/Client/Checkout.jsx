@@ -78,14 +78,12 @@ const Checkout = () => {
   function handleResponse(resp) {
     if (resp) {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
-      setTimeout(() => {
-        getTransaction(resp.transaction_id).then((transaction) =>{
-          if(transaction?.payment_confirmation){
+      setTimeout(() => {   
+          if(getTransaction(resp.transaction_id)?.payment_confirmation){
             router.visit('/client/connected');
           }
-        });
       }, 5000);
-    }
+    }  
   }
 
   function getTransaction(transactionId){

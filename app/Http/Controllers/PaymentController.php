@@ -69,7 +69,7 @@ class PaymentController extends Controller
         $request->validate([
             "amount" => 'required',
             "street_package_id" => 'required',
-            "client_id" => 'required|exists:clients',
+            "client_id" => 'required|exists:clients,id',
             "country_code" => "required|integer",
             "phone_number" => "required|integer",
         ]);
@@ -160,15 +160,11 @@ class PaymentController extends Controller
             }
         }
         // $client = Client::where('mpesa_number', 'LIKE', "%$phone_number%")->orderBy('mpesa_number', 'desc')->first();
-        $transaction = Transaction::where('checkout_request_id',$data['Body']['stkCallback']['CheckoutRequestID']);
+        $transaction = Transaction::where('checkout_request_id',$data['Body']['stkCallback']['CheckoutRequestID'])->first();
+       
         if(!empty($confirmation_code)){
-            // $transaction = Transaction::create([
-            //     'client_id' => $client->id ?? null,
-            //     'amount' => $amount,
-            //     'paid_date' => $transaction_date,
-            //     'payment_confirmation' => $confirmation_code,
-            //     'phone_number' => $phone_number
-            // ]);
+           if($transaction){
+
             $transaction->paid_date = $transaction_date;
             $transaction->payment_confirmation = $confirmation_code;
             $transaction->amount = $amount;
@@ -186,7 +182,8 @@ class PaymentController extends Controller
                     'status' => 1,
                     // 'expires_at' => Carbon::now()->addSeconds($streetPackage->duration)
                 ]);
-           }
+            }
+          }
 		return redirect('/client/connected')->with(['success' => true]);
 
         }
