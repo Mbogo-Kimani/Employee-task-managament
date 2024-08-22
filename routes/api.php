@@ -180,22 +180,23 @@ Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);
 Route::post('clients/login',[ClientController::class, 'clientLogin']);
 Route::post('clients/verify',[ClientController::class, 'verifyPhoneNumber']);
+Route::get('client/subscriptions',[ClientController::class, 'getClientSubscriptions']);
 /**
  * Payment Controller
  */
 Route::post('/mpesa/payment', [PaymentController::class, 'stkPush']);
 Route::get('/generate_token', [PaymentController::class, 'get_token']);
-
+Route::get('transaction',[PaymentController::class, 'getTransaction']);
 
 Route::post('/get_active_packages', [StreetPlanController::class, 'getActivePackages']);
 
 Route::get('/street_packages', [StreetPackageController::class, 'index']);
 
 /**
- * Router
+ * Router Controller
  */
 Route::get('/connect', [RouterController::class, 'connect']);
-Route::get('/subscribe', [RouterController::class, 'subscribe']);
+Route::post('/subscribe', [RouterController::class, 'subscribe']);
 Route::get('/hotspot/users', [RouterController::class, 'subscribe']);
 Route::post('/register/client',[RouterController::class, 'registerUser']);
 

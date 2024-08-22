@@ -3,14 +3,15 @@ import Service from '../../Components/Products/Service'
 import requestHandler from '../../services/requestHandler';
 import ClientLayout from '../../Layouts/ClientLayout';
 import { toast } from 'react-toastify';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 
-const Checkout = ({transaction}) => {
+const Checkout = () => {
     // const [productId, setProductId] = useState();
     const [product, setProduct] = useState({});
     const [response, setResponse] = useState([]);
     const [client, setClient] = useState();
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [transaction, setTransaction] = useState([]);
     const [streetPackages, setStreetPackages] = useState([]);
 
 
@@ -40,15 +41,21 @@ const Checkout = ({transaction}) => {
 
     useEffect(() => {
         if(client?.client && !client?.client.is_registered_hotspot){
-          // requestHandler.post('/api/register/client', { client_id: client.client.id }, setClient);
+          requestHandler.post('/api/register/client', { client_id: client.client.id, devices: product.devices }, setClient);
         }
     },[client])
 
-    useEffect(() => {
-      if(transaction){
-          requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
-      }
-    },[])
+    // useEffect(() => {
+    //   const { props } = usePage();
+    // const transaction = props.transaction;
+
+    //   if(transaction){
+    //     console.log(transaction);
+        
+    //       // requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
+    //       // router.visit('/Client/Connected')
+    //   }
+    // },[])
 
     function getClient() {
       requestHandler.get('/api/get-client',setClient);
@@ -60,11 +67,9 @@ const Checkout = ({transaction}) => {
         const data = {
             amount: product.cost,
             client_id: client.client.id,
-            package_id: product.id,
+            street_package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
-            product: product.id,
-            clientId: currentClient.id,
         }
         // send payment request to server
         requestHandler.post('/api/mpesa/payment', data, handleResponse)
@@ -73,12 +78,18 @@ const Checkout = ({transaction}) => {
   function handleResponse(resp) {
     if (resp) {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
-      setTimeout(() => {
-        router.visit('/client/connected');
-      }, 1000);
-    }
+      setTimeout(() => {   
+          if(getTransaction(resp.transaction_id)?.payment_confirmation){
+            router.visit('/client/connected');
+          }
+      }, 5000);
+    }  
   }
 
+  function getTransaction(transactionId){
+    requestHandler.get(`/api/transaction?id=${transactionId}`,setTransaction)
+    return transaction;
+  }
 
   return (
     <ClientLayout>
