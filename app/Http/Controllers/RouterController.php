@@ -6,6 +6,7 @@ use App\Models\Client as ModelsClient;
 use App\Models\InternetPackage;
 use App\Models\StreetPackage;
 use App\Models\Subscription;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -42,16 +43,12 @@ class RouterController extends Controller
     public function subscribe(Request $request)
     {
         $request->validate([
-            'package_id' => 'required|exists:internet_packages,id',
-            'client_id' => 'required|exists:clients,id',
+            'subscription_id' => 'required|exists:subscriptions,id',
         ]);
 
         $client = [];
-        $customer = ModelsClient::find($request->client_id);
-        $package = StreetPackage::find($request->package_id);
-        if(!$customer){
-            throw new NotFoundHttpException('User not found');
-        }
+        $subscription = Subscription::find($request->subscription_id);
+       
 
         try{
             $client = new Client('192.168.88.1', 'admin', '1234');
@@ -59,12 +56,16 @@ class RouterController extends Controller
             
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
-            ->setArgument('profile', $package->name)
-            ->setArgument('user', $customer->name);
+            ->setArgument('profile', $subscription->streetPackage->profile_name)
+            ->setArgument('user', $subscription->client->name);
             $client->sendSync($activate_profile);
             
             
-        
+            $subscription->profile_assigned = true;
+            $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
+            $subscription->save();
+
+            return response()->json(['message' => 'User subscribed successfully.']);
         }catch (\Exception $e){
             abort(400,$e);
         }
@@ -75,6 +76,7 @@ class RouterController extends Controller
     {
         $userData = $request->validate([
             'client_id' => 'required',
+            'devices' => 'required',
         ]);
         
         $mac = exec('getmac');
@@ -89,13 +91,13 @@ class RouterController extends Controller
         try{
             $client = new Client('192.168.88.1', 'admin', '1234');
 
-            //TODO: shared-users to come from package devices
+            
             $addRequest = new RouterOSRequest('/user-manager/user/add');
                 $addRequest
                 ->setArgument('disabled', 'no')
                 ->setArgument('name', $customer->name)
                 ->setArgument('password', $password)
-                ->setArgument('shared-users', 1);
+                ->setArgument('shared-users', $request->devices);
     
             $client->sendSync($addRequest);
             $customer->is_registered_hotspot = true;

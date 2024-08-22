@@ -10,4 +10,12 @@ class Subscription extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function streetPackage() {
+		return $this->belongsTo(StreetPackage::class, 'package_id');
+	}
+
+    public function client() {
+		return $this->belongsTo(Client::class);
+	}
 }

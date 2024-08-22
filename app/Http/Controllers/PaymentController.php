@@ -69,7 +69,7 @@ class PaymentController extends Controller
         $request->validate([
             "amount" => 'required',
             "street_package_id" => 'required',
-            "client_id" => 'required',
+            "client_id" => 'required|exists:clients,id',
             "country_code" => "required|integer",
             "phone_number" => "required|integer",
         ]);
@@ -114,14 +114,21 @@ class PaymentController extends Controller
             'AccountReference' => $account_reference,
             'TransactionDesc' => $transaction_desc
         ]);
-
+        
         if ($res->ok()) {
-
+            $data = $res->json();
+            // $client->checkout_request_id = $data['CheckoutRequestID'];
             $client->mpesa_number = $phone_number;
             $client->street_package_id = $request->street_package_id;
             $client->save();
 
-            return response()->json($res);
+            $transaction = Transaction::create([
+                'client_id' => $client->id ?? null,
+                'phone_number' => $phone_number,
+                'checkout_request_id' => $data['CheckoutRequestID']
+            ]);
+
+            return response()->json(['transaction_id' => $transaction->id]);
         } else {
             abort(400, 'Payment did not go through');
         }
@@ -152,35 +159,44 @@ class PaymentController extends Controller
                 }
             }
         }
-        $client = Client::where('mpesa_number', 'LIKE', "%$phone_number%")->orderBy('mpesa_number', 'desc')->first();
-        
+        // $client = Client::where('mpesa_number', 'LIKE', "%$phone_number%")->orderBy('mpesa_number', 'desc')->first();
+        $transaction = Transaction::where('checkout_request_id',$data['Body']['stkCallback']['CheckoutRequestID'])->first();
+       
         if(!empty($confirmation_code)){
-            $transaction = Transaction::create([
-                'client_id' => $client->id ?? null,
-                'amount' => $amount,
-                'paid_date' => $transaction_date,
-                'payment_confirmation' => $confirmation_code,
-                'phone_number' => $phone_number
-            ]);
-           if($client){
-                $streetPackage = StreetPackage::find($client->street_package_id);
-                $password = str_replace('+254', '0', $client->phone_number);
+           if($transaction){
+
+            $transaction->paid_date = $transaction_date;
+            $transaction->payment_confirmation = $confirmation_code;
+            $transaction->amount = $amount;
+            $transaction->save();
+           if($transaction->client){
+                // $streetPackage = StreetPackage::find($transaction->client->street_package_id);
+                $password = str_replace('+254', '0', $transaction->client->phone_number);
                 $password = str_replace(' ', '', $password);
                 Subscription::create([
-                    'client_id' => $client->id,
-                    'package_id' => $client->street_package_id,
+                    'client_id' => $transaction->client->id,
+                    'package_id' => $transaction->client->street_package_id,
                     'transaction_id' => $transaction->id,
-                    'username' => $client->name,
+                    'username' => $transaction->client->name,
                     'password' => $password,
                     'status' => 1,
-                    'expires_at' => Carbon::now()->addSeconds($streetPackage->duration)
+                    // 'expires_at' => Carbon::now()->addSeconds($streetPackage->duration)
                 ]);
-           }
+            }
+          }
 		return redirect('/client/connected')->with(['success' => true]);
 
         }
         // return response()->json(['success' => 'Transaction successful','data' => [$amount,$phone_number,$transaction_date,$confirmation_code]]);
 		return redirect('/products')->with(['success' => false]);
+    }
+
+    public function getTransaction(Request $request)
+    {
+       
+        $transaction = Transaction::find($request->id);
+
+        return response()->json($transaction);
     }
 
     /**
