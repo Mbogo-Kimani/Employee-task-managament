@@ -64,6 +64,8 @@ class RouterController extends Controller
             $subscription->profile_assigned = true;
             $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
             $subscription->save();
+
+            return response()->json(['message' => 'User subscribed successfully.']);
         }catch (\Exception $e){
             abort(400,$e);
         }
