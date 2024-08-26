@@ -27,6 +27,7 @@ class ClientController extends Controller
             'phone_number' => 'required|string|max:15',
 		]);
         $client = Client::where('phone_number',$request->phone_number)->first();
+        
         if($client){
             return response()->json(['success' => false, 'message' => 'User already exists.']);
         }
@@ -155,6 +156,7 @@ class ClientController extends Controller
     {
         $subscriptions = Subscription::where('client_id', $request->clientId)
                                 ->where('status', true)
+                                ->where('expires_at', '>', now())
                                 ->orderBy('updated_at', 'desc')
                                 ->with('streetPackage') 
                                 ->get();

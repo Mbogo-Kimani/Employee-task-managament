@@ -131,16 +131,6 @@ class TaskController extends Controller
 					'billing_day' => now()->format('Y-m-d'),
 					'employee_id' => $request->work_number,
 				]);
-			} else if($client) {
-				$client->update([
-					'email' => $request->client_email,
-					'wifi_name' => $request->wifi_name,
-					'wifi_password' => $request->wifi_password,
-					'connection_status' => $request->paid,
-					'package_id' => $request->package_id,
-					'phone_number' => $request->phone_number,
-					'employee_id' => $request->work_number,
-				]);
 			}
 		}
 
