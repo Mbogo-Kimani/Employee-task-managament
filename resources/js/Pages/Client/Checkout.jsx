@@ -19,6 +19,22 @@ const Checkout = () => {
       getStreetPackages();
     },[]);
 
+    useEffect(() => {
+      const channel = window.Echo.channel('private.transactions');
+      channel.listen('.transaction', (e) => {
+          // setTransactionStatus({
+          //     transactionId: e.transactionId,
+          //     status: e.status
+          // });
+          console.log(e);
+          
+      });
+
+      return () => {
+          channel.stopListening('.transaction');
+      };
+  }, []);
+
     function getStreetPackages() {
       requestHandler.get('/api/street_packages', handleStreetPackages);
     }

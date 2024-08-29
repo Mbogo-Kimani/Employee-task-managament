@@ -18,7 +18,7 @@ class PaymentController extends Controller
 {
     public function get_token()
     {
-        $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        $url = config('mpesa.base_url') . '/oauth/v1/generate?grant_type=client_credentials';
 
         $token_object = Http::withBasicAuth(config("mpesa.consumer_key"), config("mpesa.consumer_secret"))->get($url);
                                                          
@@ -86,7 +86,7 @@ class PaymentController extends Controller
         /* Mpesa functionality */
 
         $access_token = $this->get_token();
-        $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $url = config('mpesa.base_url') . '/mpesa/stkpush/v1/processrequest';
         $pass_key = config("mpesa.passkey");
         $business_short_code = config("mpesa.shortcode");
         $timestamp = Carbon::now()->format('YmdHis');
@@ -169,6 +169,8 @@ class PaymentController extends Controller
             $transaction->payment_confirmation = $confirmation_code;
             $transaction->amount = $amount;
             $transaction->save();
+			event(new \App\Events\TransactionEvent($transaction->id,$confirmation_code));
+
            if($transaction->client){
                 // $streetPackage = StreetPackage::find($transaction->client->street_package_id);
                 $password = str_replace('+254', '0', $transaction->client->phone_number);

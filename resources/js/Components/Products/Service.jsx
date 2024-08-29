@@ -28,7 +28,7 @@ function Service({ streetPackage, client = null, showAccessLink = true }) {
                 <svg className="h-6 w-5 flex-none text-green-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                 </svg>
-               {streetPackage.duration} {streetPackage.duration_unit}
+               {streetPackage.duration/60 < 60 ? streetPackage.duration/60 + " minutes" : streetPackage.duration/60 < 1440 ? streetPackage.duration/3600 + " hours" : streetPackage.duration/86400 + `${streetPackage.duration == 86400 ? ' day' : ' days'}`} 
               </li>
               <li className="flex gap-x-3 mt-4">
                 <svg className="h-6 w-5 flex-none text-green-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
