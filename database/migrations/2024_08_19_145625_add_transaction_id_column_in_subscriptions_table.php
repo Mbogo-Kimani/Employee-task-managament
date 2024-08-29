@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->foreignId('transaction_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('transaction_id')->unique()->nullable()->constrained()->onDelete('cascade');
             $table->boolean('profile_assigned')->default(false);
             $table->datetime('expires_at')->nullable();
         });
