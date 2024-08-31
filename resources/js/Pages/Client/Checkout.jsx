@@ -20,18 +20,20 @@ const Checkout = () => {
     },[]);
 
     useEffect(() => {
-      const channel = window.Echo.channel('private.transactions');
-      channel.listen('.transaction', (e) => {
-          // setTransactionStatus({
-          //     transactionId: e.transactionId,
-          //     status: e.status
-          // });
-          console.log(e);
+      const channel = window.Echo.channel('private.transaction');
+      channel.subscribed().listen('.transaction', (e) => {
+          if(e.confirmation){
+            toast.success('Payment successful',{
+                position: "top-center"
+            });
+            setTransaction(e.confirmation);
+            router.visit('/client/connected');
+          }
           
       });
 
       return () => {
-          channel.stopListening('.transaction');
+      channel.unsubscribe('.transaction');
       };
   }, []);
 
@@ -89,6 +91,8 @@ const Checkout = () => {
         }
         // send payment request to server
         requestHandler.post('/api/mpesa/payment', data, handleResponse)
+        // const data = {"Body":{"stkCallback":{"MerchantRequestID":"f1e2-4b95-a71d-b30d3cdbb7a71224224","CheckoutRequestID":"ws_CO_12082024103757041726945514","ResultCode":0,"ResultDesc":"The service request is processed successfully.","CallbackMetadata":{"Item":[{"Name":"Amount","Value":1.0},{"Name":"MpesaReceiptNumber","Value":"SHC7S6SHXP"},{"Name":"Balance"},{"Name":"TransactionDate","Value":20240812103801},{"Name":"PhoneNumber","Value":254726945514}]}}}}
+        // requestHandler.post('/api/payment-callback',data);
     }
 
   function handleResponse(resp) {
