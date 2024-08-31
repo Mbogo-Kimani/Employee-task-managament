@@ -46,8 +46,8 @@ class TransactionEvent implements ShouldBroadcastNow
 	public function broadcastWith()
 	{
 		return [
-			'transaction' => $this->transactionId,
-            'confirmations' => $this->confirmation_code,
+			'transactionId' => $this->transactionId,
+            'confirmation' => $this->confirmation_code,
 		];
 	}
 }

@@ -21,16 +21,15 @@ class RouterController extends Controller
     {
         $client = [];
         try{
-            $client = new Client('192.168.88.1', 'admin', '1234');
+            $client = new Client('192.168.88.1', 'admin', 'pass');
             echo "Connection successfull";
             
             $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
             
             foreach ($responses as $response) {
                 if ($response->getType() === Response::TYPE_DATA) {
-                    
                     echo 'IP: ', $response->getProperty('address'),
-                    ' MAC: ', $response->getProperty('mac-address'),
+                    ' MAC: ', str_replace(':', '-',$response->getProperty('mac-address')),
                     "\n";
                 }
             }
@@ -42,17 +41,17 @@ class RouterController extends Controller
     
     public function subscribe(Request $request)
     {
-        $request->validate([
+        $request->validate([ 
             'subscription_id' => 'required|exists:subscriptions,id',
         ]);
 
         $client = [];
         $subscription = Subscription::find($request->subscription_id);
+
+        
        
-
         try{
-            $client = new Client('192.168.88.1', 'admin', '1234');
-
+            $client = new Client('192.168.88.1', 'admin', 'pass');
             
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
@@ -60,14 +59,21 @@ class RouterController extends Controller
             ->setArgument('user', $subscription->client->name);
             $client->sendSync($activate_profile);
             
-            
+            $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
+            $user_login
+            ->setArgument('IP', $this->getIP($client))
+            ->setArgument('user', $subscription->client->name)
+            ->setArgument('password', '12345');
+            $client->sendSync($user_login);
+            // dd($user_login);
             $subscription->profile_assigned = true;
             $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
             $subscription->save();
 
             return response()->json(['message' => 'User subscribed successfully.']);
         }catch (\Exception $e){
-            abort(400,$e);
+            abort(400,"You are not connected to the hotspot");
+
         }
         
     }
@@ -107,6 +113,32 @@ class RouterController extends Controller
             abort(400, $e);
         }
 
+    }
+
+    private function getIP($client)
+    {
+        $mac = shell_exec('getmac');
+        // Regular expression to match MAC addresses
+        $pattern = '/([A-F0-9]{2}-){5}[A-F0-9]{2}/i';
+
+        
+        preg_match_all($pattern, $mac, $matches);
+        $mac_address = '';
+        
+        if (!empty($matches[0])) {
+            $mac_address = $matches[0][0];
+        } else {
+            echo "No MAC addresses found.";
+        }
+            $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
+            
+            foreach ($responses as $response) {
+                if ($response->getType() === Response::TYPE_DATA) {
+                    if(str_replace(':', '-',$response->getProperty('mac-address')) == $mac_address){
+                        return $response->getProperty('address');
+                    }
+                }
+            }
     }
     
 }
