@@ -31,6 +31,7 @@ const [inputFile, setInputFile] = useState()
 
 
 useEffect(() => {
+  fetchInternetPackages();
   fetchClients();
 }, []);
 
@@ -68,9 +69,12 @@ function fetchClients(){
   requestHandler.get('/api/clients', setClients, null, loaderSetter);
 }
 
+function fetchInternetPackages(){
+  requestHandler.get('/api/internet_packages', setInternetPackages);
+}
+
 function deleteUser(id) {
   requestHandler.delete(`/api/client/${id}`, setResponse, setErrors, loaderSetter);
-  
 }
 
 function submitClient(e){
@@ -442,7 +446,7 @@ async function submitFile(e){
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Account No.','Name', 'Email', 'Phone Number', 'Address', 'Hse No', 'Status', 'Billing Day','Internet Package', 'Action']}>
+          <TableComp columns={['Account No.','Name', 'Email', 'Phone Number', 'Address', 'Hse No', 'Status', 'Billing Day','Internet Package', 'WIFI Name', 'WIFI Pwd', 'Work No.', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (
@@ -450,6 +454,7 @@ async function submitFile(e){
                     key={elem.id || index}
                     elem={elem}
                     currentUser={userData}
+                    packages={internetPackages}
                     openModal={toggleOpenModal}
                     openDeleteModal={() => deleteUser(elem.id)}
                   />
