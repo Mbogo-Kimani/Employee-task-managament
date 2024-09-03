@@ -1,4 +1,6 @@
+import { Link } from '@inertiajs/react';
 import React, { useState } from 'react'
+import Icon from './Common/Icon';
 
 function Header({ client = null }) {
   const [collapseNav, setCollapseNav] = useState(false);
@@ -89,14 +91,15 @@ function Header({ client = null }) {
                 </li>
                 {
                   client &&
-                  <li title='You are logged in'>
-                    <a
-                      href="/contact"
+                  <li title={`${client?.client?.name} is logged in`}>
+                    <Link
+                      href="/client/connected"
                       className={'text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 md:p-0 block py-2 px-3 hover:scale-105'}
                       aria-current="page"
                     >
-                      { client?.client?.name }
-                    </a>
+                      <Icon src='circleUser' className='w-[20px] h-[20px]'/>
+                      {/* { client?.client?.name } */}
+                    </Link>
                   </li>
                 }
                 
