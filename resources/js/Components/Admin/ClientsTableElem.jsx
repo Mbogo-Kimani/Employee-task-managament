@@ -62,6 +62,15 @@ function ClientsTableElem({ elem, openModal, openDeleteModal, currentUser, packa
       <td className="px-2 py-4 uppercase">    
         {packages.find(item => item.id === elem.package_id)?.capacity || ''}
       </td>
+      <td className="px-2 py-4 whitespace-nowrap">    
+        {elem.wifi_name}
+      </td>
+      <td className="px-2 py-4 whitespace-nowrap">    
+        {elem.wifi_password}
+      </td>
+      <td className="px-2 py-4 whitespace-nowrap">    
+        {elem.employee_id}
+      </td>
       {
         (currentUser?.role === department.ADMIN || currentUser?.role === department.ACCOUNTING_AND_FINANCE)  &&
         <td className="px-2 py-4 relative">
