@@ -9,7 +9,7 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
   const [response, setResponse] = useState([])
-
+  
     useEffect(() => {
         checkResponse();
     }, [response]);
@@ -38,7 +38,11 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
 //       else router.visit('/client/connected');
 
       // localStorage.setItem('client', JSON.stringify(response.client))
-      router.visit(`/client/checkout?productId=${productKey}`)
+      if(productKey){
+        router.visit(`/client/checkout?productId=${productKey}`)
+      }else{
+        router.visit(`/products`)
+      }
 
     }
     }

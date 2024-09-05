@@ -100,7 +100,8 @@ const Checkout = () => {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTimeout(() => {   
           if(getTransaction(resp.transaction_id)?.payment_confirmation){
-            router.visit('/client/connected');
+            // router.visit('/client/connected');
+            console.log('hurrah')
           }
       }, 5000);
     }  
