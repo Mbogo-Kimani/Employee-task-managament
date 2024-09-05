@@ -6,6 +6,11 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Pusher\Pusher;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Broadcasting\BroadcastManager;
+use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(BroadcastManager $broadcastManager)
     {
         Paginator::useBootstrap();
         Blade::if('admin', function () {
@@ -38,5 +43,18 @@ class AppServiceProvider extends ServiceProvider
             // Adjust the condition according to how you determine if a user is an employee
             return auth()->check() && auth()->user()->role === 'employee';
         });
+        app(BroadcastManager::class)->extend('pusher-custom', function () {
+            $pusher = new Pusher(
+                config('broadcasting.connections.pusher.key'),
+                config('broadcasting.connections.pusher.secret'),
+                config('broadcasting.connections.pusher.app_id'),
+                config('broadcasting.connections.pusher.options'),
+                new \GuzzleHttp\Client(['verify' => false]),
+            );
+
+            return new PusherBroadcaster($pusher);
+        });
+
+    Schema::defaultStringLength(191);
     }
 }
