@@ -9,7 +9,7 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
   const [response, setResponse] = useState([])
-
+  
     useEffect(() => {
         checkResponse();
     }, [response]);
