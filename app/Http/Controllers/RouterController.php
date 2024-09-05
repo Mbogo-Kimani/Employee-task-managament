@@ -42,12 +42,11 @@ class RouterController extends Controller
     public function subscribe(Request $request)
     {
         $request->validate([ 
-            'subscription_id' => 'required|exists:subscriptions,id',
+            'transaction_id' => 'required|exists:subscriptions,transaction_id',
         ]);
 
         $client = [];
-        $subscription = Subscription::find($request->subscription_id);
-
+        $subscription = Subscription::where('transaction_id', $request->transaction_id)->first();
         
        
         try{
@@ -58,12 +57,9 @@ class RouterController extends Controller
             ->setArgument('profile', $subscription->streetPackage->profile_name)
             ->setArgument('user', $subscription->client->name);
             $client->sendSync($activate_profile);
-            
-            $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
+            $user_login =  new RouterOsRequest('/ip/hotspot/active/login' . ' user=' . $subscription->client->name . ' password=' . $subscription->client->phone_number . ' mac-address=' . $this->getMac());
             $user_login
-            ->setArgument('IP', $this->getIP($client))
-            ->setArgument('user', $subscription->client->name)
-            ->setArgument('password', '12345');
+            ->setArgument('ip', $this->getIP($client));
             $client->sendSync($user_login);
             // dd($user_login);
             $subscription->profile_assigned = true;
@@ -72,7 +68,7 @@ class RouterController extends Controller
 
             return response()->json(['message' => 'User subscribed successfully.']);
         }catch (\Exception $e){
-            abort(400,"You are not connected to the hotspot");
+            abort(400,$e);
 
         }
         
@@ -102,7 +98,7 @@ class RouterController extends Controller
                 $addRequest
                 ->setArgument('disabled', 'no')
                 ->setArgument('name', $customer->name)
-                ->setArgument('password', $password)
+                ->setArgument('password', $customer->phone_number)
                 ->setArgument('shared-users', $request->devices);
     
             $client->sendSync($addRequest);
@@ -117,19 +113,8 @@ class RouterController extends Controller
 
     private function getIP($client)
     {
-        $mac = shell_exec('getmac');
-        // Regular expression to match MAC addresses
-        $pattern = '/([A-F0-9]{2}-){5}[A-F0-9]{2}/i';
-
         
-        preg_match_all($pattern, $mac, $matches);
-        $mac_address = '';
-        
-        if (!empty($matches[0])) {
-            $mac_address = $matches[0][0];
-        } else {
-            echo "No MAC addresses found.";
-        }
+            $mac_address = $this->getMac();
             $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
             
             foreach ($responses as $response) {
@@ -139,6 +124,20 @@ class RouterController extends Controller
                     }
                 }
             }
+    }
+
+    private function getMac()
+    {
+        $mac = shell_exec('getmac');
+        // Regular expression to match MAC addresses
+        $pattern = '/([A-F0-9]{2}-){5}[A-F0-9]{2}/i';
+
+        
+        preg_match_all($pattern, $mac, $matches);
+
+        if (!empty($matches[0])) {
+           return $matches[0][0];
+        }
     }
     
 }
