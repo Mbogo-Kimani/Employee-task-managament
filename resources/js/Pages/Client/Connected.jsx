@@ -29,7 +29,8 @@ function Connected() {
   }, [client]);
   useEffect(() => {
     if(response && response.message){
-      window.location.href = 'http://hotspot.etnet/logindst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect';
+      // window.location.href = 'http://hotspot.etnet/login?dst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect';
+      window.location.href = 'http://www.msftconnecttest.com/redirect'
     }
   }, [response]);
 
@@ -51,10 +52,10 @@ function Connected() {
     const filteredSubscriptions = subscriptions.filter(i=> {
       return i.profile_assigned == false
     })
-    if(filteredSubscriptions.length){
-      requestHandler.post('/api/subscribe',{subscription_id: filteredSubscriptions[0].id},setResponse);
+    if(!filteredSubscriptions.length){
+      // requestHandler.post('/api/subscribe',{transaction_id: 7},setResponse);
     }else{
-      window.location.href = 'http://hotspot.etnet/logindst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect'
+      // window.location.href = 'http://hotspot.etnet/login?dst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect'
     }
   }
   return (

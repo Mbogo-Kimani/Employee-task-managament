@@ -4,6 +4,7 @@ import requestHandler from '../../services/requestHandler';
 import ClientLayout from '../../Layouts/ClientLayout';
 import { toast } from 'react-toastify';
 import { router, usePage } from '@inertiajs/react';
+import { loaderSetter } from '../../Components/Common/Loader';
 
 const Checkout = () => {
     // const [productId, setProductId] = useState();
@@ -27,7 +28,9 @@ const Checkout = () => {
                 position: "top-center"
             });
             setTransaction(e.confirmation);
-            router.visit('/client/connected');
+            requestHandler.post('/api/subscribe',{transaction_id: e.transactionId},setResponse, null, loaderSetter);
+
+            // router.visit('/client/connected');
           }
           
       });
@@ -36,6 +39,13 @@ const Checkout = () => {
       channel.unsubscribe('.transaction');
       };
   }, []);
+
+  useEffect(() => {
+    if(response && response.message){
+      // window.location.href = 'http://hotspot.etnet/login?dst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect';
+      window.location.href = 'https:/task.etnet.co.ke/client/connected'
+    }
+  }, [response]);
 
     function getStreetPackages() {
       requestHandler.get('/api/street_packages', handleStreetPackages);
@@ -98,12 +108,12 @@ const Checkout = () => {
   function handleResponse(resp) {
     if (resp) {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
-      setTimeout(() => {   
-          if(getTransaction(resp.transaction_id)?.payment_confirmation){
-            // router.visit('/client/connected');
-            console.log('hurrah')
-          }
-      }, 5000);
+      // setTimeout(() => {   
+      //     if(getTransaction(resp.transaction_id)?.payment_confirmation){
+      //       // router.visit('/client/connected');
+      //       console.log('hurrah')
+      //     }
+      // }, 5000);
     }  
   }
 

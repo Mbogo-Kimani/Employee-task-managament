@@ -182,7 +182,7 @@ class PaymentController extends Controller
                     'username' => $transaction->client->name,
                     'password' => $password,
                     'status' => 1,
-                    // 'expires_at' => Carbon::now()->addSeconds($streetPackage->duration)
+                    'expires_at' => Carbon::now()->addSeconds($transaction->client->street_package_id)
                 ]);
             }
           }
