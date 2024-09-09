@@ -48,17 +48,20 @@ class RouterController extends Controller
         $client = [];
         $subscription = Subscription::where('transaction_id', $request->transaction_id)->first();
         
-       
+       //if(!$subscription->profile_assigned
         try{
-            $client = new Client('192.168.88.1', 'admin', 'pass');
-            
+            $client = new Client('10.244.31.147', 'admin', 'pass');
+   	dd($subscription,$this->getMac(), $this->getIP($client));         
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
             ->setArgument('profile', $subscription->streetPackage->profile_name)
             ->setArgument('user', $subscription->client->name);
             $client->sendSync($activate_profile);
-            $user_login =  new RouterOsRequest('/ip/hotspot/active/login' . ' user=' . $subscription->client->name . ' password=' . $subscription->client->phone_number . ' mac-address=' . $this->getMac());
+            $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
+	    ->setArgument('user', $subscription->client->name)
+            ->setArgument('password', $subscription->client->phone_number)
+            ->setArgument('mac-address', $this->getMac())
             ->setArgument('ip', $this->getIP($client));
             $client->sendSync($user_login);
             // dd($user_login);
@@ -89,11 +92,10 @@ class RouterController extends Controller
         $customer = ModelsClient::find($request->client_id);
         $password = str_replace('+254', '0', $customer->phone_number);
         $password = str_replace(' ', '', $password);
-
+//	dd($customer);
         try{
-            $client = new Client('192.168.88.1', 'admin', '1234');
+            $client = new Client('10.244.31.147', 'admin', 'pass');
 
-            
             $addRequest = new RouterOSRequest('/user-manager/user/add');
                 $addRequest
                 ->setArgument('disabled', 'no')

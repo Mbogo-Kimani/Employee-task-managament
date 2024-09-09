@@ -28,6 +28,7 @@ const Checkout = () => {
                 position: "top-center"
             });
             setTransaction(e.confirmation);
+	    console.log(transaction);
             requestHandler.post('/api/subscribe',{transaction_id: e.transactionId},setResponse, null, loaderSetter);
 
             // router.visit('/client/connected');
@@ -42,6 +43,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if(response && response.message){
+	console.log(response);
       // window.location.href = 'http://hotspot.etnet/login?dst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect';
       window.location.href = 'https:/task.etnet.co.ke/client/connected'
     }
