@@ -50,16 +50,19 @@ class RouterController extends Controller
         
        
         try{
-            $client = new Client('192.168.88.1', 'admin', 'pass');
+            $client = new Client('10.244.31.147', 'admin', 'pass');
             
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
             ->setArgument('profile', $subscription->streetPackage->profile_name)
             ->setArgument('user', $subscription->client->name);
             $client->sendSync($activate_profile);
-            $user_login =  new RouterOsRequest('/ip/hotspot/active/login' . ' user=' . $subscription->client->name . ' password=' . $subscription->client->phone_number . ' mac-address=' . $this->getMac());
+            $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
-            ->setArgument('ip', $this->getIP($client));
+            ->setArgument('user', $subscription->client->name)
+            ->setArgument('password', $subscription->client->phone_number)
+            ->setArgument('mac-address', $request->mac ?? $this->getMac())
+            ->setArgument('ip', $request->ip ?? $this->getIP($client));
             $client->sendSync($user_login);
             // dd($user_login);
             $subscription->profile_assigned = true;
@@ -91,8 +94,8 @@ class RouterController extends Controller
         $password = str_replace(' ', '', $password);
 
         try{
-            $client = new Client('192.168.88.1', 'admin', '1234');
-
+            $client = new Client('10.244.31.147', 'admin', 'pass');
+            // dd($client);
             
             $addRequest = new RouterOSRequest('/user-manager/user/add');
                 $addRequest
@@ -136,7 +139,7 @@ class RouterController extends Controller
         preg_match_all($pattern, $mac, $matches);
 
         if (!empty($matches[0])) {
-           return $matches[0][0];
+        //    return $matches[0][0];
         }
     }
     

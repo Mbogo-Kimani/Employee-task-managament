@@ -8,11 +8,23 @@ import { AppContext } from '../../appContext';
 function Products() {
   const [packageType, setPackageType] = useState('street');
   const [streetPackages, setStreetPackages] = useState([]);
-  const { client } = useContext(AppContext);
+  const { clientData,updateClient } = useContext(AppContext);
 
   useEffect(() => {
     getStreetPackages();
   },[]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ip = urlParams.get('ip');
+    const mac = urlParams.get('mac');
+
+    if(ip && mac){
+      updateClient({ip:ip, mac:mac})
+      console.log(clientData)
+    }
+
+  },[])
 
   function getStreetPackages() {
     requestHandler.get('/api/street_packages', setStreetPackages);
@@ -134,7 +146,7 @@ function Products() {
         <div className='flex flex-wrap '>
           {streetPackages.map((streetPackage, index) => (
               <div key={index} className='mx-auto w-fit md:w-1/3'>
-                  <Service streetPackage={streetPackage} client={client}/>
+                  <Service streetPackage={streetPackage} client={clientData}/>
               </div>
           ))}
         </div>

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Service from '../../Components/Products/Service'
 import requestHandler from '../../services/requestHandler';
 import ClientLayout from '../../Layouts/ClientLayout';
 import { toast } from 'react-toastify';
 import { router, usePage } from '@inertiajs/react';
 import { loaderSetter } from '../../Components/Common/Loader';
+import { AppContext } from '../../appContext';
 
 const Checkout = () => {
     // const [productId, setProductId] = useState();
@@ -14,10 +15,12 @@ const Checkout = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [transaction, setTransaction] = useState([]);
     const [streetPackages, setStreetPackages] = useState([]);
+    const { clientData,updateClient } = useContext(AppContext);
 
 
     useEffect(() => {
       getStreetPackages();
+      console.log(clientData);
     },[]);
 
     useEffect(() => {
@@ -28,7 +31,7 @@ const Checkout = () => {
                 position: "top-center"
             });
             setTransaction(e.confirmation);
-            requestHandler.post('/api/subscribe',{transaction_id: e.transactionId},setResponse, null, loaderSetter);
+            requestHandler.post('/api/subscribe',{transaction_id: e.transactionId, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
 
             // router.visit('/client/connected');
           }
