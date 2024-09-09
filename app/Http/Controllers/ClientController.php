@@ -26,8 +26,8 @@ class ClientController extends Controller
             'email' => 'required|email|unique:clients',
             'phone_number' => 'required|string|max:15',
 		]);
-        $client = Client::where('phone_number',$request->phone_number)->first();
-        
+        $client = Client::where('phone_number','+254' . $request->phone_number)->first();
+	        
         if($client){
             return response()->json(['success' => false, 'message' => 'User already exists.']);
         }
@@ -39,7 +39,7 @@ class ClientController extends Controller
                 'phone_number' => $request->phone_number,
                 'verification_code' => $verification_code
             ]);
-            $this->sendOTP($request->phone_number,$verification_code);
+            $this->sendOTP('+254' . $request->phone_number,$verification_code);
             
         } catch(\Exception $e){
             abort(400, $e->getMessage());
@@ -54,8 +54,19 @@ class ClientController extends Controller
         $request->validate([
             'phone_number' => 'required|string|max:15',
 		]);
-        $phone_number = '+254' . $request->phone_number;
-        $client = Client::where('phone_number','+254' . $request->phone_number)->first();
+        // $phone_number = '+254' . $request->phone_number;
+	$client_phone_number = $request->phone_number;
+
+	$client = null;
+
+        if (strlen($request->phone_number) == 13) {
+            $phone_number = substr($request->phone_number, 4);
+            $client = Client::where('phone_number', 'LIKE', "%$phone_number%")->first();
+        } else {
+	    $client_phone_number = '+254' . $request->phone_number;
+            $client = Client::where('phone_number', 'LIKE', "%$request->phone_number%")->first();
+        }        
+
         if(!$client){
             return response()->json(['success' => false, 'message' => 'User does not exist.']);
         }
@@ -63,7 +74,7 @@ class ClientController extends Controller
         $client->update([
             'verification_code' => $verification_code
         ]);
-        $this->sendOTP($phone_number,$verification_code);
+        $this->sendOTP($client_phone_number,$verification_code);
 
         return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
 
@@ -76,7 +87,15 @@ class ClientController extends Controller
             'otp' => 'required|string'
         ]);
 
-        $client = Client::where('phone_number', $request->phoneNumber)->first();
+	$client = null;
+
+	if (strlen($request->phoneNumber) == 13) {
+	    $phone_number = substr($request->phoneNumber, 4);
+	    $client = Client::where('phone_number', 'LIKE', "%$phone_number%")->first();
+	} else {
+	    $client = Client::where('phone_number', 'LIKE', "%$request->phoneNumber%")->first();
+	}
+
         if(!$client || $client->verification_code != $request->otp){
             return response()->json(['error' => 'Invalid verification code'], 400);
         }

@@ -48,7 +48,7 @@ class RouterController extends Controller
         $client = [];
         $subscription = Subscription::where('transaction_id', $request->transaction_id)->first();
         
-       
+       //if(!$subscription->profile_assigned
         try{
             $client = new Client('10.244.31.147', 'admin', 'pass');
             
@@ -92,11 +92,10 @@ class RouterController extends Controller
         $customer = ModelsClient::find($request->client_id);
         $password = str_replace('+254', '0', $customer->phone_number);
         $password = str_replace(' ', '', $password);
-
+//	dd($customer);
         try{
             $client = new Client('10.244.31.147', 'admin', 'pass');
-            // dd($client);
-            
+
             $addRequest = new RouterOSRequest('/user-manager/user/add');
                 $addRequest
                 ->setArgument('disabled', 'no')
