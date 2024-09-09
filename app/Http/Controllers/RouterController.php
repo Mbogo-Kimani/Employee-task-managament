@@ -51,7 +51,7 @@ class RouterController extends Controller
        //if(!$subscription->profile_assigned
         try{
             $client = new Client('10.244.31.147', 'admin', 'pass');
-   	dd($subscription,$this->getMac(), $this->getIP($client));         
+            
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
             ->setArgument('profile', $subscription->streetPackage->profile_name)
@@ -59,10 +59,10 @@ class RouterController extends Controller
             $client->sendSync($activate_profile);
             $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
-	    ->setArgument('user', $subscription->client->name)
+            ->setArgument('user', $subscription->client->name)
             ->setArgument('password', $subscription->client->phone_number)
-            ->setArgument('mac-address', $this->getMac())
-            ->setArgument('ip', $this->getIP($client));
+            ->setArgument('mac-address', $request->mac ?? $this->getMac())
+            ->setArgument('ip', $request->ip ?? $this->getIP($client));
             $client->sendSync($user_login);
             // dd($user_login);
             $subscription->profile_assigned = true;
@@ -138,7 +138,7 @@ class RouterController extends Controller
         preg_match_all($pattern, $mac, $matches);
 
         if (!empty($matches[0])) {
-           return $matches[0][0];
+        //    return $matches[0][0];
         }
     }
     

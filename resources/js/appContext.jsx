@@ -7,7 +7,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   // TODO: Should fetch the info below from a cache store or relative place instead of localstorage
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('user')));
-  const [client, setClient] = useState(JSON.parse(localStorage.getItem('client')));
+  const [clientData, setClientData] = useState(JSON.parse(localStorage.getItem('client')));
 
   const loginUser = (userData) => {
     setUserData(userData);
@@ -24,6 +24,15 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('user',JSON.stringify(userData))
   }
 
+  const updateClient = (data) => {
+    const updatedClientData = {...clientData };
+    Object.keys(data).forEach((key) => {
+          updatedClientData[key] = data[key]
+    })
+    setClientData(updatedClientData)
+    localStorage.setItem('client',JSON.stringify(clientData))
+  }
+
   const logoutUser = () => {
     setUserData(null);
     localStorage.removeItem('auth_token');
@@ -32,7 +41,7 @@ export const AppProvider = ({ children }) => {
 
 
   return (
-    <AppContext.Provider value={{ userData, loginUser, logoutUser, updateUser, client }}>
+    <AppContext.Provider value={{ userData, loginUser, logoutUser, updateUser, clientData, updateClient }}>
       {children}
     </AppContext.Provider>
   );
