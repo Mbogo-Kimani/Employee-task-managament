@@ -21,7 +21,7 @@ class RouterController extends Controller
     {
         $client = [];
         try{
-            $client = new Client('192.168.88.1', 'admin', 'pass');
+            $client = new Client('10.244.31.147', 'admin', 'pass');
             echo "Connection successfull";
             
             $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
@@ -48,7 +48,7 @@ class RouterController extends Controller
         $client = [];
         $subscription = Subscription::where('transaction_id', $request->transaction_id)->first();
         
-       //if(!$subscription->profile_assigned
+       if(!$subscription->profile_assigned){
         try{
             $client = new Client('10.244.31.147', 'admin', 'pass');
             
@@ -73,6 +73,7 @@ class RouterController extends Controller
         }catch (\Exception $e){
             abort(400,$e);
 
+        }
         }
         
     }

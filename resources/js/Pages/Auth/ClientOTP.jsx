@@ -39,7 +39,7 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
 
         // localStorage.setItem('client', JSON.stringify(response.client))
         if (productKey) router.visit(`/client/checkout?productId=${productKey}`);
-        else router.visit('/client/connected');
+        else router.visit('/products');
       }
     }
 
