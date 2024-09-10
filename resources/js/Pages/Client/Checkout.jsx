@@ -45,9 +45,8 @@ const Checkout = () => {
 
   useEffect(() => {
     if(response && response.message){
-	console.log(response);
       // window.location.href = 'http://hotspot.etnet/login?dst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect';
-      window.location.href = 'https:/task.etnet.co.ke/client/connected'
+      window.location.href = 'https://task.etnet.co.ke/client/connected'
     }
   }, [response]);
 
@@ -98,7 +97,7 @@ const Checkout = () => {
         e.preventDefault();
         const data = {
             amount: product.cost,
-            client_id: client.client.id,
+            client_id: client?.client?.id,
             street_package_id: product.id,
             country_code: 254,
             phone_number: phoneNumber,
