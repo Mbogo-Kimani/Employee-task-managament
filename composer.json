@@ -18,6 +18,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1.48",
+        "mobiledetect/mobiledetectlib": "^4.8",
         "pear2/cache_shm": "^0.2.0",
         "pear2/net_routeros": "dev-develop",
         "pear2/net_transmitter": "1.0.0b1",

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Detection\MobileDetect;
+
 
 class PaymentController extends Controller
 {
@@ -128,7 +130,9 @@ class PaymentController extends Controller
                 'checkout_request_id' => $data['CheckoutRequestID']
             ]);
 
-            return response()->json(['transaction_id' => $transaction->id]);
+            $detect = new MobileDetect();
+
+            return response()->json(['transaction_id' => $transaction->id,'isiOS' => $detect->isiOS()]);
         } else {
             abort(400, 'Payment did not go through');
         }
