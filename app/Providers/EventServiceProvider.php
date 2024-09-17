@@ -20,9 +20,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        TaskMessageChatEvent::class => [
-            TransactionListener::class,
-        ],
+        // TaskMessageChatEvent::class => [
+        //     TransactionListener::class,
+        // ],
     ];
 
     /**

@@ -21,7 +21,7 @@ class RouterController extends Controller
     {
         $client = [];
         try{
-            $client = new Client('10.244.31.147', 'admin', 'pass');
+            $client = new Client('10.244.251.62', 'admin', 'pass');
             echo "Connection successfull";
             
             $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
@@ -50,7 +50,7 @@ class RouterController extends Controller
         
        if(!$subscription->profile_assigned){
         try{
-            $client = new Client('10.244.31.147', 'admin', 'pass');
+            $client = new Client('10.244.251.62', 'admin', 'pass');
             
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
@@ -95,7 +95,7 @@ class RouterController extends Controller
         $password = str_replace(' ', '', $password);
 //	dd($customer);
         try{
-            $client = new Client('10.244.31.147', 'admin', 'pass');
+            $client = new Client('10.244.251.62', 'admin', 'pass');
 
             $addRequest = new RouterOSRequest('/user-manager/user/add');
                 $addRequest
@@ -112,6 +112,14 @@ class RouterController extends Controller
             abort(400, $e);
         }
 
+    }
+
+    public function hotspotLogin(Request $request)
+    {
+        $request->validate([
+            'ip' => 'required',
+            'mac' => 'required'
+        ]);
     }
 
     private function getIP($client)
@@ -139,7 +147,7 @@ class RouterController extends Controller
         preg_match_all($pattern, $mac, $matches);
 
         if (!empty($matches[0])) {
-        //    return $matches[0][0];
+           return $matches[0][0];
         }
     }
     

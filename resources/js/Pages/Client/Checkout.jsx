@@ -7,6 +7,7 @@ import { router, usePage } from '@inertiajs/react';
 import { loaderSetter } from '../../Components/Common/Loader';
 import { AppContext } from '../../appContext';
 
+
 const Checkout = () => {
     // const [productId, setProductId] = useState();
     const [product, setProduct] = useState({});
@@ -16,6 +17,7 @@ const Checkout = () => {
     const [transaction, setTransaction] = useState([]);
     const [streetPackages, setStreetPackages] = useState([]);
     const { clientData,updateClient } = useContext(AppContext);
+    const [polling, setPolling] = useState(false);
 
 
     useEffect(() => {
@@ -42,6 +44,28 @@ const Checkout = () => {
       channel.unsubscribe('.transaction');
       };
   }, []);
+
+  useEffect(() => {
+    let intervalId;
+    let timeoutId;
+
+    if (polling) {
+        // Set up polling every 4 seconds
+        intervalId = setInterval(() => getTransaction(transaction?.id), 4000); // 2 minutes in milliseconds
+
+        // Set up timeout to stop polling after 2 minutes
+        timeoutId = setTimeout(() => {
+            clearInterval(intervalId);
+            setPolling(false);
+        }, 2 * 60 * 1000); // Stop after 2 minutes
+    }
+
+    // Cleanup function to clear intervals and timeouts when the component is unmounted
+    return () => {
+        if (intervalId) clearInterval(intervalId);
+        if (timeoutId) clearTimeout(timeoutId);
+    };
+}, [polling]);
 
   useEffect(() => {
     if(response && response.message){
@@ -76,17 +100,14 @@ const Checkout = () => {
         }
     },[client])
 
-    // useEffect(() => {
-    //   const { props } = usePage();
-    // const transaction = props.transaction;
-
-    //   if(transaction){
-    //     console.log(transaction);
-        
-    //       // requestHandler.post('/api/subscribe',{package_id: product.id,client_id: client.client.id});
-    //       // router.visit('/Client/Connected')
-    //   }
-    // },[])
+    useEffect(() => {
+    
+      if(transaction.payment_confirmation){
+        console.log(transaction);
+        setPolling(false);
+        requestHandler.post('/api/subscribe',{transaction_id: transaction?.id, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
+      }
+    },[transaction])
 
     function getClient() {
       requestHandler.get('/api/get-client',setClient);
@@ -110,13 +131,16 @@ const Checkout = () => {
 
   function handleResponse(resp) {
     if (resp) {
+      console.log(resp)
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
-      // setTimeout(() => {   
-      //     if(getTransaction(resp.transaction_id)?.payment_confirmation){
-      //       // router.visit('/client/connected');
-      //       console.log('hurrah')
-      //     }
-      // }, 5000);
+      setTransaction({...transaction,['id']: resp.transaction_id})
+      console.log(transaction);
+      if(resp.isiOS){
+        setPolling(true)
+      }
+
+      
+     
     }  
   }
 

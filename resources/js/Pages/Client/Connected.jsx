@@ -10,6 +10,8 @@ function Connected() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [client, setClient] = useState({});
   const [response, setResponse] = useState([]);
+  const { clientData,updateClient } = useContext(AppContext);
+
   const [activePlans, setActivePlans] = useState({
     data: [],
     from: 1,
@@ -115,6 +117,27 @@ function Connected() {
                   </Link>
                 </div>
               </div>
+              <div>
+                <div className="font-bold text-xl mt-10 flex items-center mb-5">
+                Add device to an existing plan
+                <Icon src='plus' className='mx-4 w-10 h-10 bg-green-100 rounded-full' fill='rgb(34 197 94)'/>
+                </div>
+                <div class="flex flex-col ">
+    
+                  <label class="inline-flex items-center mb-5">
+                    <input type="radio" name="radio" class="form-radio h-5 w-5 text-green-600 focus:ring-green-500" />
+                    <span class="ml-2 w-[50%] border b-5 rounded p-2">This Device (Mac: {clientData?.mac})</span>
+                  </label>
+
+                  
+                  <label class="inline-flex items-center">
+                    <input type="radio" name="radio" class="form-radio h-5 w-5 text-green-600 focus:ring-green-500" />
+                    <span class="ml-2  w-[50%] border b-5 rounded p-2">New Device</span>
+                  </label>
+                </div>
+                <button className='m-5 mx-14 bg-gray-500 text-white rounded p-2 hover:bg-gray-700 border text-center'>Add Device</button>
+              </div>
+              
             </div>
           </div>
         </div>
