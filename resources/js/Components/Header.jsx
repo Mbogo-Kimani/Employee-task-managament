@@ -1,6 +1,8 @@
 import { Link } from '@inertiajs/react';
 import React, { useState } from 'react'
 import Icon from './Common/Icon';
+import DropDown from './Common/DropDown';
+import { Menu } from '@headlessui/react';
 
 function Header({ client = null }) {
   const [collapseNav, setCollapseNav] = useState(false);
@@ -90,14 +92,43 @@ function Header({ client = null }) {
                   </a>
                 </li>
                 {
-                  client &&
+                  !client &&
                   <li title={`${client?.client?.name} is logged in`}>
                     <Link
-                      href="/client/connected"
-                      className={'text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 md:p-0 block py-2 px-3 hover:scale-105'}
+                      // href="/client/connected"
+                      className={'text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 dark:text-white md:dark:text-blue-500 md:p-0 block py-2 px-3 hover:scale-105 flex'}
                       aria-current="page"
                     >
                       <Icon src='circleUser' className='w-[20px] h-[20px]'/>
+                      {/* <Icon src='caret' className='mx-2 w-[20px] h-[20px]'/> */}
+                      <DropDown src={'caret'}>
+                      <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              // onClick={() => toggleEditTask(task)}
+                            >
+                              <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                              <span className='block py-3 px-2'>Add Device</span>   
+                            </button>
+                          )}
+                        </Menu.Item>
+                      <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                              active ? 'bg-green-200 text-black' : 'text-gray-900'
+                              } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              // onClick={() => toggleEditTask(task)}
+                            >
+                              <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
+                              <span className='block py-3 px-2'>Change Device</span>   
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </DropDown>
                       {/* { client?.client?.name } */}
                     </Link>
                   </li>
