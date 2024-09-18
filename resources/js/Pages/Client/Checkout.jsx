@@ -27,7 +27,9 @@ const Checkout = () => {
 
     useEffect(() => {
       const channel = window.Echo.channel('private.transaction');
-      channel.subscribed().listen('.transaction', (e) => {
+      channel.subscribed(() => {
+        console.log('Successfully subscribed to private.transaction');
+      }).listen('.transaction', (e) => {
           if(e.confirmation){
             toast.success('Payment successful',{
                 position: "top-center"
@@ -51,13 +53,13 @@ const Checkout = () => {
 
     if (polling) {
         // Set up polling every 4 seconds
-        intervalId = setInterval(() => getTransaction(transaction?.id), 4000); // 2 minutes in milliseconds
+        intervalId = setInterval(() => getTransaction(transaction?.id), 4000);
 
         // Set up timeout to stop polling after 2 minutes
         timeoutId = setTimeout(() => {
             clearInterval(intervalId);
             setPolling(false);
-        }, 2 * 60 * 1000); // Stop after 2 minutes
+        }, 2 * 60 * 1000);
     }
 
     // Cleanup function to clear intervals and timeouts when the component is unmounted

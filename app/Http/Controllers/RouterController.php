@@ -66,6 +66,7 @@ class RouterController extends Controller
             $client->sendSync($user_login);
             // dd($user_login);
             $subscription->profile_assigned = true;
+            $subscription->devices = [$request->mac];
             $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
             $subscription->save();
 
@@ -118,8 +119,28 @@ class RouterController extends Controller
     {
         $request->validate([
             'ip' => 'required',
-            'mac' => 'required'
+            'mac' => 'required',
+            'subscription_id' => 'required|exists:subscriptions,id'
         ]);
+        
+        $subscription = Subscription::find($request->subscription_id);
+        try{
+            $client = new Client('10.244.251.62', 'admin', 'pass');
+
+            $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
+            $user_login
+            ->setArgument('user', $subscription->client->name)
+            ->setArgument('password', $subscription->client->phone_number)
+            ->setArgument('mac-address', $request->mac ?? $this->getMac())
+            ->setArgument('ip', $request->ip ?? $this->getIP($client));
+            $client->sendSync($user_login);
+
+            return response()->json(['success' => true]);
+
+        }catch(Exception $e){
+            abort(400, $e);
+            
+        }
     }
 
     private function getIP($client)

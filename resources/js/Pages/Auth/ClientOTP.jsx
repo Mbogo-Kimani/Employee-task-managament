@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import GuestLayout from '../../Layouts/GuestLayout'
 import '../../../css/Pages/home/auth.css'
 import requestHandler from '../../services/requestHandler';
 import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
+import { AppContext } from '../../appContext';
 
 const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
+  const {clientData} =  useContext(AppContext)
   const [response, setResponse] = useState([])
   
     useEffect(() => {
@@ -54,7 +56,8 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
         } else{
             const data = {
                 otp: newOtp.join(''),
-                phoneNumber: '+254' + phoneNumber
+                phoneNumber: '+254' + phoneNumber,
+                // ip:  
             };
           requestHandler.post('/api/clients/verify',data,setResponse)
 
@@ -73,7 +76,7 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
             {otp.map((digit, index) => (
               <div
                 key={index}
-                className="flex items-center border-2 mb-3 py-2 px-4 mx-4 rounded-2xl w-1/6"
+                className="flex items-center border-2 mb-3 py-2 px-2 mx-4 rounded-2xl  w-[50px] justify-center"
               >
                 <input
                   key={index}
@@ -82,7 +85,7 @@ const ClientOTP = ({phoneNumber, toggleOtpVerify,productKey}) => {
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   ref={(ref) => (inputRefs.current[index] = ref)}
                   maxLength={1}
-                  className=" pl-2 w-full outline-none border-none bg-blue-200/0"
+                  className=" pl-2 pr-2 w-full outline-none border-none bg-blue-200/0 text-center"
                 />
               </div>
             ))}
