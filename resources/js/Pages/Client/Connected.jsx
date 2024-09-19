@@ -72,6 +72,12 @@ function Connected() {
   function addDeviceModal(){
     
     if(subscription){
+      console.log(subscription.street_package.devices,JSON.parse(subscription.devices));
+      
+      if(subscription.street_package.devices <= JSON.parse(subscription.devices).length){
+        toast.error('You have reached your device limit')
+        return;
+      }
       setAddDevice(!addDevice)
     }else{
       toast.error('Please select a subscription')
@@ -117,7 +123,7 @@ function Connected() {
                       </div>
                       <div className="flex justify-between w-full">
                         <p className="text-[#0e141b] text-base font-medium leading-normal  items-center flex flex-col">{ plan.street_package.name }
-                          <span>Devices ({plan.devices?.length ?? 0})</span>
+                          <span>Devices ({plan.devices ? JSON.parse(plan.devices).length : 0})</span>
                         </p>
                         
                         <p className="text-[#4e7097] text-sm font-normal leading-normal line-clamp-2 flex items-center"><Icon src='calendar' className='w-10 h-10 mr-3'/><p className='flex flex-col'>Expires At  <span className='text-red-300'>{  plan.expires_at }</span></p></p>

@@ -135,6 +135,17 @@ class RouterController extends Controller
             ->setArgument('ip', $request->ip ?? $this->getIP($client));
             $client->sendSync($user_login);
 
+            $devices = json_decode($subscription->devices);
+           
+            if(is_array($devices)){
+                $devices[] = $request->mac;
+            }else{
+                $devices = [$request->mac];
+            }
+            
+            $subscription->devices = $devices;
+            $subscription->save();
+            
             return response()->json(['success' => true]);
 
         }catch(Exception $e){

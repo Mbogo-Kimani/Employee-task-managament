@@ -31,9 +31,13 @@ const Checkout = () => {
         console.log('Successfully subscribed to private.transaction');
       }).listen('.transaction', (e) => {
           if(e.confirmation){
+            if(e.confirmation == transaction){
+              return;
+            }
             toast.success('Payment successful',{
                 position: "top-center"
             });
+           
             setTransaction(e.confirmation);
             requestHandler.post('/api/subscribe',{transaction_id: e.transactionId, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
 
