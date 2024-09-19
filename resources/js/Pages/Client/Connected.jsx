@@ -74,7 +74,7 @@ function Connected() {
     if(subscription){
       console.log(subscription.street_package.devices,JSON.parse(subscription.devices));
       
-      if(subscription.street_package.devices <= JSON.parse(subscription.devices).length){
+      if(subscription.street_package.devices <= JSON.parse(subscription.devices)?.length){
         toast.error('You have reached your device limit')
         return;
       }
@@ -90,13 +90,19 @@ function Connected() {
       subscription_id: subscription?.id,
       ip: clientData?.ip
     }
+    
     const input = data.mac
       .replace(/[^a-fA-F0-9]/g, '') // Remove non-hex characters
       .match(/.{1,2}/g); // Split into pairs of characters
 
     if (input?.length > 5 && input.every(pair => pair.length === 2)) {
       setMacAddress(input.join(':').toUpperCase());
-      data.mac = input.join(':').toUpperCase(); // Join pairs with ':' and convert to uppercase
+      data.mac = input.join(':').toUpperCase();
+     
+      if(JSON.parse(subscription.devices)?.includes(data.mac)){
+          toast.error('Device already exists')
+          return;
+      } 
     } else {
       setMacAddress(''); // Clear the input if no valid characters
       toast.error('Invalid Mac Address ')

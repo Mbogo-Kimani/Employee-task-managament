@@ -124,6 +124,7 @@ class RouterController extends Controller
         ]);
         
         $subscription = Subscription::find($request->subscription_id);
+        
         try{
             $client = new Client('10.244.251.62', 'admin', 'pass');
 
@@ -138,7 +139,9 @@ class RouterController extends Controller
             $devices = json_decode($subscription->devices);
            
             if(is_array($devices)){
-                $devices[] = $request->mac;
+                if(!in_array($request->mac, $devices)){
+                    $devices[] = $request->mac;
+                }
             }else{
                 $devices = [$request->mac];
             }
