@@ -109,7 +109,9 @@ const Checkout = () => {
     useEffect(() => {
     
       if(transaction.payment_confirmation){
-        console.log(transaction);
+        toast.success('Payment successful',{
+          position: "top-center"
+        });
         setPolling(false);
         requestHandler.post('/api/subscribe',{transaction_id: transaction?.id, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
       }
