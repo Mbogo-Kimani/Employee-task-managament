@@ -62,7 +62,7 @@ class RouterController extends Controller
             ->setArgument('user', $subscription->client->name)
             ->setArgument('password', $subscription->client->phone_number)
             ->setArgument('mac-address', $request->mac ?? $this->getMac())
-            ->setArgument('ip', $request->ip ?? $this->getIP($client));
+            ->setArgument('ip', $request->ip);
             $client->sendSync($user_login);
             // dd($user_login);
             $subscription->profile_assigned = true;
@@ -124,7 +124,6 @@ class RouterController extends Controller
         ]);
         
         $subscription = Subscription::find($request->subscription_id);
-        
         try{
             $client = new Client('10.244.251.62', 'admin', 'pass');
 
@@ -133,7 +132,7 @@ class RouterController extends Controller
             ->setArgument('user', $subscription->client->name)
             ->setArgument('password', $subscription->client->phone_number)
             ->setArgument('mac-address', $request->mac ?? $this->getMac())
-            ->setArgument('ip', $request->ip ?? $this->getIP($client));
+            ->setArgument('ip', $this->getIP($client,$request->mac));
             $client->sendSync($user_login);
 
             $devices = json_decode($subscription->devices);
@@ -157,15 +156,16 @@ class RouterController extends Controller
         }
     }
 
-    private function getIP($client)
+    private function getIP($client, $mac_address)
     {
         
-            $mac_address = $this->getMac();
+          //  $mac_address = $this->getMac();
             $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
             
             foreach ($responses as $response) {
+              
                 if ($response->getType() === Response::TYPE_DATA) {
-                    if(str_replace(':', '-',$response->getProperty('mac-address')) == $mac_address){
+                    if($response->getProperty('mac-address') == $mac_address){
                         return $response->getProperty('address');
                     }
                 }
