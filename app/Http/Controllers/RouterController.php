@@ -118,7 +118,6 @@ class RouterController extends Controller
     public function hotspotLogin(Request $request)
     {
         $request->validate([
-            'ip' => 'required',
             'mac' => 'required',
             'subscription_id' => 'required|exists:subscriptions,id'
         ]);

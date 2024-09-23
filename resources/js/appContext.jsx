@@ -30,7 +30,7 @@ export const AppProvider = ({ children }) => {
           updatedClientData[key] = data[key]
     })
     setClientData(updatedClientData)
-    localStorage.setItem('client',JSON.stringify(clientData))
+    localStorage.setItem('client',JSON.stringify(updatedClientData))
   }
 
   const logoutUser = () => {
