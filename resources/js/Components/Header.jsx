@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import React, { useState } from 'react'
 import Icon from './Common/Icon';
 import DropDown from './Common/DropDown';
@@ -25,7 +25,7 @@ function Header({ client = null }) {
               </svg>
             </button>
             <div className={`w-full md:block md:w-auto ${collapseNav ? '' : 'hidden'}`} id="navbar-default">
-              <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul className="font-medium flex items-center flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <a
                     href="/index"
@@ -92,7 +92,7 @@ function Header({ client = null }) {
                   </a>
                 </li>
                 {
-                  !client &&
+                  client ?
                   <li title={`${client?.client?.name} is logged in`}>
                     <Link
                       // href="/client/connected"
@@ -108,14 +108,14 @@ function Header({ client = null }) {
                               className={`${
                               active ? 'bg-green-200 text-black' : 'text-gray-900'
                               } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                              // onClick={() => toggleEditTask(task)}
+                              onClick={() => router.visit('/client/connected')}
                             >
                               <Icon src='edit' className='w-4 mr-2' fill='rgb(34 197 94)'/>
-                              <span className='block py-3 px-2'>Add Device</span>   
+                              <span className='block py-3 px-2'>Subscriptions</span>   
                             </button>
                           )}
                         </Menu.Item>
-                      <Menu.Item>
+                      {/* <Menu.Item>
                           {({ active }) => (
                             <button
                               className={`${
@@ -127,10 +127,19 @@ function Header({ client = null }) {
                               <span className='block py-3 px-2'>Change Device</span>   
                             </button>
                           )}
-                        </Menu.Item>
+                        </Menu.Item> */}
                       </DropDown>
                       {/* { client?.client?.name } */}
                     </Link>
+                  </li>
+                  :
+                  <li>
+                    <Link
+                className='w-[5rem] rounded bg-green-500 p-2 text-white'
+                href={`/client/signup`}
+              >
+                 Free Trial
+              </Link>
                   </li>
                 }
                 

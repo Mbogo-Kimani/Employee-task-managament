@@ -18,6 +18,7 @@ const Checkout = () => {
     const [streetPackages, setStreetPackages] = useState([]);
     const { clientData,updateClient } = useContext(AppContext);
     const [polling, setPolling] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
 
     useEffect(() => {
@@ -26,30 +27,35 @@ const Checkout = () => {
     },[]);
 
     useEffect(() => {
-      const channel = window.Echo.channel('private.transaction');
-      channel.subscribed(() => {
-        console.log('Successfully subscribed to private.transaction');
-      }).listen('.transaction', (e) => {
-          if(e.confirmation){
-            if(e.confirmation == transaction){
-              return;
-            }
-            toast.success('Payment successful',{
-                position: "top-center"
-            });
+        !isSubscribed && window.location.reload()
+    },[isSubscribed])
+
+  //   useEffect(() => {
+  //     const channel = window.Echo.channel('private.transaction');
+  //     channel.subscribed(() => {
+  //       setIsSubscribed(true)
+  //       console.log('Successfully subscribed to private.transaction');
+  //     }).listen('.transaction', (e) => {
+  //         if(e.confirmation){
+  //           if(e.confirmation == transaction){
+  //             return;
+  //           }
+  //           toast.success('Payment successful',{
+  //               position: "top-center"
+  //           });
            
-            setTransaction(e.confirmation);
-            requestHandler.post('/api/subscribe',{transaction_id: e.transactionId, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
+  //           setTransaction(e.confirmation);
+  //           requestHandler.post('/api/subscribe',{transaction_id: e.transactionId, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
 
-            // router.visit('/client/connected');
-          }
+  //           // router.visit('/client/connected');
+  //         }
           
-      });
+  //     });
 
-      return () => {
-      channel.unsubscribe('.transaction');
-      };
-  }, []);
+  //     return () => {
+  //     channel.unsubscribe('.transaction');
+  //     };
+  // }, []);
 
   useEffect(() => {
     let intervalId;
@@ -113,7 +119,7 @@ const Checkout = () => {
           position: "top-center"
         });
         setPolling(false);
-        requestHandler.post('/api/subscribe',{transaction_id: transaction?.id, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
+        requestHandler.post('/api/subscribe',{transaction_id: transaction?.id, ip: clientData?.ip, mac: clientData?.mac},setResponse,null,loaderSetter);
       }
     },[transaction])
 
@@ -142,10 +148,10 @@ const Checkout = () => {
       console.log(resp)
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTransaction({...transaction,['id']: resp.transaction_id})
-      console.log(transaction);
-      if(resp.isiOS){
+     
+      // if(resp.isiOS){
         setPolling(true)
-      }
+      // }
 
       
      
