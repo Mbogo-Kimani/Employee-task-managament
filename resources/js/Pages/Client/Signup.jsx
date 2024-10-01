@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import GuestLayout from '../../Layouts/GuestLayout'
 import '../../../css/Pages/home/auth.css'
 import requestHandler from '../../services/requestHandler';
 import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
 import OTPVerification from '../Auth/ClientOTP'
+import { AppContext } from '../../appContext';
+import { loaderSetter } from '../../Components/Common/Loader';
 
 const ClientSignup = () => {
     const [client, setClient] = useState({
         phone_number: '',
     });
+    const [subscriptionId, setSubscriptionId] = useState()
     const [response, setResponse] = useState([])
     const [otpVerify, setOtpVerify] = useState(false);
     const [productId, setProductId] = useState('');
+    const { clientData,updateClient } = useContext(AppContext);
 
     useEffect(() => {
         checkResponse();
@@ -27,14 +31,24 @@ const ClientSignup = () => {
         if (response && response.message) {
           if (response.success) {
             toast.success(response.message);
+            if(response.subscription_id){
+              setSubscriptionId(response.subscription_id)
+              setProductId('TRIAL')
+              requestHandler.post('/api/register/client', { client_id: response.client_id, devices: 1 }, handleResponse);
+            }
             setOtpVerify(true)
           } else {
             toast.error(response.message);
           }
-          // response.success && router.visit(`/clients/verify?otp=${client.phone_number}`)
+          
         }
       }
-
+      function handleResponse(resp){
+        
+        if(resp.success && response.subscription_id){
+          requestHandler.post('/api/subscribe',{subscription_id: response.subscription_id, ip: clientData?.ip, mac: clientData?.mac},setResponse);
+        }
+      }
     function handleSubmit(e, text){
       e.preventDefault();
        
@@ -96,6 +110,7 @@ const ClientSignup = () => {
       </div>
       <div className="card-back">
 	  <div className="center-wrap">
+    <h1 className='text-xl mb-5'>Signup  for <span className='text-orange-300'>FREE 7-DAY TRIAL</span></h1>
       <div className="flex justify-center">
             <div className="">
             <form className="">

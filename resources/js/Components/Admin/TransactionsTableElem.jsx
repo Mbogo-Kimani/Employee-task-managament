@@ -20,7 +20,7 @@ const TransactionsTableElem = ({elem}) => {
       </td>
       <td className='px-2 py-4'>{elem.amount}</td>
       <td className='px-2 py-4'>{elem.payment_confirmation}</td>
-      <td className='px-2 py-4'>{elem.date}</td>
+      <td className='px-2 py-4'>{elem.created_at}</td>
       <td className='px-2 py-4'>{elem.status}</td>
       <td className='px-2 py-4 relative'>
         <DropDown>

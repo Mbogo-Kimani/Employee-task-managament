@@ -115,24 +115,24 @@ function Connected() {
     <ClientLayout>
       <div className="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style={{fontFamily: "'Work Sans', 'Noto Sans', sans-serif"}}>
         <div className="layout-container flex h-full grow flex-col">
-          <div className="px-40 flex flex-1 justify-center py-5">
-            <div className="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+          <div className="md:px-40 px-4 flex flex-1 justify-center py-5">
+            <div className="layout-content-container flex flex-col  py-5 flex-1">
               <h2 className="text-[#0e141b] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">You're online!</h2>
               <p className="text-[#0e141b] text-base font-bold leading-normal pb-3 pt-1 px-4 text-center">Subscriptions</p>
               <div className=''>
-                {
+              {
                 (Array.isArray(subscriptions) ? subscriptions : []).map((plan, idx) => {
                   return (
-                    <div key={plan.id || idx} onClick={() => setSubscription(plan)} className={`border rounded border-yellow-300 mb-3 flex items-center gap-4 ${ subscription == plan ? 'bg-slate-200' : 'bg-slate-50'} hover:bg-slate-200 rounded-lg px-4 min-h-[72px] py-2 `}>
+                    <div key={plan.id || idx} onClick={() => setSubscription(plan)} className={`border rounded border-yellow-300 mb-3 flex items-center gap-4 ${ subscription == plan ? 'bg-slate-200' : 'bg-slate-50'} hover:bg-slate-200 rounded-lg px-4 min-h-[72px] py-2 w-full`}>
                       <div className="text-[#0e141b] flex items-center justify-center rounded-lg bg-[#e7edf3] shrink-0 size-12" data-icon="WifiHigh" data-size="24px" data-weight="regular">
                         <Icon src='wifi' className='w-10 h-10'/>
                       </div>
                       <div className="flex justify-between w-full">
-                        <p className="text-[#0e141b] text-base font-medium leading-normal  items-center flex flex-col">{ plan.street_package.name }
+                        <p className="text-[#0e141b] text-base font-medium leading-normal  items-center flex flex-col">{ plan.street_package?.name }
                           <span>Devices ({plan.devices ? JSON.parse(plan.devices).length : 0})</span>
                         </p>
                         
-                        <p className="text-[#4e7097] text-sm font-normal leading-normal line-clamp-2 flex items-center"><Icon src='calendar' className='w-10 h-10 mr-3'/><p className='flex flex-col'>Expires At  <span className='text-red-300'>{  plan.expires_at }</span></p></p>
+                        <p className="text-[#4e7097] text-sm font-normal leading-normal line-clamp-2 flex items-center"><Icon src='calendar' className='w-10 h-10 mr-3 hidden md:block'/><p className='flex flex-col'>Expires At  <span className='text-red-300'>{  plan.expires_at }</span></p></p>
                       </div>
                     </div>
                   )
