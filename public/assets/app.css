@@ -1699,3 +1699,14 @@ video {
     background-color: rgb(17 24 39 / var(--tw-bg-opacity));
   }
 }
+
+
+@media(max-width: 640px) {
+  
+  .featured-post{
+    height: 25vh;
+    width: 25vh;
+
+}
+  
+}

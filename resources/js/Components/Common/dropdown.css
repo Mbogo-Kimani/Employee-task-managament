@@ -1,0 +1,17 @@
+
+
+@media (max-width: 640px) {
+    .w-56 {
+      width: 120vw;
+      max-width: 20;
+    }
+  }
+
+
+  @media (max-width: 640px) {
+    .absolute.right-0 {
+      right: auto;
+      left: 80%;
+      transform: translateX(-50%);
+    }
+  }

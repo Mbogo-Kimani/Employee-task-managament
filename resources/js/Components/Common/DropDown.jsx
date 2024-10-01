@@ -1,6 +1,7 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Icon from '../Common/Icon';
+import "./dropdown.css"
 
 export default function DropDown({children, src}) {
   return (
@@ -8,7 +9,7 @@ export default function DropDown({children, src}) {
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex justify-center align-center px-6 text-sm focus:outline-none">
-            <Icon data-modal-target="default-modal" data-modal-toggle="default-modal" src={`${src ? src : "menu"}`} className='w-5 h-5 cursor-pointer hover:scale-105' fill='var(--gray)'/>
+            <Icon data-modal-target="default-modal" data-modal-toggle="default-modal" src={`${src ? src : "menu"}`} className='w-5 h-5 cursor-pointer hover:scale-0' fill='var(--gray)'/>
           </Menu.Button>
         </div>
         <Transition

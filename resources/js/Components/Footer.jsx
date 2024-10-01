@@ -1,14 +1,15 @@
 import React from 'react'
 import Icon from './Common/Icon'
+import "./footer.css"
 
 function Footer() {
   return (
     <footer id="footer" className="footer-bg-3">
-      <div className="text-gray-100 py-10 px-8 mb-[40px]">
+      <div className="text-gray-100 py-10 px-8 mb-[2.5rem]">
         <div className="">
           <div className="flex justify-center md:justify-between items-center flex-wrap text-center md:text-left">
-            <div className="w-full md:w-auto mb-[30px] md:mb-0 flex justify-center flex-col">
-              <h3 className="font-bold text-[30px] leading-10 text-white">Our Solutions</h3>
+            <div className="w-full md:w-auto mb-[1.9rem]] md:mb-0 flex justify-center flex-col">
+              <h3 className="font-bold text-[1.9rem] leading-10 text-white">Our Solutions</h3>
               <div className="flex justify-center">
                 <ul className="text-gray-300 flex flex-col justify-right">
                   <li><a href="#">SmartHome systems</a></li>
