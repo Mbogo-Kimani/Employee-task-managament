@@ -26,9 +26,9 @@ const Checkout = () => {
       console.log(clientData);
     },[]);
 
-    useEffect(() => {
-        !isSubscribed && window.location.reload()
-    },[isSubscribed])
+//    useEffect(() => {
+//        !isSubscribed && window.location.reload()
+//    },[isSubscribed])
 
     useEffect(() => {
       const channel = window.Echo.channel('private.transaction');
@@ -149,9 +149,9 @@ const Checkout = () => {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTransaction({...transaction,['id']: resp.transaction_id})
      
-      if(resp.isiOS){
+//      if(resp.isiOS){
         setPolling(true)
-      }
+//      }
 
       
      
