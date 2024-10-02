@@ -30,32 +30,32 @@ const Checkout = () => {
         !isSubscribed && window.location.reload()
     },[isSubscribed])
 
-  //   useEffect(() => {
-  //     const channel = window.Echo.channel('private.transaction');
-  //     channel.subscribed(() => {
-  //       setIsSubscribed(true)
-  //       console.log('Successfully subscribed to private.transaction');
-  //     }).listen('.transaction', (e) => {
-  //         if(e.confirmation){
-  //           if(e.confirmation == transaction){
-  //             return;
-  //           }
-  //           toast.success('Payment successful',{
-  //               position: "top-center"
-  //           });
+    useEffect(() => {
+      const channel = window.Echo.channel('private.transaction');
+      channel.subscribed(() => {
+        setIsSubscribed(true)
+        console.log('Successfully subscribed to private.transaction');
+      }).listen('.transaction', (e) => {
+          if(e.confirmation){
+            if(e.confirmation == transaction){
+              return;
+            }
+            toast.success('Payment successful',{
+                position: "top-center"
+            });
            
-  //           setTransaction(e.confirmation);
-  //           requestHandler.post('/api/subscribe',{transaction_id: e.transactionId, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
+            setTransaction(e.confirmation);
+            requestHandler.post('/api/subscribe',{transaction_id: e.transactionId, ip: clientData?.ip, mac: clientData?.mac},setResponse, null, loaderSetter);
 
-  //           // router.visit('/client/connected');
-  //         }
+            // router.visit('/client/connected');
+          }
           
-  //     });
+      });
 
-  //     return () => {
-  //     channel.unsubscribe('.transaction');
-  //     };
-  // }, []);
+      return () => {
+      channel.unsubscribe('.transaction');
+      };
+  }, []);
 
   useEffect(() => {
     let intervalId;
@@ -118,6 +118,7 @@ const Checkout = () => {
         toast.success('Payment successful',{
           position: "top-center"
         });
+      
         setPolling(false);
         requestHandler.post('/api/subscribe',{transaction_id: transaction?.id, ip: clientData?.ip, mac: clientData?.mac},setResponse,null,loaderSetter);
       }
@@ -149,9 +150,9 @@ const Checkout = () => {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTransaction({...transaction,['id']: resp.transaction_id})
      
-      // if(resp.isiOS){
+      if(resp.isiOS){
         setPolling(true)
-      // }
+      }
 
       
      
