@@ -108,7 +108,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if(client?.client && !client?.client.is_registered_hotspot){
-          requestHandler.post('/api/register/client', { client_id: client.client.id, devices: product.devices }, setClient);
+          requestHandler.post('/api/register/client', { client_id: client.client.id, devices: product.devices }, setResponse);
         }
     },[client])
 
@@ -146,7 +146,6 @@ const Checkout = () => {
 
   function handleResponse(resp) {
     if (resp) {
-      console.log(resp)
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTransaction({...transaction,['id']: resp.transaction_id})
      
