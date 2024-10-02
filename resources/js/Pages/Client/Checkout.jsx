@@ -26,9 +26,9 @@ const Checkout = () => {
       console.log(clientData);
     },[]);
 
-    useEffect(() => {
-        !isSubscribed && window.location.reload()
-    },[isSubscribed])
+//    useEffect(() => {
+//        !isSubscribed && window.location.reload()
+//    },[isSubscribed])
 
     useEffect(() => {
       const channel = window.Echo.channel('private.transaction');
@@ -108,7 +108,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if(client?.client && !client?.client.is_registered_hotspot){
-          requestHandler.post('/api/register/client', { client_id: client.client.id, devices: product.devices }, setClient);
+          requestHandler.post('/api/register/client', { client_id: client.client.id, devices: product.devices }, setResponse);
         }
     },[client])
 
@@ -131,6 +131,7 @@ const Checkout = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+	console.log(client);
         const data = {
             amount: product.cost,
             client_id: client?.client?.id,
@@ -150,9 +151,9 @@ const Checkout = () => {
       toast.success('We have sent a prompt to your phone\nPlease enter your MPESA pin when you get the prompt');
       setTransaction({...transaction,['id']: resp.transaction_id})
      
-      if(resp.isiOS){
+//      if(resp.isiOS){
         setPolling(true)
-      }
+//      }
 
       
      
