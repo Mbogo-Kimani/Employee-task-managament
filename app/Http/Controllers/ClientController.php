@@ -9,6 +9,7 @@ use App\Imports\ClientImport;
 use App\Imports\InventoryImport;
 use App\Models\Client;
 use App\Models\Subscription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -26,18 +27,27 @@ class ClientController extends Controller
             'email' => 'required|email|unique:clients',
             'phone_number' => 'required|string|max:15',
 		]);
-        $client = Client::where('phone_number','+254' . $request->phone_number)->first();
+        $client = Client::where('phone_number','+254' . $request->phone_number)->orWhere('email', $request->email)->first();
 	        
         if($client){
             return response()->json(['success' => false, 'message' => 'User already exists.']);
         }
         $verification_code = ApiLib::createOTPVerificationCode(4);
         try{
-            Client::create([
+            $client = Client::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
                 'verification_code' => $verification_code
+            ]);
+
+            $subscription = Subscription::create([
+                'client_id' => $client->id,
+                'street_package_id' => 16,
+                'username' => $client->name,
+                'password' => $client->phone_number,
+                'status' => 1,
+                'expires_at' => Carbon::now()->addSeconds(16)
             ]);
             $this->sendOTP('+254' . $request->phone_number,$verification_code);
             
@@ -45,7 +55,7 @@ class ClientController extends Controller
             abort(400, $e->getMessage());
         }
         
-        return response()->json(['success' => true, 'message' => 'Verification code sent'], 200);
+        return response()->json(['success' => true, 'message' => 'Verification code sent', 'subscription_id' => $subscription->id, 'client_id' => $client->id], 200);
 
     }
 
@@ -95,7 +105,7 @@ class ClientController extends Controller
 	} else {
 	    $client = Client::where('phone_number', 'LIKE', "%$request->phoneNumber%")->first();
 	}
-
+    
         if(!$client || $client->verification_code != $request->otp){
             return response()->json(['error' => 'Invalid verification code'], 400);
         }

@@ -8,6 +8,7 @@ use App\Models\StreetPackage;
 use App\Models\Subscription;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use PEAR2\Net\RouterOS\Client;
@@ -42,11 +43,16 @@ class RouterController extends Controller
     public function subscribe(Request $request)
     {
         $request->validate([ 
-            'transaction_id' => 'required|exists:subscriptions,transaction_id',
+            'transaction_id' => 'required_without:subscription_id|exists:subscriptions,transaction_id',
+            'subscription_id' => 'required_without:transaction_id'
         ]);
 
         $client = [];
-        $subscription = Subscription::where('transaction_id', $request->transaction_id)->first();
+        if($request->transaction_id){
+            $subscription = Subscription::where('transaction_id', $request->transaction_id)->first();
+        }else{
+            $subscription = Subscription::find($request->subscription_id);
+        }
         
        if(!$subscription->profile_assigned){
         try{
@@ -70,7 +76,7 @@ class RouterController extends Controller
             $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
             $subscription->save();
 
-            return response()->json(['message' => 'User subscribed successfully.']);
+            return response()->json(['success' => true, 'message' => 'User subscribed successfully.']);
         }catch (\Exception $e){
             abort(400,$e);
 
@@ -94,7 +100,7 @@ class RouterController extends Controller
         $customer = ModelsClient::find($request->client_id);
         $password = str_replace('+254', '0', $customer->phone_number);
         $password = str_replace(' ', '', $password);
-//	dd($customer);
+
         try{
             $client = new Client('10.244.251.62', 'admin', 'pass');
 
@@ -121,19 +127,19 @@ class RouterController extends Controller
             'mac' => 'required',
             'subscription_id' => 'required|exists:subscriptions,id'
         ]);
-        
+      
         $subscription = Subscription::find($request->subscription_id);
         try{
             $client = new Client('10.244.251.62', 'admin', 'pass');
-
+           
             $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
             ->setArgument('user', $subscription->client->name)
             ->setArgument('password', $subscription->client->phone_number)
             ->setArgument('mac-address', $request->mac ?? $this->getMac())
             ->setArgument('ip', $this->getIP($client,$request->mac));
-            $client->sendSync($user_login);
-
+            $response = $client->sendSync($user_login);
+            // dd($response->getProperty('message'));
             $devices = json_decode($subscription->devices);
            
             if(is_array($devices)){
@@ -147,11 +153,45 @@ class RouterController extends Controller
             $subscription->devices = $devices;
             $subscription->save();
             
-            return response()->json(['success' => true]);
+            return response()->json(['success' => true, 'message' => 'You are now connected ']);
 
         }catch(Exception $e){
             abort(400, $e);
             
+        }
+    }
+
+    public function freeTrial(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required'
+        ]);
+        $customer =  ModelsClient::find($request->client_id);
+        try{
+            $client = new Client('10.244.251.62', 'admin', 'pass');
+            
+            $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
+            $activate_profile
+            ->setArgument('profile', 'TRIAL')
+            ->setArgument('user', $customer->name);
+            $client->sendSync($activate_profile);
+            $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
+            $user_login
+            ->setArgument('user', $customer->name)
+            ->setArgument('password', $customer->phone_number)
+            ->setArgument('mac-address', $request->mac ?? $this->getMac())
+            ->setArgument('ip', $request->ip);
+            $client->sendSync($user_login);
+            // dd($user_login);
+            // $subscription->profile_assigned = true;
+            // $subscription->devices = [$request->mac];
+            // $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
+            // $subscription->save();
+
+            return response()->json(['message' => 'User subscribed successfully.']);
+        }catch (\Exception $e){
+            abort(400,$e);
+
         }
     }
 
