@@ -24,10 +24,10 @@ class ClientController extends Controller
         $user = auth()->user();
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:clients',
+            'email' => 'required|email',
             'phone_number' => 'required|string|max:15',
 		]);
-        $client = Client::where('phone_number','+254' . $request->phone_number)->orWhere('email', $request->email)->first();
+        $client = Client::where('phone_number',$request->phone_number)->orWhere('email', $request->email)->first();
 	        
         if($client){
             return response()->json(['success' => false, 'message' => 'User already exists.']);
