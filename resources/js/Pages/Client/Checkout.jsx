@@ -131,7 +131,6 @@ const Checkout = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-	console.log(client);
         const data = {
             amount: product.cost,
             client_id: client?.client?.id,
