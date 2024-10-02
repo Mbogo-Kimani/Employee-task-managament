@@ -12,7 +12,7 @@ class Subscription extends Model
     protected $guarded = [];
 
     public function streetPackage() {
-		return $this->belongsTo(StreetPackage::class, 'package_id');
+		return $this->belongsTo(StreetPackage::class, 'street_package_id');
 	}
 
     public function client() {
