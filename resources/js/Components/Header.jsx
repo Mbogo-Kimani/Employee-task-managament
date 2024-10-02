@@ -26,7 +26,7 @@ function Header({ client = null }) {
             </button>
             <div className={`w-full md:block md:w-auto ${collapseNav ? '' : 'hidden'}`} id="navbar-default">
               <ul className="font-medium flex items-center flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                <li className='w-[10rem] text-center'>
+                <li className={collapseNav && 'w-[10rem] text-center mb-2'}>
                   <a
                     href="/index"
                     className={`
@@ -39,7 +39,7 @@ function Header({ client = null }) {
                     Home
                   </a>
                 </li>
-                <li className='w-[10rem] text-center'>
+                <li className={collapseNav && 'w-[10rem] text-center mb-2'}>
                   <a
                     href="/products"
                     className={`
@@ -52,7 +52,7 @@ function Header({ client = null }) {
                     Our Solutions
                   </a>
                 </li>
-                <li className='w-[10rem] text-center mb-2'>
+                <li className={collapseNav && 'w-[10rem] text-center mb-2'}>
                   <a
                     href="/blogs"
                     className={`
@@ -65,7 +65,7 @@ function Header({ client = null }) {
                     Blog
                   </a>
                 </li>
-                <li className='w-[10rem] text-center mb-2'>
+                <li className={collapseNav && 'w-[10rem] text-center mb-2'}>
                   <a
                     href="/about-us"
                     className={`
@@ -78,7 +78,7 @@ function Header({ client = null }) {
                     About Us
                   </a>
                 </li>
-                <li className='w-[10rem] text-center mb-2'>
+                <li className={collapseNav && 'w-[10rem] text-center mb-2'}>
                   <a
                     href="/contact"
                     className={`
