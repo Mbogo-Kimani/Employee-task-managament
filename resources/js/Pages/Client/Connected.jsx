@@ -60,12 +60,19 @@ function Connected() {
 
   function handleHotspotLogin(){
     const filteredSubscriptions = subscriptions.filter(i=> {
-      return i.profile_assigned == false
+      return i.profile_assigned != false
     })
-    if(!filteredSubscriptions.length){
-      // requestHandler.post('/api/subscribe',{transaction_id: 7},setResponse);
+    
+    if(filteredSubscriptions.length){ 
+      const data = {
+        mac: clientData?.mac,
+        ip: clientData?.ip,
+        subscription_id: filteredSubscriptions[0].id
+      }
+      
+      requestHandler.post('/api/hotspot/login',data,setResponse);
     }else{
-      // window.location.href = 'http://hotspot.etnet/login?dst=http%3A%2F%2Fwww.msftconnecttest.com%2Fredirect'
+      toast.error('Please subscribe to a package to connect')
     }
   }
 
@@ -147,16 +154,17 @@ function Connected() {
                 <p>Username: <span>{client?.client?.name}</span></p>
                 <p>Password:<span>{client?.client?.phone_number.replace("+254","0")}</span></p>
               </div> */}
-                <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
+                <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between items-center">
                     {/* <button
                       className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-green-600 hover:bg-green-700 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
                       onClick={handleHotspotLogin}
                     >
                       <span className="truncate">Login to the Hotspot</span>
                     </button> */}
+                    <p>Click <span className='text-green-400 cursor-pointer' onClick={handleHotspotLogin}>here</span> if you are not connected.</p>
                   <Link href='/products'>
                     <button
-                      className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#1979e6] hover:bg-blue-600 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+                      className="ml-5 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#1979e6] hover:bg-blue-600 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
                     >
                       <span className="truncate">Buy another bundle</span>
                     </button>
