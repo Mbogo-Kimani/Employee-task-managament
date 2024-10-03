@@ -4,7 +4,7 @@ import GuestLayout from '../../Layouts/GuestLayout';
 import Service from '../../Components/Products/Service';
 import requestHandler from '../../services/requestHandler';
 import { AppContext } from '../../appContext';
-import "./products.css"
+
 
 function Products() {
   const [packageType, setPackageType] = useState('street');
