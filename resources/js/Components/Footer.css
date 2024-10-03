@@ -1,0 +1,9 @@
+
+
+@media (max-width: 640px) {
+    .w-56 {
+      width: 120vw;
+      max-width: 20;
+    }
+  }
+

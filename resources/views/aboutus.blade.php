@@ -49,44 +49,61 @@
 
     <!-- Team start -->
 
-    <div class="title-section text-center">
-        <h2 class="flat-title">Our Team</h2>
-    </div>
-    <div class="flat-it-services flat-it-services-style4">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="service-image-box2 hv-background-before">
+<div class="title-section text-center py-4">
+    <h2 class="flat-title">Our Team</h2>
+</div>
 
-                        <div class="featured-post">
-                            <div class="">
-                                <img src="{{asset('images/team-member/JN.png')}}" alt="images">
-                            </div>
-                        </div>
-                        <div class="content-service">
-                            <h3 class="title"><a href="#">Chief Finance Officer</a></h3>
-                            <div class=""><a href="#">Joan Njumbi<span class=""></span></a></div>
-                        </div>
+<div class="flat-it-services flat-it-services-style4 py-4">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Team Member 1 -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="service-image-box2 hv-background-before p-3 text-center shadow-sm">
+                    <div class="featured-post mb-3"    style="height: 50vh; width:50vh;">
+                        <img src="{{asset('images/team-member/JN.png')}}" alt="Chief Finance Officer" class="img-fluid rounded-circle"  
+                        
+                        
+                        style="
+                        height:100%; width:100%;">
+                    </div>
+                    <div class="content-service">
+                        <h3 class="title">
+                            <a href="#" class="text-dark text-decoration-none">Chief Finance Officer</a>
+                        </h3>
+                        <p class="mb-0">
+                            <a href="#" class="text-muted">Joan Njumbi</a>
+                        </p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="service-image-box2 hv-background-before">
+            </div>
 
-                        <div class="featured-post">
-                            <div class="">
-                                <img src="{{asset('images/team-member/BN.jpg')}}" alt="images">
-                            </div>
-                        </div>
-                        <div class="content-service">
-                            <h3 class="title"><a href="#">Marketing Manager</a></h3>
-                            <div class="#"><a href="#">Benson<span class=""></span></a></div>
-                        </div>
+            
+
+            <!-- Team Member 2 -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="service-image-box2 hv-background-before p-3 text-center shadow-sm">
+                    <div class="featured-post mb-3"   style="height:50vh; width:50vh;">
+                        <img src="{{asset('images/team-member/BN.jpg')}}" alt="Marketing Manager" class="img-fluid rounded-circle" style="height: 100%; width:100%;">
+                    </div>
+                    <div class="content-service">
+                        <h3 class="title">
+                            <a href="#" class="text-dark text-decoration-none">Marketing Manager</a>
+                        </h3>
+                        <p class="mb-0">
+                            <a href="#" class="text-muted">Benson</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 <!-- Team end -->
 
@@ -138,13 +155,20 @@
             <div class="container position-relative text-center">
                 <div class="cta-content position-relative">
                     <div class="icon"><span class="icon-support"></span></div>
-                    <div class="f-text text-white">Reliability is the bedrock of our ISP's dedication to data integrity. 
+                    <div class="f-text text-white">
+                        <p style="font-size:1.5rem">Reliability is the bedrock of our ISP's dedication to data integrity. 
                         Our steadfast systems maintain uninterrupted access control, 
                         ensuring consistent protection for client data with minimal downtime or interruptions.
+                        </p>
                     </div>
-                    <div class="s-text text-white">Elevate Your Network with our Team</div>
+                    <div class="s-text text-white" style="font-size:2.5rem;">Elevate Your Network with our Team</div>
                     <div class="flat-contact-now btn-linear hv-linear-gradient">
-                        <a href="{{url('about-us')}}" class="font-style linear-color border-corner">Team
+                        <a href="{{url('about-us')}}" class="font-style linear-color border-corner" 
+                    
+                    style="height: 2.5rem; width:10rem; padding:0.2rem 0.5rem;"
+                    
+                    
+                        > Our Team
                     </div>
                 </div>
                 <div class="circle-border circle-border1 none-767"></div>
@@ -155,4 +179,20 @@
 
     </div>
 </slider>
+
+
+
+
+
+
+<style>
+
+
+
+
+</style>
+
+
+
+
 @endsection
