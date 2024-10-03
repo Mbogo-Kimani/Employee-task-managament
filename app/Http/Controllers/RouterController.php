@@ -140,8 +140,11 @@ class RouterController extends Controller
             ->setArgument('ip', $this->getIP($client,$request->mac));
             $response = $client->sendSync($user_login);
             // dd($response->getProperty('message'));
+            if ($response->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
             $devices = json_decode($subscription->devices);
-           
+            
             if(is_array($devices)){
                 if(!in_array($request->mac, $devices)){
                     $devices[] = $request->mac;
@@ -152,7 +155,7 @@ class RouterController extends Controller
             
             $subscription->devices = $devices;
             $subscription->save();
-            
+
             return response()->json(['success' => true, 'message' => 'You are now connected ']);
 
         }catch(Exception $e){
