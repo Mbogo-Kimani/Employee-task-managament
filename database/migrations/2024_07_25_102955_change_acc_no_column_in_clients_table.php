@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('address')->nullable()->change();
+            $table->string('address')->nullable();
             $table->string('acc_no')->nullable()->change();
 			$table->string('apartment_no')->nullable()->change();
             $table->unsignedBigInteger('package_id')->nullable()->change();

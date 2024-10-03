@@ -22,7 +22,7 @@ class RouterController extends Controller
     {
         $client = [];
         try{
-            $client = new Client('10.244.251.62', 'admin', 'pass');
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
             echo "Connection successfull";
             
             $responses = $client->sendSync(new RouterOsRequest('/ip/arp/print'));
@@ -56,7 +56,7 @@ class RouterController extends Controller
         
        if(!$subscription->profile_assigned){
         try{
-            $client = new Client('10.244.251.62', 'admin', 'pass');
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
             
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
@@ -102,7 +102,7 @@ class RouterController extends Controller
         $password = str_replace(' ', '', $password);
 
         try{
-            $client = new Client('10.244.251.62', 'admin', 'pass');
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
 
             $addRequest = new RouterOSRequest('/user-manager/user/add');
                 $addRequest
@@ -130,7 +130,7 @@ class RouterController extends Controller
       
         $subscription = Subscription::find($request->subscription_id);
         try{
-            $client = new Client('10.244.251.62', 'admin', 'pass');
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
            
             $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
@@ -168,7 +168,7 @@ class RouterController extends Controller
         ]);
         $customer =  ModelsClient::find($request->client_id);
         try{
-            $client = new Client('10.244.251.62', 'admin', 'pass');
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
             
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
