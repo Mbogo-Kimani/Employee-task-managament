@@ -34,7 +34,7 @@ class ReportsExports implements FromCollection, WithHeadings
             $task = Task::find($report->task_id);
             
             $task_report = [
-                'name' => !empty($task->users) && count($task->users) < 2 ? $task->users[0]->name : $task->users[0]->name . ', ' . $task->users[1]->name,
+                'name' => $this->getUsers($task->users),
                 'title'=> $report->title,
                 'content' => $report->content,
                 'date' => Carbon::parse($report->created_at)->format('Y-m-d'),
@@ -44,5 +44,14 @@ class ReportsExports implements FromCollection, WithHeadings
         }
         // return TaskReport::all();
         return collect($data);
+    }
+
+    private function getUsers($users)
+    {
+        $taskers = '';
+        foreach($users as $user){
+            $taskers .= $user->name;
+        }
+        return $taskers;
     }
 }
