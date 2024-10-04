@@ -137,7 +137,7 @@
                     </ul>
                 </div>
                 <div class="widget widget-recent-posts widget-bg">
-                    <h2 class="widget-title">recent posts</h2>
+                    <h2 class="widget-title">Recent posts</h2>
                     <ul class="recent-news">
                         <li>
                             <div class="thumb-image">
