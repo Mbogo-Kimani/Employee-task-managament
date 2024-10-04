@@ -175,34 +175,54 @@
 
 </section>
 
-<!-- fact -->
-<section class="cta-type2 parallax parallax3" style="position: relative; background-size: cover; background-attachment: fixed; padding: 80px 0;">
-    <div class="section-overlay" style="background-color: rgba(0, 0, 0, 0.6); position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-    <div class="container position-relative text-center">
-        <div class="cta-content position-relative text-white" style="z-index: 2;">
-            <!-- Icon -->
-            <div class="icon mb-4">
-                <span class="icon-support" style="font-size: 3rem; color: #fff;"></span>
-            </div>
-            <!-- Text -->
-            <div class="f-text text-white" style="font-size: 1.4rem; font-weight: 400; margin-bottom: 20px;">
-                Are you seeking superior Networking, ISP Services, CCTV Installations, and SmartHome Systems? 
-                Look no further than <strong>ET~NET</strong>. As your premier ISP provider, 
-                we offer comprehensive solutions tailored to your needs. Contact us now to get started.
-            </div>
-            <!-- Sub-text -->
-            <div class="s-text text-white mb-4" style="font-size: 1.8rem; font-weight: 600;">
-                Only at ET~NET
-            </div>
-            <!-- Button -->
-            <div class="flat-contact-now btn-linear hv-linear-gradient">
-                <a href="contact.html" class="btn btn-primary font-style linear-color border-corner px-4 py-2" style="font-size: 1.2rem; border-radius: 30px;">
-                    Contact Now <span class="icon-arrow-pointing-to-right"></span>
-                </a>
+
+<section class="get-in-touch">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="contact-card">
+                    <div class="row g-0">
+                        <!-- Contact Information -->
+                        <div class="col-md-5">
+                            <div class="contact-info h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <h4>Contact Us</h4>
+                                    <ul class="contact-details list-unstyled">
+                                        <li><i class="fas fa-phone-alt"></i> 0791-012-345</li>
+                                        <li><i class="fas fa-building"></i> ET~NET</li>
+                                        <li><i class="fas fa-map-marker-alt"></i> 123 Network Street, Tech City</li>
+                                    </ul>
+                                </div>
+                                <p class="mb-0" style="color: var(--light-gray);">
+                                    Your trusted source for Networking services and SmartHome Systems. We provide prominent Networking solutions.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Form -->
+                        <div class="col-md-7">
+                            <div class="contact-form">
+                                <h3 class="mb-4">Get in touch</h3>
+                                <form id="contactform" action="#" method="post">
+                                    <div class="mb-3">
+                                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-submit">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Circle Borders -->
-
     </div>
 </section>
 
@@ -270,56 +290,55 @@
     </div>
 </section>
 
-
-<section class="get-in-touch parallax parallax4 position-relative">
-    <div class="section-overlay"></div>
+<section class="get-in-touch">
     <div class="container">
         <div class="row">
-            <!-- Contact Information -->
-            <div class="col-lg-6 col-12">
-                <div class="contact-address py-5 d-flex flex-column justify-content-between" style="background-color: #2c3e50; color: #ffffff; border-radius: 10px; padding: 30px; height: 100%;">
-                    <div>
-                        <span class="icon-support" style="font-size: 2rem; margin-bottom: 10px; display: block;"></span>
-                        <h4 class="text-white mb-3">Contact Us</h4>
-                        <ul class="contact-details list-unstyled my-3">
-                            <li style="margin-bottom: 8px;"><strong>Call Us:</strong> <span style="color: #f39c12;">0791-012-345</span></li>
-                            <li style="margin-bottom: 8px;"><strong>Company:</strong> <span style="color: #f39c12;">ET~NET</span></li>
-                        </ul>
+            <div class="col-lg-10 offset-lg-1">
+                <div class="contact-card">
+                    <div class="row g-0">
+                        <!-- Contact Information -->
+                        <div class="col-md-5">
+                            <div class="contact-info h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <h4>Contact Us</h4>
+                                    <ul class="contact-details list-unstyled">
+                                        <li> 0791-012-345</li>
+                                        <li>ET~NET</li>
+                                        <li> 123 Network Street, Kilimani</li>
+                                    </ul>
+                                </div>
+                                <p class="mb-0">
+                                    Your trusted source for Networking services and SmartHome Systems. We provide prominent Networking solutions.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Form -->
+                        <div class="col-md-7">
+                            <div class="contact-form">
+                                <h3 class="mb-4">Get in touch</h3>
+                                <form id="contactform" action="#" method="post">
+                                    <div class="mb-3">
+                                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-submit">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text" style="margin-top: 2px;">
-                        We provide prominent Networking solutions. Your trusted source for Networking services and SmartHome Systems.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Contact Form -->
-            <div class="col-lg-6 col-12">
-                <div class="form-container py-5" style="height: 100%;">
-                    <form id="contactform" action="#" method="post" class="form-git2 form-submit" style="height: 100%;">
-                        <h3 class="title text-center mb-4">Get in touch, let's get you connected</h3>
-                        <div class="text-wrap">
-                            <div class="form-group position-relative mb-3">
-                                <input type="text" name="firstname" id="firstname" value="" class="form-control firstname" placeholder="Name here" required>
-                                <span class="icon-user position-absolute"></span>
-                            </div>
-                            <div class="form-group position-relative mb-3">
-                                <input type="email" name="email" id="email" value="" class="form-control email" placeholder="Email here" required>
-                                <span class="fa fa-envelope position-absolute"></span>
-                            </div>
-                            <div class="form-group mb-4">
-                                <textarea name="message" id="comment-message" class="form-control" rows="6" placeholder="Message here" required></textarea>
-                            </div>
-                        </div>
-                        <div class="flat-send-message btn-linear hv-linear-gradient text-center">
-                            <button name="submit" type="submit" class="btn btn-primary submit font-style linear-color border-corner">Send Message Now</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 
 
 <!-- get-in-touch -->
@@ -470,6 +489,120 @@
         padding: 0;
     }
 }
+
+:root {
+        --purple: rgb(75, 89, 133);
+        --light-purple: #7d4fff;
+        --luminous-green: #29cc97;
+        --dark-blue: #202b61;
+        --blue: #357bf2;
+        --gray: #6c757d;
+        --light-gray: #f7fafc;
+        --orange: #f99526;
+    }
+
+    .get-in-touch {
+        background-image: url('images/parallax/04.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 80px 0;
+        position: relative;
+    }
+
+    .get-in-touch::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(32, 43, 97, 0.9), rgba(75, 89, 133, 0.8));
+        z-index: 1;
+    }
+
+    .contact-card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    .contact-info {
+        background-color: var(--dark-blue);
+        color: #ffffff;
+        padding: 40px;
+    }
+
+    .contact-info h4 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: var(--luminous-green);
+    }
+
+    .contact-details li {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .contact-details i {
+        margin-right: 10px;
+        font-size: 18px;
+        color: var(--orange);
+    }
+
+    .contact-form {
+        padding: 40px;
+    }
+
+    .contact-form h3 {
+        color: var(--purple);
+    }
+
+    .form-control {
+        border: none;
+        border-bottom: 2px solid var(--gray);
+        border-radius: 0;
+        padding: 10px 5px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: var(--blue);
+    }
+    textarea.form-control {
+        min-height: 120px;
+        border-radius: 10px;
+        padding: 15px;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    textarea.form-control:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 2px rgba(53, 123, 242, 0.2);
+    }
+
+    .btn-submit {
+        background-color: var(--light-purple);
+        color: #ffffff;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--purple);
+        transform: translateY(-2px);
+    }
+
 
 
 </style>
