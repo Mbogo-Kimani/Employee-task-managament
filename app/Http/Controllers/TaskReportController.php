@@ -11,6 +11,8 @@ use App\Models\TaskReport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\ReportResourceCollection;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -94,15 +96,17 @@ class TaskReportController extends Controller
      */
     public function export(TaskReport $taskReport)
     {
-       
-        Excel::store(new ReportsExports, '/files/task.xlsx', 'local');
-        return Excel::download(new ReportsExports, 'reportse.xlsx');
-    
+        $filename = '/files' . '/report_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
+        Excel::store(new ReportsExports, $filename, 'public');
+        // return Excel::download(new ReportsExports, 'reportse.xlsx');
+        return response()->json(['file' => $filename]);
     // $headers = [
-    //     'Content-Type' => 'application/pdf',
-    //     // 'Content-Disposition' => 'attachment; filename="task_reports.xlsx"',
+    //     'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    //     'Content-Disposition' => 'attachment; filename="task.xlsx"',
     // ];
-    //    return response()->download(storage_path('/app/files/'. 'test.pdf'),'test.pdf',$headers);;
+    // return Storage::download('files/'. 'task.xlsx');
+    // return Storage::disk('local')->size('files/task.xlsx');
+    //    return response()->download(storage_path('/app/files/'. 'task.xlsx'),'task.xlsx',$headers);;
     }
 
     /**

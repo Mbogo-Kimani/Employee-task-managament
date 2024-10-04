@@ -53,6 +53,7 @@ function Tasks() {
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
   const [filters, setFilters] = useState({});
+  const [taskResponse, setTaskResponse] = useState();
   const [handlers, setHandlers] = useState({
     admins: [],
     departmentHeads: []
@@ -124,6 +125,19 @@ function Tasks() {
   useEffect(() => {
     fetchHandlers();
   }, [editTask]);
+
+  useEffect(() => {
+    if(taskResponse){
+      if(taskResponse.file){
+        const link = document.createElement('a');
+        link.href = `/storage${taskResponse.file}`;
+        link.setAttribute('download','Tasks');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }    
+    }
+  },[taskResponse])
 
   function setInitialSearchValue() {
     const allParams = location.search.split('&');
@@ -217,9 +231,14 @@ function Tasks() {
       setWorkNumber(val);
     }
   }
+  function handleExport () {
+    requestHandler.get('/api/admin/tasks/export',setTaskResponse)
+  }
   return (
     <SideNav>
       <div>
+    <button onClick={handleExport} className='absolute rounded bg-gray-400 hover:bg-gray-300 right-12 w-[5rem] p-2 mb-15'>Export</button>
+
         <TaskStatusColorCode />
         
         <div className='w-full flex justify-between items-center'>

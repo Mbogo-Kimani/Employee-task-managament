@@ -24,9 +24,22 @@ const Reports = () => {
   useEffect(() => {
     getReports();
   },[]);
+  useEffect(() => {
+    checkResponse();
+  }, [response]);
 
-
-
+  function checkResponse(){
+    if(response){
+      if(response.file){
+        const link = document.createElement('a');
+        link.href = `/storage${response.file}`;
+        link.setAttribute('download','report');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }    
+    }
+  }
   function getReports(){
     requestHandler.get('/api/admin/reports',setReports);
   }
@@ -59,22 +72,13 @@ const Reports = () => {
   }
 
   async function handleExport () {
-    // requestHandler.get('/api/reports/export',setResponse)
-    await fetch('/api/reports/export', {
-      method: 'GET',
-      headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-      },
-      
-  }).then(response => {
-   console.log(response);
-   
-  })
+    requestHandler.get('/api/reports/export',setResponse)
   }
 
   return (
   <SideNav>
     <button onClick={handleExport} className='absolute rounded bg-gray-400 hover:bg-gray-300 right-12 w-[5rem] p-2 mb-15'>Export</button>
+    
   <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-16 z-10">
         <TableComp
             columns={["Title","Employee", "Department", "Task Name", "Task Type", "Date", "Action"]}
