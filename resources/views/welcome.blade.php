@@ -272,6 +272,7 @@
                 <p>
                     Our company ensures the security of our clients' data by implementing 
                     access controls that restrict access appropriately and grant permissions only to authorized users.
+                 
                 </p>
                 <div class="discover-more">
                     <!-- <a href="#">Discover More</a> -->
