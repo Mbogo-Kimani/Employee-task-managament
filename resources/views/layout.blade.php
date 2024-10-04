@@ -155,9 +155,11 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-lg-4 col-md-6 col-12">
-                        <div class="mg-widget-mobi kcl-widget">
-                            <h3 class="widget widget-title">Get in Touch with US</h3>
+                        <div class="mg-widget-mobi">
+
+                            <h3 class="widget widget-title">Get in Touch with Us</h3>
                             <div class="socials-list">
                                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                                 <a href="{{url('https://www.instagram.com/elephanttech.limited/')}}" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
@@ -186,7 +188,7 @@
             <div class="container">
                 <div class="bottom-wrap text-center">
                     <div id="copyright">
-                        Copyright © 2024<a href="#"> ET~NET</a><span class="license"> All Rights Reserved <a href="privacy_policy.html" target="_blank">Privacy Policy</a></span>
+                        <strong>Copyright &copy; {{date('Y')}} <a href="https://etnet.co.ke">ET~NET</a>.</strong>All rights reserved.
                     </div>
                 </div>
             </div>
