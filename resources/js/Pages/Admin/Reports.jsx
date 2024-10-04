@@ -19,6 +19,7 @@ const Reports = () => {
   const [showModal, setShowModal] = useState(false);
   const [showReviewReportModal, setShowReviewReportModal] = useState(false);
   const [errors, setErrors] = useState({});
+  const [response,setResponse] = useState();
 
   useEffect(() => {
     getReports();
@@ -57,13 +58,24 @@ const Reports = () => {
     }
   }
 
-  function openActionOptions () {
-    // setActions(true)
+  async function handleExport () {
+    // requestHandler.get('/api/reports/export',setResponse)
+    await fetch('/api/reports/export', {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+      },
+      
+  }).then(response => {
+   console.log(response);
+   
+  })
   }
 
   return (
   <SideNav>
-  <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2 z-10">
+    <button onClick={handleExport} className='absolute rounded bg-gray-400 hover:bg-gray-300 right-12 w-[5rem] p-2 mb-15'>Export</button>
+  <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-16 z-10">
         <TableComp
             columns={["Title","Employee", "Department", "Task Name", "Task Type", "Date", "Action"]}
         >
