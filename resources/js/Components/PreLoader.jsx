@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const loader = () => {
+const Preloader = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -36,31 +36,23 @@ const loader = () => {
             </div>
 
             <style jsx>{`
-                body, html {
-                    margin: 0;
-                    padding: 0;
-                    height: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background-color: #000;
-                    overflow: hidden;
-                }
-
                 .preloader-container {
-                    position: relative;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
+                    background-color: #000;
+                    z-index: 9999;
                 }
 
                 /* Spinning Circles */
                 .circle-container {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
+                    position: relative;
                     width: 200px;
                     height: 200px;
                     display: flex;
@@ -109,6 +101,7 @@ const loader = () => {
                     letter-spacing: 10px;
                     color: #fff;
                     display: flex;
+                    margin-top: 20px;
                 }
 
                 .preloader-text span {
@@ -121,7 +114,6 @@ const loader = () => {
                 .preloader-text span:nth-child(4) { animation-delay: 0.6s; }
                 .preloader-text span:nth-child(5) { animation-delay: 0.8s; }
                 .preloader-text span:nth-child(6) { animation-delay: 1s; }
-                .preloader-text span:nth-child(7) { animation-delay: 1.2s; }
 
                 @keyframes colorChange {
                     0% { color: #f99526; }
@@ -135,4 +127,4 @@ const loader = () => {
     );
 };
 
-export default loader;
+export default Preloader;
