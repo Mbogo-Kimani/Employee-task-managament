@@ -33,6 +33,7 @@ class UserstableSeeder extends Seeder
 				'email' => 'test@mail.com',
 				'password' => bcrypt('12345678'),
 				'image' => '',
+				'phone_number' => '+25470123456',
 				'department_id'=> \App\Enums\DepartmentEnum::ADMIN
 		]);
 
@@ -45,6 +46,7 @@ class UserstableSeeder extends Seeder
 				'remember_token' => Str::random(10),
 				'role' => $keys[$departments[$i]->enum_key],
 				'image' => '',
+				'phone_number' => '+25470123456',
 				'department_id' => $departments[$i]->id,
 				'clearance_level' => \App\Enums\ClearanceLevelEnum::DEPARTMENT_LEADER,
 			]);
@@ -57,6 +59,7 @@ class UserstableSeeder extends Seeder
 				'remember_token' => Str::random(10),
 				'role' => $keys[$departments[$i]->enum_key],
 				'image' => '',
+				'phone_number' => '+25470123456',
 				'department_id' => $departments[$i]->id,
 				'clearance_level' => \App\Enums\ClearanceLevelEnum::REGULAR_EMPLOYEE,
 			]);
