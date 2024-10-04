@@ -144,6 +144,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/task_reports', [TaskReportController::class, 'store']);
   Route::get('/report/{task_id}', [TaskReportController::class, 'show']);
   Route::patch('/report', [TaskReportController::class, 'update']);
+  Route::get('/reports/export', [TaskReportController::class, 'export']);
   
   /**
    * Messages

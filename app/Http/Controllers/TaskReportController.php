@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Enums\ClearanceLevelEnum;
 use App\Enums\TaskStatusEnum;
 use App\Enums\DepartmentEnum;
+use App\Exports\ReportsExports;
 use App\Models\Task;
 use App\Models\TaskReport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\ReportResourceCollection;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskReportController extends Controller
@@ -90,9 +92,17 @@ class TaskReportController extends Controller
      * @param  \App\Models\TaskReport  $taskReport
      * @return \Illuminate\Http\Response
      */
-    public function edit(TaskReport $taskReport)
+    public function export(TaskReport $taskReport)
     {
-        //
+       
+        Excel::store(new ReportsExports, '/files/task.xlsx', 'local');
+        return Excel::download(new ReportsExports, 'reportse.xlsx');
+    
+    // $headers = [
+    //     'Content-Type' => 'application/pdf',
+    //     // 'Content-Disposition' => 'attachment; filename="task_reports.xlsx"',
+    // ];
+    //    return response()->download(storage_path('/app/files/'. 'test.pdf'),'test.pdf',$headers);;
     }
 
     /**
