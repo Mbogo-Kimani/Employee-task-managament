@@ -98,7 +98,7 @@
         <div class="loader"></div>
     </div>
     <!--header-->
-    <div class="top-bar top-bar-type1">
+   <!-- <div class="top-bar top-bar-type1" style="position:fixed; z-index:100; width:100%">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-12 d-lg-flex align-items-center">
@@ -122,15 +122,17 @@
             </div>
         </div>
     </div>
+    -->
     <!--header-->
     <!--menu-->
-    <header id="header" class="header header-type1">
+    <header id="header" class="header header-type1" style="height:5rem; width:100%; position:fixed; z-index:100; background:white">
+        
         <div class="container">
             <div class="flex-header d-flex">
                 <div id="logo" class="logo d-flex align-items-center justify-content-start">
                     <a href="#" title="Logo"><img src="/images/etnet.png" data-width="208" width="90px"
                                                 data-height="38" alt="images"
-                                                data-retina="images/logo/logo.png"></a>
+                                                data-retina="images/etnet.png"></a>
                 </div>
                 <div class="content-menu d-flex align-items-center justify-content-end">
                     <div class="nav-wrap">
