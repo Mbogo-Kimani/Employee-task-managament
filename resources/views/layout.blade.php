@@ -10,6 +10,9 @@
 
     <!-- Bootstrap-->
     <link rel="stylesheet" href="{{asset('stylesheet/bootstrap.css')}}">
+    
+    <!--Font Awesome Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Template Style-->
     <link rel="stylesheet" href="{{asset('stylesheet/font-awesome.css')}}">
