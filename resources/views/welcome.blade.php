@@ -176,55 +176,7 @@
 </section>
 
 
-<section class="get-in-touch">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 offset-lg-1">
-                <div class="contact-card">
-                    <div class="row g-0">
-                        <!-- Contact Information -->
-                        <div class="col-md-5">
-                            <div class="contact-info h-100 d-flex flex-column justify-content-between">
-                                <div>
-                                    <h4>Contact Us</h4>
-                                    <ul class="contact-details list-unstyled">
-                                        <li><i class="fas fa-phone-alt"></i> 0791-012-345</li>
-                                        <li><i class="fas fa-building"></i> ET~NET</li>
-                                        <li><i class="fas fa-map-marker-alt"></i> 123 Network Street, Tech City</li>
-                                    </ul>
-                                </div>
-                                <p class="mb-0" style="color: var(--light-gray);">
-                                    Your trusted source for Networking services and SmartHome Systems. We provide prominent Networking solutions.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Contact Form -->
-                        <div class="col-md-7">
-                            <div class="contact-form">
-                                <h3 class="mb-4">Get in touch</h3>
-                                <form id="contactform" action="#" method="post">
-                                    <div class="mb-3">
-                                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
-                                    </div>
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-submit">Send Message</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 
 <!-- cta -->
