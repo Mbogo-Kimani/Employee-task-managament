@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use AfricasTalking\SDK\AfricasTalking;
 use App\Enums\TaskTypeEnum;
+use App\Exports\TaskExport;
 use App\Http\Resources\EmployeeTaskResource;
 use App\Jobs\TaskReminder;
 use App\Mail\TaskAssigned;
@@ -23,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 use Stevebauman\Hypertext\Transformer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -97,6 +99,14 @@ class TaskController extends Controller
 			return Inertia::render('Task/Id');
 		}
 		abort(404, 'Resource not available');
+	}
+
+	public function export()
+	{
+		$filename = '/files' . '/tasks_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
+        Excel::store(new TaskExport, $filename, 'public');
+        
+        return response()->json(['file' => $filename]);
 	}
 
 	public function store(Request $request) {

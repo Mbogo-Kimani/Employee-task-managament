@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Enums\ClearanceLevelEnum;
 use App\Enums\TaskStatusEnum;
 use App\Enums\DepartmentEnum;
+use App\Exports\ReportsExports;
 use App\Models\Task;
 use App\Models\TaskReport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\ReportResourceCollection;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskReportController extends Controller
@@ -90,9 +94,19 @@ class TaskReportController extends Controller
      * @param  \App\Models\TaskReport  $taskReport
      * @return \Illuminate\Http\Response
      */
-    public function edit(TaskReport $taskReport)
+    public function export(TaskReport $taskReport)
     {
-        //
+        $filename = '/files' . '/report_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
+        Excel::store(new ReportsExports, $filename, 'public');
+        // return Excel::download(new ReportsExports, 'reportse.xlsx');
+        return response()->json(['file' => $filename]);
+    // $headers = [
+    //     'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    //     'Content-Disposition' => 'attachment; filename="task.xlsx"',
+    // ];
+    // return Storage::download('files/'. 'task.xlsx');
+    // return Storage::disk('local')->size('files/task.xlsx');
+    //    return response()->download(storage_path('/app/files/'. 'task.xlsx'),'task.xlsx',$headers);;
     }
 
     /**

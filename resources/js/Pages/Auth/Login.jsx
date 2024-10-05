@@ -55,10 +55,10 @@ function Login() {
   };
 
   return (
-    <div className='flex justify-center items-center h-screen bg-gradient-to-r from-[#357bf2] to-[#29cc97] dark:bg-gray-900'>
+    <div className='flex justify-center items-center h-screen bg-gradient-to-r from-[#d2ed92] to-[#959bf6] backdrop-blur dark:bg-gray-900'>
       <div className="w-full h-full md:w-[75%] sm:w-[95%] sm:h-[75%] shadow-lg rounded-lg overflow-hidden bg-white dark:bg-gray-800">
         {/* Logo Section */}
-        <div className="w-full flex justify-center h-[35%] bg-[#f99526]">
+        <div className="w-full flex justify-center h-[35%]">
           <Icon src='/images/etnet.png' imgClassName='h-full w-full object-contain' className='max-w-[400px] md:w-[40%] md:h-full sm:w-[60%] w-full h-full'/>
         </div>
 
