@@ -153,7 +153,8 @@ function Products() {
         </div>
       }
 
-<div class="bill-container">
+{ packageType == 'home' &&
+  <div class="bill-container">
   <div class="text-center space-y-4">
     
     <div class="bill-header">
@@ -177,6 +178,7 @@ function Products() {
     </div>
   </div>
 </div>
+}
         <div className="text-center mt-10">
             <h2 className="font-bold text-[40px]">Our Services</h2>
         </div>
