@@ -50,7 +50,38 @@
         'www.googletagmanager.com/gtm54455445.html?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-NQBXR8V');</script>
         <!-- End Google Tag Manager -->
+        <style>
+    /* Target the anchor tags inside the .menu class */
+   #mainnav .menu li a {
+        color: #357bf2; /* Maintain the color you want */
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    /* Apply the hover effect */
+   #mainnav .menu li a:hover {
+        color: #f99526; /* Hover color */
+    }
+
+    /* Specific styling for the Contact Us button if needed */
+    .flat-appointment a {
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .flat-appointment a:hover {
+        background-color: #f99526; /* Change button background on hover */
+    }
+</style>
+
+
+
+
 </head>
+
+
+
 <body class="counter-scroll">
         
        <!-- Google Tag Manager (noscript) -->
@@ -90,11 +121,11 @@
     </div>
     <!--header-->
     <!--menu-->
-    <header id="header" class="header header-type1 bg-header-s1 bg-color">
+    <header id="header" class="header header-type1">
         <div class="container">
             <div class="flex-header d-flex">
                 <div id="logo" class="logo d-flex align-items-center justify-content-start">
-                    <a href="#" title="Logo"><img src="images/logo/logo.png" data-width="208" width="90px"
+                    <a href="#" title="Logo"><img src="/images/etnet.png" data-width="208" width="90px"
                                                 data-height="38" alt="images"
                                                 data-retina="images/logo/logo.png"></a>
                 </div>
@@ -102,21 +133,23 @@
                     <div class="nav-wrap">
                         <div class="btn-menu"><span></span></div>
                         <nav id="mainnav" class="mainnav">
-                            <ul class="menu">
-                                <li>
-                                    <a href="{{url('index')}}" class="active">Home</a>
+                            <ul id="mainnav" class="menu" >
+                                <li >
+                                    <a href="{{url('index')}}" style="color:#357bf2;" >
+                                        Home
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="{{url('products')}}">Our Solutions</a>
+                                    <a href="{{url('products')}}" style="color:#357bf2">Our Solutions</a>
                                 </li>
                                 <li>
-                                    <a href="{{url('blogs')}}">Blog</a>
+                                    <a href="{{url('blogs')}}" style="color:#357bf2">Blog</a>
                                 </li>
                                 <li>
-                                    <a href="{{url('about-us')}}">About Us</a>
+                                    <a href="{{url('about-us')}}" style="color:#357bf2">About Us</a>
                                 </li>
                                 <li>
-                                    <a href="{{url('/auth/login')}}">Sign In</a>
+                                    <a href="{{url('/auth/login')}}" style="color:#357bf2 ">Sign In</a>
                                 </li>
                             </ul>
                         </nav>
@@ -248,4 +281,5 @@
         x.parentNode.insertBefore(s, x);
     })();
 </script>
+
 </html>
