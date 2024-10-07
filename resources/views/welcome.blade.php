@@ -9,9 +9,9 @@
 
                     <!-- Main Image -->
 
-                    <img src="images/rev-slider/1.jpg" alt="" data-bgposition="center center" data-no-retina>
+                    <img src="images/rev-slider/4.jpg" alt="" data-bgposition="center center" data-no-retina>
                     <div class="banner-text">
-                        <h5>ET~NET</h5>
+                        <!-- <h5>ET~NET</h5> -->
                     </div>
                     
                     <!-- Layers -->
@@ -85,8 +85,8 @@
                          data-splitin="none"
                          data-splitout="none"
                          data-responsive_offset="on">
-                        <a href="#" class="all-solution font-style linear-color border-corner"><span
-                                class="icon-arrow-pointing-to-right"></span></a>
+                        <!-- <a href="#" class="all-solution font-style linear-color border-corner"><span
+                                class="icon-arrow-pointing-to-right"></span></a> -->
                         <a href="#" class="see-video"></a>
                     </div>
                 </li>

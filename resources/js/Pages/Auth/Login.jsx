@@ -55,7 +55,7 @@ function Login() {
   };
 
   return (
-    <div className='flex justify-center items-center h-screen bg-gradient-to-r from-[#d2ed92] to-[#959bf6] backdrop-blur dark:bg-gray-900'>
+    <div className='flex justify-center items-center h-screen bg-gradient-to-r from-[#180f3ac5] to-[#d6982385] backdrop-blur dark:bg-gray-900'>
       <div className="w-full h-full md:w-[75%] sm:w-[95%] sm:h-[75%] shadow-lg rounded-lg overflow-hidden bg-white dark:bg-gray-800">
         {/* Logo Section */}
         <div className="w-full flex justify-center h-[35%]">
