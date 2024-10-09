@@ -100,9 +100,24 @@
     </div>
 </div>;
 
-<div class="bill">
+{{-- <div class="bill">
 <h2> Mpesa:paybill:412 00 93 <br> A/C: House Number</br></h2>
+</div> --}}
+<div class="container mt-5">
+    <div class="card text-center">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Billing Information</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">Mpesa: paybill: <span class="font-weight-bold">412 00 93</span></h4>
+            <p class="card-text">A/C: <span class="font-weight-bold">House Number</span></p>
+        </div>
+        <div class="card-footer text-muted">
+            Please ensure to include your account number with the payment.
+        </div>
+    </div>
 </div>
+
 
 <div class="title-section text-center">
     <h2 class="flat-title">Our Services</h2>

@@ -61,7 +61,7 @@ function Footer() {
         <div className="">
           <div className="bottom-wrap text-center text-xl font-medium">
             <div id="copyright">
-              <span>Copyright © 2024</span>
+              <span>Copyright &copy; {new Date().getFullYear()}</span>
               <a href="#"> ETNET </a>
               <span>
                 All Rights Reserved 

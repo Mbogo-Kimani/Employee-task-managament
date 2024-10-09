@@ -166,8 +166,7 @@
                         <a href="{{url('about-us')}}" class="font-style linear-color border-corner" 
                     
                     style="height: 2.5rem; width:10rem; padding:0.2rem 0.5rem;"
-                    
-                    
+                
                         > Our Team
                     </div>
                 </div>

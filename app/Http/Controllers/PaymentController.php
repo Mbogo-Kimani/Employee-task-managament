@@ -181,7 +181,7 @@ class PaymentController extends Controller
                 $password = str_replace(' ', '', $password);
                 Subscription::create([
                     'client_id' => $transaction->client->id,
-                    'package_id' => $transaction->client->street_package_id,
+                    'street_package_id' => $transaction->client->street_package_id,
                     'transaction_id' => $transaction->id,
                     'username' => $transaction->client->name,
                     'password' => $password,

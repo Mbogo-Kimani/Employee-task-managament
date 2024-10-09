@@ -62,17 +62,117 @@ position: relative;
 font-size: 50px;
 font-weight: bold;
 }
-.bill {
-color: rgb(237, 29, 5);
-padding: 12px 16px;
-text-decoration: none;
-text-align: left;
-position: relative;
-font-size: 20px;
-font-weight: bold;
-margin-left: 10%;
-}
+.bill-container {
+    max-width: 28rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
+  .bill-header {
+    background: linear-gradient(to right, #2f855a, #276749);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .header-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .bill-body {
+    padding: 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .bill-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #4a5568;
+  }
+
+  .info-value {
+    font-size: 1.125rem;
+    font-family: monospace;
+    font-weight: bold;
+    color: #2f855a;
+  }
+
+  .bill-note {
+    font-size: 0.875rem;
+    color: #4a5568;
+    background-color: #fefcbf;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+  }
+  .bill-container {
+    max-width: 28rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .bill-header {
+    background: linear-gradient(to right, #f99526, #357bf2); /* Gradient with two company colors */
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .header-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .bill-body {
+    padding: 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .bill-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #6c757d; /* Gray color */
+  }
+
+  .info-value {
+    font-size: 1.125rem;
+    font-family: monospace;
+    font-weight: bold;
+    color: #29cc97; /* Green company color */
+  }
+
+  .bill-note {
+    font-size: 0.875rem;
+    color: #6c757d; /* Gray color */
+    background-color: #fefcbf;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+  }
 .page-title .section-overlay {
   left: 0;
   top: 0;

@@ -55,14 +55,14 @@ function Products() {
       <div  className="flex flex-col justify-center items-center my-8">
         <h2 className='text-[2.5rem] font-bold text-center my-5'> Wired & Wireless Network</h2>
         <div className='font-bold flex items-center border rounded-full text-[1.5rem]'>
-          <h1
+          {/* <h1
             className={`my-1 ml-1 rounded-full px-3 py-1 rounded-full ${packageType === 'home' ? 'bg-[var(--light-purple)] text-gray-100 cursor-default border' : 'cursor-pointer hover:scale-105'}`}
             onClick={() => handlePackagesChange('home')}
           >
             Home Fibre
-          </h1>
+          </h1> */}
           <h1
-            className={`my-1 mr-1 rounded-full px-3 py-1 rounded-full ${packageType === 'street' ? 'bg-[var(--orange)] text-gray-100 cursor-default border' : 'cursor-pointer hover:scale-105'}`}
+            className={`my-1 mr-0 rounded-full px-3 py-1 rounded-full ${packageType === 'street' ? 'bg-[var(--orange)] text-gray-100 cursor-default border' : 'cursor-pointer hover:scale-105'}`}
             onClick={() => handlePackagesChange('street')}
           >
             Street Fibre
@@ -153,10 +153,32 @@ function Products() {
         </div>
       }
 
-      <div className="bill">
-        <h2> Mpesa:paybill:412 00 93</h2> <h2>A/C: House Number</h2>
-        </div>
-
+{ packageType == 'home' &&
+  <div class="bill-container">
+  <div class="text-center space-y-4">
+    
+    <div class="bill-header">
+      <h2 class="header-text">Payment Details</h2>
+    </div>
+    
+    <div class="bill-body">
+      <div class="bill-info">
+        <span class="info-label">Mpesa Paybill:</span>
+        <span class="info-value">412 00 93</span>
+      </div>
+      
+      <div class="bill-info">
+        <span class="info-label">Account Number:</span>
+        <span class="info-value">House Number</span>
+      </div>
+    </div>
+    
+    <div class="bill-note">
+      Please ensure you enter your correct house number as the account number
+    </div>
+  </div>
+</div>
+}
         <div className="text-center mt-10">
             <h2 className="font-bold text-[40px]">Our Services</h2>
         </div>
