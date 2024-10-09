@@ -14,7 +14,9 @@ class StreetPackageController extends Controller
    */
   public function index()
   {
-    $street_packages = StreetPackage::all();
+    $street_packages = StreetPackage::all()->filter(function ($package) {
+      return $package->name !== 'Free Trial';
+    });
     return response()->json($street_packages);
   }
 }
