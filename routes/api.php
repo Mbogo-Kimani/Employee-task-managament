@@ -86,6 +86,7 @@ Route::middleware('auth:sanctum')->group( function () {
    * Clients Controllers
   */
   Route::get('/clients',[ClientController::class, 'index']);
+  Route::get('/clients/search/',[ClientController::class, 'search']);
   Route::post('/client',[ClientController::class, 'store']);
   Route::patch('/client',[ClientController::class, 'update']);
   Route::delete('/client/{client_id}',[ClientController::class, 'deleteClient']);
