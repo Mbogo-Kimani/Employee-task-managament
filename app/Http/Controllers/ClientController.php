@@ -169,6 +169,15 @@ class ClientController extends Controller
         return response()->json($clients);
     }
 
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search_value' => 'required'
+        ]);
+        $clients = Client::where('acc_no','like',"%$request->search_value%")->orWhere('name','like',"%$request->search_value%")->latest()->paginate(10);
+        return response()->json($clients);
+    }
+
     public function assignClients(Request $request)
     {
         $request->validate([

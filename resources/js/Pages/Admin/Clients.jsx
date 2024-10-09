@@ -29,6 +29,7 @@ function Clients() {
   const [deleteUserModal, setDeleteUserModal] = useState(false);
   const [deletedClient, setDeletedClient] = useState(newClient);
   const [packages, setPackages] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const { userData } = useContext(AppContext);
 
@@ -114,6 +115,15 @@ function Clients() {
     setDeleteUserModal(false)
   }
 
+  function handleSearch(){
+    if(searchValue){
+      requestHandler.get(`/api/clients/search/?search_value=${searchValue}`,setClients)
+    }else{
+      fetchClients()
+    }
+    
+  }
+
   return (
     <SideNav>
       <div className="">
@@ -125,7 +135,22 @@ function Clients() {
             Add New Client
           </button>
         </div>
-
+        <div className="mb-4 w-full">
+          <div className='flex justify-center items-center'>
+            <input
+              type="search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              name="search"
+              id=""
+              className='py-2 rounded px-3 w-[250px] outline-none'
+              placeholder={'🔍 Search'}
+            />
+            <button className='hover:bg-white p-2' onClick={(e) => handleSearch(e)}>
+              <Icon src='search' fill='#333' className='w-5 h-5'/>
+            </button>
+          </div>
+        </div>
         <Modal
           show={deleteUserModal}
           onClose={closeDeleteUserModal}
