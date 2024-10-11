@@ -355,6 +355,28 @@ function Clients() {
                   </div>
                   <div>
                     <label
+                      htmlFor="employee_id"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Work Number
+                    </label>
+                    <input
+                      type='text'
+                      name="employee_id"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter Work number"
+                      value={newClient.employee_id}
+                      onChange={handleChange}
+                    />
+                    {/* {
+                      (errors.password_confirmation || errors.errors?.password_confirmation) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'password_confirmation') }
+                      </p>
+                    }   */}
+                  </div>
+                  <div>
+                    <label
                       htmlFor="title"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
@@ -400,7 +422,8 @@ function Clients() {
               </p>
             }   */}
           </div>
-          <div className="relative z-0 w-full mb-5 group">
+          
+          {/* <div className="relative z-0 w-full mb-5 group">
             <SelectComp
               name="payment_method"
               id="payment_method"
@@ -432,7 +455,7 @@ function Clients() {
               //   { displayErrors(errors, 'taskType') }
               // </p>
             }  
-          </div>
+          </div> */}
           {/* <div className="relative z-0 w-full mb-5 group">
             <SelectComp
               name="payment_plan"
@@ -484,7 +507,7 @@ function Clients() {
         </Modal>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-          <TableComp columns={['Acc No','Name', 'Email', 'Phone Number', 'Location', 'Hse No', 'Status','Billing Day', 'Package', 'Action']}>
+          <TableComp columns={['Acc No','Name', 'Email', 'Phone Number', 'Location', 'Hse No', 'Status','Billing Day', 'Package','Wifi Name', 'Wifi Password', 'Sales Agent', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (

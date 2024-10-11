@@ -405,7 +405,6 @@ function Employees() {
                       placeholder="Enter employee's work number"
                       value={newUser.employee_id}
                       onChange={handleChange}
-                      required
                     />
                     {
                       (errors.name || errors.errors?.name) && 
