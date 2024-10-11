@@ -80,7 +80,7 @@ class UserController extends Controller
 			'email' => 'required|string|email|max:255',
 			'name' => 'required|string|max:255',
 			'role' => 'required',
-			'employee_id' => 'string',
+			'employee_id' => 'nullable|string',
 		]);
 
 		$user_to_edit = User::find($request->id);

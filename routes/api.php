@@ -203,4 +203,4 @@ Route::post('/subscribe', [RouterController::class, 'subscribe']);
 Route::get('/hotspot/users', [RouterController::class, 'subscribe']);
 Route::post('/register/client',[RouterController::class, 'registerUser']);
 Route::post('/hotspot/login',[RouterController::class, 'hotspotLogin']);
-
+Route::get('/sessions/active',[RouterController::class,'getActiveSessions']);

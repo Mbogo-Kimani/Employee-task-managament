@@ -62,14 +62,20 @@ class RouterController extends Controller
             $activate_profile
             ->setArgument('profile', $subscription->streetPackage->profile_name)
             ->setArgument('user', $subscription->client->name);
-            $client->sendSync($activate_profile);
+            $response = $client->sendSync($activate_profile);
+            if ($response->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
             $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
             ->setArgument('user', $subscription->client->name)
             ->setArgument('password', $subscription->client->phone_number)
             ->setArgument('mac-address', $request->mac ?? $this->getMac())
             ->setArgument('ip', $request->ip);
-            $client->sendSync($user_login);
+            $loginResponse = $client->sendSync($user_login);
+            if ($loginResponse->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
             // dd($user_login);
             $subscription->profile_assigned = true;
             $subscription->devices = [$request->mac];
@@ -111,7 +117,10 @@ class RouterController extends Controller
                 ->setArgument('password', $customer->phone_number)
                 ->setArgument('shared-users', $request->devices);
     
-            $client->sendSync($addRequest);
+            $response = $client->sendSync($addRequest);
+            if ($response->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
             $customer->is_registered_hotspot = true;
             $customer->save();
             return response()->json(['success' => true]);
@@ -127,7 +136,7 @@ class RouterController extends Controller
             'mac' => 'required',
             'subscription_id' => 'required|exists:subscriptions,id'
         ]);
-      
+        
         $subscription = Subscription::find($request->subscription_id);
         try{
             $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
@@ -225,6 +234,22 @@ class RouterController extends Controller
 
         if (!empty($matches[0])) {
            return $matches[0][0];
+        }
+    }
+
+    public function getActiveSessions()
+    {
+        
+        try{
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
+            // $sessions = $client->sendSync(new RouterOsRequest('/user-manager/session/print where active'));
+            $request = new RouterOsRequest('/user-manager/session/print');
+            $request->setArgument('where', '');
+            $request->setArgument('status', 'start');
+            $sessions = $client->sendSync($request);
+            dd($sessions); 
+        }catch(Exception $e){
+
         }
     }
     
