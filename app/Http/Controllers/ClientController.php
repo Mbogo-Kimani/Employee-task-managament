@@ -23,7 +23,7 @@ class ClientController extends Controller
     {
         $user = auth()->user();
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:clients,name',
             'email' => 'required|email',
             'phone_number' => 'required|string|max:15',
 		]);
@@ -166,6 +166,15 @@ class ClientController extends Controller
             return response()->json(Client::latest()->get());
         }
         $clients = Client::latest()->paginate(10);
+        return response()->json($clients);
+    }
+    public function getHotspotClients(Request $request)
+    {
+        $user = $request->user();
+        if($user->department_id !== DepartmentEnum::ADMIN){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+        $clients = Client::where('is_registered_hotspot', true)->with(['streetPackage','subscriptions'])->latest()->paginate(10);
         return response()->json($clients);
     }
 

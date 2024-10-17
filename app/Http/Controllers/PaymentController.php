@@ -171,6 +171,7 @@ class PaymentController extends Controller
 
             $transaction->paid_date = $transaction_date;
             $transaction->payment_confirmation = $confirmation_code;
+            $transaction->taken = true;
             $transaction->amount = $amount;
             $transaction->save();
 			event(new \App\Events\TransactionEvent($transaction->id,$confirmation_code));
