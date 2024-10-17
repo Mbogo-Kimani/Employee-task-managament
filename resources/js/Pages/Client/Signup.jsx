@@ -16,11 +16,12 @@ const ClientSignup = () => {
     const [response, setResponse] = useState([])
     const [otpVerify, setOtpVerify] = useState(false);
     const [productId, setProductId] = useState('');
+    const [errors,setErrors] = useState();
     const { clientData,updateClient } = useContext(AppContext);
 
     useEffect(() => {
         checkResponse();
-      }, [response]);
+      }, [response,errors]);
     
     useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -28,7 +29,9 @@ const ClientSignup = () => {
       param && setProductId(param);
     },[])
       function checkResponse() {
+        
         if (response && response.message) {
+
           if (response.success) {
             toast.success(response.message);
             if(response.subscription_id){
@@ -41,6 +44,8 @@ const ClientSignup = () => {
             toast.error(response.message);
           }
           
+        }else if(errors){
+          toast.error(errors.message)
         }
       }
       function handleResponse(resp){
@@ -53,9 +58,9 @@ const ClientSignup = () => {
       e.preventDefault();
        
       if (text === 'login') {
-        requestHandler.post('/api/clients/login', client, setResponse);
+        requestHandler.post('/api/clients/login', client, setResponse, setErrors);
       } else if (text === 'signup') {
-        requestHandler.post('/api/clients/signup', client, setResponse);
+        requestHandler.post('/api/clients/signup', client, setResponse,setErrors);
       }
     }
 
