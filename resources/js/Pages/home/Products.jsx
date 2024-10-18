@@ -10,10 +10,16 @@ function Products() {
   const [packageType, setPackageType] = useState('street');
   const [streetPackages, setStreetPackages] = useState([]);
   const { clientData,updateClient } = useContext(AppContext);
+  const [client, setClient] = useState();
 
   useEffect(() => {
     getStreetPackages();
   },[]);
+  
+  useEffect(() => {
+    requestHandler.get('/api/get-client',setClient)
+  },[])
+  
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -147,7 +153,7 @@ function Products() {
         <div className='flex flex-wrap '>
           {streetPackages.map((streetPackage, index) => (
               <div key={index} className='mx-auto w-fit md:w-1/3'>
-                  <Service streetPackage={streetPackage} client={clientData}/>
+                  <Service streetPackage={streetPackage} client={client}/>
               </div>
           ))}
         </div>
