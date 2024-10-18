@@ -12,10 +12,10 @@ function Service({ streetPackage, client = null, showAccessLink = true }) {
     if(response) checkResponse();
   }, [response]);
   function checkResponse() {       
-    if (response?.success) {
+      if (response?.success) {
         toast.success(response.message);
-      } else {
-        toast.error('An error occurred');
+      } else if(!response?.success && response?.message){
+        toast.info(response.message);
       }
   }
   function handleFreeTrial(){

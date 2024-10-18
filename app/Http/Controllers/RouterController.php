@@ -182,6 +182,7 @@ class RouterController extends Controller
         ]);
        
         $customer =  ModelsClient::find($request->client_id);
+        if(!$customer->is_free_trial){
         try{
             $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
             $subscription = Subscription::create([
@@ -225,6 +226,9 @@ class RouterController extends Controller
         }catch (\Exception $e){
             abort(400,$e);
 
+        }
+        }else{
+            return response()->json(['success' => false , 'message' => 'Your Free Trial is already used']);
         }
     }
 
