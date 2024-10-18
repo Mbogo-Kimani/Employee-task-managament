@@ -19,9 +19,18 @@ class StreetPackageController extends Controller
    */
   public function index()
   {
+    
     $street_packages = StreetPackage::all()->filter(function ($package) {
-      return $package->name !== 'Free Trial' && $package->profile_name != '80SH' && $package->profile_name !== '140SH';
+      return  $package->profile_name != '80SH' && $package->profile_name !== '140SH';
     })->values();
+    $freeTrial = $street_packages->first(function ($package) {
+      return $package->name === 'Free Trial';
+    });
+    if ($freeTrial) {
+      $street_packages = $street_packages->filter(function ($package) {
+          return $package->name !== 'Free Trial';
+      })->prepend($freeTrial);
+    }
     return response()->json($street_packages);
   }
 
@@ -34,7 +43,7 @@ class StreetPackageController extends Controller
       'devices' => 'required|integer',
       'description' => 'nullable|string'
     ]);
-    $request['profile_name'] = "SH" . $request->cost;
+    $request['profile_name'] = $request->cost . "SH";
     try{
       StreetPackage::create($request->all());
 
