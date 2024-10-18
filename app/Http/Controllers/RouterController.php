@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use PEAR2\Net\RouterOS\Client;
 use PEAR2\Net\RouterOS\Response;
+use PEAR2\Net\RouterOS\Util;
 use PEAR2\Net\RouterOS\Request as RouterOsRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -176,31 +177,51 @@ class RouterController extends Controller
     public function freeTrial(Request $request)
     {
         $request->validate([
-            'client_id' => 'required'
+            'client_id' => 'required',
+            'mac' => 'required'
         ]);
+       
         $customer =  ModelsClient::find($request->client_id);
         try{
             $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
-            
+            $subscription = Subscription::create([
+                'client_id' => $customer->id,
+                'street_package_id' => 16,
+                'username' => $customer->name,
+                'password' => $customer->phone_number,
+                'status' => 1,
+                'expires_at' => Carbon::now()->addSeconds(16),
+                // 'profile_assigned' => true,
+                // 'devices' => [$request->mac]
+                ]);
+                
             $activate_profile = new RouterOsRequest('/user-manager/user-profile/add');
             $activate_profile
             ->setArgument('profile', 'TRIAL')
             ->setArgument('user', $customer->name);
-            $client->sendSync($activate_profile);
+            
+            $response = $client->sendSync($activate_profile);
+            if ($response->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
             $user_login =  new RouterOsRequest('/ip/hotspot/active/login');
             $user_login
             ->setArgument('user', $customer->name)
             ->setArgument('password', $customer->phone_number)
             ->setArgument('mac-address', $request->mac ?? $this->getMac())
-            ->setArgument('ip', $request->ip);
-            $client->sendSync($user_login);
+            ->setArgument('ip', $this->getIP($client,$request->mac));
+            $loginResponse = $client->sendSync($user_login);
+            if ($loginResponse->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
             // dd($user_login);
-            // $subscription->profile_assigned = true;
-            // $subscription->devices = [$request->mac];
-            // $subscription->expires_at = Carbon::now()->addSeconds($subscription->streetPackage->duration);
-            // $subscription->save();
+            $subscription->profile_assigned = true;
+            $subscription->devices = [$request->mac];
+            $subscription->save();
 
-            return response()->json(['message' => 'User subscribed successfully.']);
+            $customer->is_free_trial = true;
+            $customer->save();
+            return response()->json(['success' => true , 'message' => 'User subscribed successfully.']);
         }catch (\Exception $e){
             abort(400,$e);
 
@@ -241,16 +262,41 @@ class RouterController extends Controller
     {
         
         try{
+            // $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
             $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
-            // $sessions = $client->sendSync(new RouterOsRequest('/user-manager/session/print where active'));
+        
             $request = new RouterOsRequest('/user-manager/session/print');
-            $request->setArgument('where', '');
-            $request->setArgument('status', 'start');
+           
             $sessions = $client->sendSync($request);
-            dd($sessions); 
-        }catch(Exception $e){
+            $data = [];
+            
+            foreach($sessions as $session)
+            {
+                if($session->getProperty('active') == "true"){
 
+                    $sessionObj['user'] = $session->getProperty('user'); 
+                    $sessionObj['ip'] = $session->getProperty('user-address'); 
+                    $sessionObj['mac'] = $session->getProperty('calling-station-id');
+                    $sessionObj['started_at'] = $session->getProperty('started'); 
+                   
+                    $data[] = $sessionObj;
+                }
+            }
+            return response()->json($data);
+        }catch(Exception $e){
+            abort(400,$e);
         }
+    }
+
+    public function getHotspotUsers()
+    {
+        $client = new Client(config('router.ip'), config('router.user'), config('router.password'));        
+        $request = new RouterOsRequest('/user-manager/user/print');
+        $users = $client->sendSync($request);
+        
+        $response['id'] = $users->getProperty('.id');
+        $response['name'] = $users->getProperty('name');
+        return response()->json($response);
     }
     
 }

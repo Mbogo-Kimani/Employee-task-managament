@@ -117,7 +117,8 @@ class ClientController extends Controller
                 'name' => $client->name,
                 'email' => $client->email,
                 'phone_number' => $client->phone_number,
-                'is_registered_hotspot' => $client->is_registered_hotspot
+                'is_registered_hotspot' => $client->is_registered_hotspot,
+                'is_free_trial' => $client->is_free_trial
         ];
         $cookie = cookie('client_details', json_encode($clientDetails), 60);
 

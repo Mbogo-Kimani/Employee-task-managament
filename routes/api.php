@@ -176,7 +176,13 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/apartment_codes', [ApartmentController::class, 'index']);
   Route::post('/apartment_codes', [ApartmentController::class, 'store']);
 
-  
+  /**
+   * Hotspot Mgmt System
+   */
+  Route::get('/hotspot/clients', [ClientController::class, 'getHotspotClients']);
+  Route::post('hotspot/package',[StreetPackageController::class, 'create']);
+  Route::delete('hotspot/package/{street_package_id}',[StreetPackageController::class, 'delete']);
+  Route::get('/hotspot/users',[RouterController::class,'getHotspotUsers']);
 });
 Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);
@@ -200,7 +206,7 @@ Route::get('/street_packages', [StreetPackageController::class, 'index']);
  */
 Route::get('/connect', [RouterController::class, 'connect']);
 Route::post('/subscribe', [RouterController::class, 'subscribe']);
-Route::get('/hotspot/users', [RouterController::class, 'subscribe']);
 Route::post('/register/client',[RouterController::class, 'registerUser']);
 Route::post('/hotspot/login',[RouterController::class, 'hotspotLogin']);
 Route::get('/sessions/active',[RouterController::class,'getActiveSessions']);
+Route::post('/hotspot/trial',[RouterController::class, 'freeTrial']);
