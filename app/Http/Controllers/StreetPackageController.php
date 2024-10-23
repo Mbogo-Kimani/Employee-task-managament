@@ -79,14 +79,14 @@ class StreetPackageController extends Controller
       $profileList = $profiles->getAll();
 
       foreach ($profileList as $profile) {
-          if ($profile('name') === 'Test') {
+          if ($profile('name') === $streetPackage->profile_name) {
               $client->remove($profile('.id'));
           }
       }
       $streetPackage->delete();
       return response()->json(['success' => true, 'message' => 'Package deleted successfully']);
     }else{
-      response()->json(['success' => false, 'message' => 'An error occurred']);
+      return response()->json(['success' => false, 'message' => 'An error occurred']);
     }
   }
 

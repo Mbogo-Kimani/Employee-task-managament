@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use PEAR2\Net\RouterOS\Client;
 use PEAR2\Net\RouterOS\Response;
 use PEAR2\Net\RouterOS\Util;
+use PEAR2\Net\RouterOS\Query;
 use PEAR2\Net\RouterOS\Request as RouterOsRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -297,10 +298,26 @@ class RouterController extends Controller
         $client = new Client(config('router.ip'), config('router.user'), config('router.password'));        
         $request = new RouterOsRequest('/user-manager/user/print');
         $users = $client->sendSync($request);
+        $data = [];
+        foreach($users as $user){
+            $response['id'] = $user->getProperty('.id');
+            $response['name'] = $user->getProperty('name');
+            $data[] = $response;
+        }
         
-        $response['id'] = $users->getProperty('.id');
-        $response['name'] = $users->getProperty('name');
-        return response()->json($response);
+        return response()->json($data);
+    }
+
+    public function getActiveProfiles()
+    {
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/user-profile');
+        $count = $client->count(Query::where('state', 'running-active'));
+        return response()->json(['count' => $count]);
+    }
+
+    public function removePackage(){
+        
     }
     
 }
