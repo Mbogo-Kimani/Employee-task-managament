@@ -21,6 +21,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\EquipmentType;
 use Illuminate\Http\Request;
@@ -177,12 +178,18 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/apartment_codes', [ApartmentController::class, 'store']);
 
   /**
+   * Transaction Controller
+   */
+  Route::get('/get-stat',[TransactionController::class,'statistics']);
+  /**
    * Hotspot Mgmt System
    */
   Route::get('/hotspot/clients', [ClientController::class, 'getHotspotClients']);
   Route::post('hotspot/package',[StreetPackageController::class, 'create']);
   Route::delete('hotspot/package/{street_package_id}',[StreetPackageController::class, 'delete']);
   Route::get('/hotspot/users',[RouterController::class,'getHotspotUsers']);
+  Route::get('/hotspot/profiles/active',[RouterController::class,'getActiveProfiles']);
+  Route::delete('/hotspot/package/{package_id}',[RouterController::class,'removePackage']);
 });
 Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);

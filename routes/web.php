@@ -111,3 +111,25 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   Route::get('/client/connected', function () {
     return Inertia::render('Client/Connected');
   });
+
+  /**
+   * Hotspot Management Routes
+   */
+
+  Route::get('/hotspot/dashboard', function () {
+    return Inertia::render('Hotspot/dashboard');
+  });
+  Route::get('/sessions/active', function () {
+    return Inertia::render('Hotspot/sessions');
+  });
+  Route::get('/hotspot/clients', function () {
+    return Inertia::render('Hotspot/clients');
+  });
+  Route::get('/hotspot/plans', function () {
+    return Inertia::render('Hotspot/packages');
+  });
+  Route::get('/hotspot/transactions', function () {
+    return Inertia::render('Hotspot/transactions');
+  });
+
+  
