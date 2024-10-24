@@ -19,7 +19,7 @@ const Clients = () => {
   return (
     <HotspotLayout>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
-            <TableComp columns={['Name', 'Email', 'Phone No.', 'Package', 'Status', 'Action']}>
+            <TableComp columns={['Name', 'Email', 'Phone No.', 'Package', 'Status','Sessions', 'Action']}>
             {
               clients?.data?.map((elem, index) => {
                 return (

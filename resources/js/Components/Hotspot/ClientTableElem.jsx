@@ -32,6 +32,9 @@ const ClientTableElem = ({elem}) => {
       <td className="px-5 pb-3">
         <span className={`absolute rounded-full ${getStatus() ? 'bg-green-400' : 'bg-red-400'} w-4 h-4 p-2`}></span>
       </td>
+      <td className="px-5 text-xl">
+        {elem.sessions}
+      </td>
         <td className="px-2 py-4 relative">
             <DropDown>
                   <Menu.Item>
