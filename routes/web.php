@@ -131,5 +131,8 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard'
   Route::get('/hotspot/transactions', function () {
     return Inertia::render('Hotspot/transactions');
   });
+  Route::get('/hotspot/client/new', function () {
+    return Inertia::render('Hotspot/new_client');
+  });
 
   

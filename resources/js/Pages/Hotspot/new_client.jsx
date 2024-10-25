@@ -52,12 +52,12 @@ const AddClient = () => {
 
   return (
     <HotspotLayout>
-      <h2 class="title">Add a New Client</h2>
+      <h2 className="title">Add a New Client</h2>
       <form onSubmit={handleSubmit}>
         {/* Username (*) */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Username </label>
-          <input class="details"
+          <input className="details"
             type="name"
             name="username"
             placeholder="Enter Client's User Name"
@@ -68,9 +68,9 @@ const AddClient = () => {
         </div>
 
         {/* Email (optional) */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Email </label>
-          <input  class="details"
+          <input  className="details"
             type="email"
             name="email"
             placeholder="Enter Client's Email"
@@ -80,9 +80,9 @@ const AddClient = () => {
         </div>
 
         {/* Phone Number (required) */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Phone Number </label>
-          <input  class="details"
+          <input  className="details"
             type="tel"
             name="phoneNumber"
             placeholder="Enter Client's Phone Number"
@@ -93,7 +93,7 @@ const AddClient = () => {
         </div>
 
         {/* Package using SelectComp */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Package</label>
           <SelectComp
             name="package"
@@ -112,7 +112,7 @@ const AddClient = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit" class="add-client">Add Client</button>
+        <button type="submit" className="add-client">Add Client</button>
       </form>
     </HotspotLayout>
   );
