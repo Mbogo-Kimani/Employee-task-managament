@@ -1,48 +1,53 @@
-/* AddClient.css */
+/* General form styling */
 body {
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: #f0f4f8;
   font-family: 'Poppins', sans-serif;
 }
 
-form {
+.form2 {
   background-color: #ffffff;
   border-radius: 16px;
   padding: 2rem;
   max-width: 600px;
-  margin: 6rem auto;
+  max-height: auto; /* Limit the form height to 85% of the viewport height */
+  margin: 2rem auto;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   color: #333;
  
 }
 
-.title {
-  
-  
+/* Center the title */
+.title2 {
+  margin-bottom: -20px;
+  text-align: center;
   font-size: 1.4rem;
   font-weight: bold;
-  margin-bottom: -88px;
-  margin-left: 260px;
+  margin-top: 20px;
   color: #333;
-  width: 50%;
+  width: 100%; 
 }
 
+/* Form group styling */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Adjusted margin */
 }
 
 label {
   display: block;
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: #333;  /* Dark grey for labels */
+  color: #333; /* Dark grey for labels */
 }
 
+/* Input and select field styling */
 .details, .select-comp {
   width: 100%;
   padding: 0.8rem;
   border: 2px solid #ccc;
   border-radius: 8px;
-  background-color: #f9fafb;  /* Slightly off-white */
+  background-color: #f9fafb; /* Slightly off-white */
   color: #333;
   font-size: 1rem;
   transition: border-color 0.3s, background-color 0.3s;
@@ -56,14 +61,13 @@ label {
 
 
 
-.add-client {
-  
-  width: 50%;
+.add-client-wrapper {
+  width: 50%; /* Adjusted to fit width */
   background-color: #1d4ed8;
   color: #fff;
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.5s;
@@ -71,47 +75,84 @@ label {
   margin-left: 49%;
 }
 
-.add-client:hover {
+.add-client-wrapper {
+  background-color: #1d4ed8;
+}
+
+.add-client-wrapper:hover {
   background-color: #1e40af;
 }
 
 /* Card shadow on hover */
-form:hover {
+.form2:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  form {
+  .form2 {
     padding: 1.3rem;
   }
 
-  .title {
-    margin-bottom: px;
-    font-size: 1.8rem;
-    margin-left: 20px;
+  .title2 {
+    font-size: 1.3rem; /* Adjusted for smaller screens */
   }
 
-  .add-client {
+  .add-client-wrapper{
     font-size: 1.1rem;
   }
 }
 
 @media (max-width: 500px) {
-  form {
-    padding: 1rem;
+  .form2 {
+    padding: 1.3rem;
   }
 
-  .title {
-    font-size: 1rem;
-    margin-right: 250%;
+  .title2 {
+    font-size: 1.1rem;
   }
 
-  .input-field, .select-comp {
+  .details, .select-comp {
     padding: 0.7rem;
   }
 
-  .add-client {
+  .add-client-wrapper {
     padding: 0.9rem;
   }
+}
+
+/* Phone input fields */
+.phone-group .phone-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adjust gap between the country code and phone input */
+}
+
+.country-code {
+  background-color: #e2e8f0;
+  color: #333;
+  padding: 0.8rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 65px; /* Fixed width for country code */
+  text-align: center;
+}
+
+.phone-input {
+  flex-grow: 1;
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  color: #333;
+  font-size: 1rem;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.phone-input:focus {
+  border-color: #3b82f6;
+  background-color: #e2e8f0;
+  outline: none;
 }

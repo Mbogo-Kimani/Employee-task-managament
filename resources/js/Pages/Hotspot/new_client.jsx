@@ -52,25 +52,29 @@ const AddClient = () => {
 
   return (
     <HotspotLayout>
-      <h2 className="title">Add a New Client</h2>
-      <form onSubmit={handleSubmit}>
+<h2 className="title2">Add a New Client</h2>
+      <form onSubmit={handleSubmit} className='form2'>
         {/* Username (*) */}
+        <div className="form-group">
         <div className="form-group">
           <label>Username </label>
           <input className="details"
+          
             type="name"
             name="username"
             placeholder="Enter Client's User Name"
             value={formData.username}
             onChange={handleChange}
             required
-          />
+         
+        />
+        </div>
         </div>
 
         {/* Email (optional) */}
         <div className="form-group">
           <label>Email </label>
-          <input  className="details"
+          <input  class="details"
             type="email"
             name="email"
             placeholder="Enter Client's Email"
@@ -80,9 +84,9 @@ const AddClient = () => {
         </div>
 
         {/* Phone Number (required) */}
-        <div className="form-group">
+        <div class="form-group">
           <label>Phone Number </label>
-          <input  className="details"
+          <input  class="details"
             type="tel"
             name="phoneNumber"
             placeholder="Enter Client's Phone Number"
@@ -112,7 +116,7 @@ const AddClient = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit" className="add-client">Add Client</button>
+        <button type="submit" class="add-client">Add Client</button>
       </form>
     </HotspotLayout>
   );
