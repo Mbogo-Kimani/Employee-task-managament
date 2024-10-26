@@ -57,7 +57,6 @@ const AddClient = () => {
       <form onSubmit={handleSubmit} className='form2'>
         {/* Username (*) */}
         <div className="form-group">
-        <div className="form-group">
           <label>Username </label>
           <input className="details"
             type="name"
@@ -68,12 +67,12 @@ const AddClient = () => {
             required
           />
         </div>
-        </div>
 
         {/* Email (optional) */}
         <div className="form-group">
           <label>Email </label>
-          <input  class="details"
+          
+          <input  className="details"
             type="email"
             name="email"
             placeholder="Enter Client's Email"
@@ -83,16 +82,27 @@ const AddClient = () => {
         </div>
 
         {/* Phone Number (required) */}
-        <div class="form-group">
+        <div className="form-group phone-group">
           <label>Phone Number </label>
-          <input  class="details"
-            type="tel"
-            name="phoneNumber"
-            placeholder="Enter Client's Phone Number"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-          />
+          <div className="phone-wrapper">
+            {/* Static Country Code Input */}
+            <input
+              type="text"
+              className="country-code"
+              value="+254"
+              disabled
+            />
+            {/* Editable Phone Number Input */}
+            <input
+              className="details phone-input"
+              type="tel"
+              name="phoneNumber"
+              placeholder="Enter Client's Phone Number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
         {/* Package using SelectComp */}
@@ -115,7 +125,7 @@ const AddClient = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit" class="add-client">Add Client</button>
+        <button type="submit" className="add-client-wrapper">Add Client</button>
       </form>
     </HotspotLayout>
   );
