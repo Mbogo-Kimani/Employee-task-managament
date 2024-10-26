@@ -88,7 +88,7 @@ const Layout = ({ children }) => {
             {isClientsOpen && (
               <div className='bg-blue-700'>
                 <Link
-                  href='/hotspot/settings'
+                  href='/hotspot/client/new'
                   className='py-2 px-8 hover:bg-blue-600 block'
                 >
                   Add
@@ -113,7 +113,7 @@ const Layout = ({ children }) => {
             {isPackagesOpen && (
               <div className='bg-blue-700'>
                 <Link
-                  href='/hotspot/settings'
+                  href='/hotspot/plans/new'
                   className='py-2 px-8 hover:bg-blue-600 block'
                 >
                   Add
@@ -198,7 +198,7 @@ const Layout = ({ children }) => {
       )}
 
       {/* Main Content */}
-      <div className='flex-grow md:p-6 py-16 px-6 bg-white md:ml-6'>
+      <div className='flex-grow md:p-6 py-16 px-6 bg-white '>
         {children}
       </div>
     </div>

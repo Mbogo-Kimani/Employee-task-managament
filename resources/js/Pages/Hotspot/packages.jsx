@@ -23,6 +23,7 @@ const Packages = () => {
   }, []);
   return (
     <HotspotLayout>
+
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg mt-2'>
         <TableComp
           columns={[

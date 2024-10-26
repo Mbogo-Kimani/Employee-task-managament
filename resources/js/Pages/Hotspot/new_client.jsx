@@ -52,12 +52,12 @@ const AddClient = () => {
 
   return (
     <HotspotLayout>
-      <h2 class="title">Add a New Client</h2>
-      <form onSubmit={handleSubmit}>
+<h2 className="title2">Add a New Client</h2>
+      <form onSubmit={handleSubmit} className='form2'>
         {/* Username (*) */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Username </label>
-          <input class="details"
+          <input className="details"
             type="name"
             name="username"
             placeholder="Enter Client's User Name"
@@ -68,9 +68,10 @@ const AddClient = () => {
         </div>
 
         {/* Email (optional) */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Email </label>
-          <input  class="details"
+          
+          <input  className="details"
             type="email"
             name="email"
             placeholder="Enter Client's Email"
@@ -80,20 +81,31 @@ const AddClient = () => {
         </div>
 
         {/* Phone Number (required) */}
-        <div class="form-group">
+        <div className="form-group phone-group">
           <label>Phone Number </label>
-          <input  class="details"
-            type="tel"
-            name="phoneNumber"
-            placeholder="Enter Client's Phone Number"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-          />
+          <div className="phone-wrapper">
+            {/* Static Country Code Input */}
+            <input
+              type="text"
+              className="country-code"
+              value="+254"
+              disabled
+            />
+            {/* Editable Phone Number Input */}
+            <input
+              className="details phone-input"
+              type="tel"
+              name="phoneNumber"
+              placeholder="Enter Client's Phone Number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
         {/* Package using SelectComp */}
-        <div class="form-group">
+        <div className="form-group">
           <label>Package</label>
           <SelectComp
             name="package"
@@ -112,7 +124,7 @@ const AddClient = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit" class="add-client">Add Client</button>
+        <button type="submit" className="add-client-wrapper">Add Client</button>
       </form>
     </HotspotLayout>
   );
