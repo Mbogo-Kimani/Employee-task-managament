@@ -45,9 +45,10 @@ const AddClient = () => {
       alert("Username and Phone Number are required.");
       return;
     }
-
+    formData['is_registered_hotspot'] = true;
     // add logic to submit the form data (e.g., API call)
     console.log("Submitted Data: ", formData);
+    requestHandler.post('/api/client', formData, setResponse, setErrors, loaderSetter);
   };
 
   return (
@@ -59,15 +60,13 @@ const AddClient = () => {
         <div className="form-group">
           <label>Username </label>
           <input className="details"
-          
             type="name"
             name="username"
             placeholder="Enter Client's User Name"
             value={formData.username}
             onChange={handleChange}
             required
-         
-        />
+          />
         </div>
         </div>
 

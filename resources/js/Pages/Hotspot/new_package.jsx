@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import '../../../css/Pages/home/AddPackage.css';
+import { toast } from 'react-toastify';
 
 const AddPackage = () => {
   const [packageData, setPackageData] = useState({
@@ -10,6 +11,7 @@ const AddPackage = () => {
     cost: '',
     description: ''
   });
+  const [response, setResponse] = useState();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,17 +21,24 @@ const AddPackage = () => {
     });
   };
 
+  useEffect(() => {
+    if(response && response.success){
+      toast.success(response.message);
+    }
+  },[response]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     // Validate required fields
     if (!packageData.packageName || !packageData.cost) {
-      alert('Package Name and Cost are required.');
+      toast.error('Package Name and Cost are required.');
       return;
     }
 
     // Submit the form data (e.g., API call)
     console.log('Package Data Submitted:', packageData);
+    requestHandler.post('/api/hotspot/package',packageData,setResponse);
   };
 
   return (
