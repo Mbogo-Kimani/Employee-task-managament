@@ -376,5 +376,16 @@ class RouterController extends Controller
         return response()->json(['count' => $count]);
     }
 
+    public function removeSession(Request $request,$mac)
+    {
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/session');
+        $response = $client->remove(Query::where('calling-station-id', $mac));
+        if($response->getType() !== Response::TYPE_FINAL){
+            return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+        }
+        return response()->json(['success' => true, 'message' => 'Sessions delted successfully']);
+    }
+
     
 }

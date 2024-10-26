@@ -24,6 +24,7 @@ use App\Http\Controllers\TaskTypeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\EquipmentType;
+use BeyondCode\LaravelWebSockets\Server\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -192,6 +193,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::delete('/hotspot/package/{package_id}',[RouterController::class,'removePackage']);
   Route::patch('/hotspot/user',[RouterController::class,'updateUser']);
   Route::get('/hotspot/user/sessions',[RouterController::class,'getUserActiveSessions']);
+  Route::delete('/hotspot/session/{mac}',[RouterController::class,'removeSession']);
 });
 Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);
