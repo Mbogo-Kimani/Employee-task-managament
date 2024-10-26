@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DepartmentEnum;
 use App\Models\Client as ModelsClient;
 use App\Models\InternetPackage;
 use App\Models\StreetPackage;
@@ -130,6 +131,35 @@ class RouterController extends Controller
             abort(400, $e);
         }
 
+    }
+
+    public function updateUser(Request $request)
+    {
+        $request->validate([
+            'new_name' => 'required',
+            'old_name' => 'required',
+            'phone_number' => 'required'
+        ]);
+
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/user');
+
+        $updateResponse = $client->set(
+            $client->find(
+                function ($response) use ($request){
+                    return $response->getProperty('name') == $request->old_name;
+                }
+            ),
+            array(
+                'name' => $request->new_name,
+                'password' => $request->phone_number
+            )
+        );
+        if ($updateResponse->getType() == Response::TYPE_ERROR){
+            return response()->json(['success' => false, 'message' => $updateResponse->getProperty('message')]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function hotspotLogin(Request $request)
@@ -293,6 +323,19 @@ class RouterController extends Controller
         }
     }
 
+    public function getUserActiveSessions(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/session');
+        $count = $client->count(Query::where('status', 'start')->andWhere('user',$request->name));
+        
+        return response()->json(['count' => $count]);
+    }
+
     public function getHotspotUsers()
     {
         $client = new Client(config('router.ip'), config('router.user'), config('router.password'));        
@@ -308,6 +351,23 @@ class RouterController extends Controller
         return response()->json($data);
     }
 
+    public function getHotspotClients(Request $request)
+    {
+        $user = $request->user();
+        if($user->department_id !== DepartmentEnum::ADMIN){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+        $clients = ModelsClient::where('is_registered_hotspot', true)->with(['streetPackage','subscriptions'])->latest()->paginate(10);
+
+        foreach($clients as $user){
+            $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+            $client->setMenu('/user-manager/session');
+            $count = $client->count(Query::where('status', 'start')->andWhere('user',$user->name));
+            $user['sessions'] = $count;
+        }
+        return response()->json($clients);
+    }
+
     public function getActiveProfiles()
     {
         $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
@@ -316,8 +376,5 @@ class RouterController extends Controller
         return response()->json(['count' => $count]);
     }
 
-    public function removePackage(){
-        
-    }
     
 }

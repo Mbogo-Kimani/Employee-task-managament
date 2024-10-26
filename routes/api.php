@@ -184,12 +184,14 @@ Route::middleware('auth:sanctum')->group( function () {
   /**
    * Hotspot Mgmt System
    */
-  Route::get('/hotspot/clients', [ClientController::class, 'getHotspotClients']);
+  Route::get('/hotspot/clients', [RouterController::class, 'getHotspotClients']);
   Route::post('hotspot/package',[StreetPackageController::class, 'create']);
   Route::delete('hotspot/package/{street_package_id}',[StreetPackageController::class, 'delete']);
   Route::get('/hotspot/users',[RouterController::class,'getHotspotUsers']);
   Route::get('/hotspot/profiles/active',[RouterController::class,'getActiveProfiles']);
   Route::delete('/hotspot/package/{package_id}',[RouterController::class,'removePackage']);
+  Route::patch('/hotspot/user',[RouterController::class,'updateUser']);
+  Route::get('/hotspot/user/sessions',[RouterController::class,'getUserActiveSessions']);
 });
 Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);
