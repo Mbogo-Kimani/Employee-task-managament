@@ -10,9 +10,9 @@ body {
   border-radius: 16px;
   padding: 2rem;
   max-width: 600px;
-  max-height: 80vh; /* Limit the form height to 80% of the viewport height */
+  max-height: 80vh; 
   margin: 1.4rem auto;
-  overflow-y: auto; /* Allow vertical scrolling if content exceeds */
+  overflow-y: auto; 
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   color: #333;
 }
@@ -107,4 +107,13 @@ label {
   .add-package {
     padding: 0.9rem;
   }
+}
+
+.duration-group {
+  display: flex;
+  gap: 8px;
+}
+
+.duration-group .details {
+  width: calc(33.33% - 6px);
 }
