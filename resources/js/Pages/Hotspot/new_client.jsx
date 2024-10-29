@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import SelectComp from '../../Components/Common/SelectComp';
 import '../../../css/Pages/AddClient.css';
+import requestHandler from '../../services/requestHandler';
 
 // Dummy package data
 const packageOptions = [
@@ -18,7 +19,11 @@ const AddClient = () => {
     phoneNumber: '',
     package: ''
   });
+  const [streetPackages, setStreetPackages] = useState();
 
+  useEffect(() => {
+    requestHandler.get('/api/street_packages', setStreetPackages);
+  },[])
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,12 +121,12 @@ const AddClient = () => {
             onChange={handlePackageChange}
           >
             <option value="">Select Package</option>
-            {packageOptions.map((pkg) => (
-              <option key={pkg.id} value={pkg.name} title={pkg.description}>
+            {streetPackages?.map((pkg) => (
+              <option key={pkg.id} value={pkg.id} title={pkg.description}>
                 {pkg.name}
               </option>
             ))}
-          </SelectComp>
+          </SelectComp> 
         </div>
 
         {/* Submit button */}

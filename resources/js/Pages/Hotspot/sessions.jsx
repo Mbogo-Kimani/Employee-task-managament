@@ -4,16 +4,31 @@ import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import requestHandler from '../../services/requestHandler';
 import { loaderSetter } from '../../Components/Common/Loader';
 import SessionTableElem from '../../Components/Hotspot/SessionTableElem';
+import { toast } from 'react-toastify';
 
 
 const Sessions = () => {
-    const [sessions, setSessions] = useState([])
+    const [sessions, setSessions] = useState([]);
+    const [response, setResponse] = useState();
 
     useEffect(() => {
-        fetchActiveSessions()
+      fetchActiveSessions()
     },[])
+    useEffect(() => {
+      if(response && response.success){
+        toast.success(response.message);
+        fetchActiveSessions()
+      }else if (response){
+        toast.error('An error occurred');
+      }
+    },[response]);
+
     function fetchActiveSessions(){
-        requestHandler.get('/api/sessions/active',setSessions, null,loaderSetter)
+      requestHandler.get('/api/sessions/active',setSessions, null,loaderSetter)
+    }
+
+    function handleDelete(mac){     
+      requestHandler.delete(`/api/hotspot/session/${mac}`,setResponse);
     }
   return (
     <HotspotLayout>
@@ -25,6 +40,7 @@ const Sessions = () => {
                   <SessionTableElem
                     key={elem.id || index}
                     elem={elem}
+                    onDelete={handleDelete}
                   />
                 );
               })

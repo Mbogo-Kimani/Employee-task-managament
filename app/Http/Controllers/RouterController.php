@@ -384,7 +384,12 @@ class RouterController extends Controller
         if($response->getType() !== Response::TYPE_FINAL){
             return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
         }
-        return response()->json(['success' => true, 'message' => 'Sessions delted successfully']);
+        return response()->json(['success' => true, 'message' => 'Sessions deleted successfully']);
+    }
+
+    public function addHotspotUser()
+    {
+        
     }
 
     

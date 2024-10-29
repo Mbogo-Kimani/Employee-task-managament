@@ -318,5 +318,19 @@ class ClientController extends Controller
 
 		return response()->json(['message' => 'File uploaded successfully']);
 	}
+
+    public function filterClients(Request $request)
+    {
+        $startDate = Carbon::now()->subDays(7);
+        $endDate = Carbon::now();
+        
+        $clientsCountByDay = Client::selectRaw('DAYOFWEEK(created_at) as day, COUNT(*) as count')
+        ->where('is_registered_hotspot',true)   
+        ->whereBetween('created_at', [$startDate, $endDate])
+        ->groupBy('day')
+        ->orderBy('day')
+        ->get();
+        return response()->json(['data' => $clientsCountByDay]);
+    }
 }
 

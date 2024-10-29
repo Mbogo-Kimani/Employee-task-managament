@@ -4,6 +4,8 @@ import { AppContext } from '../../appContext';
 import { useTranslation } from 'react-i18next';
 import IncomeChart from '../../Components/Charts/IncomeChart'
 import requestHandler from '../../services/requestHandler';
+import HotspotClientsChart from '../../Components/Charts/HotspotClientsChart';
+import HotspotIncomeChart from '../../Components/Charts/HotspotIncomeChart';
 
 const Dashboard = () => {
   const [hotspotUsers, setHotspotUsers] = useState();
@@ -11,20 +13,28 @@ const Dashboard = () => {
   const [income, setIncome] = useState();
   const [dailyIncome, setDailyIncome] = useState();
   const [monthlyIncome, setMonthlyIncome] = useState();
+  const [clientsStat, setClientsStat] = useState();
+  const [incomeStat, setIncomeStat] = useState();
   const { userData } = useContext(AppContext);
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchHotspotUsers();
     fetchActiveProfiles();
-    requestHandler.get(`/api/get-stat?period=daily`,setDailyIncome)
-    requestHandler.get(`/api/get-stat?period=monthly`,setMonthlyIncome)
-    
+    getStats()
+    fetchClientStats()
+    fetchIncomeStats()
   },[])
 
   function fetchHotspotUsers(){
     requestHandler.get('/api/hotspot/users',setHotspotUsers);
   }
+
+  function getStats(){
+    requestHandler.get(`/api/get-stat?period=daily`,setDailyIncome)
+    requestHandler.get(`/api/get-stat?period=monthly`,setMonthlyIncome)
+  }
+
   function fetchActiveProfiles(){
     requestHandler.get('/api/hotspot/profiles/active',setPlans);
   }
@@ -32,6 +42,14 @@ const Dashboard = () => {
   function getIncome(string){
     requestHandler.get(`/api/get-stat?period=${string}`,setIncome)
     return income
+  }
+
+  function fetchClientStats(){
+    requestHandler.get('/api/filter/clients',setClientsStat)
+  }
+
+  function fetchIncomeStats(){
+    requestHandler.get('/api/filter/transactions',setIncomeStat)
   }
   return (
     <HotspotLayout>
@@ -87,12 +105,12 @@ const Dashboard = () => {
       <span className="text-green-600 font-bold">+0%</span>
     </div>
     <p className="text-gray-600 text-sm">Growth this month</p>
+    </div>
   </div>
-</div>
 
       <div className='flex mt-5 w-full justify-between'>
-      <IncomeChart clientData={[]} title='Clients'/>
-      <IncomeChart clientData={[]} title="Income"/>
+      <HotspotClientsChart clientData={clientsStat?.data} title='Clients'/>
+      <HotspotIncomeChart incomeData={incomeStat?.data} title="Income"/>
       </div>
     </HotspotLayout>
   );

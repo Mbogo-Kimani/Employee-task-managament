@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import '../../../css/Pages/home/AddPackage.css';
 import { toast } from 'react-toastify';
+import requestHandler from '../../services/requestHandler';
 
 const AddPackage = () => {
   const [packageData, setPackageData] = useState({
@@ -20,6 +21,7 @@ const AddPackage = () => {
       [name]: value
     });
   };
+  
 
   useEffect(() => {
     if(response && response.success){
@@ -29,7 +31,7 @@ const AddPackage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Validate required fields
     if (!packageData.packageName || !packageData.cost) {
       toast.error('Package Name and Cost are required.');

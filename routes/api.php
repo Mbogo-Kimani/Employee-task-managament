@@ -96,6 +96,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/unassigned_clients',[ClientController::class, 'getUnassignedClients']);
   Route::patch('/assign_clients',[ClientController::class, 'assignClients']);
   Route::post('clients/upload',[ClientController::class, 'uploadClients']);
+  Route::get('/filter/clients',[ClientController::class, 'filterClients']);
   /**
    * Enums Controllers
    */
@@ -182,6 +183,7 @@ Route::middleware('auth:sanctum')->group( function () {
    * Transaction Controller
    */
   Route::get('/get-stat',[TransactionController::class,'statistics']);
+  Route::get('/filter/transactions',[TransactionController::class,'sortTransactions']);
   /**
    * Hotspot Mgmt System
    */
