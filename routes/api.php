@@ -196,6 +196,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::patch('/hotspot/user',[RouterController::class,'updateUser']);
   Route::get('/hotspot/user/sessions',[RouterController::class,'getUserActiveSessions']);
   Route::delete('/hotspot/session/{mac}',[RouterController::class,'removeSession']);
+  Route::post('/hotspot/client',[RouterController::class,'addHotspotUser']);
 });
 Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);

@@ -387,9 +387,57 @@ class RouterController extends Controller
         return response()->json(['success' => true, 'message' => 'Sessions deleted successfully']);
     }
 
-    public function addHotspotUser()
+    public function addHotspotUser(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone_number' => 'required',
+            'street_package_id' => 'required'
+        ]);
         
+        $customer = ModelsClient::where('phone_number',$request->phone_number)->orWhere('email', $request->email)->first();
+	        
+        if($customer){
+            return response()->json(['success' => false, 'message' => 'User already exists.']);
+        }
+        $customer = ModelsClient::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'street_package_id' => $request->street_package_id
+        ]);
+
+        Subscription::create([
+            'client_id' => $customer->id,
+            'street_package_id' => $request->street_package_id,
+            'username'  => $customer->name,
+            'password' => $customer->phone_number,
+            'status' => 1,
+            'expires_at' => Carbon::now()->addSeconds(16)
+        ]);
+
+        try{
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
+
+            $addRequest = new RouterOSRequest('/user-manager/user/add');
+                $addRequest
+                ->setArgument('disabled', 'no')
+                ->setArgument('name', $customer->name)
+                ->setArgument('password', $customer->phone_number)
+                ->setArgument('shared-users', $customer->streetPackage->devices);
+    
+            $response = $client->sendSync($addRequest);
+            if ($response->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
+            $customer->is_registered_hotspot = true;
+            $customer->save();
+            return response()->json(['success' => true]);
+        }catch(Exception $e){
+            abort(400, $e);
+        }
+
     }
 
     

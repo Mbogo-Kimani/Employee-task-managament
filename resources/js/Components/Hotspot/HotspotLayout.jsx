@@ -155,7 +155,7 @@ const Layout = ({ children }) => {
           <a href='/settings' className='py-2 px-4 hover:bg-blue-700 mb-1'>
             Reports
           </a>
-          <a href='/settings' className='py-2 px-4 hover:bg-blue-700'>
+          <a href='/hotspot/tickets' className='py-2 px-4 hover:bg-blue-700'>
             Tickets
           </a>
           <a

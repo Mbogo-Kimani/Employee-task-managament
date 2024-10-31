@@ -138,3 +138,6 @@ Route::get('/hotspot/client/new', function () {
 Route::get('/hotspot/plans/new', function () {
   return Inertia::render('Hotspot/new_package');
 });
+Route::get('/hotspot/tickets', function () {
+  return Inertia::render('Hotspot/tickets');
+});

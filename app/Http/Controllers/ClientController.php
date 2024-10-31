@@ -65,9 +65,9 @@ class ClientController extends Controller
             'phone_number' => 'required|string|max:15',
 		]);
         // $phone_number = '+254' . $request->phone_number;
-	$client_phone_number = $request->phone_number;
+	    $client_phone_number = $request->phone_number;
 
-	$client = null;
+	    $client = null;
 
         if (strlen($request->phone_number) == 13) {
             $phone_number = substr($request->phone_number, 4);

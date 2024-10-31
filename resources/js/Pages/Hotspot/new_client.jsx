@@ -3,6 +3,9 @@ import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import SelectComp from '../../Components/Common/SelectComp';
 import '../../../css/Pages/AddClient.css';
 import requestHandler from '../../services/requestHandler';
+import { loaderSetter } from '../../Components/Common/Loader';
+import { toast } from 'react-toastify';
+import { router } from '@inertiajs/react';
 
 // Dummy package data
 const packageOptions = [
@@ -14,16 +17,26 @@ const packageOptions = [
 const AddClient = () => {
   // State to manage form input values
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
-    phoneNumber: '',
-    package: ''
+    phone_number: '',
+    street_package_id: ''
   });
   const [streetPackages, setStreetPackages] = useState();
+  const [response,setResponse] = useState();
+  const [errors,setErrors] = useState();
 
   useEffect(() => {
     requestHandler.get('/api/street_packages', setStreetPackages);
   },[])
+  useEffect(() => {
+    if(response && response.success){
+      toast.success('Client added successfully');
+      router.visit('/hotspot/clients')
+    }else if(response?.message){
+      toast.error('An error occurred')
+    }
+  },[response])
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +50,7 @@ const AddClient = () => {
   const handlePackageChange = (e) => {
     setFormData({
       ...formData,
-      package: e.target.value
+      street_package_id: e.target.value
     });
   };
 
@@ -46,14 +59,14 @@ const AddClient = () => {
     e.preventDefault();
 
     // Validate required fields
-    if (!formData.username || !formData.phoneNumber) {
+    if (!formData.name || !formData.phone_number) {
       alert("Username and Phone Number are required.");
       return;
     }
-    formData['is_registered_hotspot'] = true;
-    // add logic to submit the form data (e.g., API call)
+    
     console.log("Submitted Data: ", formData);
-    requestHandler.post('/api/client', formData, setResponse, setErrors, loaderSetter);
+
+    requestHandler.post('/api/hotspot/client', formData, setResponse, setErrors, loaderSetter);
   };
 
   return (
@@ -65,9 +78,9 @@ const AddClient = () => {
           <label>Username </label>
           <input className="details"
             type="name"
-            name="username"
+            name="name"
             placeholder="Enter Client's User Name"
-            value={formData.username}
+            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -101,9 +114,9 @@ const AddClient = () => {
             <input
               className="details phone-input"
               type="tel"
-              name="phoneNumber"
+              name="phone_number"
               placeholder="Enter Client's Phone Number"
-              value={formData.phoneNumber}
+              value={formData.phone_number}
               onChange={handleChange}
               required
             />
@@ -117,7 +130,7 @@ const AddClient = () => {
             name="package"
             id="package"
             className="focus:outline-none border-hidden border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-            value={formData.package}
+            value={formData.street_package_id}
             onChange={handlePackageChange}
           >
             <option value="">Select Package</option>
