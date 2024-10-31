@@ -8,26 +8,26 @@ body {
 .form1 {
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1rem;
   max-width: 600px;
-  max-height: 80vh; /* Limit the form height to 80% of the viewport height */
-  margin: 1.4rem auto;
-  overflow-y: auto; /* Allow vertical scrolling if content exceeds */
+  max-height: 90vh; 
+  margin: 0.8rem auto;
+  overflow-y: auto; 
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   color: #333;
 }
 
 .title1 {
   margin-bottom: -5px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  margin-top: 17px;
+  margin-top: 35px;
   text-align: center;
   color: #333;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.4rem;
 }
 
 label {
@@ -44,7 +44,7 @@ label {
   border-radius: 8px;
   background-color: #f9fafb;
   color: #333;
-  font-size: 1rem;
+  font-size: 0.8rem;
   transition: border-color 0.3s, background-color 0.3s;
 }
 
@@ -55,17 +55,17 @@ label {
 }
 
 .add-package {
-  width: 60%; 
+  width: 50%; 
   background-color: #1d4ed8;
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   padding: 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.5s;
   border: none;
-  margin-left: 39%;
+  margin-left: 50%;
 }
 
 .add-package:hover {
@@ -107,4 +107,13 @@ label {
   .add-package {
     padding: 0.9rem;
   }
+}
+
+.duration-group {
+  display: flex;
+  gap: 8px;
+}
+
+.duration-group .details {
+  width: calc(33.33% - 6px);
 }

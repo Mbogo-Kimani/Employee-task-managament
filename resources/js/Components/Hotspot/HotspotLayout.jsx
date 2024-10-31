@@ -5,6 +5,8 @@ import { Link, router } from '@inertiajs/react';
 import { toast } from 'react-toastify';
 import requestHandler from '../../services/requestHandler';
 import { AppContext } from '../../appContext';
+import { useLocation } from 'react-router-dom'; // Updated import for useLocation
+
 
 const Layout = ({ children }) => {
   // State to control sidebar visibility
@@ -15,19 +17,31 @@ const Layout = ({ children }) => {
   const [isFinancesOpen, setIsFinancesOpen] = useState(false);
   const { userData, logoutUser } = useContext(AppContext);
   
-
   useEffect(() => {
-    checkLogin()
-  }, []);
+    checkLogin();
+    updateSidebarState(location.pathname); // **Update sidebar on route change**
+  }, [location.pathname]);
 
-  function checkLogin(data) {
-    
-    if (!userData){
+  function checkLogin() {
+    if (!userData) {
       toast.error('You are not logged in');
-      // router.visit('/auth/login');
-      window.location.href = "/auth/login"
+      window.location.href = "/auth/login";
     }
   }
+
+  const updateSidebarState = (path) => {
+    // Automatically expand the section containing the active link
+    setIsHotspotOpen(path.startsWith('/hotspot/points') || path.startsWith('/hotspot/settings'));
+    setIsClientsOpen(path.startsWith('/hotspot/client') || path.startsWith('/hotspot/clients'));
+    setIsPackagesOpen(path.startsWith('/hotspot/plan/new') || path.startsWith('/hotspot/plans'));
+    setIsFinancesOpen(path.startsWith('/hotspot/transactions'));
+  };
+
+  const isActive = (path) => location.pathname.startsWith(path);  // Updated to use startsWith
+
+  const handleLinkClick = () => {
+    if (window.innerWidth <= 768) setIsSidebarOpen(false);  // Close sidebar on mobile
+  };
 
   return (
     <div className='flex h-screen'>
@@ -49,9 +63,10 @@ const Layout = ({ children }) => {
       >
         <div className='p-4 text-lg font-bold'>ETNET HOTSPOT</div>
         <nav className='flex flex-col flex-grow'>
-          <a href='/hotspot/dashboard' className='py-2 px-4 hover:bg-blue-700 mb-1'>
+          <Link href='/hotspot/dashboard' className={`py-2 px-4 hover:bg-blue-700 mb-1 ${isActive('/hotspot/dashboard') ? 'bg-blue-700' : ''}`} // Updated with isActive check
+          >
             Dashboard
-          </a>
+          </Link>
           <div className='mb-1'>
             <button
               className={`py-2 px-4 hover:bg-blue-700 w-full flex justify-between items-center ${isHotspotOpen && 'bg-blue-700'}`}
@@ -64,13 +79,13 @@ const Layout = ({ children }) => {
               <div className='bg-blue-700'>
                 <Link
                   href='/hotspot/settings'
-                  className='py-2 px-8 hover:bg-blue-600 block'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/settings') ? 'bg-blue-600' : ''}`} // Updated with isActive check
                 >
                   Access Points
                 </Link>
                 <Link
                   href='/sessions/active'
-                  className='py-2 px-8 hover:bg-blue-600 block'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/sessions/active') ? 'bg-blue-600' : ''}`} // Fixed path and added isActive check
                 >
                   Active Sessions
                 </Link>
@@ -89,13 +104,13 @@ const Layout = ({ children }) => {
               <div className='bg-blue-700'>
                 <Link
                   href='/hotspot/client/new'
-                  className='py-2 px-8 hover:bg-blue-600 block'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/client/new') ? 'bg-blue-600' : ''}`} // Updated with isActive check
                 >
                   Add
                 </Link>
                 <Link
                   href='/hotspot/clients'
-                  className='py-2 px-8 hover:bg-blue-600 block'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/clients') ? 'bg-blue-600' : ''}`} // Updated with isActive check
                 >
                   List
                 </Link>
@@ -113,14 +128,15 @@ const Layout = ({ children }) => {
             {isPackagesOpen && (
               <div className='bg-blue-700'>
                 <Link
-                  href='/hotspot/plans/new'
-                  className='py-2 px-8 hover:bg-blue-600 block'
+                  href='/hotspot/plan/new'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/plan/new') ? 'bg-blue-600' : ''}`} // Updated with isActive check
+
                 >
                   Add
                 </Link>
                 <Link
                   href='/hotspot/plans'
-                  className='py-2 px-8 hover:bg-blue-600 block'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/plans') ? 'bg-blue-600' : ''}`} // Updated with isActive check
                 >
                   List
                 </Link>
@@ -139,7 +155,7 @@ const Layout = ({ children }) => {
               <div className='bg-blue-700'>
                 <Link
                   href='/hotspot/transactions'
-                  className='py-2 px-8 hover:bg-blue-600 block whitespace-nowrap'
+                  className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/transactions') ? 'bg-blue-600' : ''}`} // Updated with isActive check
                 >
                   Mpesa Transactions
                 </Link>
@@ -152,13 +168,13 @@ const Layout = ({ children }) => {
               </div>
             )}
           </div>
-          <a href='/settings' className='py-2 px-4 hover:bg-blue-700 mb-1'>
+          <Link href='/settings' className={`py-2 px-4 hover:bg-blue-700 mb-1 ${isActive('/settings') ? 'bg-blue-700' : ''}`}> {/* Updated with isActive check */}
             Reports
-          </a>
-          <a href='/hotspot/tickets' className='py-2 px-4 hover:bg-blue-700'>
+          </Link>
+          <a href='/hotspot/tickets' className={`py-2 px-4 hover:bg-blue-700 ${isActive('/settings') ? 'bg-blue-700' : ''}`}> {/* Updated with isActive check */}
             Tickets
           </a>
-          <a
+          <Link
             href='/dashboard'
             className='absolute py-2 px-4 hover:bg-blue-700 bottom-5 flex'
           >
@@ -177,7 +193,7 @@ const Layout = ({ children }) => {
                 d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H5a3 3 0 01-3-3V7a3 3 0 013-3h5a3 3 0 013 3v1'
               />
             </svg>
-          </a>
+          </Link>
         </nav>
 
         {/* Close button for mobile */}

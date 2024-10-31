@@ -38,10 +38,25 @@ const AddPackage = () => {
       return;
     }
 
-    // Submit the form data (e.g., API call)
+    // Submit the form data 
     console.log('Package Data Submitted:', packageData);
     requestHandler.post('/api/hotspot/package',packageData,setResponse);
   };
+
+  // Convert duration to seconds
+  const totalSeconds =
+  (parseInt(packageData.hours) || 0) * 3600 +
+  (parseInt(packageData.minutes) || 0) * 60 +
+  (parseInt(packageData.seconds) || 0);
+
+// Submit the form data with converted duration
+const submissionData = {
+  ...packageData,
+  duration: totalSeconds,
+};
+
+console.log('Package Data Submitted:', submissionData);
+
 
   return (
     <HotspotLayout>
@@ -61,17 +76,35 @@ const AddPackage = () => {
           />
         </div>
 
-        {/* Duration */}
-        <div className="form-group">
-          <label>Duration </label>
-          <input
-            className="details"
-            type="number"
-            name="duration"
-            placeholder="Enter Duration"
-            value={packageData.duration}
-            onChange={handleChange}
-          />
+       {/* Duration */}
+       <div className="form-group">
+          <label>Duration</label>
+          <div className="duration-group">
+            <input
+              className="details"
+              type="number"
+              name="hours"
+              placeholder="Hours"
+              value={packageData.hours}
+              onChange={handleChange}
+            />
+            <input
+              className="details"
+              type="number"
+              name="minutes"
+              placeholder="Minutes"
+              value={packageData.minutes}
+              onChange={handleChange}
+            />
+            <input
+              className="details"
+              type="number"
+              name="seconds"
+              placeholder="Seconds"
+              value={packageData.seconds}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         {/* Devices */}
@@ -119,5 +152,6 @@ const AddPackage = () => {
     </HotspotLayout>
   );
 };
+
 
 export default AddPackage;

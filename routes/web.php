@@ -135,7 +135,7 @@ Route::get('/hotspot/transactions', function () {
 Route::get('/hotspot/client/new', function () {
   return Inertia::render('Hotspot/new_client');
 });
-Route::get('/hotspot/plans/new', function () {
+Route::get('/hotspot/plan/new', function () {
   return Inertia::render('Hotspot/new_package');
 });
 Route::get('/hotspot/tickets', function () {
