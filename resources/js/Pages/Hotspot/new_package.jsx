@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
-import '../../../css/Pages/home/AddPackage.css';
+
 
 const AddPackage = () => {
   const [packageData, setPackageData] = useState({
@@ -49,13 +49,13 @@ console.log('Package Data Submitted:', submissionData);
 
   return (
     <HotspotLayout>
-      <h2 className="title1">Add a New Package</h2>
-      <form onSubmit={handleSubmit} className="form1">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add a New Package</h2>
+      <form onSubmit={handleSubmit}  className="bg-white rounded-lg shadow-lg p-6 max-w-lg hover:shadow-2xl transition-shadow mx-auto">
         {/* Package Name */}
-        <div className="form-group">
-          <label> Name </label>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-medium mb-2"> Name </label>
           <input
-            className="details"
+           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="text"
             name="packageName"
             placeholder="Enter Package Name"
@@ -66,11 +66,11 @@ console.log('Package Data Submitted:', submissionData);
         </div>
 
        {/* Duration */}
-       <div className="form-group">
-          <label>Duration</label>
-          <div className="duration-group">
+       <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-medium mb-2">Duration</label>
+          <div className="flex gap-2">
             <input
-              className="details"
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="hours"
               placeholder="Hours"
@@ -78,7 +78,7 @@ console.log('Package Data Submitted:', submissionData);
               onChange={handleChange}
             />
             <input
-              className="details"
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="minutes"
               placeholder="Minutes"
@@ -86,7 +86,7 @@ console.log('Package Data Submitted:', submissionData);
               onChange={handleChange}
             />
             <input
-              className="details"
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="seconds"
               placeholder="Seconds"
@@ -98,9 +98,9 @@ console.log('Package Data Submitted:', submissionData);
 
         {/* Devices */}
         <div className="form-group">
-          <label>Number of Devices </label>
+          <label  className="block text-gray-700 text-sm font-medium mb-2">Number of Devices </label>
           <input
-            className="details"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="number"
             name="devices"
             placeholder="Enter Number of Devices"
@@ -111,9 +111,9 @@ console.log('Package Data Submitted:', submissionData);
 
         {/* Cost */}
         <div className="form-group">
-          <label>Cost</label>
+          <label className="block text-gray-700 text-sm font-medium mb-2">Cost</label>
           <input
-            className="details"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="number"
             name="cost"
             placeholder="Enter Package Cost"
@@ -125,9 +125,9 @@ console.log('Package Data Submitted:', submissionData);
 
         {/* Description */}
         <div className="form-group">
-          <label> Description </label>
+          <label className="block text-gray-700 text-sm font-medium mb-2"> Description </label>
           <textarea
-            className="details"
+            className="w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             name="description"
             placeholder="Enter Package Description"
             value={packageData.description}
@@ -136,7 +136,8 @@ console.log('Package Data Submitted:', submissionData);
         </div>
 
         {/* Submit button */}
-        <button type="submit" className="add-package">Add Package</button>
+      <button type="submit" className="w-36 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 ml-80 transition duration-300"
+        >Add Package</button>
       </form>
     </HotspotLayout>
   );
