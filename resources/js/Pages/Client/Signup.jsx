@@ -54,7 +54,7 @@ const ClientSignup = () => {
           requestHandler.post('/api/subscribe',{subscription_id: response.subscription_id, ip: clientData?.ip, mac: clientData?.mac},setResponse);
         }
       }
-      
+
       function handleSubmit(e, text) {
         e.preventDefault();
 
@@ -63,7 +63,7 @@ const ClientSignup = () => {
             ? client.phone_number.slice(1)
             : client.phone_number;
 
-        const updatedClient = { ...client, phone_number: phoneNumber };
+        const updatedClient = { ...client, phone_number: phoneNumber  };
 
         if (text === 'login') {
             requestHandler.post('/api/clients/login', updatedClient, setResponse, setErrors);
