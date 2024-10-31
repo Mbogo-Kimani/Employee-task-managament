@@ -58,10 +58,16 @@ const ClientSignup = () => {
       function handleSubmit(e, text) {
         e.preventDefault();
 
-        // Check if the phone number starts with '0' and remove it if it does
+        // Check if the phone number starts with '0' and remove it, remove only the first zero
         const phoneNumber = client.phone_number.startsWith('0')
-            ? client.phone_number.slice(1)
-            : client.phone_number;
+        ? client.phone_number.replace(/^0/, '') // Replace the first '0' only
+        : client.phone_number;
+
+        // Validate the length of the phone number
+    if (phoneNumber.length !== 9) {
+      setErrors({ phone_number: 'Phone number must be exactly 9 digits after removing the leading zero.' });
+      return; // Stop submission if the phone number is not valid
+  }
 
         const updatedClient = { ...client, phone_number: phoneNumber  };
 
