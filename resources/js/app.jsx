@@ -9,7 +9,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './i18n';
 import { router } from '@inertiajs/react';
 import { AppProvider } from './appContext';
-import { BrowserRouter } from 'react-router-dom';
 
 router.on("before", (ev) => {
 	ev.detail.visit.headers["Authorization"] = `Bearer ${localStorage.getItem('auth_token')}`;
@@ -32,7 +31,6 @@ createInertiaApp({
   },
   setup({ el, App, props }) {
     createRoot(el).render(
-      <BrowserRouter>
       <AppProvider>
       <>
         <ToastContainer
@@ -50,7 +48,6 @@ createInertiaApp({
         <App {...props} />
       </>
       </AppProvider>
-      </BrowserRouter>
     );
   },
 });

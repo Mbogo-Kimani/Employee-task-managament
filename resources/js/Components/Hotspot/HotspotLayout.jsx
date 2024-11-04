@@ -5,8 +5,6 @@ import { Link, router } from '@inertiajs/react';
 import { toast } from 'react-toastify';
 import requestHandler from '../../services/requestHandler';
 import { AppContext } from '../../appContext';
-import { useLocation } from 'react-router-dom'; // Updated import for useLocation
-
 
 const Layout = ({ children }) => {
   // State to control sidebar visibility
@@ -31,7 +29,7 @@ const Layout = ({ children }) => {
 
   const updateSidebarState = (path) => {
     // Automatically expand the section containing the active link
-    setIsHotspotOpen(path.startsWith('/hotspot/points') || path.startsWith('/hotspot/settings'));
+    setIsHotspotOpen(path.startsWith('/sessions'));
     setIsClientsOpen(path.startsWith('/hotspot/client') || path.startsWith('/hotspot/clients'));
     setIsPackagesOpen(path.startsWith('/hotspot/plan/new') || path.startsWith('/hotspot/plans'));
     setIsFinancesOpen(path.startsWith('/hotspot/transactions'));
@@ -168,10 +166,10 @@ const Layout = ({ children }) => {
               </div>
             )}
           </div>
-          <Link href='/settings' className={`py-2 px-4 hover:bg-blue-700 mb-1 ${isActive('/settings') ? 'bg-blue-700' : ''}`}> {/* Updated with isActive check */}
+          <Link href='/settings' className={`py-2 px-4 hover:bg-blue-700 mb-1 ${isActive('/settings') ? 'bg-blue-700' : ''}`}>
             Reports
-          </Link>
-          <a href='/hotspot/tickets' className={`py-2 px-4 hover:bg-blue-700 ${isActive('/settings') ? 'bg-blue-700' : ''}`}> {/* Updated with isActive check */}
+           </Link>
+          <a href='/hotspot/tickets' className={`py-2 px-4 hover:bg-blue-700 ${isActive('/hotspot/tickets') ? 'bg-blue-700' : ''}`}> {/* Updated with isActive check */}
             Tickets
           </a>
           <Link

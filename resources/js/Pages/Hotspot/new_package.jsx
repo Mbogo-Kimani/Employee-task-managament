@@ -3,16 +3,22 @@ import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import '../../../css/Pages/home/AddPackage.css';
 import { toast } from 'react-toastify';
 import requestHandler from '../../services/requestHandler';
+import { router } from '@inertiajs/react';
 
 const AddPackage = () => {
   const [packageData, setPackageData] = useState({
-    packageName: '',
+    name: '',
     duration: '',
     devices: '',
     cost: '',
     description: ''
   });
   const [response, setResponse] = useState();
+  const [time , setTime] = useState({
+    hours: '',
+    minutes: '',
+    seconds: ''
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +32,7 @@ const AddPackage = () => {
   useEffect(() => {
     if(response && response.success){
       toast.success(response.message);
+      router.visit('/hotspot/packages')
     }
   },[response]);
 
@@ -33,29 +40,27 @@ const AddPackage = () => {
     e.preventDefault();
 
     // Validate required fields
-    if (!packageData.packageName || !packageData.cost) {
+    if (!packageData.name || !packageData.cost) {
       toast.error('Package Name and Cost are required.');
       return;
     }
 
+    // Convert duration to seconds
+    const totalSeconds =
+    (parseInt(packageData.hours) || 0) * 3600 +
+    (parseInt(packageData.minutes) || 0) * 60 +
+    (parseInt(packageData.seconds) || 0);
+
+    // Submit the form data with converted duration
+    setPackageData({...packageData,duration: totalSeconds})
+    const data = {
+      ...packageData,
+      duration: totalSeconds
+    }
     // Submit the form data 
-    console.log('Package Data Submitted:', packageData);
-    requestHandler.post('/api/hotspot/package',packageData,setResponse);
+    console.log('Package Data Submitted:', data);
+    requestHandler.post('/api/hotspot/package',data,setResponse);
   };
-
-  // Convert duration to seconds
-  const totalSeconds =
-  (parseInt(packageData.hours) || 0) * 3600 +
-  (parseInt(packageData.minutes) || 0) * 60 +
-  (parseInt(packageData.seconds) || 0);
-
-// Submit the form data with converted duration
-const submissionData = {
-  ...packageData,
-  duration: totalSeconds,
-};
-
-console.log('Package Data Submitted:', submissionData);
 
 
   return (
@@ -68,7 +73,7 @@ console.log('Package Data Submitted:', submissionData);
           <input
             className="details"
             type="text"
-            name="packageName"
+            name="name"
             placeholder="Enter Package Name"
             value={packageData.packageName}
             onChange={handleChange}
