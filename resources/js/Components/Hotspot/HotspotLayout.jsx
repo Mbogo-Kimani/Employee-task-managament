@@ -75,12 +75,12 @@ const Layout = ({ children }) => {
             </button>
             {isHotspotOpen && (
               <div className='bg-blue-700'>
-                <Link
+                {/* <Link
                   href='/hotspot/settings'
                   className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/hotspot/settings') ? 'bg-blue-600' : ''}`} // Updated with isActive check
                 >
                   Access Points
-                </Link>
+                </Link> */}
                 <Link
                   href='/sessions/active'
                   className={`py-2 px-8 hover:bg-blue-600 block ${isActive('/sessions/active') ? 'bg-blue-600' : ''}`} // Fixed path and added isActive check
@@ -166,12 +166,12 @@ const Layout = ({ children }) => {
               </div>
             )}
           </div>
-          <Link href='/settings' className={`py-2 px-4 hover:bg-blue-700 mb-1 ${isActive('/settings') ? 'bg-blue-700' : ''}`}>
+          {/* <Link href='/settings' className={`py-2 px-4 hover:bg-blue-700 mb-1 ${isActive('/settings') ? 'bg-blue-700' : ''}`}>
             Reports
            </Link>
           <a href='/hotspot/tickets' className={`py-2 px-4 hover:bg-blue-700 ${isActive('/hotspot/tickets') ? 'bg-blue-700' : ''}`}> {/* Updated with isActive check */}
-            Tickets
-          </a>
+            {/* Tickets */}
+          {/* </a> */}
           <Link
             href='/dashboard'
             className='absolute py-2 px-4 hover:bg-blue-700 bottom-5 flex'

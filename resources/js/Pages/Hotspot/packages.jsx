@@ -21,6 +21,12 @@ const Packages = () => {
   useEffect(() => {
     fetchPackages();
   }, []);
+
+  const handleDelete = (elem) => {
+      requestHandler.delete(`/api/hotspot/package/${elem.id}`);
+      // fetchPackages();
+      
+  }
   return (
     <HotspotLayout>
 
@@ -70,7 +76,7 @@ const Packages = () => {
                 </th>
                 <td className='px-2 py-4 relative'>
                   <DropDown>
-                    <Menu.Item>
+                    {/* <Menu.Item>
                       {({ active }) => (
                        
                           <button
@@ -82,14 +88,14 @@ const Packages = () => {
                             //   onClick={() => openDeleteModal(elem)}
                           >
                             <Icon
-                              src='trash'
+                              src='edit'
                               className='w-4 h-4 mr-2'
                               fill='rgb(34 197 94)'
                             />
                             <span className='block py-3 px-2'>Edit</span>
                           </button>
                       )}
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Item>
                       {({ active }) => (
                        
@@ -99,7 +105,7 @@ const Packages = () => {
                                 ? 'bg-green-200 text-black'
                                 : 'text-gray-900'
                             } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                            //   onClick={() => openDeleteModal(elem)}
+                              onClick={() => handleDelete(elem)}
                           >
                             <Icon
                               src='trash'
