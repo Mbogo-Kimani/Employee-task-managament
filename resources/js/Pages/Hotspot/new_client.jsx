@@ -71,61 +71,63 @@ const AddClient = () => {
 
   return (
     <HotspotLayout>
-<h2 className="title2">Add a New Client</h2>
-      <form onSubmit={handleSubmit} className='form2'>
+<h2 className="text-center text-xl font-bold mt-12 mb-8 text-gray-800">Add a New Client</h2>
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg p-8 max-w-md mx-auto shadow-lg hover:shadow-2xl transition-shadow">
         {/* Username (*) */}
         <div className="form-group">
-          <label>Username </label>
-          <input className="details"
+          <label className="block text-gray-700 mb-2">Username </label>
+          <input
             type="name"
             name="name"
             placeholder="Enter Client's User Name"
             value={formData.name}
             onChange={handleChange}
             required
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none focus:border-blue-500 focus:bg-gray-200"
           />
         </div>
 
         {/* Email (optional) */}
         <div className="form-group">
-          <label>Email </label>
+          <label className="block text-gray-700 mb-2">Email </label>
           
-          <input  className="details"
+          <input
             type="email"
             name="email"
             placeholder="Enter Client's Email"
             value={formData.email}
             onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none focus:border-blue-500 focus:bg-gray-200"
           />
         </div>
 
         {/* Phone Number (required) */}
         <div className="form-group phone-group">
-          <label>Phone Number </label>
+          <label className="block text-gray-700 mb-2">Phone Number </label>
           <div className="phone-wrapper">
             {/* Static Country Code Input */}
             <input
               type="text"
-              className="country-code"
               value="+254"
               disabled
+              className="w-16 px-2 mr-2 py-2 border border-gray-300 rounded-lg bg-gray-200 text-center"
             />
             {/* Editable Phone Number Input */}
             <input
-              className="details phone-input"
               type="tel"
               name="phone_number"
               placeholder="Enter Client's Phone Number"
               value={formData.phone_number}
               onChange={handleChange}
               required
+              className="flex-grow px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none focus:border-blue-500 focus:bg-gray-200"
             />
           </div>
         </div>
 
         {/* Package using SelectComp */}
         <div className="form-group">
-          <label>Package</label>
+          <label className="block text-gray-700 mb-2">Package</label>
           <SelectComp
             name="package"
             id="package"
@@ -143,7 +145,7 @@ const AddClient = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit" className="add-client-wrapper">Add Client</button>
+    <button type="submit" className=" w-36 ml-60 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-2 rounded-lg  transition-colors">Add Client</button>
       </form>
     </HotspotLayout>
   );

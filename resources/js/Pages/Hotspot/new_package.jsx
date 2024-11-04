@@ -65,13 +65,13 @@ const AddPackage = () => {
 
   return (
     <HotspotLayout>
-      <h2 className="title1">Add a New Package</h2>
-      <form onSubmit={handleSubmit} className="form1">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add a New Package</h2>
+      <form onSubmit={handleSubmit}  className="bg-white rounded-lg shadow-lg p-6 max-w-lg hover:shadow-2xl transition-shadow mx-auto">
         {/* Package Name */}
-        <div className="form-group">
-          <label> Name </label>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-medium mb-2"> Name </label>
           <input
-            className="details"
+           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="text"
             name="name"
             placeholder="Enter Package Name"
@@ -82,11 +82,11 @@ const AddPackage = () => {
         </div>
 
        {/* Duration */}
-       <div className="form-group">
-          <label>Duration</label>
-          <div className="duration-group">
+       <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-medium mb-2">Duration</label>
+          <div className="flex gap-2">
             <input
-              className="details"
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="hours"
               placeholder="Hours"
@@ -94,7 +94,7 @@ const AddPackage = () => {
               onChange={handleChange}
             />
             <input
-              className="details"
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="minutes"
               placeholder="Minutes"
@@ -102,7 +102,7 @@ const AddPackage = () => {
               onChange={handleChange}
             />
             <input
-              className="details"
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="seconds"
               placeholder="Seconds"
@@ -114,9 +114,9 @@ const AddPackage = () => {
 
         {/* Devices */}
         <div className="form-group">
-          <label>Number of Devices </label>
+          <label  className="block text-gray-700 text-sm font-medium mb-2">Number of Devices </label>
           <input
-            className="details"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="number"
             name="devices"
             placeholder="Enter Number of Devices"
@@ -127,9 +127,9 @@ const AddPackage = () => {
 
         {/* Cost */}
         <div className="form-group">
-          <label>Cost</label>
+          <label className="block text-gray-700 text-sm font-medium mb-2">Cost</label>
           <input
-            className="details"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="number"
             name="cost"
             placeholder="Enter Package Cost"
@@ -141,9 +141,9 @@ const AddPackage = () => {
 
         {/* Description */}
         <div className="form-group">
-          <label> Description </label>
+          <label className="block text-gray-700 text-sm font-medium mb-2"> Description </label>
           <textarea
-            className="details"
+            className="w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             name="description"
             placeholder="Enter Package Description"
             value={packageData.description}
@@ -152,7 +152,8 @@ const AddPackage = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit" className="add-package">Add Package</button>
+      <button type="submit" className="w-36 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 ml-80 transition duration-300"
+        >Add Package</button>
       </form>
     </HotspotLayout>
   );
