@@ -54,14 +54,22 @@ const ClientSignup = () => {
           requestHandler.post('/api/subscribe',{subscription_id: response.subscription_id, ip: clientData?.ip, mac: clientData?.mac},setResponse);
         }
       }
-    function handleSubmit(e, text){
-      e.preventDefault();
-       
-      if (text === 'login') {
-        requestHandler.post('/api/clients/login', client, setResponse, setErrors);
-      } else if (text === 'signup') {
-        requestHandler.post('/api/clients/signup', client, setResponse,setErrors);
-      }
+
+      function handleSubmit(e, text) {
+        e.preventDefault();
+
+        // Check if the phone number starts with '0' and remove it if it does
+        const phoneNumber = client.phone_number.startsWith('0')
+            ? client.phone_number.slice(1)
+            : client.phone_number;
+
+        const updatedClient = { ...client, phone_number: phoneNumber  };
+
+        if (text === 'login') {
+            requestHandler.post('/api/clients/login', updatedClient, setResponse, setErrors);
+        } else if (text === 'signup') {
+            requestHandler.post('/api/clients/signup', updatedClient, setResponse, setErrors);
+        }
     }
 
     function toggleOtpVerify() {

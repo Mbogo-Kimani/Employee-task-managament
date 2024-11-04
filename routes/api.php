@@ -21,8 +21,10 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskMessageController;
 use App\Http\Controllers\TaskReportController;
 use App\Http\Controllers\TaskTypeController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\EquipmentType;
+use BeyondCode\LaravelWebSockets\Server\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -94,6 +96,7 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::get('/unassigned_clients',[ClientController::class, 'getUnassignedClients']);
   Route::patch('/assign_clients',[ClientController::class, 'assignClients']);
   Route::post('clients/upload',[ClientController::class, 'uploadClients']);
+  Route::get('/filter/clients',[ClientController::class, 'filterClients']);
   /**
    * Enums Controllers
    */
@@ -177,12 +180,23 @@ Route::middleware('auth:sanctum')->group( function () {
   Route::post('/apartment_codes', [ApartmentController::class, 'store']);
 
   /**
+   * Transaction Controller
+   */
+  Route::get('/get-stat',[TransactionController::class,'statistics']);
+  Route::get('/filter/transactions',[TransactionController::class,'sortTransactions']);
+  /**
    * Hotspot Mgmt System
    */
-  Route::get('/hotspot/clients', [ClientController::class, 'getHotspotClients']);
+  Route::get('/hotspot/clients', [RouterController::class, 'getHotspotClients']);
   Route::post('hotspot/package',[StreetPackageController::class, 'create']);
   Route::delete('hotspot/package/{street_package_id}',[StreetPackageController::class, 'delete']);
   Route::get('/hotspot/users',[RouterController::class,'getHotspotUsers']);
+  Route::get('/hotspot/profiles/active',[RouterController::class,'getActiveProfiles']);
+  Route::delete('/hotspot/package/{package_id}',[RouterController::class,'removePackage']);
+  Route::patch('/hotspot/user',[RouterController::class,'updateUser']);
+  Route::get('/hotspot/user/sessions',[RouterController::class,'getUserActiveSessions']);
+  Route::delete('/hotspot/session/{mac}',[RouterController::class,'removeSession']);
+  Route::post('/hotspot/client',[RouterController::class,'addHotspotUser']);
 });
 Route::get('/get-client', [ClientController::class, 'getClientCookie']);
 Route::post('clients/signup',[ClientController::class, 'clientSignup']);

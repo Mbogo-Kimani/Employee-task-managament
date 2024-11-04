@@ -65,9 +65,9 @@ class ClientController extends Controller
             'phone_number' => 'required|string|max:15',
 		]);
         // $phone_number = '+254' . $request->phone_number;
-	$client_phone_number = $request->phone_number;
+	    $client_phone_number = $request->phone_number;
 
-	$client = null;
+	    $client = null;
 
         if (strlen($request->phone_number) == 13) {
             $phone_number = substr($request->phone_number, 4);
@@ -169,15 +169,7 @@ class ClientController extends Controller
         $clients = Client::latest()->paginate(10);
         return response()->json($clients);
     }
-    public function getHotspotClients(Request $request)
-    {
-        $user = $request->user();
-        if($user->department_id !== DepartmentEnum::ADMIN){
-            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
-        }
-        $clients = Client::where('is_registered_hotspot', true)->with(['streetPackage','subscriptions'])->latest()->paginate(10);
-        return response()->json($clients);
-    }
+    
 
     public function search(Request $request)
     {
@@ -326,5 +318,19 @@ class ClientController extends Controller
 
 		return response()->json(['message' => 'File uploaded successfully']);
 	}
+
+    public function filterClients(Request $request)
+    {
+        $startDate = Carbon::now()->subDays(7);
+        $endDate = Carbon::now();
+        
+        $clientsCountByDay = Client::selectRaw('DAYOFWEEK(created_at) as day, COUNT(*) as count')
+        ->where('is_registered_hotspot',true)   
+        ->whereBetween('created_at', [$startDate, $endDate])
+        ->groupBy('day')
+        ->orderBy('day')
+        ->get();
+        return response()->json(['data' => $clientsCountByDay]);
+    }
 }
 

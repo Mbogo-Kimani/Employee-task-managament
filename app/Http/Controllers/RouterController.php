@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DepartmentEnum;
 use App\Models\Client as ModelsClient;
 use App\Models\InternetPackage;
 use App\Models\StreetPackage;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use PEAR2\Net\RouterOS\Client;
 use PEAR2\Net\RouterOS\Response;
 use PEAR2\Net\RouterOS\Util;
+use PEAR2\Net\RouterOS\Query;
 use PEAR2\Net\RouterOS\Request as RouterOsRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -129,6 +131,35 @@ class RouterController extends Controller
             abort(400, $e);
         }
 
+    }
+
+    public function updateUser(Request $request)
+    {
+        $request->validate([
+            'new_name' => 'required',
+            'old_name' => 'required',
+            'phone_number' => 'required'
+        ]);
+
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/user');
+
+        $updateResponse = $client->set(
+            $client->find(
+                function ($response) use ($request){
+                    return $response->getProperty('name') == $request->old_name;
+                }
+            ),
+            array(
+                'name' => $request->new_name,
+                'password' => $request->phone_number
+            )
+        );
+        if ($updateResponse->getType() == Response::TYPE_ERROR){
+            return response()->json(['success' => false, 'message' => $updateResponse->getProperty('message')]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function hotspotLogin(Request $request)
@@ -292,15 +323,122 @@ class RouterController extends Controller
         }
     }
 
+    public function getUserActiveSessions(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/session');
+        $count = $client->count(Query::where('status', 'start')->andWhere('user',$request->name));
+        
+        return response()->json(['count' => $count]);
+    }
+
     public function getHotspotUsers()
     {
         $client = new Client(config('router.ip'), config('router.user'), config('router.password'));        
         $request = new RouterOsRequest('/user-manager/user/print');
         $users = $client->sendSync($request);
+        $data = [];
+        foreach($users as $user){
+            $response['id'] = $user->getProperty('.id');
+            $response['name'] = $user->getProperty('name');
+            $data[] = $response;
+        }
         
-        $response['id'] = $users->getProperty('.id');
-        $response['name'] = $users->getProperty('name');
-        return response()->json($response);
+        return response()->json($data);
     }
+
+    public function getHotspotClients(Request $request)
+    {
+        $user = $request->user();
+        if($user->department_id !== DepartmentEnum::ADMIN){
+            return redirect('/dashboard')->withErrors(['message' => 'You are not allowed to view this page']);
+        }
+        $clients = ModelsClient::where('is_registered_hotspot', true)->with(['streetPackage','subscriptions'])->latest()->paginate(10);
+
+        foreach($clients as $user){
+            $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+            $client->setMenu('/user-manager/session');
+            $count = $client->count(Query::where('status', 'start')->andWhere('user',$user->name));
+            $user['sessions'] = $count;
+        }
+        return response()->json($clients);
+    }
+
+    public function getActiveProfiles()
+    {
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/user-profile');
+        $count = $client->count(Query::where('state', 'running-active'));
+        return response()->json(['count' => $count]);
+    }
+
+    public function removeSession(Request $request,$mac)
+    {
+        $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        $client->setMenu('/user-manager/session');
+        $response = $client->remove(Query::where('calling-station-id', $mac));
+        if($response->getType() !== Response::TYPE_FINAL){
+            return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+        }
+        return response()->json(['success' => true, 'message' => 'Sessions deleted successfully']);
+    }
+
+    public function addHotspotUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone_number' => 'required',
+            'street_package_id' => 'required'
+        ]);
+        
+        $customer = ModelsClient::where('phone_number',$request->phone_number)->orWhere('email', $request->email)->first();
+	        
+        if($customer){
+            return response()->json(['success' => false, 'message' => 'User already exists.']);
+        }
+        $customer = ModelsClient::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'street_package_id' => $request->street_package_id
+        ]);
+
+        Subscription::create([
+            'client_id' => $customer->id,
+            'street_package_id' => $request->street_package_id,
+            'username'  => $customer->name,
+            'password' => $customer->phone_number,
+            'status' => 1,
+            'expires_at' => Carbon::now()->addSeconds(16)
+        ]);
+
+        try{
+            $client = new Client(config('router.ip'), config('router.user'), config('router.password'));
+
+            $addRequest = new RouterOSRequest('/user-manager/user/add');
+                $addRequest
+                ->setArgument('disabled', 'no')
+                ->setArgument('name', $customer->name)
+                ->setArgument('password', $customer->phone_number)
+                ->setArgument('shared-users', $customer->streetPackage->devices);
+    
+            $response = $client->sendSync($addRequest);
+            if ($response->getType() == Response::TYPE_ERROR){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
+            $customer->is_registered_hotspot = true;
+            $customer->save();
+            return response()->json(['success' => true]);
+        }catch(Exception $e){
+            abort(400, $e);
+        }
+
+    }
+
     
 }
