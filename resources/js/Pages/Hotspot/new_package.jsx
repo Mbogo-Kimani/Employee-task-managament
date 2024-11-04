@@ -27,12 +27,20 @@ const AddPackage = () => {
       [name]: value
     });
   };
+
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+    setTime({
+      ...time,
+      [name]: value
+    });
+  }
   
 
   useEffect(() => {
     if(response && response.success){
       toast.success(response.message);
-      router.visit('/hotspot/packages')
+      router.visit('/hotspot/plans')
     }
   },[response]);
 
@@ -47,9 +55,9 @@ const AddPackage = () => {
 
     // Convert duration to seconds
     const totalSeconds =
-    (parseInt(packageData.hours) || 0) * 3600 +
-    (parseInt(packageData.minutes) || 0) * 60 +
-    (parseInt(packageData.seconds) || 0);
+    (parseInt(time.hours) || 0) * 3600 +
+    (parseInt(time.minutes) || 0) * 60 +
+    (parseInt(time.seconds) || 0);
 
     // Submit the form data with converted duration
     setPackageData({...packageData,duration: totalSeconds})
@@ -90,24 +98,24 @@ const AddPackage = () => {
               type="number"
               name="hours"
               placeholder="Hours"
-              value={packageData.hours}
-              onChange={handleChange}
+              value={time.hours}
+              onChange={handleTimeChange}
             />
             <input
               className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="minutes"
               placeholder="Minutes"
-              value={packageData.minutes}
-              onChange={handleChange}
+              value={time.minutes}
+              onChange={handleTimeChange}
             />
             <input
               className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="seconds"
               placeholder="Seconds"
-              value={packageData.seconds}
-              onChange={handleChange}
+              value={time.seconds}
+              onChange={handleTimeChange}
             />
           </div>
         </div>

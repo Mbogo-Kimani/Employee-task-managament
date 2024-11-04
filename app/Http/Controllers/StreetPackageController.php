@@ -51,7 +51,7 @@ class StreetPackageController extends Controller
 
       $addRequest = new RouterOSRequest('/user-manager/profile/add');
           $addRequest
-          ->setArgument('name', $request->name)
+          ->setArgument('name', $request->profile_name)
           ->setArgument('name-for-users', $request->name)
           ->setArgument('validity', $this->formatTime($request->duration))
           ->setArgument('override-shared-users', $request->devices);
