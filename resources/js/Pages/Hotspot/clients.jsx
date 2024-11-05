@@ -5,6 +5,7 @@ import requestHandler from '../../services/requestHandler';
 import { loaderSetter } from '../../Components/Common/Loader';
 import ClientTableElem from '../../Components/Hotspot/ClientTableElem';
 import { toast } from 'react-toastify';
+import PaginatorNav from '../../Components/Common/PaginatorNav';
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
@@ -48,6 +49,7 @@ const Clients = () => {
             );
           })}
         </TableComp>
+        <PaginatorNav state={clients} setState={setClients} />
       </div>
     </HotspotLayout>
   );

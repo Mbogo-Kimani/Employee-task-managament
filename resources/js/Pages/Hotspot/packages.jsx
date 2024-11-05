@@ -6,9 +6,12 @@ import TableComp from '../../Components/Common/TableComp';
 import DropDown from '../../Components/Common/DropDown';
 import { Menu } from '@headlessui/react';
 import Icon from '../../Components/Common/Icon';
+import { toast } from 'react-toastify';
+import PaginatorNav from '../../Components/Common/PaginatorNav';
 
 const Packages = () => {
   const [streetPackages, setStreetPackages] = useState([]);
+  const [response,setResponse] = useState();
   const fetchPackages = () => {
     requestHandler.get(
       '/api/street_packages',
@@ -21,9 +24,15 @@ const Packages = () => {
   useEffect(() => {
     fetchPackages();
   }, []);
+  useEffect(() => {
+    if(response?.success){
+      toast.success(response.message)
+      fetchPackages();
+    }
+  },[response])
 
   const handleDelete = (elem) => {
-      requestHandler.delete(`/api/hotspot/package/${elem.id}`);
+      requestHandler.delete(`/api/hotspot/package/${elem.id}`,setResponse);
       // fetchPackages();
       
   }
@@ -110,7 +119,7 @@ const Packages = () => {
                             <Icon
                               src='trash'
                               className='w-4 h-4 mr-2'
-                              fill='rgb(34 197 94)'
+                              fill='rgb(220, 38, 38)'
                             />
                             <span className='block py-3 px-2'>Delete</span>
                           </button>
@@ -122,6 +131,7 @@ const Packages = () => {
             );
           })}
         </TableComp>
+        {/* <PaginatorNav state={streetPackages} setState={setStreetPackages} /> */}
       </div>
     </HotspotLayout>
   );

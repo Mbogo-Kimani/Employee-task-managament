@@ -58,7 +58,7 @@ const ClientTableElem = ({elem,onDelete}) => {
                       } group flex w-full border-b items-center rounded-md px-2 text-sm`}
                       onClick={() => onDelete(elem)}
                     >
-                      <Icon src='trash' className='w-4 h-4 mr-2' fill='rgb(34 197 94)'/>
+                      <Icon src='trash' className='w-4 h-4 mr-2' fill='rgb(220, 38, 38)'/>
                       <span className='block py-3 px-2'>Remove</span>
                     </button>
                   )}
