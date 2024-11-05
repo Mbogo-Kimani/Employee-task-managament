@@ -39,11 +39,11 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
   const hideAllPages = () => seeAllPages ? setSeeAllPages(false) : () => {};
 
   return (
-    <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-2" aria-label="Table navigation">
+    <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-2 px-2" aria-label="Table navigation">
        <span className="text-sm font-normal text-gray-500 dark:text-gray-400 pl-3 mb-4 md:mb-0 block w-full md:inline md:w-auto">
         Showing
         <span className="font-semibold text-gray-900 dark:text-white"> {state.current_page} - { state.last_page }</span> of <span className="font-semibold text-gray-900 dark:text-white">{ state.total }</span></span>
-      <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+      <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-10 pb-3">
         <li
           className={
             state.current_page !== 1 ?
