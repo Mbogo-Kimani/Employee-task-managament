@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
-import '../../../css/Pages/home/AddPackage.css';
 
 const AddPackage = () => {
   const [packageData, setPackageData] = useState({
     packageName: '',
-    duration: '',
+    hours: '',
+    minutes: '',
+    seconds: '',
     devices: '',
     cost: '',
     description: ''
@@ -28,119 +29,120 @@ const AddPackage = () => {
       return;
     }
 
-    // Submit the form data 
-    console.log('Package Data Submitted:', packageData);
+   
+
+    // Convert duration to seconds
+    const totalSeconds =
+      (parseInt(packageData.hours) || 0) * 3600 +
+      (parseInt(packageData.minutes) || 0) * 60 +
+      (parseInt(packageData.seconds) || 0);
+
+    const submissionData = {
+      ...packageData,
+      duration: totalSeconds,
+    };
+
+    console.log('Package Data Submitted:', submissionData);
   };
 
-  // Convert duration to seconds
-  const totalSeconds =
-  (parseInt(packageData.hours) || 0) * 3600 +
-  (parseInt(packageData.minutes) || 0) * 60 +
-  (parseInt(packageData.seconds) || 0);
-
-// Submit the form data with converted duration
-const submissionData = {
-  ...packageData,
-  duration: totalSeconds,
-};
-
-console.log('Package Data Submitted:', submissionData);
-
+  // Adjusted styling (AddPackage)
 
   return (
     <HotspotLayout>
-      <h2 className="title1">Add a New Package</h2>
-      <form onSubmit={handleSubmit} className="form1">
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg p-6 mb-14 mt-4 sm:p-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto shadow-sm hover:shadow-slate-950 h-fit">
+        <h2 className="text-center text-xl sm:text-2xl font-bold mb-6 sm:mb-10 text-gray-800">Add a New Package</h2>
+        
         {/* Package Name */}
-        <div className="form-group">
-          <label> Name </label>
+        <div className="mb-4">
+          <label className="block text-gray-500 text-sm mb-1">Package Name</label>
           <input
-            className="details"
             type="text"
             name="packageName"
             placeholder="Enter Package Name"
             value={packageData.packageName}
             onChange={handleChange}
             required
+            className="w-full px-4 py-2 bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
 
-       {/* Duration */}
-       <div className="form-group">
-          <label>Duration</label>
-          <div className="duration-group">
+        {/* Duration */}
+        <div className="mb-4">
+          <label className="block text-gray-500 text-sm mb-2">Duration</label>
+          <div className="flex gap-2">
             <input
-              className="details"
               type="number"
               name="hours"
               placeholder="Hours"
               value={packageData.hours}
               onChange={handleChange}
+              className="w-1/3 px-2 py-1  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             <input
-              className="details"
               type="number"
               name="minutes"
               placeholder="Minutes"
               value={packageData.minutes}
               onChange={handleChange}
+              className="w-1/3 px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             <input
-              className="details"
               type="number"
               name="seconds"
               placeholder="Seconds"
               value={packageData.seconds}
               onChange={handleChange}
+              className="w-1/3 px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
         </div>
 
         {/* Devices */}
-        <div className="form-group">
-          <label>Number of Devices </label>
+        <div className="mb-4">
+          <label className="block text-gray-500 text-sm mb-2">Number of Devices</label>
           <input
-            className="details"
             type="number"
             name="devices"
             placeholder="Enter Number of Devices"
             value={packageData.devices}
             onChange={handleChange}
+            className="w-full px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
 
         {/* Cost */}
-        <div className="form-group">
-          <label>Cost</label>
+        <div className="mb-4">
+          <label className="block text-gray-500 text-sm mb-2">Cost</label>
           <input
-            className="details"
             type="number"
             name="cost"
-            placeholder="Enter Package Cost"
+            placeholder="Enter Cost"
             value={packageData.cost}
             onChange={handleChange}
             required
+            className="w-full px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
 
         {/* Description */}
-        <div className="form-group">
-          <label> Description </label>
+        <div className="mb-4">
+          <label className="block text-gray-500 text-sm mb-2">Description</label>
           <textarea
-            className="details"
             name="description"
             placeholder="Enter Package Description"
             value={packageData.description}
             onChange={handleChange}
+            className="w-full px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
 
-        {/* Submit button */}
-        <button type="submit" className="add-package">Add Package</button>
+        {/* Submit Button */}
+        <button type="submit" className="w-2/4 ml-36  bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          Add Package
+        </button>
       </form>
     </HotspotLayout>
   );
 };
-
 
 export default AddPackage;
