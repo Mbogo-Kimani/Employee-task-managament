@@ -440,5 +440,25 @@ class RouterController extends Controller
 
     }
 
+    public function deleteUser(Request $request, $client_id)
+    {
+        $customer = ModelsClient::find($client_id);
+        if(!$customer){
+            return response()->json(['error' => 'Client does not exist']);
+        }
+        try{
+            $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+            $client->setMenu('/user-manager/user');
+            $response = $client->remove(Query::where('name', $customer->name));
+            if($response->getType() !== Response::TYPE_FINAL){
+                return response()->json(['success' => false, 'message' => $response->getProperty('message')]);
+            }
+            $customer->delete();
+            return response()->json(['success' => true, 'message' => 'User deleted successfully']);
+        }catch(Exception $e){
+            abort(400,$e);
+        }
+    }
+
     
 }

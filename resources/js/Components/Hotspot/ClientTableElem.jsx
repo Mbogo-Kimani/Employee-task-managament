@@ -3,7 +3,7 @@ import DropDown from '../Common/DropDown'
 import { Menu } from '@headlessui/react'
 import Icon from '../Common/Icon'
 
-const ClientTableElem = ({elem}) => {
+const ClientTableElem = ({elem,onDelete}) => {
     const getStatus = () => {
       
         let subs = elem.subscriptions.filter((sub) => {
@@ -37,7 +37,7 @@ const ClientTableElem = ({elem}) => {
       </td>
         <td className="px-2 py-4 relative">
             <DropDown>
-                  <Menu.Item>
+                  {/* <Menu.Item>
                   {({ active }) => (
                     <button
                       className={`${
@@ -49,14 +49,14 @@ const ClientTableElem = ({elem}) => {
                       <span className='block py-3 px-2'>Activate</span>
                     </button>
                   )}
-                </Menu.Item>  
+                </Menu.Item>   */}
                   <Menu.Item>
                   {({ active }) => (
                     <button
                       className={`${
                         active ? 'bg-green-200 text-black' : 'text-gray-900'
                       } group flex w-full border-b items-center rounded-md px-2 text-sm`}
-                    //   onClick={() => openDeleteModal(elem)}
+                      onClick={() => onDelete(elem)}
                     >
                       <Icon src='trash' className='w-4 h-4 mr-2' fill='rgb(34 197 94)'/>
                       <span className='block py-3 px-2'>Remove</span>
