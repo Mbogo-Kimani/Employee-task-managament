@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { handlePage } from '../../data/utils';
 import { router } from '@inertiajs/react';
 import Modal from './Modal';
+import { loaderSetter } from './Loader';
 
 function PaginatorNav({ state, setState, navigateByParams = false, searchParam='' }) {
   const [seeAllPages, setSeeAllPages] = useState(false);
@@ -23,15 +24,15 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
       else return;
     } else {
       if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2`);
-      else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState);
-      else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState);
+      else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState,loaderSetter);
+      else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState,loaderSetter);
       else return;
     }
   }
 
   function handleSpecificPageNav(page) {
     if (navigateByParams) router.visit(`${location.pathname}?page=${page}&search=${searchParam}`);
-    else handlePage(`${state.path}?page=${page}&search=${searchParam}`, setState);
+    else handlePage(`${state.path}?page=${page}&search=${searchParam}`, setState,loaderSetter);
     hideAllPages();
   }
 
