@@ -37,6 +37,12 @@ export const adminNavItems = [
     hasOptions: false,
     href: '/admin/maps',
   },
+  {
+    name: "Hotspot",
+    icon: 'logout',
+    hasOptions: false,
+    href: '/hotspot/dashboard',
+  },
 ];
 
 export const adminPageItems = [
