@@ -43,7 +43,7 @@ class UpdateClients extends Command
 
         if($response->successful()){
             $clients = $response->json();
-            $this->info($response);
+            // $this->info($response);
             foreach($clients as $client){
                 $phoneNumber = ltrim($client['phone'], '0');
                 $matchingClient = Client::where('acc_no', $client['login'])
