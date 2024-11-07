@@ -143,12 +143,7 @@ function SideNav({ link = '', children }) {
                 collapsed={collapsed}
               />
             ))}
-            <NavItem
-              src="logout"
-              name="Hotspot"
-              href="/hotspot/dashboard"
-              collapsed={collapsed}
-            />
+           
           </ul>
         </nav>
         <div className='pt-8 px-8 w-full bg-gray-100 dark:bg-gray-800 overflow-x-hidden'>
