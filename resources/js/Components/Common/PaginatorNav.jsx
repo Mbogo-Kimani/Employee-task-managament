@@ -3,9 +3,10 @@ import { handlePage } from '../../data/utils';
 import { router } from '@inertiajs/react';
 import Modal from './Modal';
 
-function PaginatorNav({ state, setState, navigateByParams = false, searchParam='' }) {
+function PaginatorNav({ state, setState, navigateByParams = false, searchParam='', filters={}}) {
   const [seeAllPages, setSeeAllPages] = useState(false);
-
+ 
+  
   function handlePageNavigation (navigation) {
     const nextPageNavigate = navigation !== 'prev';
     const allSearchParams = location.search.split('&');
@@ -18,8 +19,8 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
     if (searchParam) {
       const currentPage = parseInt(pageParam);
       
-      if (nextPageNavigate && state.next_page_url) router.visit(`${location.pathname}?page=${currentPage + 1}&search=${searchParam}`);
-      else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}&search=${searchParam}`);
+      if (nextPageNavigate && state.next_page_url) router.visit(`${location.pathname}?page=${currentPage + 1}&search=${searchParam}&filters=${filters}`);
+      else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}&search=${searchParam}&filters=${filters}`);
       else return;
     } else {
       if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2`);
@@ -30,8 +31,10 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
   }
 
   function handleSpecificPageNav(page) {
-    if (navigateByParams) router.visit(`${location.pathname}?page=${page}&search=${searchParam}`);
-    else handlePage(`${state.path}?page=${page}&search=${searchParam}`, setState);
+    const filterParams = new URLSearchParams(filters);
+    
+    if (navigateByParams)  router.visit(`${location.pathname}?page=${page}&search=${searchParam}&${filterParams.toString()}`); 
+    else handlePage(`${state.path}?page=${page}&search=${searchParam}&filters=${filters}`, setState);
     hideAllPages();
   }
 

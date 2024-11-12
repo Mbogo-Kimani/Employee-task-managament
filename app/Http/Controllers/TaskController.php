@@ -101,8 +101,11 @@ class TaskController extends Controller
 		abort(404, 'Resource not available');
 	}
 
-	public function export()
+	public function export(Request $request)
 	{
+		$request->validate([
+
+		]);
 		$filename = '/files' . '/tasks_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
         Excel::store(new TaskExport, $filename, 'public');
         
@@ -151,8 +154,8 @@ class TaskController extends Controller
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
-      'admin_handler_id' => $request->adminHandler,
-      'department_handler_id' => $request->departmentHandler,
+      		'admin_handler_id' => $request->adminHandler,
+      		'department_handler_id' => $request->departmentHandler,
 			'paid' => $request->paid ?? 1,
 			'client_id' => $client->id ?? NULL,
 		]);
@@ -193,11 +196,17 @@ class TaskController extends Controller
 	public function allTasks(Request $request) {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-
-			$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
+			if($request->status){
+				$tasks = Task::filter(request(['type', 'status']))
+										->orderBy('created_at', 'DESC')
+										->paginate(20);
+			}else{
+				$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
 										->where('name', 'LIKE', "%$request->search%")
 										->orderBy('created_at', 'DESC')
 										->paginate(20);
+			}
+			
 			return response()->json($tasks);
 		}
 

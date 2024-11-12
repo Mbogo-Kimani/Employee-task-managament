@@ -76,6 +76,8 @@ function Tasks() {
     searchValFromParams = allParams[1].split('=')[1];
   }
 
+  
+
   const [searchValue, setSearchValue] = useState(searchValFromParams);
 
   const { userData } = useContext(AppContext);
@@ -155,9 +157,12 @@ function Tasks() {
 
   function fetchAllTasks() {
     const allParams = location.search.split('&');
+    const urlParams = new URLSearchParams(window.location.search);
+ 
     let pageParam = 1;
     let searchValFromParams = '';
-
+    let filterValFromParams = urlParams.get('status');
+    
     if (allParams[0]) {
       pageParam = allParams[0].split('=')[1];
     }
@@ -166,7 +171,7 @@ function Tasks() {
     }
 
     requestHandler.get(
-      `/api/all_tasks?page=${pageParam}&search=${searchValue}`,
+      `/api/all_tasks?page=${pageParam}&search=${searchValue}&status=${filterValFromParams ?? ''}`,
       handleTasksFetched,
       null,
       loaderSetter
@@ -231,6 +236,7 @@ function Tasks() {
   }
 
   function submitFilters(filters) {
+    setFilters(filters)
     requestHandler.post('/api/filter/tasks', filters, setTasks, setErrors);
   }
 
@@ -426,6 +432,7 @@ function Tasks() {
             setState={setTasks}
             navigateByParams
             searchParam={searchValue}
+            filters={filters}
           />
         </div>
         <Modal show={showModal} onClose={closeModal}>
