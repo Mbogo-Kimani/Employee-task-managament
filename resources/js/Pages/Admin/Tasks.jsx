@@ -258,7 +258,11 @@ function Tasks() {
 
         {/* <TaskStatusColorCode /> */}
 
-        <div className='w-full flex justify-between items-center'></div>
+        <div className='w-full flex items-center mb-3'>
+          <button className='rounded bg-red-400 hover:bg-red-600 px-4 py-1 mr-3' onClick={() => submitFilters({'status': 5})}>Late</button>
+          <button className='rounded bg-blue-400 hover:bg-blue-600 px-4 py-1 mr-3' onClick={() => submitFilters({'status': 1})}>Pending</button>
+          <button className='rounded bg-green-400 hover:bg-green-600 px-4 py-1' onClick={() => submitFilters({'status': 4})}>Finished</button>
+        </div>
 
         <div className='mb-4 w-full flex'>
           <div className='flex justify-center items-center order-2 ml-4'>
@@ -281,7 +285,7 @@ function Tasks() {
           <SortElem sortParams={sortParams} filterFn={submitFilters} />
           <ApartmentCodes className='ml-2' />
           <Link
-            className='ml-2 bg-green-400 hover:bg-green-600 rounded-md px-4 py-2 text-gray-900 hover:text-gray-100'
+            className='ml-2 bg-green-400 hover:bg-green-600 rounded-md px-4 py-2 text-gray-900 hover:text-gray-100 '
             href='/admin/new_task'
           >
             {i18next.t('add-new-task')}
