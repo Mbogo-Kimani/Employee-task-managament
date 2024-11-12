@@ -43,7 +43,7 @@ function Login() {
         localStorage.setItem(key, value);
       });
       loginUser(response.user);
-      router.visit(`/dashboard`);
+      router.visit(`/admin/tasks`);
       notify();
     }
   }
