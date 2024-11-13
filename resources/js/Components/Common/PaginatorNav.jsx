@@ -35,7 +35,7 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
     const filterParams = new URLSearchParams(filters);
     
     if (navigateByParams)  router.visit(`${location.pathname}?page=${page}&search=${searchParam}&${filterParams.toString()}`); 
-    else handlePage(`${state.path}?page=${page}&search=${searchParam}&filters=${filters}`, setState);
+    else handlePage(`${state.path}?page=${page}&search=${searchParam}&filters=${filterParams.toString()}`, setState);
     hideAllPages();
   }
 
