@@ -6,9 +6,9 @@ import requestHandler from '../services/requestHandler';
  * @param {*} url
  * @param {*} stateSetter
  */
-export function handlePage(url, stateSetter = () => {}) {
+export function handlePage(url, stateSetter = () => {}, loaderSetter) {
   if (url) {
-    requestHandler.get(url, stateSetter);
+    requestHandler.get(url, stateSetter,null,loaderSetter);
   }
 }
 
