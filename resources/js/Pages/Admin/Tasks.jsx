@@ -250,7 +250,8 @@ function Tasks() {
     }
   }
   function handleExport() {
-    requestHandler.get('/api/admin/tasks/export', setTaskResponse);
+    const data = new URLSearchParams(filters);
+    requestHandler.get(`/api/admin/tasks/export?${data.toString()}`, setTaskResponse);
   }
   return (
     <SideNav>
@@ -265,9 +266,9 @@ function Tasks() {
         {/* <TaskStatusColorCode /> */}
 
         <div className='w-full flex items-center mb-3'>
-          <button className='rounded bg-red-400 hover:bg-red-600 px-4 py-1 mr-3' onClick={() => submitFilters({'status': 5})}>Late</button>
-          <button className='rounded bg-blue-400 hover:bg-blue-600 px-4 py-1 mr-3' onClick={() => submitFilters({'status': 1})}>Pending</button>
-          <button className='rounded bg-green-400 hover:bg-green-600 px-4 py-1' onClick={() => submitFilters({'status': 4})}>Finished</button>
+          <button className='rounded bg-red-400 hover:bg-red-600 hover:text-white px-4 py-1 mr-3' onClick={() => submitFilters({'status': 5})}>Late</button>
+          <button className='rounded bg-blue-400 hover:bg-blue-600 px-4 py-1 mr-3 hover:text-white' onClick={() => submitFilters({'status': 1})}>Pending</button>
+          <button className='rounded bg-green-400 hover:bg-green-600 px-4 py-1 hover:text-white' onClick={() => submitFilters({'status': 4})}>Finished</button>
         </div>
 
         <div className='mb-4 w-full flex'>

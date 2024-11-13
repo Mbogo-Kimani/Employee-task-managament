@@ -17,6 +17,13 @@ class TaskExport implements FromCollection,WithHeadings
     * @return \Illuminate\Support\Collection
     */
     use Exportable;
+    private $filters;
+
+    public function __construct($filters=[])
+    {
+        $this->filters = $filters;
+    }
+
     public function headings() : array
     {
         return [
@@ -30,7 +37,14 @@ class TaskExport implements FromCollection,WithHeadings
     } 
     public function collection()
     {
-        $tasks =  Task::all();
+        $tasks = [];
+        if($this->filters){
+            $tasks = Task::filter($this->filters)
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
+        }else{
+            $tasks =  Task::all();
+        }
         $data = [];
         foreach($tasks as $task){
                 $task_data = [

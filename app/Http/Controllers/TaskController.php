@@ -103,11 +103,12 @@ class TaskController extends Controller
 
 	public function export(Request $request)
 	{
-		$request->validate([
-
-		]);
 		$filename = '/files' . '/tasks_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
-        Excel::store(new TaskExport, $filename, 'public');
+		if($request->query()){
+			Excel::store(new TaskExport($request->all()), $filename, 'public');
+		}else{
+			Excel::store(new TaskExport, $filename, 'public');
+		}
         
         return response()->json(['file' => $filename]);
 	}
@@ -148,8 +149,9 @@ class TaskController extends Controller
 		}
 
 		$newTask = Task::create([
-			'name' => $request->apartment_code . " " . $request->hse_no . ' ' .  TaskType::where('id', $request->taskType)->pluck('name')->first(),
-			'department_id' => $request->department,
+	//		'name' => $request->apartment_code . " " . $request->hse_no . ' ' .  TaskType::where('id', $request->taskType)->pluck('name')->first(),
+			'name' => $request->apartment_code . " " . $request->hse_no,
+	        'department_id' => $request->department,
 			'task_type_id' => $request->taskType,
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
