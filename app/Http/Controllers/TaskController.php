@@ -205,6 +205,9 @@ class TaskController extends Controller
 			}else{
 				$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
 										->where('name', 'LIKE', "%$request->search%")
+										->orWhereHas('users', function($query) use ($request) {
+											$query->where('name', 'LIKE', "%{$request->search}%");
+										})
 										->orderBy('created_at', 'DESC')
 										->paginate(20);
 			}
@@ -268,12 +271,16 @@ class TaskController extends Controller
 		}
 	}
 
-	public function getAssignedTasks() {
+	public function getAssignedTasks(Request $request) {
 		$user = auth()->user();
 
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereHas('users')
+										->where('name', 'LIKE', "%$request->search%")
+										->orWhereHas('users', function($query) use ($request) {
+											$query->where('name', 'LIKE', "%{$request->search}%");
+										})
 										->orderBy('created_at', 'DESC')
 										->with(['taskType','users','equipments'])
 										->paginate(20);
@@ -455,9 +462,9 @@ class TaskController extends Controller
         $task = Task::findOrFail($request->id);
         if ($task) {
             $task->update($request->all());
-						$client = Client::find($request->client_id);
-						$client->employee_id = $request->work_number;
-						$client->save();
+			$client = Client::find($request->client_id);
+			$client->employee_id = $request->work_number;
+			$client->save();
 						
             return response()->json(['message' => 'Task has been updated successfully']);
         }

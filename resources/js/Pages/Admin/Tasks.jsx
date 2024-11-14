@@ -307,7 +307,7 @@ function Tasks() {
               'Department',
               'Handler',
               'Payment',
-              'Status',
+              // 'Status',
               'Started At',
               'Finished At',
               'Action',
@@ -353,9 +353,9 @@ function Tasks() {
                       })}
                     </td>
                     <td className='px-2 '>{clientStatus[task.paid]}</td>
-                    <td className={`px-2 `}>
+                    {/* <td className={`px-2 `}>
                       <TaskStatusIndicator status={task.status} />
-                    </td>
+                    </td> */}
                     <td className='px-2 whitespace-nowrap'>
                       {task.task_started_at || ''}
                     </td>

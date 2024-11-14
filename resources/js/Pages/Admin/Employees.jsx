@@ -28,8 +28,8 @@ function Employees() {
     email: '',
     role: '',
     clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
-    password: 'Etnet Technologies',
-    password_confirmation: 'Etnet Technologies',
+    password: '',
+    password_confirmation: '',
   });
   const [departments, setDepartments] = useState([]);
   const [clearanceLevels, setClearanceLevels] = useState([]);
@@ -87,8 +87,8 @@ function Employees() {
         role: '',
         phone_number: '',
         clearance_level: clearanceLevel.REGULAR_EMPLOYEE,
-        password: 'Etnet Technologies',
-        password_confirmation: 'Etnet Technologies',
+        password: '',
+        password_confirmation: '',
       });
       setShowNewUserModal(false);
     }
@@ -311,6 +311,33 @@ function Employees() {
                       </p>
                     }  
                   </div>
+                  {
+                    formMode === 'edit'  && (
+                      <div>
+                    <label
+                      htmlFor="title"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Password
+                    </label>
+                    <input
+                      type="text"
+                      name="password"
+                      className="bg-gray-50 focus:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter employee's password"
+                      value={newUser.password}
+                      onChange={handleChange}
+                      required
+                    />
+                    {
+                      (errors.password || errors.errors?.password) && 
+                      <p className="text-red-500 my-1 py-1">
+                        { displayErrors(errors, 'password') }
+                      </p>
+                    }  
+                  </div>
+                    )
+                  }
                   <div className='flex'>
                     <select className='bg-transparent mr-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
                       <option value="" disabled>Select Country Code</option>
