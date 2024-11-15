@@ -43,7 +43,8 @@ function Login() {
         localStorage.setItem(key, value);
       });
       loginUser(response.user);
-      router.visit(`/admin/tasks`);
+     
+      response.user?.department_id == 1 ? router.visit(`/admin/tasks`) : router.visit('/dashboard');
       notify();
     }
   }

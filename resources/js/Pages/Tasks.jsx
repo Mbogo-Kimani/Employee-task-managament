@@ -32,9 +32,11 @@ function Tasks() {
     task_id: null,
     title: '',
     content: '',
+    file: []
   });
   const [errors, setErrors] = useState({});
   const [response, setResponse] = useState(false);
+  
 
   useEffect(() => {
     fetchTasks();
@@ -54,6 +56,10 @@ function Tasks() {
   function getReport(id){
     requestHandler.get(`/api/report/${id}`, setReport);
     setShowFeedBackModal(true);
+  }
+
+  function handleFile(e){
+        setReport({...report,[e.target.name]: e.target.files[0]})
   }
 
   function checkResponse () {
@@ -91,9 +97,33 @@ function Tasks() {
     }
   }
 
-  function submitReport (e) {
+  async function submitReport (e) {
     e.preventDefault();
-    requestHandler.post('/api/task_reports', report, setResponse, setErrors);
+    const formData = new FormData();
+    formData.append("file",report.file)
+    formData.append('title',report.title)
+    formData.append('content',report.content)
+    formData.append('taskId',report.taskId)
+    const data = {
+      ...report,['file']: formData
+    }
+   // requestHandler.post('/api/task_reports', data, setResponse, setErrors);
+   await fetch('/api/task_reports', {
+    method: 'POST',
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+    },
+    body: formData
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .then(data => {
+      setResponse(data); 
+    }).catch(error => {
+      setErrors(error);
+    }); 
   }
 
   function displayErrors (key) {
@@ -273,6 +303,24 @@ function Tasks() {
                       { displayErrors('content') }
                     </p>
                   }
+                </div>
+                <div>
+                <label
+                    htmlFor="title"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Attachment
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    id="reportTitfirstle"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white outline-none"
+                    placeholder="Select File"                 
+                    onChange={handleFile}
+                    required
+                  />
+                   
                 </div>
                 <button
                   type="submit"
