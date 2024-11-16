@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\TaskStatusEnum;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,7 +79,11 @@ class Task extends Model
 
   public function status($query, $status)
   {
-      return $query->where('status', intval($status));
+      if($status != TaskStatusEnum::LATE){
+        return $query->where('status', intval($status));
+      }else{
+        return $query->where('to_date','<',Carbon::now())->where('status', '!=' , TaskStatusEnum::DONE);
+      }
   }
 
   public function type($query, $type)

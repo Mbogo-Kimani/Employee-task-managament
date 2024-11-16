@@ -5,7 +5,7 @@ import Icon from '../Common/Icon';
 import { toast } from 'react-toastify';
 
 
-const ApartmentCodes = ({ closeModal}) => {
+const ApartmentCodes = ({ closeModal,className}) => {
   const [showApartmentCodes, setShowApartmentCodes] = useState(false);
   const [apartmentCodes, setApartmentCodes] =  useState([]);
   const [newApartmentCodesModal, setNewApartmentCodesModal] = useState(false);
@@ -48,9 +48,9 @@ const ApartmentCodes = ({ closeModal}) => {
     requestHandler.post('/api/apartment_codes', newApartmentCode, setResponse);
   }
   return (
-    <div>
+    <div className={className}>
         <button
-        className="bg-green-500 hover:bg-green-600 rounded-md px-4 py-3 ml-auto text-gray-900 hover:text-gray-100"
+        className="bg-green-400 hover:bg-green-600 rounded-md px-4 py-2 ml-auto text-gray-900 hover:text-gray-100"
         onClick={() => setShowApartmentCodes(!showApartmentCodes)}
         >Apartment Codes</button>
         <Modal show={showApartmentCodes} onClose={() => setShowApartmentCodes(false)}>

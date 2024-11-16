@@ -9,4 +9,5 @@ class TaskStatusEnum {
   const AWAITING_APPROVAL = 2;
   const REJECTED = 3;
   const DONE = 4;
+  const LATE = 5;
 }

@@ -101,10 +101,14 @@ class TaskController extends Controller
 		abort(404, 'Resource not available');
 	}
 
-	public function export()
+	public function export(Request $request)
 	{
 		$filename = '/files' . '/tasks_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
-        Excel::store(new TaskExport, $filename, 'public');
+		if($request->query()){
+			Excel::store(new TaskExport($request->all()), $filename, 'public');
+		}else{
+			Excel::store(new TaskExport, $filename, 'public');
+		}
         
         return response()->json(['file' => $filename]);
 	}
@@ -145,14 +149,15 @@ class TaskController extends Controller
 		}
 
 		$newTask = Task::create([
-			'name' => $request->apartment_code . " " . $request->hse_no . ' ' .  TaskType::where('id', $request->taskType)->pluck('name')->first(),
-			'department_id' => $request->department,
+	//		'name' => $request->apartment_code . " " . $request->hse_no . ' ' .  TaskType::where('id', $request->taskType)->pluck('name')->first(),
+			'name' => $request->apartment_code . " " . $request->hse_no,
+	        'department_id' => $request->department,
 			'task_type_id' => $request->taskType,
 			'to_date' => $request->toDate,
 			'from_date' => $request->fromDate,
 			'description' => $request->description,
-      'admin_handler_id' => $request->adminHandler,
-      'department_handler_id' => $request->departmentHandler,
+      		'admin_handler_id' => $request->adminHandler,
+      		'department_handler_id' => $request->departmentHandler,
 			'paid' => $request->paid ?? 1,
 			'client_id' => $client->id ?? NULL,
 		]);
@@ -193,11 +198,20 @@ class TaskController extends Controller
 	public function allTasks(Request $request) {
 		$user = auth()->user();
 		if ($user->role == DepartmentEnum::ADMIN) {
-
-			$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
-										->where('name', 'LIKE', "%$request->search%")
+			if($request->status){
+				$tasks = Task::filter(request(['type', 'status']))
 										->orderBy('created_at', 'DESC')
 										->paginate(20);
+			}else{
+				$tasks = Task::with(['department', 'users', 'taskType','equipments', 'client'])
+										->where('name', 'LIKE', "%$request->search%")
+										->orWhereHas('users', function($query) use ($request) {
+											$query->where('name', 'LIKE', "%{$request->search}%");
+										})
+										->orderBy('created_at', 'DESC')
+										->paginate(20);
+			}
+			
 			return response()->json($tasks);
 		}
 
@@ -257,12 +271,16 @@ class TaskController extends Controller
 		}
 	}
 
-	public function getAssignedTasks() {
+	public function getAssignedTasks(Request $request) {
 		$user = auth()->user();
 
 		if ($user->clearance_level === ClearanceLevelEnum::DEPARTMENT_LEADER) {
 			$tasks = Task::where('department_id', $user->department_id)
 										->whereHas('users')
+										->where('name', 'LIKE', "%$request->search%")
+										->orWhereHas('users', function($query) use ($request) {
+											$query->where('name', 'LIKE', "%{$request->search}%");
+										})
 										->orderBy('created_at', 'DESC')
 										->with(['taskType','users','equipments'])
 										->paginate(20);
@@ -444,9 +462,9 @@ class TaskController extends Controller
         $task = Task::findOrFail($request->id);
         if ($task) {
             $task->update($request->all());
-						$client = Client::find($request->client_id);
-						$client->employee_id = $request->work_number;
-						$client->save();
+			$client = Client::find($request->client_id);
+			$client->employee_id = $request->work_number;
+			$client->save();
 						
             return response()->json(['message' => 'Task has been updated successfully']);
         }
