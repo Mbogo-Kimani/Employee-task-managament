@@ -43,7 +43,7 @@ const AddClient = () => {
   // Adjusted styling in JSX form (AddClient)
   return (
     <HotspotLayout>
-      <form onSubmit={handleSubmit} className="bg-white mt-7  rounded-lg p-6 sm:p-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto shadow-sm hover:shadow-slate-950 h-fit">
+      <form onSubmit={handleSubmit} className="bg-white mt-7  rounded-lg p-6 sm:p-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto shadow- sm  hover:shadow-slate-950 h-fit">
         <h2 className="text-center text-xl sm:text-2xl font-bold mb-3 sm:mb-16 text-gray-800">Add a New Client</h2>
         
         {/* Username */}

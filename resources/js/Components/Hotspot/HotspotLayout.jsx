@@ -44,7 +44,7 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className='flex h-screen'>
+    <div className='flex h-screen overflow-hidden'>
       {/* Mobile Toggle Button */}
       {/* <div className="md:hidden p-4  text-white w-full"> */}
       <button

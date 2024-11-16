@@ -359,12 +359,12 @@ class RouterController extends Controller
         }
         $clients = ModelsClient::where('is_registered_hotspot', true)->with(['streetPackage','subscriptions'])->latest()->paginate(10);
 
-        foreach($clients as $user){
-            $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
-            $client->setMenu('/user-manager/session');
-            $count = $client->count(Query::where('status', 'start')->andWhere('user',$user->name));
-            $user['sessions'] = $count;
-        }
+        // foreach($clients as $user){
+        //     $client = new Util(new Client(config('router.ip'), config('router.user'), config('router.password')));
+        //     $client->setMenu('/user-manager/session');
+        //     $count = $client->count(Query::where('status', 'start')->andWhere('user',$user->name));
+        //     $user['sessions'] = $count;
+        // }
         return response()->json($clients);
     }
 
