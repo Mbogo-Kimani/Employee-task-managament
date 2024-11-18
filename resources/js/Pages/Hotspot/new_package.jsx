@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
-import '../../../css/Pages/home/AddPackage.css';
+
 import { toast } from 'react-toastify';
 import requestHandler from '../../services/requestHandler';
 import { router } from '@inertiajs/react';
@@ -87,7 +87,7 @@ const AddPackage = () => {
             value={packageData.packageName}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+           
           />
         </div>
 
@@ -132,7 +132,7 @@ const AddPackage = () => {
             placeholder="Enter Number of Devices"
             value={packageData.devices}
             onChange={handleChange}
-            className="w-full px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+            
           />
         </div>
 
@@ -147,7 +147,7 @@ const AddPackage = () => {
             value={packageData.cost}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+            
           />
         </div>
 
@@ -160,7 +160,7 @@ const AddPackage = () => {
             placeholder="Enter Package Description"
             value={packageData.description}
             onChange={handleChange}
-            className="w-full px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+            
           />
         </div>
 

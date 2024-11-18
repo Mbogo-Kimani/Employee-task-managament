@@ -10,9 +10,10 @@ import { toast } from 'react-toastify';
 import PaginatorNav from '../../Components/Common/PaginatorNav';
 
 const Packages = () => {
-  const [streetPackages, setStreetPackages] = useState([]);
+  const [streetPackages, setStreetPackages] = useState([]); // Properly initialized
+  const [response, setResponse] = useState();
 
-  const [response,setResponse] = useState();
+
   const fetchPackages = () => {
     requestHandler.get('/api/street_packages', setStreetPackages, null, loaderSetter);
   };
@@ -117,7 +118,7 @@ const Packages = () => {
                           </button>
                       )}
                     </Menu.Item>
-                   </div>
+                
                   </DropDown>
                 </td>
               </tr>

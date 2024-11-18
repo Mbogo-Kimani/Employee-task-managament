@@ -122,6 +122,7 @@ const Dashboard = () => {
       <HotspotClientsChart clientData={clientsStat?.data} title='Clients'/>
       <HotspotIncomeChart incomeData={incomeStat?.data} title="Income"/>
       </div>
+      </div>
     </HotspotLayout>
   );
 }; 

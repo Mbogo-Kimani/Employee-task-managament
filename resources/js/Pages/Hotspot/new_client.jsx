@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
 import SelectComp from '../../Components/Common/SelectComp';
-import '../../../css/Pages/AddClient.css';
+
 import requestHandler from '../../services/requestHandler';
 import { loaderSetter } from '../../Components/Common/Loader';
 import { toast } from 'react-toastify';
