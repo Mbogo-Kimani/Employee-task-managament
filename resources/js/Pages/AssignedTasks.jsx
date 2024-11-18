@@ -46,7 +46,8 @@ function AssignedTasks() {
 		const [showTaskFeedBack, setShowTaskFeedback] = useState(false);
 		const [feedbackOptional, setFeedbackOptional] = useState(false);
     const [taskTypes, setTaskTypes] = useState([]);
-
+    const [searchValue, setSearchValue] = useState();
+    
     const sortParams = {
       'type': taskTypes,
       'status': taskStatusKeys,
@@ -89,8 +90,8 @@ function AssignedTasks() {
         requestHandler.get("/api/department_users", setUsers);
     }
 
-    function fetchAssignedTasks() {
-        requestHandler.get("/api/assigned_tasks", setTasks);
+    function fetchAssignedTasks(value) {
+        requestHandler.get(`/api/assigned_tasks?search=${value ? value : ''}`, setTasks);
     }
 
     function parseDate(date) {
@@ -130,6 +131,10 @@ function AssignedTasks() {
     function closeUnassignModal(){
       setTask({});
       setShowUnassignModal(false);
+    }
+    function handleSearch(e){
+      e.preventDefault()
+      fetchAssignedTasks(searchValue)
     }
 
     function updateReport(e, id, taskId){
@@ -185,7 +190,26 @@ function AssignedTasks() {
 			<div>
 				<TaskStatusColorCode />
 			</div>
+      <div className="flex justify-between">
       <SortElem sortParams={sortParams} filterFn={submitFilters}/>
+      <div className='flex justify-center items-center order-2 ml-4'>
+            <input
+              type='search'
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+              name='search'
+              id=''
+              className='py-2 rounded px-3 w-[250px] outline-none'
+              placeholder={'🔍 Search'}
+            />
+            <button
+              className='hover:bg-white p-2'
+              onClick={e => handleSearch(e)}
+            >
+              <Icon src='search' fill='#333' className='w-5 h-5' />
+            </button>
+            </div>
+          </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
                 <TableComp
                     columns={["Task Name", "Task Type","Handler","Status", "From", "To", "Report", "Action"]}

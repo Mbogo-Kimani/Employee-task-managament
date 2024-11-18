@@ -82,16 +82,17 @@ class UserController extends Controller
 			'role' => 'required',
 			'employee_id' => 'nullable|string',
 		]);
-
+		
 		$user_to_edit = User::find($request->id);
 		$user_to_edit->name = $request->name;
 		$user_to_edit->email = $request->email;
-		$user_to_edit->role = $request->role;
+ 		$user_to_edit->role = $request->role;
 		$user_to_edit->image = $request->image;
 		$user_to_edit->department_id = $request->role;
 		$user_to_edit->employee_id = $request->employee_id;
 		$user_to_edit->clearance_level = $request->clearance_level;
 		$user_to_edit->phone_number = $request->phone_number;
+		$request->password && $user_to_edit->password = Hash::make($request->password);
 		$user_to_edit->save();
 
 		return response()->json(['message' => 'Employee edit successful']);

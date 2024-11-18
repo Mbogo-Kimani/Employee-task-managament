@@ -46,21 +46,32 @@ class TaskReportController extends Controller
      */
     public function store(Request $request)
     {
-      $request->validate([
+        $request->validate([
 				'title' => 'required|string|max:255',
 				'content' => 'required|string',
 			]);
+		$file = $request->file('file');
+        $fileName = '';
+        if($file){
+
+			try{
+				$fileName = $file->getClientOriginalName();
+				Storage::disk('public')->put($fileName, file_get_contents($file));
+			}catch(\Exception $e){
+				abort(400, $e);
+			}			
+		}
 
 			$currentTask = Task::find($request->taskId);
 
 			// if ($currentTask->taskReports->count()) {
 			// 	return response()->json(['title' => 'You have already submitted this report'], 422);
 			// }
-			
 			$taskReport = TaskReport::create([
 				'title' => $request->title,
 				'content' => $request->content,
 				'task_id' => $request->taskId,
+                'file' => $fileName
 			]);
 
 			if ($taskReport && $currentTask) {

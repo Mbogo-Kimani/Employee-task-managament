@@ -27,4 +27,16 @@ class TransactionController extends Controller
         }
         return response()->json(['amount' => $transactions]);
     }
+
+    public function sortTransactions(Request $request)
+    {
+        $startDate = Carbon::now()->subDays(7);
+        $endDate = Carbon::now();
+        $incomeByDay = Transaction::selectRaw('DAYOFWEEK(created_at) as day, SUM(amount) as total_income')
+        ->whereBetween('created_at', [$startDate, $endDate])
+        ->groupBy('day')
+        ->orderBy('day')
+        ->get();
+        return response()->json(['data' => $incomeByDay]);
+    }
 }

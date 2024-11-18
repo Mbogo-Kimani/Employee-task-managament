@@ -4,6 +4,8 @@ import { AppContext } from '../../appContext';
 import { useTranslation } from 'react-i18next';
 import IncomeChart from '../../Components/Charts/IncomeChart'
 import requestHandler from '../../services/requestHandler';
+import HotspotClientsChart from '../../Components/Charts/HotspotClientsChart';
+import HotspotIncomeChart from '../../Components/Charts/HotspotIncomeChart';
 
 const Dashboard = () => {
   const [hotspotUsers, setHotspotUsers] = useState();
@@ -11,20 +13,28 @@ const Dashboard = () => {
   const [income, setIncome] = useState();
   const [dailyIncome, setDailyIncome] = useState();
   const [monthlyIncome, setMonthlyIncome] = useState();
+  const [clientsStat, setClientsStat] = useState();
+  const [incomeStat, setIncomeStat] = useState();
   const { userData } = useContext(AppContext);
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchHotspotUsers();
     fetchActiveProfiles();
-    requestHandler.get('/api/get-stat?period=daily',setDailyIncome)
-    requestHandler.get('/api/get-stat?period=monthly',setMonthlyIncome)
-    
+    getStats()
+    fetchClientStats()
+    fetchIncomeStats()
   },[])
 
   function fetchHotspotUsers(){
     requestHandler.get('/api/hotspot/users',setHotspotUsers);
   }
+
+  function getStats(){
+    requestHandler.get(`/api/get-stat?period=daily`,setDailyIncome)
+    requestHandler.get(`/api/get-stat?period=monthly`,setMonthlyIncome)
+  }
+
   function fetchActiveProfiles(){
     requestHandler.get('/api/hotspot/profiles/active',setPlans);
   }
@@ -34,6 +44,13 @@ const Dashboard = () => {
     return income
   }
 
+  function fetchClientStats(){
+    requestHandler.get('/api/filter/clients',setClientsStat)
+  }
+
+  function fetchIncomeStats(){
+    requestHandler.get('/api/filter/transactions',setIncomeStat)
+  }
   return (
     <HotspotLayout>
       
@@ -88,31 +105,23 @@ const Dashboard = () => {
       <p className="text-gray-600 text-sm">Compared to last week</p>
     </div>
 
-    {/* Total Users Card */}
-    <div className="border rounded mt-3 w-full sm:w-[48%] md:w-[23%] lg:w-[23%] p-2 shadow-md bg-purple-100">
-      <h1 className="text-xl font-bold text-purple-800 flex items-center">
-        <span className="mr-2"><i className="fas fa-user-plus"></i></span> Total Users
-      </h1>
-      <hr className="my-2" />
-      <div className="flex items-center justify-between mt-3">
-        <p className="text-3xl font-semibold">{hotspotUsers?.length}</p>
-        <span className="text-green-600 font-bold">+0%</span>
+  <div className="border rounded mt-5 flex-1 h-[10rem] p-4 shadow-md bg-purple-100">
+    <h1 className="text-xl font-bold text-purple-800 flex items-center">
+      <span className="mr-2"><i className="fas fa-user-plus"></i></span> Total Users
+    </h1>
+    <hr className="my-2" />
+    <div className="flex items-center justify-between mt-3">
+      <p className="text-3xl font-semibold">{hotspotUsers?.length}</p>
+      <span className="text-green-600 font-bold">+0%</span>
+    </div>
+    <p className="text-gray-600 text-sm">Growth this month</p>
+    </div>
+  </div>
+
+      <div className='flex mt-5 w-full justify-between'>
+      <HotspotClientsChart clientData={clientsStat?.data} title='Clients'/>
+      <HotspotIncomeChart incomeData={incomeStat?.data} title="Income"/>
       </div>
-      <p className="text-gray-600 text-sm">Growth this month</p>
-    </div>
-  </div>
-
-  {/* Charts Section - adjusted for vertical stacking and spacing on smaller screens */}
-  <div className="flex flex-col sm:flex-row w-full justify-between pb-10  mt-4">
-    <div className="w-full sm:w-[48%] ">  {/* Added bottom margin to prevent cutoff */}
-      <IncomeChart clientData={[]} title='Clients' />
-    </div>
-    <div className="w-full sm:w-[48%]">  {/* Added bottom margin to prevent cutoff */}
-      <IncomeChart clientData={[]} title="Income" />
-    </div>
-  </div>
-</div>
-
     </HotspotLayout>
   );
 }; 

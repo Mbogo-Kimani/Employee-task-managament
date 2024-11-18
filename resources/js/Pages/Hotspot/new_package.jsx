@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HotspotLayout from '../../Components/Hotspot/HotspotLayout';
+import '../../../css/Pages/home/AddPackage.css';
+import { toast } from 'react-toastify';
+import requestHandler from '../../services/requestHandler';
+import { router } from '@inertiajs/react';
 
 const AddPackage = () => {
   const [packageData, setPackageData] = useState({
-    packageName: '',
-    hours: '',
-    minutes: '',
-    seconds: '',
+    name: '',
+    duration: '',
     devices: '',
     cost: '',
     description: ''
+  });
+  const [response, setResponse] = useState();
+  const [time , setTime] = useState({
+    hours: '',
+    minutes: '',
+    seconds: ''
   });
 
   const handleChange = (e) => {
@@ -20,44 +28,61 @@ const AddPackage = () => {
     });
   };
 
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+    setTime({
+      ...time,
+      [name]: value
+    });
+  }
+  
+
+  useEffect(() => {
+    if(response && response.success){
+      toast.success(response.message);
+      router.visit('/hotspot/plans')
+    }
+  },[response]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Validate required fields
-    if (!packageData.packageName || !packageData.cost) {
-      alert('Package Name and Cost are required.');
+    if (!packageData.name || !packageData.cost) {
+      toast.error('Package Name and Cost are required.');
       return;
     }
 
-   
-
     // Convert duration to seconds
     const totalSeconds =
-      (parseInt(packageData.hours) || 0) * 3600 +
-      (parseInt(packageData.minutes) || 0) * 60 +
-      (parseInt(packageData.seconds) || 0);
+    (parseInt(time.hours) || 0) * 3600 +
+    (parseInt(time.minutes) || 0) * 60 +
+    (parseInt(time.seconds) || 0);
 
-    const submissionData = {
+    // Submit the form data with converted duration
+    setPackageData({...packageData,duration: totalSeconds})
+    const data = {
       ...packageData,
-      duration: totalSeconds,
-    };
-
-    console.log('Package Data Submitted:', submissionData);
+      duration: totalSeconds
+    }
+    // Submit the form data 
+    console.log('Package Data Submitted:', data);
+    requestHandler.post('/api/hotspot/package',data,setResponse);
   };
 
   // Adjusted styling (AddPackage)
 
   return (
     <HotspotLayout>
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg p-6 mb-14 mt-4 sm:p-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto shadow-sm hover:shadow-slate-950 h-fit">
-        <h2 className="text-center text-xl sm:text-2xl font-bold mb-6 sm:mb-10 text-gray-800">Add a New Package</h2>
-        
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add a New Package</h2>
+      <form onSubmit={handleSubmit}  className="bg-white rounded-lg shadow-lg p-6 max-w-lg hover:shadow-2xl transition-shadow mx-auto">
         {/* Package Name */}
         <div className="mb-4">
-          <label className="block text-gray-500 text-sm mb-1">Package Name</label>
+          <label className="block text-gray-700 text-sm font-medium mb-2"> Name </label>
           <input
+           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="text"
-            name="packageName"
+            name="name"
             placeholder="Enter Package Name"
             value={packageData.packageName}
             onChange={handleChange}
@@ -66,41 +91,42 @@ const AddPackage = () => {
           />
         </div>
 
-        {/* Duration */}
-        <div className="mb-4">
-          <label className="block text-gray-500 text-sm mb-2">Duration</label>
+       {/* Duration */}
+       <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-medium mb-2">Duration</label>
           <div className="flex gap-2">
             <input
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="hours"
               placeholder="Hours"
-              value={packageData.hours}
-              onChange={handleChange}
-              className="w-1/3 px-2 py-1  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              value={time.hours}
+              onChange={handleTimeChange}
             />
             <input
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="minutes"
               placeholder="Minutes"
-              value={packageData.minutes}
-              onChange={handleChange}
-              className="w-1/3 px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              value={time.minutes}
+              onChange={handleTimeChange}
             />
             <input
+              className="w-1/3 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               type="number"
               name="seconds"
               placeholder="Seconds"
-              value={packageData.seconds}
-              onChange={handleChange}
-              className="w-1/3 px-4 py-2  bg-gray-100 border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              value={time.seconds}
+              onChange={handleTimeChange}
             />
           </div>
         </div>
 
         {/* Devices */}
-        <div className="mb-4">
-          <label className="block text-gray-500 text-sm mb-2">Number of Devices</label>
+        <div className="form-group">
+          <label  className="block text-gray-700 text-sm font-medium mb-2">Number of Devices </label>
           <input
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="number"
             name="devices"
             placeholder="Enter Number of Devices"
@@ -111,9 +137,10 @@ const AddPackage = () => {
         </div>
 
         {/* Cost */}
-        <div className="mb-4">
-          <label className="block text-gray-500 text-sm mb-2">Cost</label>
+        <div className="form-group">
+          <label className="block text-gray-700 text-sm font-medium mb-2">Cost</label>
           <input
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             type="number"
             name="cost"
             placeholder="Enter Cost"
@@ -125,9 +152,10 @@ const AddPackage = () => {
         </div>
 
         {/* Description */}
-        <div className="mb-4">
-          <label className="block text-gray-500 text-sm mb-2">Description</label>
+        <div className="form-group">
+          <label className="block text-gray-700 text-sm font-medium mb-2"> Description </label>
           <textarea
+            className="w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             name="description"
             placeholder="Enter Package Description"
             value={packageData.description}
@@ -136,10 +164,9 @@ const AddPackage = () => {
           />
         </div>
 
-        {/* Submit Button */}
-        <button type="submit" className="w-2/4 ml-36  bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors">
-          Add Package
-        </button>
+        {/* Submit button */}
+      <button type="submit" className="w-36 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 ml-80 transition duration-300"
+        >Add Package</button>
       </form>
     </HotspotLayout>
   );

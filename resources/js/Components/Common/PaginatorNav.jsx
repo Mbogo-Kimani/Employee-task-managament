@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { handlePage } from '../../data/utils';
 import { router } from '@inertiajs/react';
 import Modal from './Modal';
+import { loaderSetter } from './Loader';
 
-function PaginatorNav({ state, setState, navigateByParams = false, searchParam='' }) {
+function PaginatorNav({ state, setState, navigateByParams = false, searchParam='', filters={}}) {
   const [seeAllPages, setSeeAllPages] = useState(false);
-
+ 
+  
   function handlePageNavigation (navigation) {
     const nextPageNavigate = navigation !== 'prev';
     const allSearchParams = location.search.split('&');
@@ -18,20 +20,22 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
     if (searchParam) {
       const currentPage = parseInt(pageParam);
       
-      if (nextPageNavigate && state.next_page_url) router.visit(`${location.pathname}?page=${currentPage + 1}&search=${searchParam}`);
-      else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}&search=${searchParam}`);
+      if (nextPageNavigate && state.next_page_url) router.visit(`${location.pathname}?page=${currentPage + 1}&search=${searchParam}&filters=${filters}`);
+      else if (!nextPageNavigate && state.prev_page_url) router.visit(`${location.pathname}?page=${currentPage - 1}&search=${searchParam}&filters=${filters}`);
       else return;
     } else {
       if (nextPageNavigate && navigateByParams) router.visit(`${location.pathname}?page=2`);
-      else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState);
-      else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState);
+      else if (nextPageNavigate && !navigateByParams) handlePage(state.next_page_url, setState,loaderSetter);
+      else if (!nextPageNavigate && !navigateByParams) handlePage(state.prev_page_url, setState,loaderSetter);
       else return;
     }
   }
 
   function handleSpecificPageNav(page) {
-    if (navigateByParams) router.visit(`${location.pathname}?page=${page}&search=${searchParam}`);
-    else handlePage(`${state.path}?page=${page}&search=${searchParam}`, setState);
+    const filterParams = new URLSearchParams(filters);
+    
+    if (navigateByParams)  router.visit(`${location.pathname}?page=${page}&search=${searchParam}&${filterParams.toString()}`); 
+    else handlePage(`${state.path}?page=${page}&search=${searchParam}&filters=${filterParams.toString()}`, setState);
     hideAllPages();
   }
 
@@ -39,11 +43,11 @@ function PaginatorNav({ state, setState, navigateByParams = false, searchParam='
   const hideAllPages = () => seeAllPages ? setSeeAllPages(false) : () => {};
 
   return (
-    <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-2" aria-label="Table navigation">
+    <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-2 px-2" aria-label="Table navigation">
        <span className="text-sm font-normal text-gray-500 dark:text-gray-400 pl-3 mb-4 md:mb-0 block w-full md:inline md:w-auto">
         Showing
         <span className="font-semibold text-gray-900 dark:text-white"> {state.current_page} - { state.last_page }</span> of <span className="font-semibold text-gray-900 dark:text-white">{ state.total }</span></span>
-      <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+      <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-10 pb-3">
         <li
           className={
             state.current_page !== 1 ?

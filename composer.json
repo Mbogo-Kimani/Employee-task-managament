@@ -20,7 +20,7 @@
         "maatwebsite/excel": "^3.1.48",
         "mobiledetect/mobiledetectlib": "^4.8",
         "pear2/cache_shm": "^0.2.0",
-        "pear2/net_routeros": "dev-develop",
+        "pear2/net_routeros": "1.0.0b6",
         "pear2/net_transmitter": "1.0.0b1",
         "predis/predis": "^2.2",
         "pusher/pusher-php-server": "7.0",

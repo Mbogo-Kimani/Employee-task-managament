@@ -6,10 +6,13 @@ import TableComp from '../../Components/Common/TableComp';
 import DropDown from '../../Components/Common/DropDown';
 import { Menu } from '@headlessui/react';
 import Icon from '../../Components/Common/Icon';
+import { toast } from 'react-toastify';
+import PaginatorNav from '../../Components/Common/PaginatorNav';
 
 const Packages = () => {
   const [streetPackages, setStreetPackages] = useState([]);
 
+  const [response,setResponse] = useState();
   const fetchPackages = () => {
     requestHandler.get('/api/street_packages', setStreetPackages, null, loaderSetter);
   };
@@ -17,7 +20,18 @@ const Packages = () => {
   useEffect(() => {
     fetchPackages();
   }, []);
+  useEffect(() => {
+    if(response?.success){
+      toast.success(response.message)
+      fetchPackages();
+    }
+  },[response])
 
+  const handleDelete = (elem) => {
+      requestHandler.delete(`/api/hotspot/package/${elem.id}`,setResponse);
+      // fetchPackages();
+      
+  }
   return (
     <HotspotLayout>
       <div className='max-h-[600px] mb-60 overflow-y-auto shadow-md sm:rounded-lg mt-2'>
@@ -61,34 +75,46 @@ const Packages = () => {
                 >
                   {elem.description}
                 </th>
-                <td className='px-2 py-4 relative '>
-                  <DropDown className='w-32'>
-                    {/* Wrap dropdown items in an absolute positioned div */}
-                   <div className='absolute right-0 mt-2 z-50 w-40 bg-white shadow-lg rounded-md overflow-hidden'> {/* <-- Added `absolute`, `right-0`, `mt-2`, `z-50`, `bg-white`, `shadow-lg`, and `rounded-md` */}
-                    <Menu.Item>
+                <td className='px-2 py-4 relative'>
+                  <DropDown>
+                    {/* <Menu.Item>
                       {({ active }) => (
-                        <button
-                          className={`${
-                            active ? 'bg-green-200 text-black' : 'text-gray-900'
-                          } group flex w-full items-center rounded-md px-2 text-sm mb-3 py-2 z-50`}
-                          // Add your onClick function if needed
-                        >
-                          <Icon src='edit' className='w-4 h-4 mr-2' fill='rgb(34, 197, 94)' />
-                          <span>Edit</span>
-                        </button>
+                       
+                          <button
+                            className={`${
+                              active
+                                ? 'bg-green-200 text-black'
+                                : 'text-gray-900'
+                            } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                            //   onClick={() => openDeleteModal(elem)}
+                          >
+                            <Icon
+                              src='edit'
+                              className='w-4 h-4 mr-2'
+                              fill='rgb(34 197 94)'
+                            />
+                            <span className='block py-3 px-2'>Edit</span>
+                          </button>
                       )}
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Item>
                       {({ active }) => (
-                        <button
-                          className={`${
-                            active ? 'bg-red-200 text-black' : 'text-gray-900'
-                          } group flex w-full items-center rounded-md px-2 text-sm  py-2`}
-                          // Add your onClick function if needed
-                        >
-                          <Icon src='trash' className='w-4 h-4 mr-2' fill='rgb(255, 0, 0)' />
-                          <span>Delete</span>
-                        </button>
+                       
+                          <button
+                            className={`${
+                              active
+                                ? 'bg-green-200 text-black'
+                                : 'text-gray-900'
+                            } group flex w-full border-b items-center rounded-md px-2 text-sm`}
+                              onClick={() => handleDelete(elem)}
+                          >
+                            <Icon
+                              src='trash'
+                              className='w-4 h-4 mr-2'
+                              fill='rgb(220, 38, 38)'
+                            />
+                            <span className='block py-3 px-2'>Delete</span>
+                          </button>
                       )}
                     </Menu.Item>
                    </div>
@@ -98,6 +124,7 @@ const Packages = () => {
             );
           })}
         </TableComp>
+        {/* <PaginatorNav state={streetPackages} setState={setStreetPackages} /> */}
       </div>
     </HotspotLayout>
   );

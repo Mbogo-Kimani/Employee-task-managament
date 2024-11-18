@@ -83,7 +83,7 @@ const SortElem = ({sortParams,filterFn}) => {
               }
             </SelectComp>
         }
-        {
+        {/* {
           Object.keys(sortParams).includes('status') &&
             <SelectComp
               name="status"
@@ -109,7 +109,7 @@ const SortElem = ({sortParams,filterFn}) => {
                 })
               }
             </SelectComp>
-        }
+        } */}
         {
           Object.keys(sortParams).includes('clientStatus') &&
             <SelectComp

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StreetPackage;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use PEAR2\Net\RouterOS\Client;
 use PEAR2\Net\RouterOS\Response;
 use PEAR2\Net\RouterOS\Request as RouterOsRequest;
@@ -31,6 +32,7 @@ class StreetPackageController extends Controller
           return $package->name !== 'Free Trial';
       })->prepend($freeTrial);
     }
+
     return response()->json($street_packages);
   }
 
@@ -51,7 +53,7 @@ class StreetPackageController extends Controller
 
       $addRequest = new RouterOSRequest('/user-manager/profile/add');
           $addRequest
-          ->setArgument('name', $request->name)
+          ->setArgument('name', $request->profile_name)
           ->setArgument('name-for-users', $request->name)
           ->setArgument('validity', $this->formatTime($request->duration))
           ->setArgument('override-shared-users', $request->devices);
@@ -99,4 +101,16 @@ class StreetPackageController extends Controller
     // Format the time string with leading zeros for hours, minutes, and seconds
     return "{$days}d " . sprintf("%02d:%02d:%02d", $hours, $minutes, $secs);
   }
+
+  private function paginate($items, $perPage, $page, $options = [])
+{
+    $offset = ($page - 1) * $perPage;
+    return new LengthAwarePaginator(
+        $items->slice($offset, $perPage)->values(),
+        $items->count(),
+        $perPage,
+        $page,
+        $options
+    );
+}
 }

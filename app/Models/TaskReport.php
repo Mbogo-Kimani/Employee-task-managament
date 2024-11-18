@@ -14,6 +14,7 @@ class TaskReport extends Model
 		'title',
 		'content',
 		'task_id',
+		'file'
   ];
 
 	public function task(): BelongsTo
